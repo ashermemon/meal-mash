@@ -1,9 +1,8 @@
-import { View, Text, ImageBackground } from "react-native";
-
+import { View, Text, Platform, ImageBackground } from "react-native";
+import React from "react";
 import { styles } from "@/styles/auth.styles";
-import { Platform } from "react-native";
 
-export default function Index() {
+export default function Profile() {
   const image =
     Platform.OS == "web"
       ? require("../../assets/images/AppBackgroundDesktop.png")
@@ -13,7 +12,7 @@ export default function Index() {
     <>
       <ImageBackground source={image} style={styles.image} resizeMode="cover">
         <View style={styles.container}>
-          <Text style={styles.text}>HELLO, WOW thIS IS INSANE</Text>
+          <Text>Profile</Text>
         </View>
       </ImageBackground>
     </>
