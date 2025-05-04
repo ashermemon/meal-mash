@@ -1,7 +1,8 @@
-import { View, Text, ImageBackground } from "react-native";
+import { View, Text, ImageBackground, ScrollView } from "react-native";
 
 import { styles } from "@/styles/auth.styles";
 import { Platform } from "react-native";
+import Generate from "../components/generate";
 
 export default function Index() {
   const image =
@@ -12,9 +13,15 @@ export default function Index() {
   return (
     <>
       <ImageBackground source={image} style={styles.image} resizeMode="cover">
-        <View style={styles.container}>
-          <Text style={styles.text}>HELLO, WOW thIS IS INSANE</Text>
-        </View>
+        <ScrollView>
+          <View style={styles.container}>
+            <Text style={styles.text}>Generate Meal</Text>
+            <Generate
+              leftovers={["egg fried rice"]}
+              ingredients={["lemon", "flour", "spinach", "lentils", "beans"]}
+            ></Generate>
+          </View>
+        </ScrollView>
       </ImageBackground>
     </>
   );

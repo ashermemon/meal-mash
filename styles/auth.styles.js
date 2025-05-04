@@ -15,4 +15,17 @@ export const styles = StyleSheet.create({
   text: {
     fontFamily: "Nunito",
   },
+  generateButtonContainer: {
+    flex: 1,
+    justifyContent: "center",
+    paddingHorizontal: 10,
+  },
+  generateButton: {
+    alignItems: "center",
+    backgroundColor: "#DDDDDD",
+    padding: 10,
+  },
+  errorText: {
+    color: "red",
+  },
 });
