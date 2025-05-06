@@ -1,6 +1,13 @@
-import { View, Text, Platform, ImageBackground } from "react-native";
+import {
+  View,
+  Text,
+  Platform,
+  ImageBackground,
+  ScrollView,
+} from "react-native";
 import React from "react";
 import { styles } from "@/styles/auth.styles";
+import MobileHeader from "../components/mobileheader";
 
 export default function Profile() {
   const image =
@@ -11,9 +18,15 @@ export default function Profile() {
   return (
     <>
       <ImageBackground source={image} style={styles.image} resizeMode="cover">
-        <View style={styles.container}>
-          <Text>Profile</Text>
-        </View>
+        <MobileHeader pageTitle="Profile"></MobileHeader>
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1, paddingBottom: 120 }}
+          style={styles.generatorContainer}
+        >
+          <View style={styles.container}>
+            <Text>Profile</Text>
+          </View>
+        </ScrollView>
       </ImageBackground>
     </>
   );

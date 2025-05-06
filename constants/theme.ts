@@ -7,4 +7,8 @@ export const COLORS = {
   navBorder: "#A3A3A3",
   navGenBg: "#F6E3FF",
   navGenBorder: "#CBAFDF",
+
+  blueHeader: "#F0F9FE",
+  blueHeaderBorder: "#ACD3FF",
+  fontColor: "#39393A",
 } as const;

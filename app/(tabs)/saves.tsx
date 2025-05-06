@@ -1,7 +1,8 @@
-import { View, Text } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import { ImageBackground } from "react-native";
 import { styles } from "@/styles/auth.styles";
 import { Platform } from "react-native";
+import MobileHeader from "../components/mobileheader";
 
 const image =
   Platform.OS == "web"
@@ -12,9 +13,15 @@ export default function Saves() {
   return (
     <>
       <ImageBackground source={image} style={styles.image} resizeMode="cover">
-        <View style={styles.container}>
-          <Text style={styles.text}>Saves Page</Text>
-        </View>
+        <MobileHeader pageTitle="Profile"></MobileHeader>
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1, paddingBottom: 120 }}
+          style={styles.generatorContainer}
+        >
+          <View style={styles.container}>
+            <Text style={styles.text}>Saves Page</Text>
+          </View>
+        </ScrollView>
       </ImageBackground>
     </>
   );

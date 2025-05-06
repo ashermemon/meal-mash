@@ -3,6 +3,7 @@ import { View, Text, ImageBackground, ScrollView } from "react-native";
 import { styles } from "@/styles/auth.styles";
 import { Platform } from "react-native";
 import Generate from "../components/generate";
+import MobileHeader from "../components/mobileheader";
 
 export default function Index() {
   const image =
@@ -13,12 +14,22 @@ export default function Index() {
   return (
     <>
       <ImageBackground source={image} style={styles.image} resizeMode="cover">
-        <ScrollView>
+        <MobileHeader pageTitle="Home"></MobileHeader>
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1, paddingBottom: 120 }}
+          style={styles.generatorContainer}
+        >
           <View style={styles.container}>
-            <Text style={styles.text}>Generate Meal</Text>
+            <Text style={styles.textCentered}>Generate Meal</Text>
             <Generate
-              leftovers={["egg fried rice"]}
-              ingredients={["lemon", "flour", "spinach", "lentils", "beans"]}
+              leftovers={["mac and cheese"]}
+              ingredients={[
+                "tuna",
+                "soy sauce",
+                "spinach",
+                "chicken",
+                "ice cream",
+              ]}
             ></Generate>
           </View>
         </ScrollView>
