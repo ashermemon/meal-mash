@@ -1,4 +1,4 @@
-import { Pressable, Text, View } from "react-native";
+import { Modal, Pressable, Text, View } from "react-native";
 import React, { useContext } from "react";
 import { styles } from "@/styles/auth.styles";
 import SearchContext from "../contexts/SearchContext";

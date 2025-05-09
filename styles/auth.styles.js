@@ -72,7 +72,6 @@ export const styles = StyleSheet.create({
     paddingVertical: 20,
     alignItems: "center",
     justifyContent: "center",
-    alignSelf: "center",
   },
 
   centeredBox: {
@@ -120,6 +119,7 @@ export const styles = StyleSheet.create({
     borderWidth: 3,
     position: "absolute",
     bottom: "50%",
+    alignSelf: "center",
     zIndex: 100,
     padding: 5,
     width: 300,
@@ -144,5 +144,10 @@ export const styles = StyleSheet.create({
   },
   exitSearchContainer: {
     flex: 1,
+  },
+  modalWrap: {
+    flex: 1,
+    width: "100%",
+    alignItems: "center",
   },
 });

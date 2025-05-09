@@ -4,6 +4,8 @@ import {
   TouchableOpacity,
   Pressable,
   ActivityIndicator,
+  Modal,
+  Alert,
 } from "react-native";
 import React, { createContext, useEffect, useState } from "react";
 import { GoogleGenAI } from "@google/genai";
@@ -25,7 +27,7 @@ type GenerateProps = {
 
 export default function Generate(props: GenerateProps) {
   const [searchActive, setSearchActive] = useState(false);
-  const APIKEY = "AIzaSyBoRw8YbfpfxM32Kiq6zNep3XNnBMziqQI";
+  const APIKEY = "";
   const ai = new GoogleGenAI({ apiKey: APIKEY });
   var hsl = require("hsl-to-hex");
   const [responseRecipe, setResponseRecipe] = useState("");
@@ -141,7 +143,17 @@ export default function Generate(props: GenerateProps) {
   return (
     <>
       <SearchContext.Provider value={setSearchActive}>
-        {searchActive ? <Search /> : <></>}
+        <Modal
+          style={styles.modalWrap}
+          animationType="slide"
+          transparent={true}
+          visible={searchActive}
+          onRequestClose={() => {
+            setSearchActive(!searchActive);
+          }}
+        >
+          <Search />
+        </Modal>
         {!generated && (
           <Text style={styles.textCentered}>
             {loading
