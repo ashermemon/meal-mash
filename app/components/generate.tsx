@@ -5,12 +5,18 @@ import {
   Pressable,
   ActivityIndicator,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import { GoogleGenAI } from "@google/genai";
 import { styles } from "@/styles/auth.styles";
 import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
 import { COLORS } from "@/constants/theme";
 import Prompt from "@/constants/prompt";
+import Timer from "./timer";
+import NewCard from "./newcard";
+import AddIngredients from "./addingredients";
+import AddLeftovers from "./addleftovers";
+import SearchContext from "../contexts/SearchContext";
+import Search from "./search";
 
 type GenerateProps = {
   ingredients: string[];
@@ -18,9 +24,10 @@ type GenerateProps = {
 };
 
 export default function Generate(props: GenerateProps) {
+  const [searchActive, setSearchActive] = useState(false);
   const APIKEY = "AIzaSyBoRw8YbfpfxM32Kiq6zNep3XNnBMziqQI";
   const ai = new GoogleGenAI({ apiKey: APIKEY });
-
+  var hsl = require("hsl-to-hex");
   const [responseRecipe, setResponseRecipe] = useState("");
 
   const [loading, setLoading] = useState(false);
@@ -33,8 +40,6 @@ export default function Generate(props: GenerateProps) {
   let recipePrompt = "";
   let stepNum = 0;
 
-  var hsl = require("hsl-to-hex");
-
   const fetchResponse = async (prompt: string) => {
     setLoading(true);
     try {
@@ -43,7 +48,7 @@ export default function Generate(props: GenerateProps) {
         contents: prompt,
       });
       if (response.text) {
-        const geminiText = response.text;
+        const geminiText = response.text.replace(/^\s+/, "");
 
         const stepMatches = geminiText.match(/«[^»]+»/g);
         setTotalSteps(stepMatches ? stepMatches.length : 0);
@@ -80,11 +85,9 @@ export default function Generate(props: GenerateProps) {
         const content = text.slice(1, -1);
         stepNum += 1;
         parseMarkdownTextInline(content);
-        return currentStep == stepNum
-          ? parseMarkdownTextInline(content)
-          : undefined;
+        return currentStep == stepNum ? parseMarkdownTextInline(content) : null;
       } else {
-        return undefined;
+        return null;
       }
     });
   };
@@ -98,7 +101,7 @@ export default function Generate(props: GenerateProps) {
         return (
           <Text
             key={index}
-            style={[styles.textCentered, { fontWeight: "bold" }]}
+            style={[styles.textCentered, { fontFamily: "Nunito-Bold" }]}
           >
             {content}
           </Text>
@@ -106,103 +109,106 @@ export default function Generate(props: GenerateProps) {
       } else if (text.startsWith("{") && text.endsWith("}")) {
         const content = text.slice(1, -1);
         let timeSec = parseInt(content) * 60;
+        let color1 = hsl(Math.random() * 360, 45, 79);
+        let color2 = hsl(Math.random() * 360, 45, 79);
+        let color3 = hsl(Math.random() * 360, 45, 79);
 
         return timeSec > 0 ? (
-          <View key={index} style={styles.timer}>
-            <CountdownCircleTimer
-              isPlaying={false}
-              duration={timeSec}
-              key={index}
-              colors={[
-                hsl(Math.random() * 360, 45, 79),
-                hsl(Math.random() * 360, 45, 79),
-                hsl(Math.random() * 360, 45, 79),
-                hsl(0, 45, 79),
-              ]}
-              colorsTime={[timeSec, (timeSec / 3) * 2, timeSec / 3, 0]}
-            >
-              {({ remainingTime }) => (
-                <Text style={styles.textCentered}>
-                  {`${Math.floor(remainingTime / 60)}:${String(
-                    remainingTime % 60
-                  ).padStart(2, "0")}`}
-                </Text>
-              )}
-            </CountdownCircleTimer>
-          </View>
-        ) : undefined;
-      } else {
+          <Timer
+            key={index}
+            time={timeSec}
+            color1={color1}
+            color2={color2}
+            color3={color3}
+          ></Timer>
+        ) : null;
+      } else if (text.replace(/\n/g, "").trim() !== "") {
         return (
           <Text key={index} style={styles.textCentered}>
             {text}
           </Text>
         );
+      } else {
+        return null;
       }
     });
   };
 
   const saveRecipe = (input: string) => {
-    console.log("saved");
+    console.log(`saved ${responseRecipe}`);
   };
 
   return (
     <>
-      <View>
-        {loading && <ActivityIndicator></ActivityIndicator>}
-        {error && <Text style={styles.errorText}>{error}</Text>}
-        {!loading && (
-          <View style={{ alignItems: "center", marginVertical: 10 }}>
-            {parseMarkdownText(responseRecipe)}
-          </View>
+      <SearchContext.Provider value={setSearchActive}>
+        {searchActive ? <Search /> : <></>}
+        {!generated && (
+          <Text style={styles.textCentered}>
+            {loading
+              ? "Loading..."
+              : "Generate a meal by adding your leftovers and ingredients below!"}
+          </Text>
         )}
-      </View>
+        <View>
+          {loading && <ActivityIndicator></ActivityIndicator>}
+          {error && <Text style={styles.errorText}>{error}</Text>}
+          {!loading && (
+            <View style={{ alignItems: "center", marginVertical: 10 }}>
+              {parseMarkdownText(responseRecipe)}
+            </View>
+          )}
+        </View>
 
-      <View style={styles.generateButtonContainer}>
-        {!loading && !generated && (
-          <Pressable
-            style={styles.generateButton}
-            onPress={() => handleGenerateRecipe(recipePrompt)}
-          >
-            <Text style={styles.textCentered}>Create Meal</Text>
-          </Pressable>
-        )}
+        <AddLeftovers></AddLeftovers>
+        <AddIngredients></AddIngredients>
 
-        {!loading && generated && currentStep < totalSteps && (
-          <Pressable
-            style={styles.generateButton}
-            onPress={() => setCurrentStep(currentStep + 1)}
-          >
-            <Text style={styles.textCentered}>Next</Text>
-          </Pressable>
-        )}
+        <View style={styles.generateButtonContainer}>
+          {!loading && !generated && (
+            <Pressable
+              style={styles.generateButton}
+              onPress={() => handleGenerateRecipe(recipePrompt)}
+            >
+              <Text style={styles.textCentered}>Create Meal</Text>
+            </Pressable>
+          )}
 
-        {!loading && generated && currentStep > 1 && (
-          <Pressable
-            style={styles.generateButton}
-            onPress={() => setCurrentStep(currentStep - 1)}
-          >
-            <Text style={styles.textCentered}>Previous</Text>
-          </Pressable>
-        )}
+          {!loading && generated && currentStep < totalSteps && (
+            <Pressable
+              style={styles.generateButton}
+              onPress={() => setCurrentStep(currentStep + 1)}
+            >
+              <Text style={styles.textCentered}>Next</Text>
+            </Pressable>
+          )}
 
-        {!loading && generated && (
-          <Pressable
-            style={styles.generateButton}
-            onPress={() => handleGenerateRecipe(recipePrompt)}
-          >
-            <Text style={styles.textCentered}>Regenerate Meal</Text>
-          </Pressable>
-        )}
+          {!loading && generated && currentStep > 1 && (
+            <Pressable
+              style={styles.generateButton}
+              onPress={() => setCurrentStep(currentStep - 1)}
+            >
+              <Text style={styles.textCentered}>Previous</Text>
+            </Pressable>
+          )}
 
-        {!loading && generated && (
-          <Pressable
-            style={styles.generateButton}
-            onPress={() => saveRecipe(responseRecipe)}
-          >
-            <Text style={styles.textCentered}>Save Meal to Recipes</Text>
-          </Pressable>
-        )}
-      </View>
+          {!loading && generated && (
+            <Pressable
+              style={styles.generateButton}
+              onPress={() => handleGenerateRecipe(recipePrompt)}
+            >
+              <Text style={styles.textCentered}>Regenerate Meal</Text>
+            </Pressable>
+          )}
+
+          {!loading && generated && (
+            <Pressable
+              style={styles.generateButton}
+              onPress={() => saveRecipe(responseRecipe)}
+            >
+              <Text style={styles.textCentered}>Save Meal to Recipes</Text>
+            </Pressable>
+          )}
+        </View>
+      </SearchContext.Provider>
     </>
   );
 }

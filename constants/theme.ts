@@ -11,4 +11,17 @@ export const COLORS = {
   blueHeader: "#F0F9FE",
   blueHeaderBorder: "#ACD3FF",
   fontColor: "#39393A",
+  addGrey: "#EFEFEF",
+  addButtonColor: "#E0E0E0",
+  addButtonStroke: "#D6D6D6",
+
+  ingredientContainerOutline: "#B0E1B9",
+  leftoverContainerOutline: "#ACD3FF",
+  addPlusGrey: "#A3A3A3",
+
+  searchGreyBG: "#E4E4E4",
+  searchGreyBorder: "#C5C5C5",
+
+  deleteExitStroke: "#E1B0B1",
+  deleteExitFill: "#FEF0F0",
 } as const;

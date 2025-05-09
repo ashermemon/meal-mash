@@ -4,6 +4,9 @@ import { styles } from "@/styles/auth.styles";
 import { Platform } from "react-native";
 import Generate from "../components/generate";
 import MobileHeader from "../components/mobileheader";
+import HomeFilled from "../Icons/HomeFilled";
+import { COLORS } from "@/constants/theme";
+import NewCard from "../components/newcard";
 
 export default function Index() {
   const image =
@@ -14,13 +17,20 @@ export default function Index() {
   return (
     <>
       <ImageBackground source={image} style={styles.image} resizeMode="cover">
-        <MobileHeader pageTitle="Home"></MobileHeader>
+        <MobileHeader
+          pageTitle={"Home"}
+          headerIcon={
+            <HomeFilled
+              iconsetcolor={COLORS.fontColor}
+              setheight={25}
+            ></HomeFilled>
+          }
+        ></MobileHeader>
         <ScrollView
-          contentContainerStyle={{ flexGrow: 1, paddingBottom: 120 }}
+          contentContainerStyle={{ flexGrow: 1 }}
           style={styles.generatorContainer}
         >
           <View style={styles.container}>
-            <Text style={styles.textCentered}>Generate Meal</Text>
             <Generate
               leftovers={["mac and cheese"]}
               ingredients={[

@@ -48,7 +48,6 @@ const Prompt = (props: PromptProps) => {
       «
       **Ingredients:**
       
-      
       [Quantity of leftovers] [leftover name]
       [etc..]
       
@@ -63,7 +62,7 @@ const Prompt = (props: PromptProps) => {
       «
       
       **Instructions:**
-      
+
       **Step 1:**
       [ENTIRE TEXT of step 1]
       
