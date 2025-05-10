@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_4" data-name="Layer 4" xmlns="http://www.w3.org/2000/svg" width="32.37cm" height="29.14cm" viewBox="0 0 917.57 825.98">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: #fff;
+        stroke-miterlimit: 10;
+      }
+    </style>
+  </defs>
+  <path class="cls-1" d="M241.47,217.78c-59.74,59.06-96.75,141.05-96.75,231.69,0,179.93,145.86,325.78,325.78,325.78s325.78-145.86,325.78-325.78S650.43,123.69,470.5,123.69"/>
+  <polyline class="cls-1" points="601.76 40.76 435.75 99.99 540.86 241.49"/>
+</svg>

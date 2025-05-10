@@ -23,6 +23,8 @@ export const styles = StyleSheet.create({
   textCentered: {
     fontFamily: "Nunito-Regular",
     textAlign: "center",
+    justifyContent: "center",
+
     color: COLORS.fontColor,
     fontWeight: 500,
   },
@@ -51,14 +53,20 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 10,
   },
   generateButtonContainer: {
-    flex: 1,
-    paddingHorizontal: 10,
+    alignItems: "center",
+    justifyContent: "center",
   },
   generateButton: {
     alignItems: "center",
-    backgroundColor: "#DDDDDD",
+    justifyContent: "center",
+    backgroundColor: COLORS.blueHeader,
+    borderColor: COLORS.blueHeaderBorder,
+    borderWidth: 3,
     padding: 10,
-    margin: 10,
+    marginVertical: 10,
+    height: 55,
+
+    borderRadius: 10,
   },
   errorText: {
     color: "red",
@@ -72,6 +80,8 @@ export const styles = StyleSheet.create({
     paddingVertical: 20,
     alignItems: "center",
     justifyContent: "center",
+    alignSelf: "center",
+    flexDirection: "row",
   },
 
   centeredBox: {
@@ -149,5 +159,62 @@ export const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     alignItems: "center",
+  },
+  nextButton: {
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#DDDDDD",
+    width: 50,
+    height: 50,
+    borderRadius: "100%",
+    backgroundColor: COLORS.greenButtonColor,
+    borderColor: COLORS.greenButtonColorOuline,
+    borderWidth: 3,
+  },
+  arrowButtons: {
+    flexDirection: "row",
+    width: "100%",
+    paddingVertical: 10,
+    justifyContent: "center",
+    position: "relative",
+    bottom: 0,
+    margin: 0,
+  },
+  flexBTN: {
+    flex: 2,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  flexMiddle: {
+    flex: 3,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  timerButton: {
+    alignItems: "center",
+    justifyContent: "center",
+
+    width: 50,
+    height: 50,
+    borderRadius: "100%",
+
+    alignItems: "center",
+    backgroundColor: COLORS.blueHeader,
+    borderColor: COLORS.blueHeaderBorder,
+    borderWidth: 3,
+    padding: 10,
+  },
+  timerButtons: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  timerMiddle: {
+    flex: 3,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  spacer: {
+    height: 20,
   },
 });

@@ -4,10 +4,16 @@ import Svg, { Path } from "react-native-svg";
 type BackProps = {
   iconsetcolor: string;
   setheight?: number;
+  setwidth?: number;
 };
 
 const BackArrow = (props: BackProps) => (
-  <Svg height={props.setheight} viewBox="0 0 916.57 825.98" {...props}>
+  <Svg
+    height={props.setheight}
+    width={props.setwidth}
+    viewBox="0 0 916.57 825.98"
+    {...props}
+  >
     <Path
       fill={props.iconsetcolor}
       stroke={props.iconsetcolor}

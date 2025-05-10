@@ -24,4 +24,7 @@ export const COLORS = {
 
   deleteExitStroke: "#E1B0B1",
   deleteExitFill: "#FEF0F0",
+
+  greenButtonColorOuline: "#B0E1B9",
+  greenButtonColor: "#F1FEF0",
 } as const;

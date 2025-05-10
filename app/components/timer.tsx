@@ -2,6 +2,10 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
 import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
 import { styles } from "@/styles/auth.styles";
+import ResetTimer from "../Icons/ResetTimer";
+import { COLORS } from "@/constants/theme";
+import StopTimer from "../Icons/StopTimer";
+import PlayTimer from "../Icons/PlayTimer";
 
 type TimerProps = {
   time: number;
@@ -19,50 +23,69 @@ export default function Timer(props: TimerProps) {
 
   return (
     <View style={styles.timer}>
-      <CountdownCircleTimer
-        key={timerKey}
-        isPlaying={isPlaying}
-        duration={props.time}
-        colors={[props.color1, props.color2, props.color3, hsl(0, 45, 79)]}
-        colorsTime={[props.time, (props.time / 3) * 2, props.time / 3, 0]}
-        onComplete={() => {
-          setTimerFinished(true);
-          return { shouldRepeat: false };
-        }}
-      >
-        {({ remainingTime }) => (
-          <Text style={styles.textCentered}>
-            {`${Math.floor(remainingTime / 60)}:${String(
-              remainingTime % 60
-            ).padStart(2, "0")}`}
-          </Text>
-        )}
-      </CountdownCircleTimer>
-      <Pressable
-        style={styles.generateButton}
-        onPress={() => {
-          timerFinished
-            ? [setTimerKey(timerKey + 1), setTimerFinished(false)]
-            : setIsPlaying(!isPlaying);
-        }}
-      >
-        <Text style={styles.textCentered}>
-          {isPlaying && !timerFinished ? "Stop Timer" : "Start Timer"}
-        </Text>
-      </Pressable>
-
-      {!isPlaying || timerFinished ? (
+      <View style={styles.timerButtons}>
         <Pressable
-          style={styles.generateButton}
+          style={styles.timerButton}
+          onPress={() => {
+            timerFinished
+              ? [setTimerKey(timerKey + 1), setTimerFinished(false)]
+              : setIsPlaying(!isPlaying);
+          }}
+        >
+          {isPlaying && !timerFinished ? (
+            <StopTimer
+              iconsetcolor={COLORS.fontColor}
+              setheight={20}
+              setwidth={40}
+            ></StopTimer>
+          ) : (
+            <PlayTimer
+              iconsetcolor={COLORS.fontColor}
+              setheight={20}
+              setwidth={40}
+            ></PlayTimer>
+          )}
+        </Pressable>
+      </View>
+
+      <View style={styles.timerMiddle}>
+        <CountdownCircleTimer
+          key={timerKey}
+          isPlaying={isPlaying}
+          duration={props.time}
+          colors={[props.color1, props.color2, props.color3, hsl(0, 45, 79)]}
+          colorsTime={[props.time, (props.time / 3) * 2, props.time / 3, 0]}
+          onComplete={() => {
+            setTimerFinished(true);
+            return { shouldRepeat: false };
+          }}
+        >
+          {({ remainingTime }) => (
+            <Text style={styles.textCentered}>
+              {`${Math.floor(remainingTime / 60)}:${String(
+                remainingTime % 60
+              ).padStart(2, "0")}`}
+            </Text>
+          )}
+        </CountdownCircleTimer>
+      </View>
+
+      <View style={styles.timerButtons}>
+        <Pressable
+          style={styles.timerButton}
           onPress={() => {
             timerFinished
               ? [setTimerKey(timerKey + 1), setTimerFinished(false)]
               : setTimerKey(timerKey + 1);
           }}
         >
-          <Text style={styles.textCentered}>Reset</Text>
+          <ResetTimer
+            iconsetcolor={COLORS.fontColor}
+            setheight={20}
+            setwidth={40}
+          ></ResetTimer>
         </Pressable>
-      ) : undefined}
+      </View>
     </View>
   );
 }

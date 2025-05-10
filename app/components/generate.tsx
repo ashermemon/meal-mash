@@ -19,6 +19,9 @@ import AddIngredients from "./addingredients";
 import AddLeftovers from "./addleftovers";
 import SearchContext from "../contexts/SearchContext";
 import Search from "./search";
+import BackArrow from "../Icons/BackArrow";
+import ForwardArrow from "../Icons/ForwardArrow";
+import { Dimensions } from "react-native";
 
 type GenerateProps = {
   ingredients: string[];
@@ -41,6 +44,9 @@ export default function Generate(props: GenerateProps) {
 
   let recipePrompt = "";
   let stepNum = 0;
+
+  const screenWidth = Dimensions.get("window").width;
+  const screenHeight = Dimensions.get("window").height;
 
   const fetchResponse = async (prompt: string) => {
     setLoading(true);
@@ -143,83 +149,125 @@ export default function Generate(props: GenerateProps) {
   return (
     <>
       <SearchContext.Provider value={setSearchActive}>
-        <Modal
-          style={styles.modalWrap}
-          animationType="slide"
-          transparent={true}
-          visible={searchActive}
-          onRequestClose={() => {
-            setSearchActive(!searchActive);
-          }}
-        >
-          <Search />
-        </Modal>
-        {!generated && (
-          <Text style={styles.textCentered}>
-            {loading
-              ? "Loading..."
-              : "Generate a meal by adding your leftovers and ingredients below!"}
-          </Text>
-        )}
-        <View>
-          {loading && <ActivityIndicator></ActivityIndicator>}
-          {error && <Text style={styles.errorText}>{error}</Text>}
-          {!loading && (
-            <View style={{ alignItems: "center", marginVertical: 10 }}>
-              {parseMarkdownText(responseRecipe)}
+        <View style={{ minHeight: screenHeight * 0.5, width: "100%" }}>
+          <View style={{ paddingHorizontal: 20 }}>
+            <Modal
+              style={styles.modalWrap}
+              animationType="slide"
+              transparent={true}
+              visible={searchActive}
+              onRequestClose={() => {
+                setSearchActive(!searchActive);
+              }}
+            >
+              <Search />
+            </Modal>
+            {!generated && (
+              <Text style={styles.textCentered}>
+                {loading
+                  ? "Loading..."
+                  : "Generate a meal by adding your leftovers and ingredients below!"}
+              </Text>
+            )}
+            <View>
+              {loading && <ActivityIndicator></ActivityIndicator>}
+              {error && <Text style={styles.errorText}>{error}</Text>}
+              {!loading && (
+                <View style={{ alignItems: "center", marginVertical: 10 }}>
+                  {parseMarkdownText(responseRecipe)}
+                </View>
+              )}
             </View>
-          )}
-        </View>
-
-        <AddLeftovers></AddLeftovers>
-        <AddIngredients></AddIngredients>
-
-        <View style={styles.generateButtonContainer}>
+          </View>
           {!loading && !generated && (
-            <Pressable
-              style={styles.generateButton}
-              onPress={() => handleGenerateRecipe(recipePrompt)}
-            >
-              <Text style={styles.textCentered}>Create Meal</Text>
-            </Pressable>
-          )}
-
-          {!loading && generated && currentStep < totalSteps && (
-            <Pressable
-              style={styles.generateButton}
-              onPress={() => setCurrentStep(currentStep + 1)}
-            >
-              <Text style={styles.textCentered}>Next</Text>
-            </Pressable>
-          )}
-
-          {!loading && generated && currentStep > 1 && (
-            <Pressable
-              style={styles.generateButton}
-              onPress={() => setCurrentStep(currentStep - 1)}
-            >
-              <Text style={styles.textCentered}>Previous</Text>
-            </Pressable>
-          )}
-
-          {!loading && generated && (
-            <Pressable
-              style={styles.generateButton}
-              onPress={() => handleGenerateRecipe(recipePrompt)}
-            >
-              <Text style={styles.textCentered}>Regenerate Meal</Text>
-            </Pressable>
-          )}
-
-          {!loading && generated && (
-            <Pressable
-              style={styles.generateButton}
-              onPress={() => saveRecipe(responseRecipe)}
-            >
-              <Text style={styles.textCentered}>Save Meal to Recipes</Text>
-            </Pressable>
+            <>
+              <AddLeftovers></AddLeftovers>
+              <AddIngredients></AddIngredients>
+            </>
           )}
         </View>
+
+        <View style={[styles.arrowButtons, { minHeight: screenHeight * 0.1 }]}>
+          <View style={styles.flexBTN}>
+            {!loading && generated && currentStep > 1 ? (
+              <Pressable
+                style={styles.nextButton}
+                onPress={() => setCurrentStep(currentStep - 1)}
+              >
+                <BackArrow
+                  iconsetcolor={COLORS.fontColor}
+                  setheight={20}
+                  setwidth={40}
+                ></BackArrow>
+              </Pressable>
+            ) : (
+              <View style={{ width: 40 }} />
+            )}
+          </View>
+          <View style={styles.flexMiddle}>
+            <View style={styles.generateButtonContainer}>
+              {!loading && !generated && (
+                <Pressable
+                  style={styles.generateButton}
+                  onPress={() => handleGenerateRecipe(recipePrompt)}
+                >
+                  <Text style={styles.textCentered} adjustsFontSizeToFit={true}>
+                    Create Meal
+                  </Text>
+                </Pressable>
+              )}
+
+              {!loading && generated && (
+                <Pressable
+                  style={styles.generateButton}
+                  onPress={() => handleGenerateRecipe(recipePrompt)}
+                >
+                  <View>
+                    <Text
+                      style={styles.textCentered}
+                      adjustsFontSizeToFit={true}
+                    >
+                      Regenerate
+                    </Text>
+                  </View>
+                </Pressable>
+              )}
+
+              {!loading && generated && (
+                <Pressable
+                  style={styles.generateButton}
+                  onPress={() => saveRecipe(responseRecipe)}
+                >
+                  <View>
+                    <Text
+                      style={styles.textCentered}
+                      adjustsFontSizeToFit={true}
+                    >
+                      Save Meal
+                    </Text>
+                  </View>
+                </Pressable>
+              )}
+            </View>
+          </View>
+          <View style={styles.flexBTN}>
+            {!loading && generated && currentStep < totalSteps ? (
+              <Pressable
+                style={styles.nextButton}
+                onPress={() => setCurrentStep(currentStep + 1)}
+              >
+                <ForwardArrow
+                  iconsetcolor={COLORS.fontColor}
+                  setheight={20}
+                  setwidth={40}
+                ></ForwardArrow>
+              </Pressable>
+            ) : (
+              <View style={{ width: 40 }} />
+            )}
+          </View>
+        </View>
+        <View style={styles.spacer}></View>
       </SearchContext.Provider>
     </>
   );
