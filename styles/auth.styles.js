@@ -1,5 +1,5 @@
 import { COLORS } from "@/constants/theme";
-import { Platform, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   container: {
@@ -32,7 +32,11 @@ export const styles = StyleSheet.create({
     fontFamily: "Nunito-Regular",
     textAlign: "left",
     color: COLORS.fontColor,
-    fontWeight: 500,
+  },
+  textLeftSemiBold: {
+    fontFamily: "Nunito-SemiBold",
+    textAlign: "left",
+    color: COLORS.fontColor,
   },
   headerText: {
     fontFamily: "Nunito-Bold",
@@ -83,6 +87,12 @@ export const styles = StyleSheet.create({
     alignSelf: "center",
     flexDirection: "row",
   },
+  ingredientPanel: {
+    alignItems: "center",
+    justifyContent: "center",
+    alignSelf: "center",
+    flexDirection: "row",
+  },
 
   centeredBox: {
     justifyContent: "center",
@@ -123,17 +133,41 @@ export const styles = StyleSheet.create({
     color: COLORS.fontColor,
   },
   searchContainer: {
+    alignSelf: "center",
+    paddingBottom: 7,
+    flexDirection: "row",
+    borderBottomWidth: 2,
+    borderColor: COLORS.searchGreyBorder,
+  },
+  searchWrap: {
     borderRadius: 30,
+    position: "absolute",
+    top: "30%",
+    alignSelf: "center",
+    alignItems: "center",
+    padding: 5,
+    width: 300,
+    zIndex: 100,
+    height: 300,
     backgroundColor: COLORS.searchGreyBG,
     borderColor: COLORS.searchGreyBorder,
     borderWidth: 3,
-    position: "absolute",
-    bottom: "50%",
-    alignSelf: "center",
-    zIndex: 100,
+  },
+  searchBelowContent: {
+    marginTop: 10,
+    marginBottom: 10,
+    paddingHorizontal: 20,
+    alignItems: "center",
+    width: "100%",
+  },
+  ingredientResult: {
+    margin: 5,
+
+    backgroundColor: COLORS.searchGreyPicker,
+    width: "100%",
     padding: 5,
-    width: 300,
-    flexDirection: "row",
+
+    borderRadius: 50,
   },
   exitSearch: {
     backgroundColor: COLORS.deleteExitFill,
@@ -216,5 +250,64 @@ export const styles = StyleSheet.create({
   },
   spacer: {
     height: 20,
+  },
+  searchText: {
+    fontFamily: "Nunito-Bold",
+    textAlign: "left",
+    zIndex: 500,
+    color: COLORS.fontColor,
+  },
+  searchBar: {
+    backgroundColor: COLORS.searchGreyBorder,
+    paddingHorizontal: 10,
+    minHeight: 40,
+    justifyContent: "center",
+    borderRadius: 50,
+  },
+  ingredientEmoji: {
+    width: 30,
+    height: 30,
+  },
+  ingredientFlex: {
+    flex: 1,
+    padding: 10,
+    alignItems: "flex-start",
+    justifyContent: "center",
+  },
+  ingredientFlexEmoji: {
+    flex: 1,
+
+    alignItems: "flex-end",
+    justifyContent: "center",
+  },
+  emojiWrap: {
+    borderWidth: 3,
+    padding: 10,
+    borderRadius: 100,
+  },
+  emojiWrapCard: {
+    borderWidth: 3,
+    padding: 10,
+    borderRadius: 100,
+    marginLeft: 15,
+    marginRight: 5,
+  },
+  ingredientFlexCard: {
+    flex: 1,
+    padding: 10,
+    alignItems: "flex-start",
+    justifyContent: "center",
+  },
+  ingredientFlexEmojiCard: {
+    alignItems: "flex-start",
+    justifyContent: "center",
+  },
+  addContainerIngredient: {
+    alignItems: "center",
+
+    paddingVertical: 15,
+    width: "100%",
+    margin: 0,
+    borderTopWidth: 3,
   },
 });

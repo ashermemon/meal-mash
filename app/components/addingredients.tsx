@@ -3,8 +3,14 @@ import React, { useState } from "react";
 import NewCard from "./newcard";
 import { styles } from "@/styles/auth.styles";
 import { COLORS } from "@/constants/theme";
+import IngredientCardAdded from "./ingredientcardadded";
 
-export default function AddIngredients() {
+interface IngredientProps {
+  ingredients: string[];
+  onAddIngredient: (ingredient: string) => void;
+}
+
+export default function AddIngredients(props: IngredientProps) {
   return (
     <View
       style={[
@@ -14,6 +20,15 @@ export default function AddIngredients() {
     >
       <Text style={styles.addContainerHeader}>Ingredients:</Text>
       <NewCard bColor={COLORS.ingredientContainerOutline} />
+
+      {props.ingredients.map((ingredient, index) => (
+        <IngredientCardAdded
+          ingredientName={ingredient}
+          cardBColor={COLORS.greenButtonColor}
+          bHue={30}
+          key={index}
+        ></IngredientCardAdded>
+      ))}
     </View>
   );
 }

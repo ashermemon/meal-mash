@@ -11,6 +11,7 @@ export const COLORS = {
   blueHeader: "#F0F9FE",
   blueHeaderBorder: "#ACD3FF",
   fontColor: "#39393A",
+  searchPlaceholder: "#898989",
   addGrey: "#EFEFEF",
   addButtonColor: "#E0E0E0",
   addButtonStroke: "#D6D6D6",
@@ -21,6 +22,7 @@ export const COLORS = {
 
   searchGreyBG: "#E4E4E4",
   searchGreyBorder: "#C5C5C5",
+  searchGreyPicker: "#FAFAFA",
 
   deleteExitStroke: "#E1B0B1",
   deleteExitFill: "#FEF0F0",
