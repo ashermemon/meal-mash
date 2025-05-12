@@ -31,7 +31,7 @@ export default function Index() {
           style={styles.generatorContainer}
         >
           <View style={styles.container}>
-            <Generate leftovers={["mac and cheese"]}></Generate>
+            <Generate></Generate>
           </View>
         </ScrollView>
       </ImageBackground>

@@ -6,19 +6,18 @@ import {
   TextInput,
   View,
 } from "react-native";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { styles } from "@/styles/auth.styles";
 import SearchContext from "../contexts/SearchContext";
 import { COLORS } from "@/constants/theme";
 import IngredientCard from "./ingredientcard";
+import IngredientsContext from "../contexts/IngredientsContext";
+import LeftoversEnabled from "../contexts/LeftoversOn";
 
-interface SearchProps {
-  onAddIngredient: React.Dispatch<React.SetStateAction<string[]>>;
-  ingredients: string[];
-}
-
-export default function Search(props: SearchProps) {
+export default function Search() {
   const setSearchActive = useContext(SearchContext);
+  const [leftoversEnabled, setLeftoversEnabled] = useContext(LeftoversEnabled);
+
   return (
     <View style={styles.searchWrap}>
       <View style={styles.searchContainer}>
@@ -26,7 +25,14 @@ export default function Search(props: SearchProps) {
           <Pressable
             style={styles.exitSearch}
             onPress={() => setSearchActive(false)}
-          />
+          >
+            <Text
+              style={[styles.textCentered, { fontFamily: "Nunito-ExtraBold" }]}
+              adjustsFontSizeToFit={true}
+            >
+              X
+            </Text>
+          </Pressable>
         </View>
         <View style={styles.searchContentContainer}>
           <View style={styles.searchBar}>
@@ -40,91 +46,30 @@ export default function Search(props: SearchProps) {
       </View>
       <ScrollView style={{ width: "100%", height: "100%" }}>
         <View style={styles.searchBelowContent}>
-          <IngredientCard
-            ingredients={props.ingredients}
-            onAddIngredient={props.onAddIngredient}
-            ingredientName="Avocado"
-          ></IngredientCard>
-          <IngredientCard
-            ingredients={props.ingredients}
-            onAddIngredient={props.onAddIngredient}
-            ingredientName="Banana"
-          ></IngredientCard>
-          <IngredientCard
-            ingredients={props.ingredients}
-            onAddIngredient={props.onAddIngredient}
-            ingredientName="Bread"
-          ></IngredientCard>
-          <IngredientCard
-            ingredients={props.ingredients}
-            onAddIngredient={props.onAddIngredient}
-            ingredientName="Egg"
-          ></IngredientCard>
-          <IngredientCard
-            ingredients={props.ingredients}
-            onAddIngredient={props.onAddIngredient}
-            ingredientName="Eggplant"
-          ></IngredientCard>
-          <IngredientCard
-            ingredients={props.ingredients}
-            onAddIngredient={props.onAddIngredient}
-            ingredientName="Cake"
-          ></IngredientCard>
-          <IngredientCard
-            ingredients={props.ingredients}
-            onAddIngredient={props.onAddIngredient}
-            ingredientName="Chicken"
-          ></IngredientCard>
-          <IngredientCard
-            ingredients={props.ingredients}
-            onAddIngredient={props.onAddIngredient}
-            ingredientName="Dumpling"
-          ></IngredientCard>
-          <IngredientCard
-            ingredients={props.ingredients}
-            onAddIngredient={props.onAddIngredient}
-            ingredientName="Fries"
-          ></IngredientCard>
-          <IngredientCard
-            ingredients={props.ingredients}
-            onAddIngredient={props.onAddIngredient}
-            ingredientName="Grapes"
-          ></IngredientCard>
-          <IngredientCard
-            ingredients={props.ingredients}
-            onAddIngredient={props.onAddIngredient}
-            ingredientName="Meat"
-          ></IngredientCard>
-          <IngredientCard
-            ingredients={props.ingredients}
-            onAddIngredient={props.onAddIngredient}
-            ingredientName="Pizza"
-          ></IngredientCard>
-          <IngredientCard
-            ingredients={props.ingredients}
-            onAddIngredient={props.onAddIngredient}
-            ingredientName="Rice"
-          ></IngredientCard>
-          <IngredientCard
-            ingredients={props.ingredients}
-            onAddIngredient={props.onAddIngredient}
-            ingredientName="Tangerine"
-          ></IngredientCard>
-          <IngredientCard
-            ingredients={props.ingredients}
-            onAddIngredient={props.onAddIngredient}
-            ingredientName="Watermelon"
-          ></IngredientCard>
-          <IngredientCard
-            ingredients={props.ingredients}
-            onAddIngredient={props.onAddIngredient}
-            ingredientName="Yam"
-          ></IngredientCard>
-          <IngredientCard
-            ingredients={props.ingredients}
-            onAddIngredient={props.onAddIngredient}
-            ingredientName="Spaghetti"
-          ></IngredientCard>
+          {leftoversEnabled ? (
+            <>
+              <IngredientCard ingredientName="Spaghetti"></IngredientCard>
+              <IngredientCard ingredientName="Dumpling"></IngredientCard>
+              <IngredientCard ingredientName="Cake"></IngredientCard>
+              <IngredientCard ingredientName="Chicken"></IngredientCard>
+              <IngredientCard ingredientName="Pizza"></IngredientCard>
+              <IngredientCard ingredientName="Fries"></IngredientCard>
+              <IngredientCard ingredientName="Rice"></IngredientCard>
+            </>
+          ) : (
+            <>
+              <IngredientCard ingredientName="Avocado"></IngredientCard>
+              <IngredientCard ingredientName="Banana"></IngredientCard>
+              <IngredientCard ingredientName="Bread"></IngredientCard>
+              <IngredientCard ingredientName="Egg"></IngredientCard>
+              <IngredientCard ingredientName="Eggplant"></IngredientCard>
+              <IngredientCard ingredientName="Grapes"></IngredientCard>
+              <IngredientCard ingredientName="Meat"></IngredientCard>
+              <IngredientCard ingredientName="Tangerine"></IngredientCard>
+              <IngredientCard ingredientName="Watermelon"></IngredientCard>
+              <IngredientCard ingredientName="Yam"></IngredientCard>
+            </>
+          )}
         </View>
       </ScrollView>
     </View>

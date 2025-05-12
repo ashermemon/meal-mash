@@ -1,10 +1,23 @@
 import { StyleSheet, Text, View } from "react-native";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import NewCard from "./newcard";
 import { styles } from "@/styles/auth.styles";
 import { COLORS } from "@/constants/theme";
+import LeftoversContext from "../contexts/LeftoversContext";
+import IngredientCardAdded from "./ingredientcardadded";
 
 export default function AddLeftovers() {
+  const [leftovers, setLeftovers] = useContext(LeftoversContext);
+  const [addButtonActive, setAddButtonActive] = useState(true);
+
+  useEffect(() => {
+    if (leftovers.length > 4) {
+      setAddButtonActive(false);
+    } else {
+      setAddButtonActive(true);
+    }
+  }, [leftovers]);
+
   return (
     <View
       style={[
@@ -13,7 +26,18 @@ export default function AddLeftovers() {
       ]}
     >
       <Text style={styles.addContainerHeader}>Leftovers:</Text>
-      <NewCard bColor={COLORS.leftoverContainerOutline} />
+
+      {leftovers.map((leftover, index) => (
+        <IngredientCardAdded
+          ingredientName={leftover}
+          cardBColor={COLORS.blueHeader}
+          borderColor={COLORS.blueHeaderBorder}
+          key={index}
+        ></IngredientCardAdded>
+      ))}
+      {addButtonActive && (
+        <NewCard leftover={true} bColor={COLORS.leftoverContainerOutline} />
+      )}
     </View>
   );
 }

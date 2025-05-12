@@ -141,20 +141,21 @@ export const styles = StyleSheet.create({
   },
   searchWrap: {
     borderRadius: 30,
-    position: "absolute",
-    top: "30%",
+    justifyContent: "center",
     alignSelf: "center",
     alignItems: "center",
-    padding: 5,
+    padding: 10,
+    paddingBottom: 5,
     width: 300,
     zIndex: 100,
-    height: 300,
+    height: 320,
     backgroundColor: COLORS.searchGreyBG,
     borderColor: COLORS.searchGreyBorder,
     borderWidth: 3,
+    marginBottom: 100,
   },
   searchBelowContent: {
-    marginTop: 10,
+    marginTop: 5,
     marginBottom: 10,
     paddingHorizontal: 20,
     alignItems: "center",
@@ -177,7 +178,8 @@ export const styles = StyleSheet.create({
     borderWidth: 3,
     borderColor: COLORS.deleteExitStroke,
     position: "relative",
-
+    justifyContent: "center",
+    alignItems: "center",
     top: 0,
     left: 0,
   },
@@ -191,7 +193,7 @@ export const styles = StyleSheet.create({
   },
   modalWrap: {
     flex: 1,
-    width: "100%",
+
     alignItems: "center",
   },
   nextButton: {

@@ -8,18 +8,22 @@ import emojiImages from "./emoji-images";
 type CardProps = {
   cardBColor: string;
   ingredientName: string;
-  bHue: number;
+
+  borderColor: string;
 };
 
 export default function IngredientCardAdded(props: CardProps) {
   var hsl = require("hsl-to-hex");
-  let backgroundColor = hsl(props.bHue, 88, 97);
-  let strokeColor = hsl(props.bHue, 45, 79);
+
+  const [hue] = useState(() => Math.random() * 360);
+  const backgroundColor = hsl(hue, 88, 97);
+  const strokeColor = hsl(hue, 45, 79);
+
   return (
     <View
       style={[
         {
-          borderColor: COLORS.greenButtonColorOuline,
+          borderColor: props.borderColor,
           backgroundColor: props.cardBColor,
         },
         styles.addContainerIngredient,

@@ -4,26 +4,37 @@ import { styles } from "@/styles/auth.styles";
 import AddIngredients from "./addingredients";
 import emojiImages from "./emoji-images";
 import SearchContext from "../contexts/SearchContext";
+import IngredientsContext from "../contexts/IngredientsContext";
+import LeftoversEnabled from "../contexts/LeftoversOn";
+import LeftoversContext from "../contexts/LeftoversContext";
 
 interface IngredientProps {
   ingredientName: string;
-  ingredients: string[];
-  onAddIngredient: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 export default function IngredientCard(props: IngredientProps) {
+  const [ingredients, setIngredients] = useContext(IngredientsContext);
+  const [leftovers, setLeftovers] = useContext(LeftoversContext);
+  const [leftoversEnabled, setLeftoversEnabled] = useContext(LeftoversEnabled);
+
   var hsl = require("hsl-to-hex");
-  let hue = Math.random() * 360;
-  let backgroundColor = hsl(hue, 88, 97);
-  let strokeColor = hsl(hue, 45, 79);
+  const [hue] = useState(() => Math.random() * 360);
+  const backgroundColor = hsl(hue, 88, 97);
+  const strokeColor = hsl(hue, 45, 79);
   const setSearchActive = useContext(SearchContext);
-  return (
+
+  return ingredients.includes(props.ingredientName) ||
+    leftovers.includes(props.ingredientName) ? (
+    <></>
+  ) : (
     <View style={{ width: "100%" }}>
       <Pressable
         style={styles.ingredientResult}
         onPress={() => [
-          props.onAddIngredient((prev) => [...prev, props.ingredientName]),
           setSearchActive(false),
+          leftoversEnabled
+            ? setLeftovers((prev) => [...prev, props.ingredientName])
+            : setIngredients((prev) => [...prev, props.ingredientName]),
         ]}
       >
         <View style={styles.ingredientPanel}>
