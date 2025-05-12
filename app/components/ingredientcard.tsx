@@ -18,10 +18,12 @@ export default function IngredientCard(props: IngredientProps) {
   const [leftoversEnabled, setLeftoversEnabled] = useContext(LeftoversEnabled);
 
   var hsl = require("hsl-to-hex");
-  const [hue] = useState(() => Math.random() * 360);
+  const [hue] = useState(() => Math.random() * 359);
   const backgroundColor = hsl(hue, 88, 97);
   const strokeColor = hsl(hue, 45, 79);
   const setSearchActive = useContext(SearchContext);
+  const ingredientImage =
+    emojiImages[props.ingredientName] || emojiImages.Default;
 
   return ingredients.includes(props.ingredientName) ||
     leftovers.includes(props.ingredientName) ? (
@@ -52,7 +54,7 @@ export default function IngredientCard(props: IngredientProps) {
             >
               <Image
                 style={styles.ingredientEmoji}
-                source={emojiImages[props.ingredientName]}
+                source={ingredientImage}
               ></Image>
             </View>
           </View>

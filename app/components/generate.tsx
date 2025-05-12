@@ -38,7 +38,7 @@ export default function Generate() {
   const [currentStep, setCurrentStep] = useState(1);
   const [totalSteps, setTotalSteps] = useState(0);
 
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<Error | null>(null);
 
   const [ingredients, setIngredients] = useState<string[]>([]);
   const [leftovers, setLeftovers] = useState<string[]>([]);
@@ -214,7 +214,12 @@ export default function Generate() {
                   )}
                   <View>
                     {loading && <ActivityIndicator></ActivityIndicator>}
-                    {error && <Text style={styles.errorText}>{error}</Text>}
+                    {error && (
+                      <Text style={styles.errorText}>
+                        {error.message || error.toString()}
+                      </Text>
+                    )}
+
                     {!loading && generated && (
                       <View
                         style={{ alignItems: "center", marginVertical: 10 }}

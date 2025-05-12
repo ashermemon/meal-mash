@@ -38,6 +38,12 @@ export const styles = StyleSheet.create({
     textAlign: "left",
     color: COLORS.fontColor,
   },
+  textLeftBold: {
+    fontFamily: "Nunito-Bold",
+    textAlign: "left",
+    color: COLORS.fontColor,
+    fontSize: 17,
+  },
   headerText: {
     fontFamily: "Nunito-Bold",
     textAlign: "center",
@@ -152,7 +158,7 @@ export const styles = StyleSheet.create({
     backgroundColor: COLORS.searchGreyBG,
     borderColor: COLORS.searchGreyBorder,
     borderWidth: 3,
-    marginBottom: 100,
+    marginBottom: 50,
   },
   searchBelowContent: {
     marginTop: 5,

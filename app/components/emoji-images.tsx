@@ -17,5 +17,6 @@ const emojiImages: { [key: string]: any } = {
   Tangerine: require(`../../assets/exampleemojis/tangerine.png`),
   Watermelon: require(`../../assets/exampleemojis/watermelon.png`),
   Yam: require(`../../assets/exampleemojis/yam.png`),
+  Default: require(`../../assets/exampleemojis/placeholder.png`),
 };
 export default emojiImages;

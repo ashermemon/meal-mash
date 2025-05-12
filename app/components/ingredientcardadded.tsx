@@ -4,6 +4,7 @@ import { Pressable, View, Text, Image } from "react-native";
 import { COLORS } from "@/constants/theme";
 import { useContext, useState } from "react";
 import emojiImages from "./emoji-images";
+import FastImage from "@d11/react-native-fast-image";
 
 type CardProps = {
   cardBColor: string;
@@ -14,10 +15,12 @@ type CardProps = {
 
 export default function IngredientCardAdded(props: CardProps) {
   var hsl = require("hsl-to-hex");
-
-  const [hue] = useState(() => Math.random() * 360);
+  const [hue] = useState(() => Math.random() * 359);
   const backgroundColor = hsl(hue, 88, 97);
   const strokeColor = hsl(hue, 45, 79);
+
+  const ingredientImage =
+    emojiImages[props.ingredientName] || emojiImages.Default;
 
   return (
     <View
@@ -39,12 +42,12 @@ export default function IngredientCardAdded(props: CardProps) {
           >
             <Image
               style={styles.ingredientEmoji}
-              source={emojiImages[props.ingredientName]}
+              source={ingredientImage}
             ></Image>
           </View>
         </View>
         <View style={styles.ingredientFlexCard}>
-          <Text style={styles.textLeftSemiBold}>{props.ingredientName}</Text>
+          <Text style={styles.textLeftBold}>{props.ingredientName}</Text>
         </View>
       </View>
     </View>

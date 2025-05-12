@@ -1,4 +1,5 @@
 import {
+  FlatList,
   Modal,
   Pressable,
   ScrollView,
@@ -13,7 +14,8 @@ import { COLORS } from "@/constants/theme";
 import IngredientCard from "./ingredientcard";
 import IngredientsContext from "../contexts/IngredientsContext";
 import LeftoversEnabled from "../contexts/LeftoversOn";
-
+import ingredientsDB from "../ingredientDatabase/ingredientsDB.json";
+import leftoversDB from "../ingredientDatabase/leftoversDB.json";
 export default function Search() {
   const setSearchActive = useContext(SearchContext);
   const [leftoversEnabled, setLeftoversEnabled] = useContext(LeftoversEnabled);
@@ -44,34 +46,30 @@ export default function Search() {
           </View>
         </View>
       </View>
-      <ScrollView style={{ width: "100%", height: "100%" }}>
-        <View style={styles.searchBelowContent}>
-          {leftoversEnabled ? (
-            <>
-              <IngredientCard ingredientName="Spaghetti"></IngredientCard>
-              <IngredientCard ingredientName="Dumpling"></IngredientCard>
-              <IngredientCard ingredientName="Cake"></IngredientCard>
-              <IngredientCard ingredientName="Chicken"></IngredientCard>
-              <IngredientCard ingredientName="Pizza"></IngredientCard>
-              <IngredientCard ingredientName="Fries"></IngredientCard>
-              <IngredientCard ingredientName="Rice"></IngredientCard>
-            </>
-          ) : (
-            <>
-              <IngredientCard ingredientName="Avocado"></IngredientCard>
-              <IngredientCard ingredientName="Banana"></IngredientCard>
-              <IngredientCard ingredientName="Bread"></IngredientCard>
-              <IngredientCard ingredientName="Egg"></IngredientCard>
-              <IngredientCard ingredientName="Eggplant"></IngredientCard>
-              <IngredientCard ingredientName="Grapes"></IngredientCard>
-              <IngredientCard ingredientName="Meat"></IngredientCard>
-              <IngredientCard ingredientName="Tangerine"></IngredientCard>
-              <IngredientCard ingredientName="Watermelon"></IngredientCard>
-              <IngredientCard ingredientName="Yam"></IngredientCard>
-            </>
+
+      {leftoversEnabled ? (
+        <FlatList
+          style={{ overflow: "hidden" }}
+          data={leftoversDB}
+          keyExtractor={(item) => item.id.toString()}
+          initialNumToRender={10}
+          renderItem={({ item }) => (
+            <IngredientCard ingredientName={item.name} />
           )}
-        </View>
-      </ScrollView>
+          contentContainerStyle={styles.searchBelowContent}
+        />
+      ) : (
+        <FlatList
+          style={{ overflow: "hidden" }}
+          data={ingredientsDB}
+          keyExtractor={(item) => item.id.toString()}
+          initialNumToRender={10}
+          renderItem={({ item }) => (
+            <IngredientCard ingredientName={item.name} />
+          )}
+          contentContainerStyle={styles.searchBelowContent}
+        />
+      )}
     </View>
   );
 }
