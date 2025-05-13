@@ -1,10 +1,9 @@
 import { styles } from "@/styles/auth.styles";
-import { Pressable, View, Text, Image } from "react-native";
-
+import { Pressable, View, Text } from "react-native";
+import { Image } from "expo-image";
 import { COLORS } from "@/constants/theme";
 import { useContext, useState } from "react";
 import emojiImages from "./emoji-images";
-import FastImage from "@d11/react-native-fast-image";
 
 type CardProps = {
   cardBColor: string;

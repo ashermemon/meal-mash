@@ -160,13 +160,7 @@ export const styles = StyleSheet.create({
     borderWidth: 3,
     marginBottom: 50,
   },
-  searchBelowContent: {
-    marginTop: 5,
-    marginBottom: 10,
-    paddingHorizontal: 20,
-    alignItems: "center",
-    width: "100%",
-  },
+
   ingredientResult: {
     margin: 5,
 

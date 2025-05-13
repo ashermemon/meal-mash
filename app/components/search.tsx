@@ -7,7 +7,7 @@ import {
   TextInput,
   View,
 } from "react-native";
-import React, { useContext, useState } from "react";
+import React, { useContext, useMemo, useState } from "react";
 import { styles } from "@/styles/auth.styles";
 import SearchContext from "../contexts/SearchContext";
 import { COLORS } from "@/constants/theme";
@@ -16,10 +16,15 @@ import IngredientsContext from "../contexts/IngredientsContext";
 import LeftoversEnabled from "../contexts/LeftoversOn";
 import ingredientsDB from "../ingredientDatabase/ingredientsDB.json";
 import leftoversDB from "../ingredientDatabase/leftoversDB.json";
+import { FlashList } from "@shopify/flash-list";
+
 export default function Search() {
   const setSearchActive = useContext(SearchContext);
   const [leftoversEnabled, setLeftoversEnabled] = useContext(LeftoversEnabled);
-
+  const data = useMemo(
+    () => (leftoversEnabled ? leftoversDB : ingredientsDB),
+    [leftoversEnabled]
+  );
   return (
     <View style={styles.searchWrap}>
       <View style={styles.searchContainer}>
@@ -40,36 +45,29 @@ export default function Search() {
           <View style={styles.searchBar}>
             <TextInput
               style={styles.searchText}
-              placeholder="Search for an ingredient..."
+              placeholder={`Search for ${
+                leftoversEnabled ? `a leftover` : `an ingredient`
+              }...`}
               placeholderTextColor={COLORS.searchPlaceholder}
             ></TextInput>
           </View>
         </View>
       </View>
-
-      {leftoversEnabled ? (
-        <FlatList
-          style={{ overflow: "hidden" }}
-          data={leftoversDB}
+      <View style={{ flex: 1, width: "100%" }}>
+        <FlashList
+          data={data}
           keyExtractor={(item) => item.id.toString()}
-          initialNumToRender={10}
+          estimatedItemSize={500}
           renderItem={({ item }) => (
             <IngredientCard ingredientName={item.name} />
           )}
-          contentContainerStyle={styles.searchBelowContent}
+          contentContainerStyle={{
+            paddingTop: 5,
+            paddingBottom: 10,
+            paddingHorizontal: 20,
+          }}
         />
-      ) : (
-        <FlatList
-          style={{ overflow: "hidden" }}
-          data={ingredientsDB}
-          keyExtractor={(item) => item.id.toString()}
-          initialNumToRender={10}
-          renderItem={({ item }) => (
-            <IngredientCard ingredientName={item.name} />
-          )}
-          contentContainerStyle={styles.searchBelowContent}
-        />
-      )}
+      </View>
     </View>
   );
 }

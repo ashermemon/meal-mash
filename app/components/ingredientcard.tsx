@@ -1,4 +1,5 @@
-import { Image, Pressable, Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
+import { Image } from "expo-image";
 import React, { useContext, useState } from "react";
 import { styles } from "@/styles/auth.styles";
 import AddIngredients from "./addingredients";

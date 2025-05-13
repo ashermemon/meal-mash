@@ -175,31 +175,31 @@ export default function Generate() {
                     alignItems: "center",
                   }}
                 >
-                  <Modal
-                    style={[
-                      styles.modalWrap,
-                      {
-                        flex: 1,
+                  <View>
+                    <Modal
+                      isVisible={searchActive}
+                      useNativeDriver={true}
+                      animationIn="slideInUp"
+                      animationOut="slideOutDown"
+                      backdropOpacity={0.2}
+                      onBackdropPress={() => setSearchActive(false)}
+                      onBackButtonPress={() => setSearchActive(false)}
+                      animationInTiming={600}
+                      animationOutTiming={600}
+                      backdropTransitionOutTiming={1}
+                      backdropTransitionInTiming={600}
+                      style={{
+                        margin: 0,
                         justifyContent: "center",
                         alignItems: "center",
-                        alignSelf: "center",
-                      },
-                    ]}
-                    animationIn="slideInUp"
-                    animationOut="slideOutDown"
-                    animationInTiming={600}
-                    animationOutTiming={600}
-                    backdropTransitionOutTiming={1}
-                    backdropTransitionInTiming={600}
-                    isVisible={searchActive}
-                    backdropOpacity={0.2}
-                    onBackdropPress={() => setSearchActive(false)}
-                    onBackButtonPress={() => setSearchActive(false)}
-                    onModalHide={() => setSearchActive(false)}
-                    onModalShow={() => setSearchActive(true)}
-                  >
-                    <Search />
-                  </Modal>
+                      }}
+                    >
+                      <View>
+                        <Search />
+                      </View>
+                    </Modal>
+                  </View>
+
                   {loading ? (
                     <Text style={[styles.textCentered, { marginBottom: 25 }]}>
                       Loading...
@@ -260,11 +260,27 @@ export default function Generate() {
                   <View style={styles.generateButtonContainer}>
                     {!loading && !generated && (
                       <Pressable
-                        style={styles.generateButton}
-                        onPress={() => handleGenerateRecipe(recipePrompt)}
+                        style={[
+                          styles.generateButton,
+                          {
+                            backgroundColor:
+                              leftovers.length > 0
+                                ? COLORS.blueHeader
+                                : COLORS.searchGreyBG,
+                            borderColor:
+                              leftovers.length > 0
+                                ? COLORS.blueHeaderBorder
+                                : COLORS.searchGreyBorder,
+                          },
+                        ]}
+                        onPress={
+                          leftovers.length > 0
+                            ? () => handleGenerateRecipe(recipePrompt)
+                            : () => alert("Add a leftover to generate meal!")
+                        }
                       >
                         <Text
-                          style={styles.textCentered}
+                          style={[styles.textCentered]}
                           adjustsFontSizeToFit={true}
                         >
                           Create Meal
