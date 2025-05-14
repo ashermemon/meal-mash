@@ -29,4 +29,7 @@ export const COLORS = {
 
   greenButtonColorOuline: "#B0E1B9",
   greenButtonColor: "#F1FEF0",
+
+  blueLink: "#496DDB",
+  greenLink: "#306B34",
 } as const;

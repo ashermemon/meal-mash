@@ -264,19 +264,22 @@ export default function Generate() {
                           styles.generateButton,
                           {
                             backgroundColor:
-                              leftovers.length > 0
+                              leftovers.length > 0 || ingredients.length > 0
                                 ? COLORS.blueHeader
                                 : COLORS.searchGreyBG,
                             borderColor:
-                              leftovers.length > 0
+                              leftovers.length > 0 || ingredients.length > 0
                                 ? COLORS.blueHeaderBorder
                                 : COLORS.searchGreyBorder,
                           },
                         ]}
                         onPress={
-                          leftovers.length > 0
+                          leftovers.length > 0 || ingredients.length > 0
                             ? () => handleGenerateRecipe(recipePrompt)
-                            : () => alert("Add a leftover to generate meal!")
+                            : () =>
+                                alert(
+                                  "Add a leftover or ingredient to generate meal!"
+                                )
                         }
                       >
                         <Text

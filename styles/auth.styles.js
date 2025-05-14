@@ -28,6 +28,18 @@ export const styles = StyleSheet.create({
     color: COLORS.fontColor,
     fontWeight: 500,
   },
+  linkText: {
+    fontFamily: "Nunito-SemiBold",
+    textAlign: "center",
+    justifyContent: "center",
+    color: COLORS.blueLink,
+  },
+  linkTextG: {
+    fontFamily: "Nunito-SemiBold",
+    textAlign: "center",
+    justifyContent: "center",
+    color: COLORS.greenLink,
+  },
   textLeft: {
     fontFamily: "Nunito-Regular",
     textAlign: "left",

@@ -7,6 +7,7 @@ import MobileHeader from "../components/mobileheader";
 import HomeFilled from "../Icons/HomeFilled";
 import { COLORS } from "@/constants/theme";
 import NewCard from "../components/newcard";
+import { useState } from "react";
 
 export default function Index() {
   const image =
@@ -14,6 +15,7 @@ export default function Index() {
       ? require("../../assets/images/AppBackgroundDesktop.png")
       : require("../../assets/images/AppBackground.png");
 
+  const [genEnabled, setGenEnabled] = useState(true);
   return (
     <>
       <ImageBackground source={image} style={styles.image} resizeMode="cover">
@@ -31,7 +33,7 @@ export default function Index() {
           style={styles.generatorContainer}
         >
           <View style={styles.container}>
-            <Generate></Generate>
+            {genEnabled ? <Generate></Generate> : <></>}
           </View>
         </ScrollView>
       </ImageBackground>
