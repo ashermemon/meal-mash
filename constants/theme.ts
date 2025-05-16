@@ -32,4 +32,13 @@ export const COLORS = {
 
   blueLink: "#496DDB",
   greenLink: "#306B34",
+
+  ncBG: "#FAFAFA",
+
+  deleteBorder: "#E1B0B1",
+  deleteFill: "#FEF0F0",
+  saveBorder: "#ACD3FF",
+  saveFill: "#F0F9FE",
+  genBorder: "#CBAFDF",
+  genFill: "#F6E3FF",
 } as const;

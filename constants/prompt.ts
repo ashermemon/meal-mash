@@ -21,11 +21,14 @@ const Prompt = (props: PromptProps) => {
         If you need to use a TIMER IN A STEP, use THIS FORMAT: "[timer length in minutes] minutes" and at the end of the step, simply put this after the period: {minutes}. ALWAYS PUT IT AT THE END OF THE STEP, ON A NEW LINE AFTER ALL OTHER WORDS, YOU MUST DO THIS!
         Don't approximate. Be exact and put just the number inside the curly brackets. For example, "Put the rice in the boiling water for 5 minutes, then remove. 
         {5}". 
+
+        
         ALWAYS use a timer with greater than 0 minutes in it and always use whole numbers. ONLY USE A TIMER and USE CURLY BRACKETS IF IT IS NECCESSARY
       
         You must bold the recipe name and each step using "**" before and after the desired bold text.
       
         Use "«" at the beginning of each step/section and "»" at the end of the step/section as shown in the structure
+
       
         HERE IS THE STRUCTURE:
       
@@ -38,10 +41,12 @@ const Prompt = (props: PromptProps) => {
       
       
       Nutrition Facts:
-      Calories: [calories]
-      Protein: [protein]
-      Fat: [fat]
-      Carbs: [carbs]
+
+      Protein: ↾[protein]↿g
+      Fat: ⇨[fat]⇦g
+      Carbs: ⇸[carbs]⇷g
+
+       **Nutrition Chart:**
       »
       
       

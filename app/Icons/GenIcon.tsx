@@ -7,7 +7,12 @@ type IconProps = {
 };
 
 const GenIcon = (props: IconProps) => (
-  <Svg height={props.setheight} viewBox="0 0 659.61 824.98" {...props}>
+  <Svg
+    height={props.setheight}
+    width={props.setheight}
+    viewBox="0 0 659.61 824.98"
+    {...props}
+  >
     <Path
       fill={props.iconsetcolor}
       stroke={props.iconsetcolor}

@@ -77,6 +77,7 @@ export const styles = StyleSheet.create({
   generateButtonContainer: {
     alignItems: "center",
     justifyContent: "center",
+    flexDirection: "row",
   },
   generateButton: {
     alignItems: "center",
@@ -87,6 +88,18 @@ export const styles = StyleSheet.create({
     padding: 10,
     marginVertical: 10,
     height: 55,
+
+    borderRadius: 10,
+  },
+  generateButtonNew: {
+    alignItems: "center",
+    justifyContent: "center",
+
+    borderWidth: 3,
+
+    height: 50,
+    width: 50,
+    marginHorizontal: 5,
 
     borderRadius: 10,
   },
@@ -212,8 +225,8 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#DDDDDD",
-    width: 50,
-    height: 50,
+    width: 60,
+    height: 60,
     borderRadius: "100%",
     backgroundColor: COLORS.greenButtonColor,
     borderColor: COLORS.greenButtonColorOuline,
@@ -323,5 +336,26 @@ export const styles = StyleSheet.create({
     width: "100%",
     margin: 0,
     borderTopWidth: 3,
+  },
+  nutrientCircle: {
+    alignItems: "center",
+    justifyContent: "space-between",
+    flexDirection: "row",
+    marginHorizontal: 8,
+    marginVertical: 20,
+  },
+  legendBox: {
+    height: 18,
+    width: 18,
+    marginRight: 10,
+    borderRadius: 4,
+    alignItems: "center",
+  },
+  textLegend: {
+    fontFamily: "Nunito-SemiBold",
+    color: COLORS.fontColor,
+
+    fontSize: 16,
+    alignItems: "center",
   },
 });

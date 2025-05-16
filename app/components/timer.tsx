@@ -82,7 +82,6 @@ export default function Timer(props: TimerProps) {
           <ResetTimer
             iconsetcolor={COLORS.fontColor}
             setheight={20}
-            setwidth={40}
           ></ResetTimer>
         </Pressable>
       </View>

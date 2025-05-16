@@ -6,7 +6,12 @@ type IconProps = {
   setheight?: number;
 };
 const SavesFilled = (props: IconProps) => (
-  <Svg height={props.setheight} viewBox="0 0 655.53 825.98" {...props}>
+  <Svg
+    height={props.setheight}
+    width={props.setheight}
+    viewBox="0 0 655.53 825.98"
+    {...props}
+  >
     <Path
       d="M143.29 756.97c-7.38 0-15.01-3.52-20.92-9.66-5.04-5.24-11.06-14.63-11.06-29.58V108.1c0-21.19 14.55-39.09 31.76-39.09h393.37c9.28 0 15.88 4.8 19.78 8.83 6.98 7.21 10.79 17.66 10.43 28.66l-.03.8v607.32c0 24.24-16.59 39.24-31.97 39.24-5.19 0-10.33-1.76-15.3-5.23L339.48 622.92l-180.7 128.65c-5.02 3.57-10.24 5.39-15.51 5.39Z"
       fill={props.iconsetcolor}
