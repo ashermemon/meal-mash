@@ -4,6 +4,7 @@ import { Image } from "expo-image";
 import { COLORS } from "@/constants/theme";
 import { useContext, useState } from "react";
 import emojiImages from "./emoji-images";
+import Swipeable from "react-native-gesture-handler/ReanimatedSwipeable";
 
 type CardProps = {
   cardBColor: string;

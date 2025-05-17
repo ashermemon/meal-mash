@@ -210,8 +210,9 @@ export default function Generate() {
               <SearchContext.Provider value={setSearchActive}>
                 <View
                   style={{
-                    minHeight: screenHeight * 0.5,
                     width: "100%",
+
+                    flex: 1,
                     alignItems: "center",
                   }}
                 >
@@ -259,7 +260,12 @@ export default function Generate() {
                       <></>
                     )}
                     <View>
-                      {loading && <ActivityIndicator></ActivityIndicator>}
+                      {loading && (
+                        <ActivityIndicator
+                          color={COLORS.blueLink}
+                          size={"large"}
+                        ></ActivityIndicator>
+                      )}
                       {error && (
                         <Text style={styles.errorText}>
                           {error.message || error.toString()}
@@ -284,12 +290,7 @@ export default function Generate() {
                   )}
                 </View>
 
-                <View
-                  style={[
-                    styles.arrowButtons,
-                    { minHeight: screenHeight * 0.1 },
-                  ]}
-                >
+                <View style={styles.arrowButtons}>
                   <View style={styles.flexBTN}>
                     {!loading && generated && currentStep > 1 ? (
                       <Pressable
@@ -333,7 +334,10 @@ export default function Generate() {
                           }
                         >
                           <Text
-                            style={[styles.textCentered]}
+                            style={[
+                              styles.textCentered,
+                              { fontFamily: "Nunito-SemiBold" },
+                            ]}
                             adjustsFontSizeToFit={true}
                           >
                             Create Meal
@@ -354,15 +358,10 @@ export default function Generate() {
                             onPress={() => handleGenerateRecipe(recipePrompt)}
                           >
                             <View>
-                              <Text
-                                style={styles.textCentered}
-                                adjustsFontSizeToFit={true}
-                              >
-                                <ResetTimer
-                                  iconsetcolor="#a759c8"
-                                  setheight={25}
-                                ></ResetTimer>
-                              </Text>
+                              <ResetTimer
+                                iconsetcolor="#a759c8"
+                                setheight={25}
+                              ></ResetTimer>
                             </View>
                           </Pressable>
 
@@ -401,15 +400,10 @@ export default function Generate() {
                             onPress={() => newMeal()}
                           >
                             <View>
-                              <Text
-                                adjustsFontSizeToFit={true}
-                                style={styles.textCentered}
-                              >
-                                <DiscardIcon
-                                  iconsetcolor={"#db904f"}
-                                  setheight={25}
-                                />
-                              </Text>
+                              <DiscardIcon
+                                iconsetcolor={"#db904f"}
+                                setheight={25}
+                              />
                             </View>
                           </Pressable>
                         </>

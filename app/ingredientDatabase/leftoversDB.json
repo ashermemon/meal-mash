@@ -997,5 +997,9 @@
   { "id": 996, "name": "Fasolada" },
   { "id": 997, "name": "Koulourakia" },
   { "id": 998, "name": "Melomakarona" },
-  { "id": 999, "name": "Kourabiedes" }
+  { "id": 999, "name": "Kourabiedes" },
+  { "id": 1000, "name": "Toast" },
+  { "id": 1001, "name": "Breakfast Wrap" },
+  { "id": 1002, "name": "Egg Salad" },
+  { "id": 1003, "name": "Egg Salad Sandwich" }
 ]

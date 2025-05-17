@@ -235,7 +235,7 @@ export const styles = StyleSheet.create({
   arrowButtons: {
     flexDirection: "row",
     width: "100%",
-    paddingVertical: 10,
+    paddingTop: 10,
     justifyContent: "center",
     position: "relative",
     bottom: 0,
