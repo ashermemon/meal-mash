@@ -1,7 +1,7 @@
 import { createContext } from "react";
 
 const SearchContext = createContext<
-  React.Dispatch<React.SetStateAction<boolean>>
->(() => {});
+  [boolean, React.Dispatch<React.SetStateAction<boolean>>]
+>([false, () => {}]);
 
 export default SearchContext;

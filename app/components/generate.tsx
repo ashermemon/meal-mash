@@ -207,7 +207,7 @@ export default function Generate() {
         >
           <LeftoversContext.Provider value={[leftovers, setLeftovers]}>
             <IngredientsContext.Provider value={[ingredients, setIngredients]}>
-              <SearchContext.Provider value={setSearchActive}>
+              <SearchContext.Provider value={[searchActive, setSearchActive]}>
                 <View
                   style={{
                     width: "100%",

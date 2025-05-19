@@ -295,6 +295,19 @@ export const styles = StyleSheet.create({
     width: 30,
     height: 30,
   },
+  customEmoji: {
+    width: 60,
+    height: 60,
+  },
+  emojiWrapBig: {
+    borderWidth: 3,
+    alignItems: "center",
+    justifyContent: "center",
+    width: 110,
+    height: 110,
+    borderRadius: 100,
+    marginTop: 15,
+  },
   ingredientFlex: {
     flex: 1,
     padding: 10,
@@ -312,6 +325,7 @@ export const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 100,
   },
+
   emojiWrapCard: {
     borderWidth: 3,
     padding: 10,
@@ -357,5 +371,13 @@ export const styles = StyleSheet.create({
 
     fontSize: 16,
     alignItems: "center",
+  },
+  customButton: {
+    alignItems: "center",
+    justifyContent: "center",
+
+    borderWidth: 3,
+    padding: 2,
+    borderRadius: 100,
   },
 });

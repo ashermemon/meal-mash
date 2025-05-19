@@ -1,6 +1,6 @@
 import { Pressable, Text, View } from "react-native";
 import { Image } from "expo-image";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { styles } from "@/styles/auth.styles";
 import AddIngredients from "./addingredients";
 import emojiImages from "./emoji-images";
@@ -19,6 +19,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { COLORS } from "@/constants/theme";
+import { runOnJS } from "react-native-reanimated";
 
 interface IngredientProps {
   ingredientName: string;
@@ -33,66 +34,63 @@ export default function IngredientCard(props: IngredientProps) {
   const [hue] = useState(() => Math.random() * 359);
   const backgroundColor = hsl(hue, 88, 97);
   const strokeColor = hsl(hue, 45, 79);
-  const setSearchActive = useContext(SearchContext);
+  const [searchActive, setSearchActive] = useContext(SearchContext);
   const ingredientImage =
     emojiImages[props.ingredientName] || emojiImages.Default;
-  const pressed = useSharedValue<boolean>(false);
-  const tap = Gesture.Tap()
-    .onBegin(() => {
-      pressed.value = true;
-    })
-    .onFinalize(() => {
-      pressed.value = false;
-    });
 
-  const animatedStyles = useAnimatedStyle(() => {
+  const scale = useSharedValue(1);
+
+  const animatedStyling = useAnimatedStyle(() => {
     return {
-      transform: [{ scale: withTiming(pressed.value ? 1.06 : 1) }],
+      transform: [{ scale: scale.value }],
     };
   });
 
   return ingredients.includes(props.ingredientName) ||
-    leftovers.includes(props.ingredientName) ? (
-    <></>
-  ) : (
-    <GestureHandlerRootView style={{ width: "100%" }}>
-      <GestureDetector gesture={tap}>
-        <Animated.View style={animatedStyles}>
-          <Pressable
-            style={styles.ingredientResult}
-            onPress={() => [
-              setSearchActive(false),
-              leftoversEnabled
-                ? setLeftovers((prev) => [...prev, props.ingredientName])
-                : setIngredients((prev) => [...prev, props.ingredientName]),
-            ]}
-          >
-            <View style={styles.ingredientPanel}>
-              <View style={styles.ingredientFlex}>
-                <Text style={[styles.textLeftSemiBold]}>
-                  {props.ingredientName}
-                </Text>
-              </View>
-              <View style={styles.ingredientFlexEmoji}>
-                <View
-                  style={[
-                    styles.emojiWrap,
-                    {
-                      borderColor: strokeColor,
-                      backgroundColor: backgroundColor,
-                    },
-                  ]}
-                >
-                  <Image
-                    style={styles.ingredientEmoji}
-                    source={ingredientImage}
-                  ></Image>
-                </View>
-              </View>
+    leftovers.includes(props.ingredientName) ? null : (
+    <Pressable
+      onPressIn={() => {
+        scale.value = withTiming(1.06);
+      }}
+      onPressOut={() => {
+        scale.value = withTiming(1);
+      }}
+      onPress={() => {
+        if (searchActive) {
+          if (leftoversEnabled) {
+            setLeftovers((prev) => [...prev, props.ingredientName]);
+          } else {
+            setIngredients((prev) => [...prev, props.ingredientName]);
+          }
+        }
+        setSearchActive(false);
+      }}
+    >
+      <Animated.View style={[styles.ingredientResult, animatedStyling]}>
+        <View style={styles.ingredientPanel}>
+          <View style={styles.ingredientFlex}>
+            <Text style={[styles.textLeftSemiBold]}>
+              {props.ingredientName}
+            </Text>
+          </View>
+          <View style={styles.ingredientFlexEmoji}>
+            <View
+              style={[
+                styles.emojiWrap,
+                {
+                  borderColor: strokeColor,
+                  backgroundColor: backgroundColor,
+                },
+              ]}
+            >
+              <Image
+                style={styles.ingredientEmoji}
+                source={ingredientImage}
+              ></Image>
             </View>
-          </Pressable>
-        </Animated.View>
-      </GestureDetector>
-    </GestureHandlerRootView>
+          </View>
+        </View>
+      </Animated.View>
+    </Pressable>
   );
 }

@@ -22,7 +22,7 @@ type CardProps = {
 };
 
 export default function NewCard(props: CardProps) {
-  const setSearchActive = useContext(SearchContext);
+  const [searchActive, setSearchActive] = useContext(SearchContext);
   const [leftoversEnabled, setLeftoversEnabled] = useContext(LeftoversEnabled);
   const pressed = useSharedValue<boolean>(false);
 
@@ -54,30 +54,26 @@ export default function NewCard(props: CardProps) {
   });
 
   return (
-    <GestureHandlerRootView>
-      <Pressable
-        style={[{ borderColor: props.bColor }, styles.addContainer]}
-        onPress={() => (
-          setSearchActive(true),
-          props.leftover
-            ? setLeftoversEnabled(true)
-            : setLeftoversEnabled(false)
-        )}
-      >
-        <GestureDetector gesture={tap}>
-          <Animated.View
-            style={[styles.addButton, animatedStyles]}
-            onTouchStart={() => (
-              setSearchActive(true),
-              props.leftover
-                ? setLeftoversEnabled(true)
-                : setLeftoversEnabled(false)
-            )}
-          >
-            <AddIcon iconsetcolor={COLORS.addPlusGrey} setheight={35}></AddIcon>
-          </Animated.View>
-        </GestureDetector>
-      </Pressable>
-    </GestureHandlerRootView>
+    <Pressable
+      style={[{ borderColor: props.bColor }, styles.addContainer]}
+      onPress={() => (
+        setSearchActive(true),
+        props.leftover ? setLeftoversEnabled(true) : setLeftoversEnabled(false)
+      )}
+    >
+      <GestureDetector gesture={tap}>
+        <Animated.View
+          style={[styles.addButton, animatedStyles]}
+          onTouchStart={() => (
+            setSearchActive(true),
+            props.leftover
+              ? setLeftoversEnabled(true)
+              : setLeftoversEnabled(false)
+          )}
+        >
+          <AddIcon iconsetcolor={COLORS.addPlusGrey} setheight={35}></AddIcon>
+        </Animated.View>
+      </GestureDetector>
+    </Pressable>
   );
 }

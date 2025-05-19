@@ -7,6 +7,7 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import { COLORS } from "@/constants/theme";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -37,14 +38,16 @@ export default function RootLayout() {
   }
 
   return (
-    <SafeAreaProvider>
-      <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.blueHeader }}>
-        <StatusBar
-          barStyle="dark-content"
-          backgroundColor={COLORS.blueHeader}
-        />
-        <Stack screenOptions={{ headerShown: false }}></Stack>
-      </SafeAreaView>
-    </SafeAreaProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.blueHeader }}>
+          <StatusBar
+            barStyle="dark-content"
+            backgroundColor={COLORS.blueHeader}
+          />
+          <Stack screenOptions={{ headerShown: false }}></Stack>
+        </SafeAreaView>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }
