@@ -33,6 +33,7 @@ export default function AddLeftovers() {
           cardBColor={COLORS.blueHeader}
           borderColor={COLORS.blueHeaderBorder}
           key={index}
+          leftover={true}
         ></IngredientCardAdded>
       ))}
       {addButtonActive && (

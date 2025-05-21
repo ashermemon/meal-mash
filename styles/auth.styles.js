@@ -380,4 +380,18 @@ export const styles = StyleSheet.create({
     padding: 2,
     borderRadius: 100,
   },
+  swipeable: {
+    backgroundColor: "#ff9191",
+    justifyContent: "center",
+    alignItems: "flex-end",
+    paddingHorizontal: 30,
+    height: "100%",
+  },
+  deleteText: {
+    fontFamily: "Nunito-Bold",
+    textAlign: "center",
+    justifyContent: "center",
+
+    color: "white",
+  },
 });

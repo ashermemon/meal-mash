@@ -32,6 +32,7 @@ export default function AddIngredients() {
           cardBColor={COLORS.greenButtonColor}
           borderColor={COLORS.greenButtonColorOuline}
           key={index}
+          leftover={false}
         ></IngredientCardAdded>
       ))}
       {addButtonActive && (
