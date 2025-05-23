@@ -1,3 +1,7 @@
+var hsl = require("hsl-to-hex");
+
+var sat = 80;
+var lightness = 97;
 export const COLORS = {
   navPrimary: "#9FCEA4",
   navSecondary: "#6BBA83",
@@ -41,4 +45,18 @@ export const COLORS = {
   saveFill: "#F0F9FE",
   genBorder: "#CBAFDF",
   genFill: "#F6E3FF",
+
+  cat1: hsl(105, sat, lightness),
+  cat2: hsl(195, sat, lightness),
+  cat3: hsl(275, sat, lightness),
+  cat4: hsl(20, sat, lightness),
+  cat5: hsl(300, sat, lightness),
+  cat6: hsl(150, sat, lightness),
+  cat7: hsl(220, sat, lightness),
+  cat8: hsl(360, sat, lightness),
+  cat9: hsl(50, sat, lightness),
+  cat10: hsl(170, sat, lightness),
+  cat11: hsl(60, sat, lightness),
+  cat12: hsl(250, sat, lightness),
+  cat13: hsl(100, sat, lightness),
 } as const;

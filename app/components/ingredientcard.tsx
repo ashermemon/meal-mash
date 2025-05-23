@@ -23,6 +23,7 @@ import { runOnJS } from "react-native-reanimated";
 
 interface IngredientProps {
   ingredientName: string;
+  colorTing: string;
 }
 
 export default function IngredientCard(props: IngredientProps) {
@@ -66,7 +67,15 @@ export default function IngredientCard(props: IngredientProps) {
         setSearchActive(false);
       }}
     >
-      <Animated.View style={[styles.ingredientResult, animatedStyling]}>
+      <Animated.View
+        style={[
+          styles.ingredientResult,
+          animatedStyling,
+          {
+            backgroundColor: COLORS[props.colorTing] ?? COLORS.searchGreyPicker,
+          },
+        ]}
+      >
         <View style={styles.ingredientPanel}>
           <View style={styles.ingredientFlex}>
             <Text style={[styles.textLeftSemiBold]}>

@@ -34,13 +34,15 @@ export default function Search() {
   type Ingredient = {
     name: string;
     id: number;
+    color: string;
   };
+  type DBItem = string | Ingredient;
   const [searchActive, setSearchActive] = useContext(SearchContext);
   const [leftoversEnabled, setLeftoversEnabled] = useContext(LeftoversEnabled);
 
-  const [data, setData] = useState<Ingredient[]>([]);
+  const [data, setData] = useState<DBItem[]>([]);
 
-  const [dataL, setDataL] = useState<Ingredient[]>([]);
+  const [dataL, setDataL] = useState<DBItem[]>([]);
 
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -52,6 +54,7 @@ export default function Search() {
   const [leftovers, setLeftovers] = useContext(LeftoversContext);
 
   const [savedSearchQuery, setSavedSearchQuery] = useState("");
+  let currentColour = "#FAFAFA";
 
   var hsl = require("hsl-to-hex");
   const [hue] = useState(() => Math.random() * 359);
@@ -60,19 +63,26 @@ export default function Search() {
   const debouncedSearchQuery = useDebounce(searchQuery, 100);
 
   useEffect(() => {
-    setData(ingredientsDB as Ingredient[]);
-    setDataL(leftoversDB as Ingredient[]);
+    setData(ingredientsDB as DBItem[]);
+    setDataL(leftoversDB as DBItem[]);
   }, []);
 
   const filteredDataToRender = useMemo(() => {
-    const source = leftoversEnabled ? dataL : data;
+    const source: DBItem[] = leftoversEnabled ? dataL : data;
 
-    if (!debouncedSearchQuery.trim()) {
+    if (!(debouncedSearchQuery ?? "").trim()) {
       return source;
     }
 
-    const textData = debouncedSearchQuery.toUpperCase();
-    return source.filter((item) => item.name.toUpperCase().includes(textData));
+    const textData = (debouncedSearchQuery ?? "").toUpperCase();
+
+    return source.filter((item) => {
+      if (typeof item === "string") {
+        return false;
+      } else {
+        return item.name.toUpperCase().includes(textData);
+      }
+    });
   }, [debouncedSearchQuery, leftoversEnabled, data, dataL]);
 
   const handleExitSearch = useCallback(() => {
@@ -109,12 +119,16 @@ export default function Search() {
     searchQuery,
   ]);
 
-  const renderListItem = useCallback(
-    ({ item }: { item: Ingredient }) => (
-      <IngredientCard ingredientName={item.name} />
-    ),
-    []
-  );
+  const renderListItem = useCallback(({ item }: { item: DBItem }) => {
+    if (typeof item === "string") {
+      currentColour = hsl(Math.random() * 200, 1, 90);
+      return <Text style={[styles.customHeadText]}>{item}</Text>;
+    } else {
+      return (
+        <IngredientCard colorTing={item.color} ingredientName={item.name} />
+      );
+    }
+  }, []);
 
   const enableCustomModal = (currentSearch: string) => {
     setSavedSearchQuery(currentSearch);
@@ -232,9 +246,17 @@ export default function Search() {
           <>
             <FlashList
               data={filteredDataToRender}
-              keyExtractor={(item) => item.id.toString()}
+              keyExtractor={(item, index) => {
+                if (typeof item === "string") {
+                  return item + "-" + index;
+                }
+                return item.id?.toString() ?? index.toString();
+              }}
               estimatedItemSize={leftoversEnabled ? 1000 : 500}
               renderItem={renderListItem}
+              getItemType={(item) => {
+                return typeof item === "string" ? "sectionHeader" : "row";
+              }}
               contentContainerStyle={{
                 paddingTop: 5,
                 paddingBottom: 10,

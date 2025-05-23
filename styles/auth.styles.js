@@ -189,7 +189,6 @@ export const styles = StyleSheet.create({
   ingredientResult: {
     margin: 5,
 
-    backgroundColor: COLORS.searchGreyPicker,
     width: "100%",
     padding: 5,
 
@@ -393,5 +392,12 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
 
     color: "white",
+  },
+  customHeadText: {
+    fontFamily: "Nunito-Bold",
+    color: COLORS.fontColor,
+
+    marginVertical: 10,
+    fontSize: 18,
   },
 });
