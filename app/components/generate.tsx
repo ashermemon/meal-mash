@@ -32,7 +32,7 @@ import GenIcon from "../Icons/GenIcon";
 import ResetTimer from "../Icons/ResetTimer";
 import DiscardIcon from "../Icons/DiscardIcon";
 import SavesFilled from "../Icons/SavesFilled";
-import { APIKEY } from "./apikey";
+import { APIKEY } from "@/app/components/apikey";
 
 export default function Generate() {
   const ai = new GoogleGenAI({ apiKey: APIKEY });

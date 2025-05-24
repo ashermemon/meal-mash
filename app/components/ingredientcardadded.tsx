@@ -35,69 +35,71 @@ export default function IngredientCardAdded(props: CardProps) {
   const strokeColor = hsl(hue, 45, 79);
   const [ingredients, setIngredients] = useContext(IngredientsContext);
   const [leftovers, setLeftovers] = useContext(LeftoversContext);
-
-  const [showCard, setShowCard] = useState(true);
-
+  const [leftoversEnabled, setLeftoversEnabled] = useContext(LeftoversEnabled);
   const ingredientImage =
     emojiImages[props.ingredientName] || emojiImages.Default;
 
   const removeCard = () => {
-    {
-      setShowCard(false);
+    if (props.leftover) {
+      setLeftovers((prevLeftovers) =>
+        prevLeftovers.filter((item) => item !== props.ingredientName)
+      );
+    } else {
+      setIngredients((prevIngredients) =>
+        prevIngredients.filter((item) => item !== props.ingredientName)
+      );
     }
   };
 
   return (
-    showCard && (
-      <Animated.View
-        style={{
-          backgroundColor: "#ff9191",
-        }}
+    <Animated.View
+      style={{
+        backgroundColor: "#ff9191",
+      }}
+    >
+      <ReanimatedSwipeable
+        friction={3}
+        enableTrackpadTwoFingerGesture
+        rightThreshold={40}
+        overshootFriction={1}
+        renderRightActions={() => (
+          <Pressable style={styles.swipeable} onPress={removeCard}>
+            <Text style={[styles.deleteText]}>Delete</Text>
+          </Pressable>
+        )}
       >
-        <ReanimatedSwipeable
-          friction={3}
-          enableTrackpadTwoFingerGesture
-          rightThreshold={40}
-          overshootFriction={1}
-          renderRightActions={() => (
-            <Pressable style={styles.swipeable} onPress={removeCard}>
-              <Text style={[styles.deleteText]}>Delete</Text>
-            </Pressable>
-          )}
+        <View
+          style={[
+            {
+              borderColor: props.borderColor,
+              backgroundColor: props.cardBColor,
+            },
+            styles.addContainerIngredient,
+          ]}
         >
-          <View
-            style={[
-              {
-                borderColor: props.borderColor,
-                backgroundColor: props.cardBColor,
-              },
-              styles.addContainerIngredient,
-            ]}
-          >
-            <View style={styles.ingredientPanel}>
-              <View style={styles.ingredientFlexEmojiCard}>
-                <View
-                  style={[
-                    styles.emojiWrapCard,
-                    {
-                      borderColor: strokeColor,
-                      backgroundColor: backgroundColor,
-                    },
-                  ]}
-                >
-                  <Image
-                    style={styles.ingredientEmoji}
-                    source={ingredientImage}
-                  ></Image>
-                </View>
-              </View>
-              <View style={styles.ingredientFlexCard}>
-                <Text style={styles.textLeftBold}>{props.ingredientName}</Text>
+          <View style={styles.ingredientPanel}>
+            <View style={styles.ingredientFlexEmojiCard}>
+              <View
+                style={[
+                  styles.emojiWrapCard,
+                  {
+                    borderColor: strokeColor,
+                    backgroundColor: backgroundColor,
+                  },
+                ]}
+              >
+                <Image
+                  style={styles.ingredientEmoji}
+                  source={ingredientImage}
+                ></Image>
               </View>
             </View>
+            <View style={styles.ingredientFlexCard}>
+              <Text style={styles.textLeftBold}>{props.ingredientName}</Text>
+            </View>
           </View>
-        </ReanimatedSwipeable>
-      </Animated.View>
-    )
+        </View>
+      </ReanimatedSwipeable>
+    </Animated.View>
   );
 }

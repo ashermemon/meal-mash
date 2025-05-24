@@ -125,7 +125,11 @@ export default function Search() {
       return <Text style={[styles.customHeadText]}>{item}</Text>;
     } else {
       return (
-        <IngredientCard colorTing={item.color} ingredientName={item.name} />
+        <IngredientCard
+          key={item.id}
+          colorTing={item.color}
+          ingredientName={item.name}
+        />
       );
     }
   }, []);
