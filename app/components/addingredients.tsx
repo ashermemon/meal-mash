@@ -26,12 +26,12 @@ export default function AddIngredients() {
     >
       <Text style={styles.addContainerHeader}>Ingredients:</Text>
 
-      {ingredients.map((ingredient, index) => (
+      {ingredients.map((ingredient) => (
         <IngredientCardAdded
           ingredientName={ingredient}
           cardBColor={COLORS.greenButtonColor}
           borderColor={COLORS.greenButtonColorOuline}
-          key={index}
+          key={ingredient}
           leftover={false}
         ></IngredientCardAdded>
       ))}

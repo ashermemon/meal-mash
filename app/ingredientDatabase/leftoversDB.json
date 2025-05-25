@@ -390,7 +390,7 @@
   { "id": 804, "name": "Ploughman's Lunch", "color": "cat5" },
   { "id": 940, "name": "Bifana", "color": "cat5" },
   { "id": 968, "name": "Nutella Sandwich", "color": "cat5" },
-  { "id": 1003, "name": "Egg Salad Sandwich", "color": "cat5" },
+  { "id": 606, "name": "Egg Salad Sandwich", "color": "cat5" },
   "Pizza & Calzones",
   { "id": 1, "name": "Pizza", "color": "cat6" },
   { "id": 106, "name": "BBQ Chicken Pizza", "color": "cat6" },
@@ -643,7 +643,7 @@
   { "id": 595, "name": "Llapingachos", "color": "cat8" },
   { "id": 601, "name": "Jerk Chicken", "color": "cat8" },
   { "id": 603, "name": "Ackee and Saltfish", "color": "cat8" },
-  { "id": 606, "name": "Roti", "color": "cat8" },
+
   { "id": 607, "name": "Escovitch Fish", "color": "cat8" },
   { "id": 612, "name": "Mofongo", "color": "cat8" },
   { "id": 614, "name": "Pernil", "color": "cat8" },

@@ -344,7 +344,14 @@ export const styles = StyleSheet.create({
   },
   addContainerIngredient: {
     alignItems: "center",
+    borderLeftWidth: 5,
+    borderLeftColor: COLORS.saveBorder,
+    borderRightWidth: 5,
 
+    borderRightColor: "#ffa1a1",
+    shadowColor: "black",
+    shadowRadius: 10,
+    shadowOpacity: 0.1,
     paddingVertical: 15,
     width: "100%",
     margin: 0,
@@ -380,7 +387,14 @@ export const styles = StyleSheet.create({
     borderRadius: 100,
   },
   swipeable: {
-    backgroundColor: "#ff9191",
+    backgroundColor: "#ffa1a1",
+    justifyContent: "center",
+    alignItems: "flex-end",
+    paddingHorizontal: 30,
+    height: "100%",
+  },
+  swipeableSave: {
+    backgroundColor: COLORS.saveBorder,
     justifyContent: "center",
     alignItems: "flex-end",
     paddingHorizontal: 30,
@@ -392,6 +406,13 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
 
     color: "white",
+  },
+  saveText: {
+    fontFamily: "Nunito-Bold",
+    textAlign: "center",
+    justifyContent: "center",
+
+    color: COLORS.fontColor,
   },
   customHeadText: {
     fontFamily: "Nunito-Bold",

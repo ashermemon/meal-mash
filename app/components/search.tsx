@@ -61,7 +61,8 @@ export default function Search() {
   const backgroundColor = hsl(hue, 88, 97);
   const strokeColor = hsl(hue, 45, 79);
   const debouncedSearchQuery = useDebounce(searchQuery, 100);
-
+  let upperCaseArrayI = [];
+  let upperCaseArrayL = [];
   useEffect(() => {
     setData(ingredientsDB as DBItem[]);
     setDataL(leftoversDB as DBItem[]);
@@ -90,20 +91,30 @@ export default function Search() {
   }, [setSearchActive]);
 
   const addCustom = useCallback(() => {
-    setSearchActive(false);
-
+    upperCaseArrayL = leftovers.map((str) => str.toUpperCase());
+    upperCaseArrayI = ingredients.map((str) => str.toUpperCase());
     if (searchActive) {
-      if (leftoversEnabled) {
-        if (customQuery) {
-          setLeftovers((prev) => [...prev, customQuery]);
-        } else if (customQuery == undefined) {
-          setLeftovers((prev) => [...prev, savedSearchQuery]);
-        }
-      } else if (!leftoversEnabled) {
-        if (customQuery) {
-          setIngredients((prev) => [...prev, customQuery]);
-        } else if (customQuery == undefined) {
-          setIngredients((prev) => [...prev, savedSearchQuery]);
+      if (
+        !upperCaseArrayI.includes(
+          customQuery?.toUpperCase() ?? savedSearchQuery?.toUpperCase()
+        ) &&
+        !upperCaseArrayL.includes(
+          customQuery?.toUpperCase() ?? savedSearchQuery?.toUpperCase()
+        )
+      ) {
+        setSearchActive(false);
+        if (leftoversEnabled) {
+          if (customQuery) {
+            setLeftovers((prev) => [...prev, customQuery]);
+          } else if (customQuery == undefined) {
+            setLeftovers((prev) => [...prev, savedSearchQuery]);
+          }
+        } else if (!leftoversEnabled) {
+          if (customQuery) {
+            setIngredients((prev) => [...prev, customQuery]);
+          } else if (customQuery == undefined) {
+            setIngredients((prev) => [...prev, savedSearchQuery]);
+          }
         }
       }
     }
