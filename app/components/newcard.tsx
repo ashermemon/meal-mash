@@ -55,7 +55,7 @@ export default function NewCard(props: CardProps) {
 
   return (
     <Pressable
-      style={[{ borderColor: props.bColor }, styles.addContainer]}
+      style={[{ borderColor: COLORS.addButtonStroke }, styles.addContainer]}
       onPress={() => (
         setSearchActive(true),
         props.leftover ? setLeftoversEnabled(true) : setLeftoversEnabled(false)

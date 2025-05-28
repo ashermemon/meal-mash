@@ -40,15 +40,18 @@ export default function IngredientCard(props: IngredientProps) {
     emojiImages[props.ingredientName] || emojiImages.Default;
 
   const scale = useSharedValue(1);
-
+  let upperCaseArrayL;
+  let upperCaseArrayI;
   const animatedStyling = useAnimatedStyle(() => {
     return {
       transform: [{ scale: scale.value }],
     };
   });
+  upperCaseArrayL = leftovers.map((str) => str.toUpperCase());
+  upperCaseArrayI = ingredients.map((str) => str.toUpperCase());
 
-  return ingredients.includes(props.ingredientName) ||
-    leftovers.includes(props.ingredientName) ? null : (
+  return upperCaseArrayI.includes(props.ingredientName.toUpperCase()) ||
+    upperCaseArrayL.includes(props.ingredientName.toUpperCase()) ? null : (
     <Pressable
       onPressIn={() => {
         scale.value = withTiming(1.06);

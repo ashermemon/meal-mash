@@ -46,6 +46,9 @@ export const COLORS = {
   genBorder: "#CBAFDF",
   genFill: "#F6E3FF",
 
+  favoriteColor: "#FBC02D",
+  discardColor: "#FF5252",
+
   cat1: hsl(105, sat, lightness),
   cat2: hsl(195, sat, lightness),
   cat3: hsl(275, sat, lightness),

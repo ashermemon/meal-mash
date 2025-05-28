@@ -25,6 +25,9 @@ import Animated, {
   SlideOutUp,
 } from "react-native-reanimated";
 import { LinearGradient } from "expo-linear-gradient";
+import FavIcon from "../Icons/FavIcon";
+import DiscardIcon from "../Icons/DiscardIcon";
+import FavIconFilled from "../Icons/FavIconFilled";
 
 type CardProps = {
   cardBColor: string;
@@ -42,6 +45,8 @@ export default function IngredientCardAdded(props: CardProps) {
   const [ingredients, setIngredients] = useContext(IngredientsContext);
   const [leftovers, setLeftovers] = useContext(LeftoversContext);
   const [leftoversEnabled, setLeftoversEnabled] = useContext(LeftoversEnabled);
+
+  const [favorite, setFavorite] = useState(false);
   const ingredientImage =
     emojiImages[props.ingredientName] || emojiImages.Default;
 
@@ -58,68 +63,77 @@ export default function IngredientCardAdded(props: CardProps) {
     swipeableRef.current?.close();
   };
   const saveCard = () => {
+    setFavorite(!favorite);
     console.log("saved");
     swipeableRef.current?.close();
+    alert(
+      `${props.ingredientName} was ${favorite ? `unfavorited` : `favorited`}`
+    );
   };
 
   return (
-    <Animated.View>
-      <LinearGradient
-        start={{ x: 0.3, y: 0.5 }}
-        end={{ x: 0.7, y: 0.5 }}
-        colors={[COLORS.saveBorder, "#ffa1a1"]}
-      >
-        <ReanimatedSwipeable
-          ref={swipeableRef}
-          friction={3}
-          enableTrackpadTwoFingerGesture
-          rightThreshold={40}
-          leftThreshold={40}
-          overshootFriction={1.5}
-          renderRightActions={() => (
+    <Animated.View style={{ backgroundColor: COLORS.favoriteColor }}>
+      <ReanimatedSwipeable
+        ref={swipeableRef}
+        friction={2.5}
+        enableTrackpadTwoFingerGesture
+        rightThreshold={40}
+        leftThreshold={40}
+        overshootFriction={1.5}
+        renderRightActions={() => (
+          <>
             <Pressable style={styles.swipeable} onPress={removeCard}>
-              <Text style={[styles.saveText]}>Delete</Text>
+              <DiscardIcon
+                iconsetcolor={"#FFEFEE"}
+                setheight={35}
+              ></DiscardIcon>
             </Pressable>
-          )}
-          renderLeftActions={() => (
             <Pressable style={styles.swipeableSave} onPress={saveCard}>
-              <Text style={[styles.saveText]}>Favorite</Text>
+              {favorite ? (
+                <FavIconFilled
+                  iconsetcolor={"#FFF7EE"}
+                  setheight={35}
+                ></FavIconFilled>
+              ) : (
+                <FavIcon iconsetcolor={"#FFF7EE"} setheight={35}></FavIcon>
+              )}
             </Pressable>
-          )}
+          </>
+        )}
+      >
+        <View
+          style={[
+            {
+              borderTopColor: props.borderColor,
+              borderBottomColor: props.borderColor,
+              backgroundColor: props.cardBColor,
+            },
+            styles.addContainerIngredient,
+          ]}
         >
-          <View
-            style={[
-              {
-                borderColor: props.borderColor,
-                backgroundColor: props.cardBColor,
-              },
-              styles.addContainerIngredient,
-            ]}
-          >
-            <View style={styles.ingredientPanel}>
-              <View style={styles.ingredientFlexEmojiCard}>
-                <View
-                  style={[
-                    styles.emojiWrapCard,
-                    {
-                      borderColor: strokeColor,
-                      backgroundColor: backgroundColor,
-                    },
-                  ]}
-                >
-                  <Image
-                    style={styles.ingredientEmoji}
-                    source={ingredientImage}
-                  ></Image>
-                </View>
-              </View>
-              <View style={styles.ingredientFlexCard}>
-                <Text style={styles.textLeftBold}>{props.ingredientName}</Text>
+          <View style={styles.ingredientPanel}>
+            <View style={styles.ingredientFlexEmojiCard}>
+              <View
+                style={[
+                  styles.emojiWrapCard,
+                  {
+                    borderColor: strokeColor,
+                    backgroundColor: backgroundColor,
+                  },
+                ]}
+              >
+                <Image
+                  style={styles.ingredientEmoji}
+                  source={ingredientImage}
+                ></Image>
               </View>
             </View>
+            <View style={styles.ingredientFlexCard}>
+              <Text style={styles.textLeftBold}>{props.ingredientName}</Text>
+            </View>
           </View>
-        </ReanimatedSwipeable>
-      </LinearGradient>
+        </View>
+      </ReanimatedSwipeable>
     </Animated.View>
   );
 }

@@ -136,6 +136,7 @@ export const styles = StyleSheet.create({
     width: "100%",
     margin: 0,
     borderTopWidth: 3,
+    borderBottomWidth: 3,
   },
   addButton: {
     alignItems: "center",
@@ -344,11 +345,10 @@ export const styles = StyleSheet.create({
   },
   addContainerIngredient: {
     alignItems: "center",
-    borderLeftWidth: 5,
-    borderLeftColor: COLORS.saveBorder,
+
     borderRightWidth: 5,
 
-    borderRightColor: "#ffa1a1",
+    borderRightColor: COLORS.favoriteColor,
     shadowColor: "black",
     shadowRadius: 10,
     shadowOpacity: 0.1,
@@ -387,18 +387,20 @@ export const styles = StyleSheet.create({
     borderRadius: 100,
   },
   swipeable: {
-    backgroundColor: "#ffa1a1",
+    backgroundColor: COLORS.discardColor,
     justifyContent: "center",
     alignItems: "flex-end",
-    paddingHorizontal: 30,
+    paddingHorizontal: 25,
     height: "100%",
+    margin: 0,
   },
   swipeableSave: {
-    backgroundColor: COLORS.saveBorder,
+    backgroundColor: COLORS.favoriteColor,
     justifyContent: "center",
-    alignItems: "flex-end",
-    paddingHorizontal: 30,
+    alignItems: "center",
+    paddingHorizontal: 25,
     height: "100%",
+    margin: 0,
   },
   deleteText: {
     fontFamily: "Nunito-Bold",
