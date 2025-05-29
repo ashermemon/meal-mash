@@ -2,7 +2,7 @@ import { styles } from "@/styles/auth.styles";
 import { Pressable, View, Text } from "react-native";
 import { Image } from "expo-image";
 import { COLORS } from "@/constants/theme";
-import { useContext, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import emojiImages from "./emoji-images";
 import ReanimatedSwipeable from "react-native-gesture-handler/ReanimatedSwipeable";
 import {
@@ -28,6 +28,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import FavIcon from "../Icons/FavIcon";
 import DiscardIcon from "../Icons/DiscardIcon";
 import FavIconFilled from "../Icons/FavIconFilled";
+import { storage } from "./storage";
 
 type CardProps = {
   cardBColor: string;
@@ -50,6 +51,11 @@ export default function IngredientCardAdded(props: CardProps) {
   const ingredientImage =
     emojiImages[props.ingredientName] || emojiImages.Default;
 
+  useEffect(() => {
+    const stored = storage.getString("favorites");
+    const favorites = stored ? JSON.parse(stored) : [];
+    setFavorite(favorites.includes(props.ingredientName));
+  }, []);
   const removeCard = () => {
     if (props.leftover) {
       setLeftovers((prevLeftovers) =>
@@ -63,11 +69,28 @@ export default function IngredientCardAdded(props: CardProps) {
     swipeableRef.current?.close();
   };
   const saveCard = () => {
-    setFavorite(!favorite);
-    console.log("saved");
+    setFavorite((prev) => !prev);
+
     swipeableRef.current?.close();
+
+    const existing = storage.getString("favorites");
+    const favorites = existing ? JSON.parse(existing) : [];
+
+    if (!favorite) {
+      if (!favorites.includes(props.ingredientName)) {
+        favorites.push(props.ingredientName);
+      }
+    } else {
+      const index = favorites.indexOf(props.ingredientName);
+      if (index > -1) {
+        favorites.splice(index, 1);
+      }
+    }
+    storage.set("favorites", JSON.stringify(favorites));
     alert(
-      `${props.ingredientName} was ${favorite ? `unfavorited` : `favorited`}`
+      `${props.ingredientName} was ${
+        favorite ? `removed from favorites` : `favorited`
+      }`
     );
   };
 

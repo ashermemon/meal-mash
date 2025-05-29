@@ -5,6 +5,7 @@ import { Platform } from "react-native";
 import MobileHeader from "../components/mobileheader";
 import SavesFilled from "../Icons/SavesFilled";
 import { COLORS } from "@/constants/theme";
+import DisplaySaved from "../components/displaysaved";
 
 const image =
   Platform.OS == "web"
@@ -29,7 +30,7 @@ export default function Saves() {
           style={styles.generatorContainer}
         >
           <View style={styles.container}>
-            <Text style={styles.text}>Saves Page</Text>
+            <DisplaySaved></DisplaySaved>
           </View>
         </ScrollView>
       </ImageBackground>
