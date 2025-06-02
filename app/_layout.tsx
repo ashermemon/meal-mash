@@ -10,11 +10,13 @@ import { COLORS } from "@/constants/theme";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { storage } from "./components/storage";
 import FavoritesContext from "./contexts/FavoritesContext";
+import FavLeftoversContext from "./contexts/FavLeftoversContext";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [favorites, setFavorites] = useState<string[]>([]);
+  const [favoritesL, setFavoritesL] = useState<string[]>([]);
 
   const image =
     Platform.OS == "web"
@@ -38,6 +40,7 @@ export default function RootLayout() {
   }, [loaded, error]);
   useEffect(() => {
     const storedFavoritesString = storage.getString("favorites");
+    const storedFavoritesStringL = storage.getString("favoritesL");
     if (storedFavoritesString) {
       try {
         const storedFavoritesArray = JSON.parse(storedFavoritesString);
@@ -45,6 +48,15 @@ export default function RootLayout() {
       } catch (e) {
         console.error("Failed to parse favorites from storage:", e);
         setFavorites([]);
+      }
+    }
+    if (storedFavoritesStringL) {
+      try {
+        const storedFavoritesArray = JSON.parse(storedFavoritesStringL);
+        setFavoritesL(storedFavoritesArray);
+      } catch (e) {
+        console.error("Failed to parse favorites from storage:", e);
+        setFavoritesL([]);
       }
     }
   }, []);
@@ -61,7 +73,9 @@ export default function RootLayout() {
             backgroundColor={COLORS.blueHeader}
           />
           <FavoritesContext.Provider value={[favorites, setFavorites]}>
-            <Stack screenOptions={{ headerShown: false }}></Stack>
+            <FavLeftoversContext.Provider value={[favoritesL, setFavoritesL]}>
+              <Stack screenOptions={{ headerShown: false }}></Stack>
+            </FavLeftoversContext.Provider>
           </FavoritesContext.Provider>
         </SafeAreaView>
       </SafeAreaProvider>

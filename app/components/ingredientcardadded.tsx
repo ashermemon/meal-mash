@@ -30,6 +30,7 @@ import DiscardIcon from "../Icons/DiscardIcon";
 import FavIconFilled from "../Icons/FavIconFilled";
 import { storage } from "./storage";
 import FavoritesContext from "../contexts/FavoritesContext";
+import FavLeftoversContext from "../contexts/FavLeftoversContext";
 
 type CardProps = {
   cardBColor: string;
@@ -52,9 +53,14 @@ export default function IngredientCardAdded(props: CardProps) {
   const ingredientImage =
     emojiImages[props.ingredientName] || emojiImages.Default;
   const [favorites, setFavorites] = useContext(FavoritesContext);
+  const [favoritesL, setFavoritesL] = useContext(FavLeftoversContext);
+
   useEffect(() => {
-    setFavorite(favorites.includes(props.ingredientName));
-  }, [favorites, props.ingredientName]);
+    setFavorite(
+      favorites.includes(props.ingredientName) ||
+        favoritesL.includes(props.ingredientName)
+    );
+  }, [favorites, favoritesL, props.ingredientName]);
   const removeCard = () => {
     if (props.leftover) {
       setLeftovers((prevLeftovers) =>
@@ -67,19 +73,35 @@ export default function IngredientCardAdded(props: CardProps) {
     }
     swipeableRef.current?.close();
   };
+  let updatedFavorites: string[];
+  let updatedFavoritesL: string[];
   const saveCard = () => {
     const ingredientName = props.ingredientName;
-    const isCurrentlyFavorite = favorites.includes(ingredientName);
-    let updatedFavorites: string[];
+    const isCurrentlyFavorite =
+      favorites.includes(ingredientName) || favoritesL.includes(ingredientName);
 
     if (isCurrentlyFavorite) {
-      updatedFavorites = favorites.filter((name) => name !== ingredientName);
+      if (props.leftover) {
+        updatedFavoritesL = favoritesL.filter(
+          (name) => name !== ingredientName
+        );
+      } else {
+        updatedFavorites = favorites.filter((name) => name !== ingredientName);
+      }
     } else {
-      updatedFavorites = [...favorites, ingredientName];
+      if (props.leftover) {
+        updatedFavoritesL = [...favoritesL, ingredientName];
+      } else {
+        updatedFavorites = [...favorites, ingredientName];
+      }
     }
-
-    setFavorites(updatedFavorites);
-    storage.set("favorites", JSON.stringify(updatedFavorites));
+    if (props.leftover) {
+      setFavoritesL(updatedFavoritesL);
+      storage.set("favoritesL", JSON.stringify(updatedFavoritesL));
+    } else {
+      setFavorites(updatedFavorites);
+      storage.set("favorites", JSON.stringify(updatedFavorites));
+    }
 
     swipeableRef.current?.close();
 

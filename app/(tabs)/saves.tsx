@@ -21,10 +21,12 @@ export default function Saves() {
       <MobileHeader
         pageTitle="Saves"
         headerIcon={
-          <SavesFilled
-            iconsetcolor={COLORS.fontColor}
-            setheight={Platform.OS === "web" ? 25 : 25}
-          ></SavesFilled>
+          <View style={{ alignItems: "center" }}>
+            <SavesFilled
+              iconsetcolor={COLORS.fontColor}
+              setheight={Platform.OS === "web" ? 25 : 25}
+            ></SavesFilled>
+          </View>
         }
       ></MobileHeader>
       <ScrollView

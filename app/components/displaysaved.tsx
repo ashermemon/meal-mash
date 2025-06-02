@@ -5,13 +5,14 @@ import { styles } from "@/styles/auth.styles";
 
 import FavIngredient from "./favingredient";
 import FavoritesContext from "../contexts/FavoritesContext";
+import FavLeftoversContext from "../contexts/FavLeftoversContext";
 
 export default function DisplaySaved() {
   const [favorites, setFavorites] = useContext(FavoritesContext);
-
+  const [favoritesL, setFavoritesL] = useContext(FavLeftoversContext);
   return (
     <View style={{ width: "100%", paddingHorizontal: 20 }}>
-      {favorites.length === 0 ? (
+      {favorites.length === 0 && favoritesL.length === 0 ? (
         <Text style={[styles.textCentered]}>No favorites saved.</Text>
       ) : (
         <>
@@ -19,19 +20,46 @@ export default function DisplaySaved() {
             View favorited foods and saved recipes below! {"\n"} Click on a
             saved recipe to view step-by-step instructions!
           </Text>
+          {favoritesL.length !== 0 ? (
+            <>
+              <Text
+                style={[
+                  styles.textLeftBold,
+                  { marginTop: 15, marginBottom: 5 },
+                ]}
+              >
+                Favorited Leftovers:
+              </Text>
 
-          <Text
-            style={[styles.textLeftBold, { marginTop: 15, marginBottom: 5 }]}
-          >
-            Ingredients
-          </Text>
-          {favorites.map((item: string, index: number) => (
-            <FavIngredient
-              leftover={false}
-              ingredientName={item}
-              key={index}
-            ></FavIngredient>
-          ))}
+              {favoritesL.map((item: string, index: number) => (
+                <FavIngredient
+                  leftover={true}
+                  ingredientName={item}
+                  key={index}
+                ></FavIngredient>
+              ))}
+            </>
+          ) : null}
+          {favorites.length !== 0 ? (
+            <>
+              <Text
+                style={[
+                  styles.textLeftBold,
+                  { marginTop: 15, marginBottom: 5 },
+                ]}
+              >
+                Favorited Ingredients:
+              </Text>
+
+              {favorites.map((item: string, index: number) => (
+                <FavIngredient
+                  leftover={false}
+                  ingredientName={item}
+                  key={index}
+                ></FavIngredient>
+              ))}
+            </>
+          ) : null}
         </>
       )}
     </View>

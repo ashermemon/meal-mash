@@ -8,6 +8,7 @@ import { Image } from "expo-image";
 import FavoritesContext from "../contexts/FavoritesContext";
 import { COLORS } from "@/constants/theme";
 import emojiImages from "./emoji-images";
+import FavLeftoversContext from "../contexts/FavLeftoversContext";
 type CardProps = {
   ingredientName: string;
   leftover: boolean;
@@ -16,24 +17,44 @@ type CardProps = {
 export default function FavIngredient(props: CardProps) {
   const [favorite, setFavorite] = useState(true);
   const [favorites, setFavorites] = useContext(FavoritesContext);
+  const [favoritesL, setFavoritesL] = useContext(FavLeftoversContext);
 
   useEffect(() => {
-    setFavorite(favorites.includes(props.ingredientName));
-  }, [favorites, props.ingredientName]);
-
+    setFavorite(
+      favorites.includes(props.ingredientName) ||
+        favoritesL.includes(props.ingredientName)
+    );
+  }, [favorites, favoritesL, props.ingredientName]);
+  let updatedFavorites: string[];
+  let updatedFavoritesL: string[];
   const saveCard = () => {
     const ingredientName = props.ingredientName;
-    const isCurrentlyFavorite = favorites.includes(ingredientName); // Check against global context
-    let updatedFavorites: string[];
+    const isCurrentlyFavorite =
+      favorites.includes(ingredientName) || favoritesL.includes(ingredientName);
 
     if (isCurrentlyFavorite) {
-      updatedFavorites = favorites.filter((name) => name !== ingredientName);
+      if (props.leftover) {
+        updatedFavoritesL = favoritesL.filter(
+          (name) => name !== ingredientName
+        );
+      } else {
+        updatedFavorites = favorites.filter((name) => name !== ingredientName);
+      }
     } else {
-      updatedFavorites = [...favorites, ingredientName];
+      if (props.leftover) {
+        updatedFavoritesL = [...favoritesL, ingredientName];
+      } else {
+        updatedFavorites = [...favorites, ingredientName];
+      }
+    }
+    if (props.leftover) {
+      setFavoritesL(updatedFavoritesL);
+      storage.set("favoritesL", JSON.stringify(updatedFavoritesL));
+    } else {
+      setFavorites(updatedFavorites);
+      storage.set("favorites", JSON.stringify(updatedFavorites));
     }
 
-    setFavorites(updatedFavorites);
-    storage.set("favorites", JSON.stringify(updatedFavorites));
     alert(`
       ${props.ingredientName} was ${
       favorite ? `removed from favorites` : `favorited`
@@ -41,15 +62,28 @@ export default function FavIngredient(props: CardProps) {
   };
   return (
     <>
-      <View style={[{}, styles.favoritedContainer]}>
+      <View
+        style={[
+          {
+            borderColor: props.leftover
+              ? COLORS.saveBorder
+              : COLORS.greenButtonColorOuline,
+          },
+          styles.favoritedContainer,
+        ]}
+      >
         <View style={styles.ingredientPanel}>
           <View style={styles.ingredientFlexEmojiCard}>
             <View
               style={[
                 styles.emojiWrapCard,
                 {
-                  borderColor: COLORS.blueHeaderBorder,
-                  backgroundColor: COLORS.blueHeader,
+                  borderColor: props.leftover
+                    ? COLORS.saveBorder
+                    : COLORS.greenButtonColorOuline,
+                  backgroundColor: props.leftover
+                    ? COLORS.saveFill
+                    : COLORS.greenButtonColor,
                 },
               ]}
             >
