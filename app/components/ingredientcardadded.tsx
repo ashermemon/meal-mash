@@ -29,6 +29,7 @@ import FavIcon from "../Icons/FavIcon";
 import DiscardIcon from "../Icons/DiscardIcon";
 import FavIconFilled from "../Icons/FavIconFilled";
 import { storage } from "./storage";
+import FavoritesContext from "../contexts/FavoritesContext";
 
 type CardProps = {
   cardBColor: string;
@@ -50,12 +51,10 @@ export default function IngredientCardAdded(props: CardProps) {
   const [favorite, setFavorite] = useState(false);
   const ingredientImage =
     emojiImages[props.ingredientName] || emojiImages.Default;
-
+  const [favorites, setFavorites] = useContext(FavoritesContext);
   useEffect(() => {
-    const stored = storage.getString("favorites");
-    const favorites = stored ? JSON.parse(stored) : [];
     setFavorite(favorites.includes(props.ingredientName));
-  }, []);
+  }, [favorites, props.ingredientName]);
   const removeCard = () => {
     if (props.leftover) {
       setLeftovers((prevLeftovers) =>
@@ -69,24 +68,21 @@ export default function IngredientCardAdded(props: CardProps) {
     swipeableRef.current?.close();
   };
   const saveCard = () => {
-    setFavorite((prev) => !prev);
+    const ingredientName = props.ingredientName;
+    const isCurrentlyFavorite = favorites.includes(ingredientName);
+    let updatedFavorites: string[];
+
+    if (isCurrentlyFavorite) {
+      updatedFavorites = favorites.filter((name) => name !== ingredientName);
+    } else {
+      updatedFavorites = [...favorites, ingredientName];
+    }
+
+    setFavorites(updatedFavorites);
+    storage.set("favorites", JSON.stringify(updatedFavorites));
 
     swipeableRef.current?.close();
 
-    const existing = storage.getString("favorites");
-    const favorites = existing ? JSON.parse(existing) : [];
-
-    if (!favorite) {
-      if (!favorites.includes(props.ingredientName)) {
-        favorites.push(props.ingredientName);
-      }
-    } else {
-      const index = favorites.indexOf(props.ingredientName);
-      if (index > -1) {
-        favorites.splice(index, 1);
-      }
-    }
-    storage.set("favorites", JSON.stringify(favorites));
     alert(
       `${props.ingredientName} was ${
         favorite ? `removed from favorites` : `favorited`
@@ -111,7 +107,7 @@ export default function IngredientCardAdded(props: CardProps) {
                 setheight={35}
               ></DiscardIcon>
             </Pressable>
-            <Pressable style={styles.swipeableSave} onPress={saveCard}>
+            <Pressable style={styles.favSave} onPress={saveCard}>
               {favorite ? (
                 <FavIconFilled
                   iconsetcolor={"#FFF7EE"}

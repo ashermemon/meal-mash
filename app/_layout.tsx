@@ -5,13 +5,17 @@ import { View, ImageBackground } from "react-native";
 import { styles } from "@/styles/auth.styles";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { COLORS } from "@/constants/theme";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { storage } from "./components/storage";
+import FavoritesContext from "./contexts/FavoritesContext";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  const [favorites, setFavorites] = useState<string[]>([]);
+
   const image =
     Platform.OS == "web"
       ? require("../assets/images/AppBackgroundDesktop.png")
@@ -32,7 +36,18 @@ export default function RootLayout() {
       SplashScreen.hideAsync();
     }
   }, [loaded, error]);
-
+  useEffect(() => {
+    const storedFavoritesString = storage.getString("favorites");
+    if (storedFavoritesString) {
+      try {
+        const storedFavoritesArray = JSON.parse(storedFavoritesString);
+        setFavorites(storedFavoritesArray);
+      } catch (e) {
+        console.error("Failed to parse favorites from storage:", e);
+        setFavorites([]);
+      }
+    }
+  }, []);
   if (!loaded && !error) {
     return null;
   }
@@ -45,7 +60,9 @@ export default function RootLayout() {
             barStyle="dark-content"
             backgroundColor={COLORS.blueHeader}
           />
-          <Stack screenOptions={{ headerShown: false }}></Stack>
+          <FavoritesContext.Provider value={[favorites, setFavorites]}>
+            <Stack screenOptions={{ headerShown: false }}></Stack>
+          </FavoritesContext.Provider>
         </SafeAreaView>
       </SafeAreaProvider>
     </GestureHandlerRootView>

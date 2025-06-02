@@ -6,6 +6,9 @@ import MobileHeader from "../components/mobileheader";
 import SavesFilled from "../Icons/SavesFilled";
 import { COLORS } from "@/constants/theme";
 import DisplaySaved from "../components/displaysaved";
+import FavoritesContext from "../contexts/FavoritesContext";
+import { storage } from "../components/storage";
+import { useState } from "react";
 
 const image =
   Platform.OS == "web"
@@ -14,26 +17,24 @@ const image =
 
 export default function Saves() {
   return (
-    <>
-      <ImageBackground source={image} style={styles.image} resizeMode="cover">
-        <MobileHeader
-          pageTitle="Saves"
-          headerIcon={
-            <SavesFilled
-              iconsetcolor={COLORS.fontColor}
-              setheight={Platform.OS === "web" ? 25 : 25}
-            ></SavesFilled>
-          }
-        ></MobileHeader>
-        <ScrollView
-          contentContainerStyle={{ flexGrow: 1 }}
-          style={styles.generatorContainer}
-        >
-          <View style={styles.container}>
-            <DisplaySaved></DisplaySaved>
-          </View>
-        </ScrollView>
-      </ImageBackground>
-    </>
+    <ImageBackground source={image} style={styles.image} resizeMode="cover">
+      <MobileHeader
+        pageTitle="Saves"
+        headerIcon={
+          <SavesFilled
+            iconsetcolor={COLORS.fontColor}
+            setheight={Platform.OS === "web" ? 25 : 25}
+          ></SavesFilled>
+        }
+      ></MobileHeader>
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1 }}
+        style={styles.generatorContainer}
+      >
+        <View style={styles.container}>
+          <DisplaySaved></DisplaySaved>
+        </View>
+      </ScrollView>
+    </ImageBackground>
   );
 }

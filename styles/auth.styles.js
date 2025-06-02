@@ -339,6 +339,12 @@ export const styles = StyleSheet.create({
     alignItems: "flex-start",
     justifyContent: "center",
   },
+  favFlex: {
+    flex: 1,
+    paddingHorizontal: 20,
+    alignItems: "flex-end",
+    justifyContent: "center",
+  },
   ingredientFlexEmojiCard: {
     alignItems: "flex-start",
     justifyContent: "center",
@@ -356,6 +362,19 @@ export const styles = StyleSheet.create({
     width: "100%",
     margin: 0,
     borderTopWidth: 3,
+  },
+  favoritedContainer: {
+    alignItems: "center",
+
+    borderWidth: 3,
+    backgroundColor: "white",
+    borderColor: COLORS.blueHeaderBorder,
+
+    borderRadius: 30,
+
+    paddingVertical: 15,
+    width: "100%",
+    marginVertical: 10,
   },
   nutrientCircle: {
     alignItems: "center",
@@ -401,6 +420,11 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 25,
     height: "100%",
     margin: 0,
+  },
+  favSave: {
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 25,
   },
   deleteText: {
     fontFamily: "Nunito-Bold",
