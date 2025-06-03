@@ -19,3 +19,7 @@
    ```bash
     npx expo run:ios or npx expo run:android
    ```
+   
+3. Download the ExpoGo app from the App Store or Play Store and scan the QR code
+
+4. Generate Delicious Meals!
