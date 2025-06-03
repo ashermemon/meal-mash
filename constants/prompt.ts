@@ -35,7 +35,7 @@ const Prompt = (props: PromptProps) => {
       
       «
       
-      **[Recipe Name]:**
+      **[Recipe Name]**
       [total recipe time]
       
       

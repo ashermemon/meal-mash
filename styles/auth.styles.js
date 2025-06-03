@@ -334,14 +334,14 @@ export const styles = StyleSheet.create({
     marginRight: 5,
   },
   ingredientFlexCard: {
-    flex: 1,
+    flex: 6,
     padding: 10,
     alignItems: "flex-start",
     justifyContent: "center",
   },
   favFlex: {
     flex: 1,
-    paddingHorizontal: 20,
+    paddingRight: 25,
     alignItems: "flex-end",
     justifyContent: "center",
   },
@@ -366,6 +366,18 @@ export const styles = StyleSheet.create({
   favoritedContainer: {
     alignItems: "center",
 
+    borderWidth: 3,
+    backgroundColor: "white",
+
+    borderRadius: 30,
+
+    paddingVertical: 15,
+    width: "100%",
+    marginTop: 10,
+  },
+  favRecipe: {
+    alignItems: "center",
+    borderColor: COLORS.genBorder,
     borderWidth: 3,
     backgroundColor: "white",
 

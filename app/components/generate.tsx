@@ -167,7 +167,7 @@ export default function Generate() {
         const content = text.slice(2, -2);
 
         if (first == true) {
-          title = content.slice(0, -1);
+          title = content;
         }
         first = false;
         return (

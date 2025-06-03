@@ -10,6 +10,7 @@ import NewCard from "../components/newcard";
 import { useState } from "react";
 import { storage } from "../components/storage";
 import FavoritesContext from "../contexts/FavoritesContext";
+import Welcome from "../components/welcome";
 
 export default function Index() {
   const image =
@@ -17,7 +18,7 @@ export default function Index() {
       ? require("../../assets/images/AppBackgroundDesktop.png")
       : require("../../assets/images/AppBackground.png");
 
-  const [genEnabled, setGenEnabled] = useState(true);
+  const [genEnabled, setGenEnabled] = useState(false);
   return (
     <ImageBackground source={image} style={styles.image} resizeMode="cover">
       <MobileHeader
@@ -34,7 +35,14 @@ export default function Index() {
         style={styles.generatorContainer}
       >
         <View style={styles.container}>
-          {genEnabled ? <Generate></Generate> : <></>}
+          {genEnabled ? (
+            <Generate></Generate>
+          ) : (
+            <Welcome
+              genEnabled={genEnabled}
+              setGenEnabled={setGenEnabled}
+            ></Welcome>
+          )}
         </View>
       </ScrollView>
     </ImageBackground>

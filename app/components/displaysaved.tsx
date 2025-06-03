@@ -7,6 +7,7 @@ import FavIngredient from "./favingredient";
 import FavoritesContext from "../contexts/FavoritesContext";
 import FavLeftoversContext from "../contexts/FavLeftoversContext";
 import SavedRecipesContext from "../contexts/SavedRecipesContext";
+import SavedCard from "./SavedCard";
 
 export default function DisplaySaved() {
   const [favorites, setFavorites] = useContext(FavoritesContext);
@@ -14,7 +15,7 @@ export default function DisplaySaved() {
   const [saves, setSaves] = useContext(SavedRecipesContext);
 
   return (
-    <View style={{ width: "100%", paddingHorizontal: 20 }}>
+    <View style={{ width: "100%", paddingHorizontal: 20, paddingBottom: 20 }}>
       {favorites.length === 0 &&
       favoritesL.length === 0 &&
       saves.length === 0 ? (
@@ -39,11 +40,7 @@ export default function DisplaySaved() {
               </Text>
 
               {saves.map((item: string, index: number) => (
-                <FavIngredient
-                  leftover={true}
-                  ingredientName={item}
-                  key={index}
-                ></FavIngredient>
+                <SavedCard SavedRecipe={item} key={index}></SavedCard>
               ))}
             </>
           ) : null}
