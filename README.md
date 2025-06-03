@@ -8,7 +8,7 @@
    Click "Get API Key" and press Create API Key
    Copy the API Key and paste it into the apikey.ts file found in app/components
 
-2. Run ```bash npm install```
+2. Run ```npm install```
 
 3. Start the app
 
