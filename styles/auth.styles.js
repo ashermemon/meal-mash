@@ -373,7 +373,7 @@ export const styles = StyleSheet.create({
 
     paddingVertical: 15,
     width: "100%",
-    marginVertical: 10,
+    marginTop: 10,
   },
   nutrientCircle: {
     alignItems: "center",

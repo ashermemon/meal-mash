@@ -7,7 +7,7 @@ import {
   Alert,
 } from "react-native";
 import Modal from "react-native-modal";
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { GoogleGenAI } from "@google/genai";
 import { styles } from "@/styles/auth.styles";
 import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
@@ -33,10 +33,13 @@ import ResetTimer from "../Icons/ResetTimer";
 import DiscardIcon from "../Icons/DiscardIcon";
 import SavesFilled from "../Icons/SavesFilled";
 import { APIKEY } from "@/app/components/apikey";
+import SavedRecipesContext from "../contexts/SavedRecipesContext";
+import { storage } from "./storage";
 
 export default function Generate() {
   const ai = new GoogleGenAI({ apiKey: APIKEY });
   var hsl = require("hsl-to-hex");
+  let first = true;
 
   const [responseRecipe, setResponseRecipe] = useState("");
   const [searchActive, setSearchActive] = useState(false);
@@ -62,6 +65,15 @@ export default function Generate() {
 
   const screenWidth = Dimensions.get("window").width;
   const screenHeight = Dimensions.get("window").height;
+  let title: undefined | string;
+
+  const [saves, setSaves] = useContext(SavedRecipesContext);
+
+  useEffect(() => {
+    if (title != undefined) {
+      setSaved(saves.includes(title));
+    }
+  }, [saves, title]);
 
   const fetchResponse = async (prompt: string) => {
     setLoading(true);
@@ -89,7 +101,9 @@ export default function Generate() {
 
   const handleGenerateRecipe = (inputRecipe: string) => {
     setCurrentStep(1);
-
+    first = false;
+    title = undefined;
+    setSaved(false);
     setTotalSteps(0);
     stepNum = 0;
     fetchResponse(inputRecipe);
@@ -142,14 +156,20 @@ export default function Generate() {
     const regex = new RegExp(`[${charsToRemove.join("")}]`, "g");
     return (str || "").replace(regex, "");
   }
+
   const parseMarkdownTextInline = (input: string) => {
     const texts = input.split(/(\*\*[^*]+\*\*|\{[^}]+\})/g);
     let timerIndex = -1;
+
     return texts.map((text, index) => {
       text = removeCharacters(text, ["↾", "↿", "⇨", "⇦", "⇸", "⇷"]);
       if (text.startsWith("**") && text.endsWith("**")) {
         const content = text.slice(2, -2);
 
+        if (first == true) {
+          title = content.slice(0, -1);
+        }
+        first = false;
         return (
           <Text
             key={index}
@@ -187,9 +207,22 @@ export default function Generate() {
     });
   };
 
+  let updatedSaves: string[];
+
   const saveRecipe = (input: string) => {
-    console.log(`saved ${responseRecipe}`);
-    setSaved(!saved);
+    const recipeName = input;
+    const isSaved = saves.includes(recipeName);
+
+    if (isSaved) {
+      updatedSaves = saves.filter((name) => name !== recipeName);
+    } else {
+      updatedSaves = [...saves, recipeName];
+    }
+
+    setSaves(updatedSaves);
+    storage.set("saves", JSON.stringify(updatedSaves));
+
+    alert(`${input} was ${saved ? `removed from saves` : `saved`}`);
   };
 
   const newMeal = () => {
@@ -373,7 +406,9 @@ export default function Generate() {
                                 borderColor: COLORS.saveBorder,
                               },
                             ]}
-                            onPress={() => saveRecipe(responseRecipe)}
+                            onPress={() =>
+                              title ? saveRecipe(title) : alert("title")
+                            }
                           >
                             <View>
                               {saved ? (

@@ -11,12 +11,14 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { storage } from "./components/storage";
 import FavoritesContext from "./contexts/FavoritesContext";
 import FavLeftoversContext from "./contexts/FavLeftoversContext";
+import SavedRecipesContext from "./contexts/SavedRecipesContext";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [favorites, setFavorites] = useState<string[]>([]);
   const [favoritesL, setFavoritesL] = useState<string[]>([]);
+  const [savedRecipes, setSavedRecipes] = useState<string[]>([]);
 
   const image =
     Platform.OS == "web"
@@ -41,6 +43,7 @@ export default function RootLayout() {
   useEffect(() => {
     const storedFavoritesString = storage.getString("favorites");
     const storedFavoritesStringL = storage.getString("favoritesL");
+    const storedSaved = storage.getString("saves");
     if (storedFavoritesString) {
       try {
         const storedFavoritesArray = JSON.parse(storedFavoritesString);
@@ -59,6 +62,15 @@ export default function RootLayout() {
         setFavoritesL([]);
       }
     }
+    if (storedSaved) {
+      try {
+        const storedSavedArray = JSON.parse(storedSaved);
+        setSavedRecipes(storedSavedArray);
+      } catch (e) {
+        console.error("Failed to parse favorites from storage:", e);
+        setSavedRecipes([]);
+      }
+    }
   }, []);
   if (!loaded && !error) {
     return null;
@@ -74,7 +86,11 @@ export default function RootLayout() {
           />
           <FavoritesContext.Provider value={[favorites, setFavorites]}>
             <FavLeftoversContext.Provider value={[favoritesL, setFavoritesL]}>
-              <Stack screenOptions={{ headerShown: false }}></Stack>
+              <SavedRecipesContext.Provider
+                value={[savedRecipes, setSavedRecipes]}
+              >
+                <Stack screenOptions={{ headerShown: false }}></Stack>
+              </SavedRecipesContext.Provider>
             </FavLeftoversContext.Provider>
           </FavoritesContext.Provider>
         </SafeAreaView>
