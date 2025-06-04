@@ -29,6 +29,8 @@ import DiscardIcon from "../Icons/DiscardIcon";
 import BackArrow from "../Icons/BackArrow";
 import { Image } from "expo-image";
 import LeftoversContext from "../contexts/LeftoversContext";
+import FavoritesContext from "../contexts/FavoritesContext";
+import FavLeftoversContext from "../contexts/FavLeftoversContext";
 
 export default function Search() {
   type Ingredient = {
@@ -54,6 +56,10 @@ export default function Search() {
   const [leftovers, setLeftovers] = useContext(LeftoversContext);
 
   const [savedSearchQuery, setSavedSearchQuery] = useState("");
+
+  const [favorites, setFavorites] = useContext(FavoritesContext);
+  const [favoritesL, setFavoritesL] = useContext(FavLeftoversContext);
+
   let currentColour = "#FAFAFA";
 
   var hsl = require("hsl-to-hex");
@@ -68,6 +74,33 @@ export default function Search() {
     setDataL(leftoversDB as DBItem[]);
   }, []);
 
+  const favoriteData = useMemo(() => {
+    let source: DBItem[] = [];
+
+    const favs = leftoversEnabled ? favoritesL : favorites;
+
+    const listToCheck = leftoversEnabled ? leftovers : ingredients;
+    const hasUniqueFavorites = favs.some((fav) => !listToCheck.includes(fav));
+
+    if (favs.length > 0 && hasUniqueFavorites) {
+      source.push("Favorites");
+    }
+    for (let x = 0; x < favs.length; x++) {
+      if (!listToCheck.includes(favs[x])) {
+        source.push({
+          id: x,
+          name: favs[x],
+          color: "cat9",
+        });
+      }
+    }
+
+    if (!(debouncedSearchQuery ?? "").trim()) {
+      return source;
+    }
+
+    return [];
+  }, [debouncedSearchQuery, leftoversEnabled, favorites, favoritesL]);
   const filteredDataToRender = useMemo(() => {
     const source: DBItem[] = leftoversEnabled ? dataL : data;
 
@@ -260,7 +293,11 @@ export default function Search() {
         ) : (
           <>
             <FlashList
-              data={filteredDataToRender}
+              data={
+                favoriteData
+                  ? favoriteData.concat(filteredDataToRender)
+                  : filteredDataToRender
+              }
               keyExtractor={(item, index) => {
                 if (typeof item === "string") {
                   return item + "-" + index;
