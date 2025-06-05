@@ -1,14 +1,23 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
+import { Pressable, Text, View } from "react-native";
 import { storage } from "./storage";
 import { styles } from "@/styles/auth.styles";
 import FavIconFilled from "../Icons/FavIconFilled";
 import FavIcon from "../Icons/FavIcon";
 import { Image } from "expo-image";
 import FavoritesContext from "../contexts/FavoritesContext";
+import FavLeftoversContext from "../contexts/FavLeftoversContext";
+import LeftoversContext from "../contexts/LeftoversContext";
+import IngredientsContext from "../contexts/IngredientsContext";
 import { COLORS } from "@/constants/theme";
 import emojiImages from "./emoji-images";
-import FavLeftoversContext from "../contexts/FavLeftoversContext";
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
+import { useRouter } from "expo-router";
+
 type CardProps = {
   ingredientName: string;
   leftover: boolean;
@@ -16,21 +25,29 @@ type CardProps = {
 
 export default function FavIngredient(props: CardProps) {
   const [favorite, setFavorite] = useState(true);
+
   const [favorites, setFavorites] = useContext(FavoritesContext);
   const [favoritesL, setFavoritesL] = useContext(FavLeftoversContext);
+  const [ingredients, setIngredients] = useContext(IngredientsContext);
+  const [leftovers, setLeftovers] = useContext(LeftoversContext);
+
+  const pressed = useSharedValue(false);
+  const router = useRouter();
 
   useEffect(() => {
-    setFavorite(
+    const isFav =
       favorites.includes(props.ingredientName) ||
-        favoritesL.includes(props.ingredientName)
-    );
+      favoritesL.includes(props.ingredientName);
+    setFavorite(isFav);
   }, [favorites, favoritesL, props.ingredientName]);
-  let updatedFavorites: string[];
-  let updatedFavoritesL: string[];
+
   const saveCard = () => {
     const ingredientName = props.ingredientName;
     const isCurrentlyFavorite =
       favorites.includes(ingredientName) || favoritesL.includes(ingredientName);
+
+    let updatedFavorites = [...favorites];
+    let updatedFavoritesL = [...favoritesL];
 
     if (isCurrentlyFavorite) {
       if (props.leftover) {
@@ -42,11 +59,12 @@ export default function FavIngredient(props: CardProps) {
       }
     } else {
       if (props.leftover) {
-        updatedFavoritesL = [...favoritesL, ingredientName];
+        updatedFavoritesL.push(ingredientName);
       } else {
-        updatedFavorites = [...favorites, ingredientName];
+        updatedFavorites.push(ingredientName);
       }
     }
+
     if (props.leftover) {
       setFavoritesL(updatedFavoritesL);
       storage.set("favoritesL", JSON.stringify(updatedFavoritesL));
@@ -55,14 +73,59 @@ export default function FavIngredient(props: CardProps) {
       storage.set("favorites", JSON.stringify(updatedFavorites));
     }
 
-    alert(`
-      ${props.ingredientName} was ${
-      favorite ? `removed from favorites` : `favorited`
-    }`);
+    alert(
+      `${ingredientName} was ${
+        isCurrentlyFavorite ? "removed from favorites" : "favorited"
+      }`
+    );
   };
+
+  const addIngredient = () => {
+    let upperCaseArrayL = leftovers.map((str) => str.toUpperCase());
+    let upperCaseArrayI = ingredients.map((str) => str.toUpperCase());
+
+    if (
+      props.leftover &&
+      upperCaseArrayL.includes(props.ingredientName.toUpperCase()) == false
+    ) {
+      router.push("/");
+      setLeftovers((prev: string[]) => [...prev, props.ingredientName]);
+    } else if (
+      !props.leftover &&
+      upperCaseArrayI.includes(props.ingredientName.toUpperCase()) == false
+    ) {
+      setIngredients((prev: string[]) => [...prev, props.ingredientName]);
+      router.push("/");
+    } else {
+      alert("Ingredient already added!");
+    }
+  };
+
+  const animatedStyles = useAnimatedStyle(() => {
+    const targetColor = pressed.value
+      ? props.leftover
+        ? COLORS.blueHeader
+        : COLORS.greenButtonColor
+      : "white";
+
+    return {
+      backgroundColor: withTiming(targetColor),
+    };
+  });
+
   return (
-    <>
-      <View
+    <Pressable
+      onPressIn={() => {
+        pressed.value = true;
+      }}
+      onPressOut={() => {
+        pressed.value = false;
+      }}
+      onPress={() => {
+        addIngredient();
+      }}
+    >
+      <Animated.View
         style={[
           {
             borderColor: props.leftover
@@ -70,6 +133,7 @@ export default function FavIngredient(props: CardProps) {
               : COLORS.greenButtonColorOuline,
           },
           styles.favoritedContainer,
+          animatedStyles,
         ]}
       >
         <View style={styles.ingredientPanel}>
@@ -90,7 +154,7 @@ export default function FavIngredient(props: CardProps) {
               <Image
                 style={styles.ingredientEmoji}
                 source={emojiImages.Default}
-              ></Image>
+              />
             </View>
           </View>
           <View style={styles.ingredientFlexCard}>
@@ -102,17 +166,14 @@ export default function FavIngredient(props: CardProps) {
                 <FavIconFilled
                   iconsetcolor={COLORS.favoriteColor}
                   setheight={35}
-                ></FavIconFilled>
+                />
               ) : (
-                <FavIcon
-                  iconsetcolor={COLORS.favoriteColor}
-                  setheight={35}
-                ></FavIcon>
+                <FavIcon iconsetcolor={COLORS.favoriteColor} setheight={35} />
               )}
             </Pressable>
           </View>
         </View>
-      </View>
-    </>
+      </Animated.View>
+    </Pressable>
   );
 }

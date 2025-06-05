@@ -12,6 +12,8 @@ import { storage } from "./components/storage";
 import FavoritesContext from "./contexts/FavoritesContext";
 import FavLeftoversContext from "./contexts/FavLeftoversContext";
 import SavedRecipesContext from "./contexts/SavedRecipesContext";
+import LeftoversContext from "./contexts/LeftoversContext";
+import IngredientsContext from "./contexts/IngredientsContext";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -19,6 +21,8 @@ export default function RootLayout() {
   const [favorites, setFavorites] = useState<string[]>([]);
   const [favoritesL, setFavoritesL] = useState<string[]>([]);
   const [savedRecipes, setSavedRecipes] = useState<string[]>([]);
+  const [ingredients, setIngredients] = useState<string[]>([]);
+  const [leftovers, setLeftovers] = useState<string[]>([]);
 
   const image =
     Platform.OS == "web"
@@ -80,19 +84,26 @@ export default function RootLayout() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.blueHeader }}>
-          <StatusBar
-            barStyle="dark-content"
-            backgroundColor={COLORS.blueHeader}
-          />
-          <FavoritesContext.Provider value={[favorites, setFavorites]}>
-            <FavLeftoversContext.Provider value={[favoritesL, setFavoritesL]}>
-              <SavedRecipesContext.Provider
-                value={[savedRecipes, setSavedRecipes]}
-              >
-                <Stack screenOptions={{ headerShown: false }}></Stack>
-              </SavedRecipesContext.Provider>
-            </FavLeftoversContext.Provider>
-          </FavoritesContext.Provider>
+          <LeftoversContext.Provider value={[leftovers, setLeftovers]}>
+            <IngredientsContext.Provider value={[ingredients, setIngredients]}>
+              <StatusBar
+                barStyle="dark-content"
+                backgroundColor={COLORS.blueHeader}
+              />
+
+              <FavoritesContext.Provider value={[favorites, setFavorites]}>
+                <FavLeftoversContext.Provider
+                  value={[favoritesL, setFavoritesL]}
+                >
+                  <SavedRecipesContext.Provider
+                    value={[savedRecipes, setSavedRecipes]}
+                  >
+                    <Stack screenOptions={{ headerShown: false }}></Stack>
+                  </SavedRecipesContext.Provider>
+                </FavLeftoversContext.Provider>
+              </FavoritesContext.Provider>
+            </IngredientsContext.Provider>
+          </LeftoversContext.Provider>
         </SafeAreaView>
       </SafeAreaProvider>
     </GestureHandlerRootView>

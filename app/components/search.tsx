@@ -88,7 +88,7 @@ export default function Search() {
     for (let x = 0; x < favs.length; x++) {
       if (!listToCheck.includes(favs[x])) {
         source.push({
-          id: x,
+          id: x + 2000,
           name: favs[x],
           color: "cat9",
         });

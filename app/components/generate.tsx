@@ -50,8 +50,8 @@ export default function Generate() {
 
   const [error, setError] = useState<Error | null>(null);
 
-  const [ingredients, setIngredients] = useState<string[]>([]);
-  const [leftovers, setLeftovers] = useState<string[]>([]);
+  const [ingredients, setIngredients] = useContext(IngredientsContext);
+  const [leftovers, setLeftovers] = useContext(LeftoversContext);
   const [leftoversEnabled, setLeftoversEnabled] = useState(false);
   const [nutrients, setNutrients] = useState<number[]>([]);
   const [saved, setSaved] = useState(false);
@@ -238,234 +238,228 @@ export default function Generate() {
         <LeftoversEnabled.Provider
           value={[leftoversEnabled, setLeftoversEnabled]}
         >
-          <LeftoversContext.Provider value={[leftovers, setLeftovers]}>
-            <IngredientsContext.Provider value={[ingredients, setIngredients]}>
-              <SearchContext.Provider value={[searchActive, setSearchActive]}>
-                <View
-                  style={{
-                    width: "100%",
+          <SearchContext.Provider value={[searchActive, setSearchActive]}>
+            <View
+              style={{
+                width: "100%",
 
-                    flex: 1,
-                    alignItems: "center",
-                  }}
-                >
-                  <View
+                flex: 1,
+                alignItems: "center",
+              }}
+            >
+              <View
+                style={{
+                  paddingHorizontal: 20,
+                  alignItems: "center",
+                }}
+              >
+                <View>
+                  <Modal
+                    isVisible={searchActive}
+                    useNativeDriver={true}
+                    animationIn="slideInUp"
+                    animationOut="slideOutDown"
+                    backdropOpacity={0.2}
+                    onBackdropPress={() => setSearchActive(false)}
+                    onBackButtonPress={() => setSearchActive(false)}
+                    animationInTiming={600}
+                    animationOutTiming={600}
+                    backdropTransitionOutTiming={1}
+                    backdropTransitionInTiming={600}
                     style={{
-                      paddingHorizontal: 20,
+                      margin: 0,
+                      justifyContent: "center",
                       alignItems: "center",
                     }}
                   >
                     <View>
-                      <Modal
-                        isVisible={searchActive}
-                        useNativeDriver={true}
-                        animationIn="slideInUp"
-                        animationOut="slideOutDown"
-                        backdropOpacity={0.2}
-                        onBackdropPress={() => setSearchActive(false)}
-                        onBackButtonPress={() => setSearchActive(false)}
-                        animationInTiming={600}
-                        animationOutTiming={600}
-                        backdropTransitionOutTiming={1}
-                        backdropTransitionInTiming={600}
-                        style={{
-                          margin: 0,
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
+                      <Search />
+                    </View>
+                  </Modal>
+                </View>
+
+                {loading ? (
+                  <Text style={[styles.textCentered, { marginBottom: 25 }]}>
+                    Loading...
+                  </Text>
+                ) : !generated ? (
+                  <Text style={[styles.textCentered, { marginBottom: 25 }]}>
+                    Generate a meal by adding your leftovers and ingredients
+                    below!
+                  </Text>
+                ) : (
+                  <></>
+                )}
+                <View>
+                  {loading && (
+                    <ActivityIndicator
+                      color={COLORS.blueLink}
+                      size={"large"}
+                    ></ActivityIndicator>
+                  )}
+                  {error && (
+                    <Text style={styles.errorText}>
+                      {error.message || error.toString()}
+                    </Text>
+                  )}
+
+                  {!loading && generated && (
+                    <View style={{ alignItems: "center", marginVertical: 10 }}>
+                      {parseMarkdownText(responseRecipe)}
+                      <>{currentStep == 1 && <NutrientCircle />}</>
+                    </View>
+                  )}
+                </View>
+              </View>
+              {!loading && !generated && (
+                <>
+                  <AddLeftovers></AddLeftovers>
+                  <AddIngredients></AddIngredients>
+                </>
+              )}
+            </View>
+
+            <View style={styles.arrowButtons}>
+              <View style={styles.flexBTN}>
+                {!loading && generated && currentStep > 1 ? (
+                  <Pressable
+                    style={styles.nextButton}
+                    onPress={() => [setCurrentStep(currentStep - 1)]}
+                  >
+                    <BackArrow
+                      iconsetcolor={COLORS.fontColor}
+                      setheight={25}
+                      setwidth={50}
+                    ></BackArrow>
+                  </Pressable>
+                ) : (
+                  <View style={{ width: 40 }} />
+                )}
+              </View>
+              <View style={styles.flexMiddle}>
+                <View style={styles.generateButtonContainer}>
+                  {!loading && !generated && (
+                    <Pressable
+                      style={[
+                        styles.generateButton,
+                        {
+                          backgroundColor:
+                            leftovers.length > 0 || ingredients.length > 0
+                              ? COLORS.blueHeader
+                              : COLORS.searchGreyBG,
+                          borderColor:
+                            leftovers.length > 0 || ingredients.length > 0
+                              ? COLORS.blueHeaderBorder
+                              : COLORS.searchGreyBorder,
+                        },
+                      ]}
+                      onPress={
+                        leftovers.length > 0 || ingredients.length > 0
+                          ? () => handleGenerateRecipe(recipePrompt)
+                          : () =>
+                              alert(
+                                "Add a leftover or ingredient to generate meal!"
+                              )
+                      }
+                    >
+                      <Text
+                        style={[
+                          styles.textCentered,
+                          { fontFamily: "Nunito-SemiBold" },
+                        ]}
+                        adjustsFontSizeToFit={true}
+                      >
+                        Create Meal
+                      </Text>
+                    </Pressable>
+                  )}
+
+                  {!loading && generated && (
+                    <>
+                      <Pressable
+                        style={[
+                          styles.generateButtonNew,
+                          {
+                            backgroundColor: COLORS.genFill,
+                            borderColor: COLORS.genBorder,
+                          },
+                        ]}
+                        onPress={() => handleGenerateRecipe(recipePrompt)}
                       >
                         <View>
-                          <Search />
+                          <ResetTimer
+                            iconsetcolor="#a759c8"
+                            setheight={25}
+                          ></ResetTimer>
                         </View>
-                      </Modal>
-                    </View>
+                      </Pressable>
 
-                    {loading ? (
-                      <Text style={[styles.textCentered, { marginBottom: 25 }]}>
-                        Loading...
-                      </Text>
-                    ) : !generated ? (
-                      <Text style={[styles.textCentered, { marginBottom: 25 }]}>
-                        Generate a meal by adding your leftovers and ingredients
-                        below!
-                      </Text>
-                    ) : (
-                      <></>
-                    )}
-                    <View>
-                      {loading && (
-                        <ActivityIndicator
-                          color={COLORS.blueLink}
-                          size={"large"}
-                        ></ActivityIndicator>
-                      )}
-                      {error && (
-                        <Text style={styles.errorText}>
-                          {error.message || error.toString()}
-                        </Text>
-                      )}
-
-                      {!loading && generated && (
-                        <View
-                          style={{ alignItems: "center", marginVertical: 10 }}
-                        >
-                          {parseMarkdownText(responseRecipe)}
-                          <>{currentStep == 1 && <NutrientCircle />}</>
+                      <Pressable
+                        style={[
+                          styles.generateButtonNew,
+                          {
+                            backgroundColor: COLORS.saveFill,
+                            borderColor: COLORS.saveBorder,
+                          },
+                        ]}
+                        onPress={() =>
+                          title ? saveRecipe(title) : alert("title")
+                        }
+                      >
+                        <View>
+                          {saved ? (
+                            <SavesFilled
+                              iconsetcolor={"#5983C8"}
+                              setheight={25}
+                            ></SavesFilled>
+                          ) : (
+                            <SavesIcon
+                              iconsetcolor={"#5983C8"}
+                              setheight={25}
+                            ></SavesIcon>
+                          )}
                         </View>
-                      )}
-                    </View>
-                  </View>
-                  {!loading && !generated && (
-                    <>
-                      <AddLeftovers></AddLeftovers>
-                      <AddIngredients></AddIngredients>
+                      </Pressable>
+                      <Pressable
+                        style={[
+                          styles.generateButtonNew,
+                          {
+                            backgroundColor: COLORS.deleteFill,
+                            borderColor: COLORS.deleteBorder,
+                          },
+                        ]}
+                        onPress={() => newMeal()}
+                      >
+                        <View>
+                          <DiscardIcon
+                            iconsetcolor={"#db904f"}
+                            setheight={25}
+                          />
+                        </View>
+                      </Pressable>
                     </>
                   )}
                 </View>
-
-                <View style={styles.arrowButtons}>
-                  <View style={styles.flexBTN}>
-                    {!loading && generated && currentStep > 1 ? (
-                      <Pressable
-                        style={styles.nextButton}
-                        onPress={() => [setCurrentStep(currentStep - 1)]}
-                      >
-                        <BackArrow
-                          iconsetcolor={COLORS.fontColor}
-                          setheight={25}
-                          setwidth={50}
-                        ></BackArrow>
-                      </Pressable>
-                    ) : (
-                      <View style={{ width: 40 }} />
-                    )}
-                  </View>
-                  <View style={styles.flexMiddle}>
-                    <View style={styles.generateButtonContainer}>
-                      {!loading && !generated && (
-                        <Pressable
-                          style={[
-                            styles.generateButton,
-                            {
-                              backgroundColor:
-                                leftovers.length > 0 || ingredients.length > 0
-                                  ? COLORS.blueHeader
-                                  : COLORS.searchGreyBG,
-                              borderColor:
-                                leftovers.length > 0 || ingredients.length > 0
-                                  ? COLORS.blueHeaderBorder
-                                  : COLORS.searchGreyBorder,
-                            },
-                          ]}
-                          onPress={
-                            leftovers.length > 0 || ingredients.length > 0
-                              ? () => handleGenerateRecipe(recipePrompt)
-                              : () =>
-                                  alert(
-                                    "Add a leftover or ingredient to generate meal!"
-                                  )
-                          }
-                        >
-                          <Text
-                            style={[
-                              styles.textCentered,
-                              { fontFamily: "Nunito-SemiBold" },
-                            ]}
-                            adjustsFontSizeToFit={true}
-                          >
-                            Create Meal
-                          </Text>
-                        </Pressable>
-                      )}
-
-                      {!loading && generated && (
-                        <>
-                          <Pressable
-                            style={[
-                              styles.generateButtonNew,
-                              {
-                                backgroundColor: COLORS.genFill,
-                                borderColor: COLORS.genBorder,
-                              },
-                            ]}
-                            onPress={() => handleGenerateRecipe(recipePrompt)}
-                          >
-                            <View>
-                              <ResetTimer
-                                iconsetcolor="#a759c8"
-                                setheight={25}
-                              ></ResetTimer>
-                            </View>
-                          </Pressable>
-
-                          <Pressable
-                            style={[
-                              styles.generateButtonNew,
-                              {
-                                backgroundColor: COLORS.saveFill,
-                                borderColor: COLORS.saveBorder,
-                              },
-                            ]}
-                            onPress={() =>
-                              title ? saveRecipe(title) : alert("title")
-                            }
-                          >
-                            <View>
-                              {saved ? (
-                                <SavesFilled
-                                  iconsetcolor={"#5983C8"}
-                                  setheight={25}
-                                ></SavesFilled>
-                              ) : (
-                                <SavesIcon
-                                  iconsetcolor={"#5983C8"}
-                                  setheight={25}
-                                ></SavesIcon>
-                              )}
-                            </View>
-                          </Pressable>
-                          <Pressable
-                            style={[
-                              styles.generateButtonNew,
-                              {
-                                backgroundColor: COLORS.deleteFill,
-                                borderColor: COLORS.deleteBorder,
-                              },
-                            ]}
-                            onPress={() => newMeal()}
-                          >
-                            <View>
-                              <DiscardIcon
-                                iconsetcolor={"#db904f"}
-                                setheight={25}
-                              />
-                            </View>
-                          </Pressable>
-                        </>
-                      )}
-                    </View>
-                  </View>
-                  <View style={styles.flexBTN}>
-                    {!loading && generated && currentStep < totalSteps ? (
-                      <Pressable
-                        style={styles.nextButton}
-                        onPress={() => setCurrentStep(currentStep + 1)}
-                      >
-                        <ForwardArrow
-                          iconsetcolor={COLORS.fontColor}
-                          setheight={25}
-                          setwidth={50}
-                        ></ForwardArrow>
-                      </Pressable>
-                    ) : (
-                      <View style={{ width: 40 }} />
-                    )}
-                  </View>
-                </View>
-                <View style={styles.spacer}></View>
-              </SearchContext.Provider>
-            </IngredientsContext.Provider>
-          </LeftoversContext.Provider>
+              </View>
+              <View style={styles.flexBTN}>
+                {!loading && generated && currentStep < totalSteps ? (
+                  <Pressable
+                    style={styles.nextButton}
+                    onPress={() => setCurrentStep(currentStep + 1)}
+                  >
+                    <ForwardArrow
+                      iconsetcolor={COLORS.fontColor}
+                      setheight={25}
+                      setwidth={50}
+                    ></ForwardArrow>
+                  </Pressable>
+                ) : (
+                  <View style={{ width: 40 }} />
+                )}
+              </View>
+            </View>
+            <View style={styles.spacer}></View>
+          </SearchContext.Provider>
         </LeftoversEnabled.Provider>
       </NutrientsContext.Provider>
     </>
