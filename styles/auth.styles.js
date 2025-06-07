@@ -28,6 +28,15 @@ export const styles = StyleSheet.create({
     color: COLORS.fontColor,
     fontWeight: 500,
   },
+  nameInput: {
+    fontSize: 18,
+    marginBottom: 20,
+    textAlign: "center",
+    justifyContent: "center",
+    fontFamily: "Nunito-Bold",
+    color: COLORS.fontColor,
+  },
+
   linkText: {
     fontFamily: "Nunito-SemiBold",
     textAlign: "center",
@@ -88,6 +97,21 @@ export const styles = StyleSheet.create({
     padding: 10,
     marginVertical: 10,
     height: 55,
+
+    borderRadius: 10,
+  },
+  counterBtn: {
+    alignItems: "center",
+    alignSelf: "center",
+    justifyContent: "center",
+    backgroundColor: COLORS.greenButtonColor,
+    borderColor: COLORS.greenButtonColorOuline,
+    borderWidth: 3,
+
+    marginTop: 20,
+
+    height: 50,
+    width: 100,
 
     borderRadius: 10,
   },
@@ -457,5 +481,35 @@ export const styles = StyleSheet.create({
 
     marginVertical: 10,
     fontSize: 18,
+  },
+  profileHeader: {
+    backgroundColor: COLORS.greenButtonColor,
+
+    width: "100%",
+    borderColor: COLORS.greenButtonColorOuline,
+
+    borderBottomWidth: 10,
+
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  pfp: {
+    height: 90,
+    width: 90,
+    backgroundColor: COLORS.addPlusGrey,
+    marginTop: 30,
+    marginBottom: 20,
+    borderRadius: 200,
+  },
+  safearea: {
+    flex: 1,
+    backgroundColor: COLORS.blueHeader,
+  },
+  body: {
+    flex: 1,
+    backgroundColor: "red",
+    padding: 20,
+    margin: 15,
+    borderRadius: 8,
   },
 });

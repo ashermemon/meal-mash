@@ -1,26 +1,25 @@
 import * as React from "react";
 import Svg, { Path } from "react-native-svg";
 
-type Props = {
+type IconProps = {
   iconsetcolor: string;
   setheight?: number;
 };
-
-const DiscardIcon = (props: Props) => (
+const CheckIcon = (props: IconProps) => (
   <Svg
-    height={props.setheight}
     width={props.setheight}
-    viewBox="0 0 592.89 592.89"
+    height={props.setheight}
+    viewBox="0 0 531.41 373.2"
     {...props}
   >
     <Path
+      d="M50 170.89 189.3 323.2M481.41 50 189.3 323.2"
+      fill={"none"}
       stroke={props.iconsetcolor}
       strokeLinecap="round"
       strokeWidth={100}
       strokeMiterlimit={10}
-      fill={"none"}
-      d="m50 50 492.89 492.89M542.89 50 50 542.89"
     />
   </Svg>
 );
-export default DiscardIcon;
+export default CheckIcon;

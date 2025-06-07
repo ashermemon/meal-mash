@@ -40,6 +40,11 @@ export default function RootLayout() {
   });
 
   useEffect(() => {
+    const totalSaves = storage.getNumber("favsnumber") ?? 0;
+    storage.set("favsnumber", favorites.length + favoritesL.length);
+  });
+
+  useEffect(() => {
     if (loaded || error) {
       SplashScreen.hideAsync();
     }

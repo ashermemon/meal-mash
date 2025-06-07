@@ -204,7 +204,7 @@ export default function Search() {
                 setwidth={18}
               ></BackArrow>
             ) : (
-              <DiscardIcon iconsetcolor={COLORS.fontColor} setheight={18} />
+              <DiscardIcon iconsetcolor={COLORS.fontColor} setheight={13} />
             )}
           </Pressable>
         </View>

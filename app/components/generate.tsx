@@ -75,6 +75,11 @@ export default function Generate() {
     }
   }, [saves, title]);
 
+  useEffect(() => {
+    const totalSaves = storage.getNumber("mealsnumber") ?? 0;
+    storage.set("savesnumber", saves.length);
+  });
+
   const fetchResponse = async (prompt: string) => {
     setLoading(true);
     try {
@@ -96,6 +101,9 @@ export default function Generate() {
     } finally {
       setLoading(false);
       setGenerated(true);
+      const totalMeals = storage.getNumber("mealsnumber") ?? 0;
+
+      storage.set("mealsnumber", totalMeals + 1);
     }
   };
 
@@ -433,7 +441,7 @@ export default function Generate() {
                         <View>
                           <DiscardIcon
                             iconsetcolor={"#db904f"}
-                            setheight={25}
+                            setheight={20}
                           />
                         </View>
                       </Pressable>

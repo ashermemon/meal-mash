@@ -106,7 +106,7 @@ export default function NutrientCircle() {
             marginLeft: 30,
           }}
         >
-          {renderLegend(`Protien (${nutrients[0]}g)`, "#5983C8")}
+          {renderLegend(`Protein (${nutrients[0]}g)`, "#5983C8")}
           {renderLegend(`Fat (${nutrients[1]}g)`, "#44A54D")}
           {renderLegend(`Carbs (${nutrients[2]}g)`, "#db904f")}
         </View>
