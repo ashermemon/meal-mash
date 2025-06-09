@@ -1,10 +1,12 @@
-import { Platform, Text, View } from "react-native";
-import React, { ReactNode } from "react";
+import { Platform, Pressable, Text, View } from "react-native";
+import React, { ReactNode, useActionState } from "react";
 import { styles } from "@/styles/auth.styles";
 import GenIcon from "../Icons/GenIcon";
 import BackArrow from "../Icons/BackArrow";
 import { COLORS } from "@/constants/theme";
 import { StatusBar } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { router } from "expo-router";
 
 type HeaderProps = {
   pageTitle: string;
@@ -12,6 +14,7 @@ type HeaderProps = {
 };
 
 export default function MobileHeader(props: HeaderProps) {
+  const navigation = useNavigation();
   return (
     <>
       <View
@@ -23,7 +26,16 @@ export default function MobileHeader(props: HeaderProps) {
         ]}
       >
         <View style={[{ flex: 1.5 }, styles.centeredBox]}>
-          <BackArrow iconsetcolor={COLORS.fontColor} setheight={25}></BackArrow>
+          <Pressable
+            onPress={() =>
+              navigation.canGoBack() ? navigation.goBack() : undefined
+            }
+          >
+            <BackArrow
+              iconsetcolor={COLORS.fontColor}
+              setheight={25}
+            ></BackArrow>
+          </Pressable>
         </View>
 
         <View style={[{ flex: 3 }, styles.centeredBox]}>

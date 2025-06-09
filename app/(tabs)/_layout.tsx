@@ -22,6 +22,8 @@ export default function TabsLayout() {
   return (
     <>
       <Tabs
+        initialRouteName="index"
+        backBehavior="history"
         screenOptions={{
           tabBarShowLabel: Platform.OS == "web" ? true : false,
           headerShown: false,

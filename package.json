@@ -51,7 +51,8 @@
     "react-native-toast-message": "^2.3.0",
     "react-native-web": "^0.20.0",
     "react-native-webview": "13.13.5",
-    "use-debounce": "^10.0.4"
+    "use-debounce": "^10.0.4",
+    "expo-dev-client": "~5.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

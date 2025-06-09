@@ -443,8 +443,8 @@ export const styles = StyleSheet.create({
   swipeable: {
     backgroundColor: COLORS.discardColor,
     justifyContent: "center",
-    alignItems: "flex-end",
-    paddingHorizontal: 25,
+    alignItems: "center",
+    width: 85,
     height: "100%",
     margin: 0,
   },
@@ -459,7 +459,7 @@ export const styles = StyleSheet.create({
   favSave: {
     justifyContent: "center",
     alignItems: "center",
-    paddingHorizontal: 25,
+    width: 85,
   },
   deleteText: {
     fontFamily: "Nunito-Bold",

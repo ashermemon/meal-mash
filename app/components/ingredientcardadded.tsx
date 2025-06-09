@@ -126,7 +126,7 @@ export default function IngredientCardAdded(props: CardProps) {
             <Pressable style={styles.swipeable} onPress={removeCard}>
               <DiscardIcon
                 iconsetcolor={"#FFEFEE"}
-                setheight={35}
+                setheight={23}
               ></DiscardIcon>
             </Pressable>
             <Pressable style={styles.favSave} onPress={saveCard}>
