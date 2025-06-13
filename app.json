@@ -4,25 +4,25 @@
     "slug": "never-leftover-new",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon-new.png",
+    "icon": "./assets/images/newicon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.neverleftovernew"
+      "bundleIdentifier": "com.sdsecureapp.neverleftovernew"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/icon-new.png",
+        "foregroundImage": "./assets/images/newicon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.neverleftovernew"
+      "package": "com.sdsecureapp.neverleftovernew"
     },
     "web": {
       "bundler": "metro",
       "output": "single",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/newicon.png"
     },
     "plugins": [
       "expo-router",
@@ -40,6 +40,12 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "9636072c-a2d2-44ad-a599-4e8e66e84864"
+      }
     }
   }
 }

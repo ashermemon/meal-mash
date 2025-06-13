@@ -38,7 +38,7 @@ export default function Welcome(props: HomeProps) {
         }}
       >
         <Image
-          source={require("../../assets/images/icon.png")}
+          source={require("../../assets/images/newicon.png")}
           style={{ width: 150, height: 150, marginVertical: 20 }}
         ></Image>
         <Text

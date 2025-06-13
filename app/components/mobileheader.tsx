@@ -32,7 +32,9 @@ export default function MobileHeader(props: HeaderProps) {
             }
           >
             <BackArrow
-              iconsetcolor={COLORS.fontColor}
+              iconsetcolor={
+                navigation.canGoBack() ? COLORS.fontColor : COLORS.addPlusGrey
+              }
               setheight={25}
             ></BackArrow>
           </Pressable>
