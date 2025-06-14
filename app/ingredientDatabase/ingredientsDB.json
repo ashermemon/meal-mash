@@ -76,6 +76,7 @@
   { "id": 45, "name": "Persimmon", "color": "cat2" },
   { "id": 46, "name": "Starfruit", "color": "cat2" },
   { "id": 467, "name": "Raisin", "color": "cat2" },
+  { "id": 494, "name": "Date", "color": "cat2" },
 
   "Meat & Poultry",
   { "id": 73, "name": "Chicken", "color": "cat3" },

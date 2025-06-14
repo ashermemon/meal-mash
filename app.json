@@ -4,32 +4,36 @@
     "slug": "never-leftover-new",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/newicon.png",
+    "icon": "./assets/images/IconLight.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.sdsecureapp.neverleftovernew"
+      "bundleIdentifier": "com.sdsecureapp.neverleftovernew",
+      "icon": {
+        "light": "./assets/images/IconLight.png",
+        "dark": "./assets/images/IconDark.png"
+      }
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/newicon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/images/adaptiveb.png",
+        "backgroundImage": "./assets/images/adaptiveb.png"
       },
       "package": "com.sdsecureapp.neverleftovernew"
     },
     "web": {
       "bundler": "metro",
       "output": "single",
-      "favicon": "./assets/images/newicon.png"
+      "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/icon-new.png",
+          "image": "./assets/images/iconround.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
