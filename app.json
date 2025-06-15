@@ -18,7 +18,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptiveb.png",
+        "foregroundImage": "./assets/images/adaptivef.png",
         "backgroundImage": "./assets/images/adaptiveb.png"
       },
       "package": "com.sdsecureapp.neverleftovernew"
