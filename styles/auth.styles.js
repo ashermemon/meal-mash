@@ -134,6 +134,7 @@ export const styles = StyleSheet.create({
     paddingVertical: 15,
     flex: 1,
     width: "100%",
+    //backgroundColor: "white",
   },
   timer: {
     paddingVertical: 20,
@@ -511,5 +512,11 @@ export const styles = StyleSheet.create({
     padding: 20,
     margin: 15,
     borderRadius: 8,
+  },
+  checkbox: {
+    padding: 10,
+    outlineColor: COLORS.blueHeaderBorder,
+    outlineWidth: 2,
+    backgroundColor: COLORS.blueHeader,
   },
 });

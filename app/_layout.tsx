@@ -103,7 +103,11 @@ export default function RootLayout() {
                   <SavedRecipesContext.Provider
                     value={[savedRecipes, setSavedRecipes]}
                   >
-                    <Stack screenOptions={{ headerShown: false }}></Stack>
+                    <Stack
+                      screenOptions={{
+                        headerShown: false,
+                      }}
+                    ></Stack>
                   </SavedRecipesContext.Provider>
                 </FavLeftoversContext.Provider>
               </FavoritesContext.Provider>

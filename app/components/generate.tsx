@@ -35,8 +35,10 @@ import SavesFilled from "../Icons/SavesFilled";
 import { APIKEY } from "@/app/components/apikey";
 import SavedRecipesContext from "../contexts/SavedRecipesContext";
 import { storage } from "./storage";
+import BouncyCheckbox from "react-native-bouncy-checkbox";
 
 export default function Generate() {
+  const [isChecked, setChecked] = useState(false);
   const ai = new GoogleGenAI({ apiKey: APIKEY });
   var hsl = require("hsl-to-hex");
   let first = true;
@@ -323,6 +325,38 @@ export default function Generate() {
                 <>
                   <AddLeftovers></AddLeftovers>
                   <AddIngredients></AddIngredients>
+                  <View
+                    style={{
+                      width: "100%",
+                      alignItems: "center",
+                    }}
+                  >
+                    <BouncyCheckbox
+                      style={{
+                        marginTop: 16,
+                        alignSelf: "center",
+                      }}
+                      size={25}
+                      fillColor={COLORS.greenButtonColorOuline}
+                      unFillColor={COLORS.greenButtonColor}
+                      text="Allow Additional Ingredients"
+                      iconStyle={{
+                        borderColor: COLORS.fontColor,
+                      }}
+                      innerIconStyle={{ borderWidth: 2 }}
+                      textStyle={[
+                        styles.textLeftSemiBold,
+                        { textDecorationLine: "none" },
+                      ]}
+                      textContainerStyle={{
+                        flex: 0,
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                      isChecked={isChecked}
+                      onPress={(checked: boolean) => setChecked(checked)}
+                    />
+                  </View>
                 </>
               )}
             </View>
