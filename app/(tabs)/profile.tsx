@@ -7,15 +7,15 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { styles } from "@/styles/auth.styles";
-import MobileHeader from "../components/mobileheader";
-import ProfileFilled from "../Icons/ProfileFilled";
+import MobileHeader from "../../components/mobileheader";
+import ProfileFilled from "../../Icons/ProfileFilled";
 import { COLORS } from "@/constants/theme";
-import Counter from "../components/counter";
+import Counter from "../../components/counter";
 import { Pressable, TextInput } from "react-native-gesture-handler";
-import EditIcon from "../Icons/EditIcon";
-import CheckIcon from "../Icons/CheckIcon";
-import DiscardIcon from "../Icons/DiscardIcon";
-import { storage } from "../components/storage";
+import EditIcon from "../../Icons/EditIcon";
+import CheckIcon from "../../Icons/CheckIcon";
+import DiscardIcon from "../../Icons/DiscardIcon";
+import { storage } from "../../utils/storage";
 
 export default function Profile() {
   const image =
@@ -45,15 +45,7 @@ export default function Profile() {
   return (
     <>
       <ImageBackground source={image} style={styles.image} resizeMode="cover">
-        <MobileHeader
-          pageTitle="Profile"
-          headerIcon={
-            <ProfileFilled
-              iconsetcolor={COLORS.fontColor}
-              setheight={Platform.OS === "web" ? 25 : 25}
-            ></ProfileFilled>
-          }
-        ></MobileHeader>
+        <MobileHeader pageTitle="Profile" backEnabled={true}></MobileHeader>
         <View style={styles.profileHeader}>
           <View
             style={{
@@ -120,6 +112,7 @@ export default function Profile() {
               <DiscardIcon
                 iconsetcolor={COLORS.fontColor}
                 setheight={18}
+                setwidth={18}
               ></DiscardIcon>
             </Pressable>
           ) : (

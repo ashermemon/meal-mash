@@ -16,21 +16,21 @@ import React, {
   useState,
 } from "react";
 import { styles } from "@/styles/auth.styles";
-import SearchContext from "../contexts/SearchContext";
+import SearchContext from "@/contexts/SearchContext";
 import { COLORS } from "@/constants/theme";
-import IngredientCard from "./ingredientcard";
-import IngredientsContext from "../contexts/IngredientsContext";
-import LeftoversEnabled from "../contexts/LeftoversOn";
-import ingredientsDB from "../ingredientDatabase/ingredientsDB.json";
-import leftoversDB from "../ingredientDatabase/leftoversDB.json";
+import IngredientCard from "@/components/ingredientcard";
+import IngredientsContext from "@/contexts/IngredientsContext";
+import LeftoversEnabled from "@/contexts/LeftoversOn";
+import ingredientsDB from "@/ingredientDatabase/ingredientsDB.json";
+import leftoversDB from "@/ingredientDatabase/leftoversDB.json";
 import { FlashList } from "@shopify/flash-list";
-import useDebounce from "../hooks/debounceHook";
-import DiscardIcon from "../Icons/DiscardIcon";
-import BackArrow from "../Icons/BackArrow";
+import useDebounce from "@/hooks/debounceHook";
+import DiscardIcon from "@/Icons/DiscardIcon";
+import BackArrow from "@/Icons/BackArrow";
 import { Image } from "expo-image";
-import LeftoversContext from "../contexts/LeftoversContext";
-import FavoritesContext from "../contexts/FavoritesContext";
-import FavLeftoversContext from "../contexts/FavLeftoversContext";
+import LeftoversContext from "@/contexts/LeftoversContext";
+import FavoritesContext from "@/contexts/FavoritesContext";
+import FavLeftoversContext from "@/contexts/FavLeftoversContext";
 
 export default function Search() {
   type Ingredient = {
@@ -181,8 +181,6 @@ export default function Search() {
   const enableCustomModal = (currentSearch: string) => {
     setSavedSearchQuery(currentSearch);
     setCustomModal(true);
-
-    console.log(savedSearchQuery);
   };
 
   return (
@@ -204,7 +202,11 @@ export default function Search() {
                 setwidth={18}
               ></BackArrow>
             ) : (
-              <DiscardIcon iconsetcolor={COLORS.fontColor} setheight={13} />
+              <DiscardIcon
+                iconsetcolor={COLORS.fontColor}
+                setheight={13}
+                setwidth={13}
+              />
             )}
           </Pressable>
         </View>
@@ -263,7 +265,7 @@ export default function Search() {
             >
               <Image
                 style={styles.customEmoji}
-                source={require("../../assets/exampleemojis/placeholder.png")}
+                source={require("@/assets/exampleemojis/placeholder.png")}
               ></Image>
             </View>
             <Pressable

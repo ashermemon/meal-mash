@@ -3,6 +3,7 @@ import React, { Dispatch, SetStateAction } from "react";
 import { styles } from "@/styles/auth.styles";
 import { COLORS } from "@/constants/theme";
 import { Image } from "expo-image";
+import { ScrollView } from "react-native-gesture-handler";
 
 type HomeProps = {
   genEnabled: boolean;
@@ -11,34 +12,33 @@ type HomeProps = {
 
 export default function Welcome(props: HomeProps) {
   return (
-    <View
+    <ScrollView
+      contentContainerStyle={{ flexGrow: 1 }}
+      overScrollMode="never"
+      alwaysBounceVertical={false}
       style={{
+        width: "100%",
         paddingHorizontal: 20,
+        paddingVertical: 20,
       }}
     >
-      <Text
-        style={[
-          styles.textCentered,
-          {
-            fontFamily: "Nunito-Bold",
-            fontSize: 20,
-            marginTop: 5,
-            marginBottom: 20,
-          },
-        ]}
-      >
-        Welcome to Meal Mash
-      </Text>
-      <View
-        style={{
-          width: "100%",
+      <View style={{ alignItems: "center", width: "100%" }}>
+        <Text
+          style={[
+            styles.textCentered,
+            {
+              fontFamily: "Nunito-Bold",
+              fontSize: 20,
+              marginTop: 5,
+              marginBottom: 20,
+            },
+          ]}
+        >
+          Welcome to Meal Mash
+        </Text>
 
-          flex: 1,
-          alignItems: "center",
-        }}
-      >
         <Image
-          source={require("../../assets/images/iconround.png")}
+          source={require("@/assets/images/iconround.png")}
           style={{ width: 150, height: 150, marginVertical: 20 }}
         ></Image>
         <Text
@@ -71,6 +71,6 @@ export default function Welcome(props: HomeProps) {
           </Pressable>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }

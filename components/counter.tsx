@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
-import { storage } from "./storage";
+import { storage } from "@/utils/storage";
 import { styles } from "@/styles/auth.styles";
 import { ColorProperties } from "react-native-reanimated/lib/typescript/Colors";
 import { COLORS } from "@/constants/theme";

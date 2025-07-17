@@ -3,7 +3,7 @@ import { Pressable, View, Text } from "react-native";
 import { Image } from "expo-image";
 import { COLORS } from "@/constants/theme";
 import { useContext, useEffect, useRef, useState } from "react";
-import emojiImages from "./emoji-images";
+import emojiImages from "@/components/emoji-images";
 import ReanimatedSwipeable from "react-native-gesture-handler/ReanimatedSwipeable";
 import {
   Gesture,
@@ -11,9 +11,9 @@ import {
   Swipeable,
 } from "react-native-gesture-handler";
 import { red } from "react-native-reanimated/lib/typescript/Colors";
-import IngredientsContext from "../contexts/IngredientsContext";
-import LeftoversContext from "../contexts/LeftoversContext";
-import LeftoversEnabled from "../contexts/LeftoversOn";
+import IngredientsContext from "@/contexts/IngredientsContext";
+import LeftoversContext from "@/contexts/LeftoversContext";
+import LeftoversEnabled from "@/contexts/LeftoversOn";
 import Animated, {
   Easing,
   FadeIn,
@@ -28,7 +28,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import FavIcon from "../Icons/FavIcon";
 import DiscardIcon from "../Icons/DiscardIcon";
 import FavIconFilled from "../Icons/FavIconFilled";
-import { storage } from "./storage";
+import { storage } from "../utils/storage";
 import FavoritesContext from "../contexts/FavoritesContext";
 import FavLeftoversContext from "../contexts/FavLeftoversContext";
 
@@ -127,6 +127,7 @@ export default function IngredientCardAdded(props: CardProps) {
               <DiscardIcon
                 iconsetcolor={"#FFEFEE"}
                 setheight={23}
+                setwidth={23}
               ></DiscardIcon>
             </Pressable>
             <Pressable style={styles.favSave} onPress={saveCard}>

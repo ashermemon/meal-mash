@@ -15,8 +15,8 @@ export default function ProgressBar(props: ProgressProps) {
     <View>
       <Progress.Bar
         progress={props.progress}
-        width={windowWidth - 50}
-        color={COLORS.greenButtonColorOuline}
+        width={windowWidth * 0.85}
+        color={COLORS.navSecondary}
         height={10}
         borderRadius={20}
         unfilledColor="#EBEFF1"

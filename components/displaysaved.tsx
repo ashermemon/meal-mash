@@ -1,13 +1,13 @@
 import { StyleSheet, Text, View } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
-import { storage } from "./storage";
+import { storage } from "@/utils/storage";
 import { styles } from "@/styles/auth.styles";
 
-import FavIngredient from "./favingredient";
-import FavoritesContext from "../contexts/FavoritesContext";
-import FavLeftoversContext from "../contexts/FavLeftoversContext";
-import SavedRecipesContext from "../contexts/SavedRecipesContext";
-import SavedCard from "./SavedCard";
+import FavIngredient from "@/components/favingredient";
+import FavoritesContext from "@/contexts/FavoritesContext";
+import FavLeftoversContext from "@/contexts/FavLeftoversContext";
+import SavedRecipesContext from "@/contexts/SavedRecipesContext";
+import SavedCard from "@/components/SavedCard";
 
 export default function DisplaySaved() {
   const [favorites, setFavorites] = useContext(FavoritesContext);

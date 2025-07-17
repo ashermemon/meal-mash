@@ -68,20 +68,20 @@ export const styles = StyleSheet.create({
   headerText: {
     fontFamily: "Nunito-Bold",
     textAlign: "center",
-    fontSize: 25,
+    fontSize: 18,
 
     fontWeight: 700,
 
     color: COLORS.fontColor,
   },
   headerContainer: {
-    paddingVertical: 20,
-    backgroundColor: COLORS.blueHeader,
+    paddingVertical: 8,
+    backgroundColor: COLORS.newHeader,
     margin: 0,
     width: "100%",
-    borderColor: COLORS.blueHeaderBorder,
+    borderColor: COLORS.newHeaderB,
 
-    borderBottomWidth: 10,
+    borderBottomWidth: 3,
   },
   generateButtonContainer: {
     alignItems: "center",
@@ -152,6 +152,8 @@ export const styles = StyleSheet.create({
 
   centeredBox: {
     justifyContent: "center",
+    textAlign: "center",
+    alignItems: "center",
   },
 
   addContainer: {

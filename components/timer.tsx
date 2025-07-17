@@ -2,10 +2,10 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
 import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
 import { styles } from "@/styles/auth.styles";
-import ResetTimer from "../Icons/ResetTimer";
+import ResetTimer from "@/Icons/ResetTimer";
 import { COLORS } from "@/constants/theme";
-import StopTimer from "../Icons/StopTimer";
-import PlayTimer from "../Icons/PlayTimer";
+import StopTimer from "@/Icons/StopTimer";
+import PlayTimer from "@/Icons/PlayTimer";
 
 type TimerProps = {
   time: number;

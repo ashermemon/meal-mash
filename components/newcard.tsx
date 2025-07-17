@@ -1,10 +1,10 @@
 import { styles } from "@/styles/auth.styles";
 import { Pressable, View } from "react-native";
-import AddIcon from "../Icons/AddIcon";
+import AddIcon from "@/Icons/AddIcon";
 import { COLORS } from "@/constants/theme";
 import { useContext, useState } from "react";
-import SearchContext from "../contexts/SearchContext";
-import LeftoversEnabled from "../contexts/LeftoversOn";
+import SearchContext from "@/contexts/SearchContext";
+import LeftoversEnabled from "@/contexts/LeftoversOn";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,

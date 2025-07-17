@@ -14,6 +14,10 @@ export const COLORS = {
 
   blueHeader: "#F0F9FE",
   blueHeaderBorder: "#ACD3FF",
+
+  newHeader: "#F6F6F6",
+  newHeaderB: "#D1D1D1",
+
   fontColor: "#39393A",
   searchPlaceholder: "#898989",
   addGrey: "#EFEFEF",
@@ -62,4 +66,6 @@ export const COLORS = {
   cat11: hsl(60, sat, lightness),
   cat12: hsl(250, sat, lightness),
   cat13: hsl(100, sat, lightness),
+
+  greenProgressBar: "#6BBA83",
 } as const;

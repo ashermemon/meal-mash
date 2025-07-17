@@ -3,11 +3,11 @@ import React, { useContext, useEffect, useState } from "react";
 import { styles } from "@/styles/auth.styles";
 import { COLORS } from "@/constants/theme";
 import { Image } from "expo-image";
-import emojiImages from "./emoji-images";
-import SavesIcon from "../Icons/SavesIcon";
-import SavesFilled from "../Icons/SavesFilled";
-import SavedRecipesContext from "../contexts/SavedRecipesContext";
-import { storage } from "./storage";
+import emojiImages from "@/components/emoji-images";
+import SavesIcon from "@/Icons/SavesIcon";
+import SavesFilled from "@/Icons/SavesFilled";
+import SavedRecipesContext from "@/contexts/SavedRecipesContext";
+import { storage } from "@/utils/storage";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,

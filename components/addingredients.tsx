@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
-import NewCard from "./newcard";
+import NewCard from "@/components/newcard";
 import { styles } from "@/styles/auth.styles";
 import { COLORS } from "@/constants/theme";
-import IngredientCardAdded from "./ingredientcardadded";
-import IngredientsContext from "../contexts/IngredientsContext";
+import IngredientCardAdded from "@/components/ingredientcardadded";
+import IngredientsContext from "@/contexts/IngredientsContext";
 
 export default function AddIngredients() {
   const [ingredients, setIngredients] = useContext(IngredientsContext);

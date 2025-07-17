@@ -7,40 +7,51 @@ import {
   Alert,
 } from "react-native";
 import Modal from "react-native-modal";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { GoogleGenAI } from "@google/genai";
 import { styles } from "@/styles/auth.styles";
-import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
 import { COLORS } from "@/constants/theme";
 import Prompt from "@/constants/prompt";
 import Timer from "./timer";
-import NewCard from "./newcard";
-import AddIngredients from "./addingredients";
-import AddLeftovers from "./addleftovers";
-import SearchContext from "../contexts/SearchContext";
-import Search from "./search";
-import BackArrow from "../Icons/BackArrow";
-import ForwardArrow from "../Icons/ForwardArrow";
+import AddIngredients from "@/components/addingredients";
+import AddLeftovers from "@/components/addleftovers";
+import SearchContext from "@/contexts/SearchContext";
+import Search from "@/components/search";
+import BackArrow from "@/Icons/BackArrow";
+import ForwardArrow from "@/Icons/ForwardArrow";
 import { Dimensions } from "react-native";
-import IngredientsContext from "../contexts/IngredientsContext";
-import LeftoversEnabled from "../contexts/LeftoversOn";
-import LeftoversContext from "../contexts/LeftoversContext";
-import NutrientsContext from "../contexts/NutrientsContext";
+import IngredientsContext from "@/contexts/IngredientsContext";
+import LeftoversEnabled from "@/contexts/LeftoversOn";
+import LeftoversContext from "@/contexts/LeftoversContext";
+import NutrientsContext from "@/contexts/NutrientsContext";
 import NutrientCircle from "./nutrientcircle";
-import SavesIcon from "../Icons/SavesIcon";
-import GenIcon from "../Icons/GenIcon";
-import ResetTimer from "../Icons/ResetTimer";
-import DiscardIcon from "../Icons/DiscardIcon";
-import SavesFilled from "../Icons/SavesFilled";
-import { APIKEY } from "@/app/components/apikey";
+import SavesIcon from "@/Icons/SavesIcon";
+
+import ResetTimer from "@/Icons/ResetTimer";
+import DiscardIcon from "@/Icons/DiscardIcon";
+import SavesFilled from "@/Icons/SavesFilled";
+import { APIKEY } from "@/utils/apikey";
 import SavedRecipesContext from "../contexts/SavedRecipesContext";
-import { storage } from "./storage";
+import { storage } from "@/utils/storage";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
-import ProgressBar from "./progressbar";
+import ProgressBar from "@/components/progressbar";
 import { ScrollView } from "react-native-gesture-handler";
 
-export default function Generate() {
+type GeneratedProps = {
+  generated: boolean;
+  setGenerated: Dispatch<SetStateAction<boolean>>;
+};
+
+export default function Generate(props: GeneratedProps) {
   const [isChecked, setChecked] = useState(false);
+
   const ai = new GoogleGenAI({ apiKey: APIKEY });
   var hsl = require("hsl-to-hex");
   let first = true;
@@ -48,7 +59,7 @@ export default function Generate() {
   const [responseRecipe, setResponseRecipe] = useState("");
   const [searchActive, setSearchActive] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [generated, setGenerated] = useState(false);
+  //const [generated, setGenerated] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
   const [totalSteps, setTotalSteps] = useState(0);
 
@@ -103,7 +114,7 @@ export default function Generate() {
       setError(error);
     } finally {
       setLoading(false);
-      setGenerated(true);
+      props.setGenerated(true);
       const totalMeals = storage.getNumber("mealsnumber") ?? 0;
 
       storage.set("mealsnumber", totalMeals + 1);
@@ -238,7 +249,7 @@ export default function Generate() {
   };
 
   const newMeal = () => {
-    setGenerated(false);
+    props.setGenerated(false);
     setSaved(false);
     setIngredients([]);
     setLeftovers([]);
@@ -251,7 +262,7 @@ export default function Generate() {
           value={[leftoversEnabled, setLeftoversEnabled]}
         >
           <SearchContext.Provider value={[searchActive, setSearchActive]}>
-            {!loading && generated && (
+            {!loading && props.generated && (
               <ProgressBar
                 progress={(currentStep - 1) / (totalSteps - 1)}
               ></ProgressBar>
@@ -262,7 +273,7 @@ export default function Generate() {
               alwaysBounceVertical={false}
               style={[
                 styles.generatorContainer,
-                generated && { paddingVertical: 0 },
+                props.generated && { paddingVertical: 0 },
               ]}
             >
               <View style={[styles.container]}>
@@ -309,7 +320,7 @@ export default function Generate() {
                       <Text style={[styles.textCentered, { marginBottom: 25 }]}>
                         Loading...
                       </Text>
-                    ) : !generated ? (
+                    ) : !props.generated ? (
                       <Text style={[styles.textCentered, { marginBottom: 25 }]}>
                         Generate a meal by adding your leftovers and ingredients
                         below!
@@ -330,9 +341,13 @@ export default function Generate() {
                         </Text>
                       )}
 
-                      {!loading && generated && (
+                      {!loading && props.generated && (
                         <View
-                          style={{ alignItems: "center", marginVertical: 10 }}
+                          style={{
+                            alignItems: "center",
+                            marginVertical: 10,
+                            width: "100%",
+                          }}
                         >
                           {parseMarkdownText(responseRecipe)}
                           <>{currentStep == 1 && <NutrientCircle />}</>
@@ -340,7 +355,7 @@ export default function Generate() {
                       )}
                     </View>
                   </View>
-                  {!loading && !generated && (
+                  {!loading && !props.generated && (
                     <>
                       <AddLeftovers></AddLeftovers>
                       <AddIngredients></AddIngredients>
@@ -356,7 +371,7 @@ export default function Generate() {
                             alignSelf: "center",
                           }}
                           size={25}
-                          fillColor={COLORS.greenButtonColorOuline}
+                          fillColor={COLORS.greenProgressBar}
                           unFillColor={COLORS.greenButtonColor}
                           text="Allow Additional Ingredients"
                           iconStyle={{
@@ -383,15 +398,15 @@ export default function Generate() {
 
                 <View style={styles.arrowButtons}>
                   <View style={styles.flexBTN}>
-                    {!loading && generated && currentStep > 1 ? (
+                    {!loading && props.generated && currentStep > 1 ? (
                       <Pressable
                         style={styles.nextButton}
                         onPress={() => [setCurrentStep(currentStep - 1)]}
                       >
                         <BackArrow
                           iconsetcolor={COLORS.fontColor}
-                          setheight={25}
-                          setwidth={50}
+                          setheight={14}
+                          setwidth={30}
                         ></BackArrow>
                       </Pressable>
                     ) : (
@@ -400,7 +415,7 @@ export default function Generate() {
                   </View>
                   <View style={styles.flexMiddle}>
                     <View style={styles.generateButtonContainer}>
-                      {!loading && !generated && (
+                      {!loading && !props.generated && (
                         <Pressable
                           style={[
                             styles.generateButton,
@@ -417,10 +432,7 @@ export default function Generate() {
                           ]}
                           onPress={
                             leftovers.length > 0 || ingredients.length > 0
-                              ? () => [
-                                  handleGenerateRecipe(recipePrompt),
-                                  console.log(recipePrompt),
-                                ]
+                              ? () => [handleGenerateRecipe(recipePrompt)]
                               : () =>
                                   alert(
                                     "Add a leftover or ingredient to generate meal!"
@@ -439,7 +451,7 @@ export default function Generate() {
                         </Pressable>
                       )}
 
-                      {!loading && generated && (
+                      {!loading && props.generated && (
                         <>
                           <Pressable
                             style={[
@@ -499,6 +511,7 @@ export default function Generate() {
                               <DiscardIcon
                                 iconsetcolor={"#db904f"}
                                 setheight={20}
+                                setwidth={20}
                               />
                             </View>
                           </Pressable>
@@ -507,15 +520,15 @@ export default function Generate() {
                     </View>
                   </View>
                   <View style={styles.flexBTN}>
-                    {!loading && generated && currentStep < totalSteps ? (
+                    {!loading && props.generated && currentStep < totalSteps ? (
                       <Pressable
                         style={styles.nextButton}
-                        onPress={() => setCurrentStep(currentStep + 1)}
+                        onPress={() => [setCurrentStep(currentStep + 1)]}
                       >
                         <ForwardArrow
                           iconsetcolor={COLORS.fontColor}
-                          setheight={25}
-                          setwidth={50}
+                          setheight={14}
+                          setwidth={30}
                         ></ForwardArrow>
                       </Pressable>
                     ) : (

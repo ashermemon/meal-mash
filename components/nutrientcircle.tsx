@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 import React, { useContext, useState } from "react";
 import { styles } from "@/styles/auth.styles";
 import { PieChart } from "react-native-gifted-charts";
-import NutrientsContext from "../contexts/NutrientsContext";
+import NutrientsContext from "@/contexts/NutrientsContext";
 import { COLORS } from "@/constants/theme";
 import { ColorHex } from "react-native-countdown-circle-timer";
 

@@ -1,16 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Pressable, Text, View } from "react-native";
-import { storage } from "./storage";
+import { storage } from "@/utils/storage";
 import { styles } from "@/styles/auth.styles";
-import FavIconFilled from "../Icons/FavIconFilled";
-import FavIcon from "../Icons/FavIcon";
+import FavIconFilled from "@/Icons/FavIconFilled";
+import FavIcon from "@/Icons/FavIcon";
 import { Image } from "expo-image";
-import FavoritesContext from "../contexts/FavoritesContext";
-import FavLeftoversContext from "../contexts/FavLeftoversContext";
-import LeftoversContext from "../contexts/LeftoversContext";
-import IngredientsContext from "../contexts/IngredientsContext";
+import FavoritesContext from "@/contexts/FavoritesContext";
+import FavLeftoversContext from "@/contexts/FavLeftoversContext";
+import LeftoversContext from "@/contexts/LeftoversContext";
+import IngredientsContext from "@/contexts/IngredientsContext";
 import { COLORS } from "@/constants/theme";
-import emojiImages from "./emoji-images";
+import emojiImages from "@/components/emoji-images";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,

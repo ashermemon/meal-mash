@@ -8,12 +8,12 @@ import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useState } from "react";
 import { COLORS } from "@/constants/theme";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { storage } from "./components/storage";
-import FavoritesContext from "./contexts/FavoritesContext";
-import FavLeftoversContext from "./contexts/FavLeftoversContext";
-import SavedRecipesContext from "./contexts/SavedRecipesContext";
-import LeftoversContext from "./contexts/LeftoversContext";
-import IngredientsContext from "./contexts/IngredientsContext";
+import { storage } from "@/utils/storage";
+import FavoritesContext from "../contexts/FavoritesContext";
+import FavLeftoversContext from "../contexts/FavLeftoversContext";
+import SavedRecipesContext from "../contexts/SavedRecipesContext";
+import LeftoversContext from "../contexts/LeftoversContext";
+import IngredientsContext from "../contexts/IngredientsContext";
 
 SplashScreen.preventAutoHideAsync();
 

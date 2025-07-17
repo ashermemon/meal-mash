@@ -2,13 +2,13 @@ import { Redirect, Stack } from "expo-router";
 import { Tabs } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import Svg, { G, Path } from "react-native-svg";
-import SavesIcon from "../Icons/SavesIcon";
-import HomeIcon from "../Icons/HomeIcon";
-import ProfileIcon from "../Icons/ProfileIcon";
-import HomeFilled from "../Icons/HomeFilled";
-import SavesFilled from "../Icons/SavesFilled";
-import ProfileFilled from "../Icons/ProfileFilled";
-import GenIcon from "../Icons/GenIcon";
+import SavesIcon from "../../Icons/SavesIcon";
+import HomeIcon from "../../Icons/HomeIcon";
+import ProfileIcon from "../../Icons/ProfileIcon";
+import HomeFilled from "../../Icons/HomeFilled";
+import SavesFilled from "../../Icons/SavesFilled";
+import ProfileFilled from "../../Icons/ProfileFilled";
+import GenIcon from "../../Icons/GenIcon";
 import { COLORS } from "@/constants/theme";
 import { Pressable, View } from "react-native";
 import { Platform } from "react-native";
@@ -18,7 +18,6 @@ import { styles } from "@/styles/auth.styles";
 export default function TabsLayout() {
   const iconSizeWeb = 40;
 
-  console.log("HomeFilled is", HomeIcon);
   return (
     <>
       <Tabs
