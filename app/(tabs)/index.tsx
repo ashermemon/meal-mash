@@ -30,21 +30,15 @@ export default function Index() {
           ></HomeFilled>
         }
       ></MobileHeader>
-      <ScrollView
-        contentContainerStyle={{ flexGrow: 1 }}
-        style={styles.generatorContainer}
-      >
-        <View style={styles.container}>
-          {genEnabled ? (
-            <Generate></Generate>
-          ) : (
-            <Welcome
-              genEnabled={genEnabled}
-              setGenEnabled={setGenEnabled}
-            ></Welcome>
-          )}
-        </View>
-      </ScrollView>
+
+      {genEnabled ? (
+        <Generate></Generate>
+      ) : (
+        <Welcome
+          genEnabled={genEnabled}
+          setGenEnabled={setGenEnabled}
+        ></Welcome>
+      )}
     </ImageBackground>
   );
 }

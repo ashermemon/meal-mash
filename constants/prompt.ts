@@ -1,19 +1,39 @@
 type PromptProps = {
   ingredients: string[];
   leftovers: string[];
+  isChecked: boolean;
 };
 
 const Prompt = (props: PromptProps) => {
-  return `Generate a delicious meal and realistic that must use these leftovers:
-        ${props.leftovers}
-        The user also has these following ingredients available (optional):
+  return `Generate a delicious meal and realistic that ${
+    props.leftovers.length !== 0
+      ? `must use these leftovers:
+        ${
+          props.leftovers
+        } The user also has these following ingredients available         ${
+          props.isChecked ? `(Optional)` : ``
+        }:`
+      : `uses the following ingredients the user has:`
+  } 
+
         ${props.ingredients}
       
       
-        You don't have to use all the ingredients, but you must use all of the leftovers!
+        You don't have to use all the ingredients ${
+          props.leftovers.length !== 0
+            ? `, but you must use all/most of the leftovers!`
+            : ``
+        }
         Assume the user has access to basic ingredients like salt and oil, as well as pans, pots and other basic kitchen tools.
         Make the recipe genuinely serious and really tasty. Don't just put the ingredients together. If the user added an ingredient that wouldn't go well, just omit it!
       
+        ${
+          props.isChecked
+            ? `You are allowed to use ingredients other than those listed but try to use at least a few of the ones the user put. The first priority is taste though, so if you need to, add other ingredients`
+            : `YOU ARE ONLY PERMITTED TO USE INGREDIENTS ${
+                props.leftovers.length !== 0 ? `or LEFTOVERS` : ``
+              } LISTED BY THE USER (and salt and basics like that)`
+        }
       
       
       
@@ -51,10 +71,14 @@ const Prompt = (props: PromptProps) => {
       
       
       «
-      **Ingredients:**
-      
-      [Quantity of leftovers] [leftover name]
-      [etc..]
+      **Ingredients:** (THIS MUST INCLUDE EVERYTHING USED IN THE RECIPE!)
+ ${
+   props.leftovers.length !== 0
+     ? `      [Quantity of leftovers] [leftover name] - (YOU MUST USE AT LEAST ONE LEFTOVER)
+      [etc..]`
+     : ``
+ } 
+
       
       
       [Quantity of ingredient] [ingredient name]

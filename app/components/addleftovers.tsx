@@ -25,7 +25,7 @@ export default function AddLeftovers() {
         styles.addBigContainer,
       ]}
     >
-      <Text style={styles.addContainerHeader}>Leftovers:</Text>
+      <Text style={styles.addContainerHeader}>Leftover Meals:</Text>
 
       {leftovers.map((leftover, index) => (
         <IngredientCardAdded

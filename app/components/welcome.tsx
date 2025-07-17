@@ -27,7 +27,7 @@ export default function Welcome(props: HomeProps) {
           },
         ]}
       >
-        Welcome to Never Leftover
+        Welcome to Meal Mash
       </Text>
       <View
         style={{
@@ -44,7 +44,7 @@ export default function Welcome(props: HomeProps) {
         <Text
           style={[styles.textCentered, { fontSize: 20, marginVertical: 20 }]}
         >
-          Never Leftover is an app designed to help you save leftovers by
+          Meal Mash is an app designed to help you save leftovers by
           transforming them into delicious meals. We want to make eating
           leftovers fun, interesting and most importantly, tasty!
         </Text>
