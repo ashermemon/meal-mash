@@ -2,13 +2,13 @@ import { Redirect, Stack } from "expo-router";
 import { Tabs } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import Svg, { G, Path } from "react-native-svg";
-import SavesIcon from "../../Icons/SavesIcon";
-import HomeIcon from "../../Icons/HomeIcon";
-import ProfileIcon from "../../Icons/ProfileIcon";
-import HomeFilled from "../../Icons/HomeFilled";
-import SavesFilled from "../../Icons/SavesFilled";
-import ProfileFilled from "../../Icons/ProfileFilled";
-import GenIcon from "../../Icons/GenIcon";
+import SavesIcon from "@/Icons/SavesIcon";
+import HomeIcon from "@/Icons/HomeIcon";
+import ProfileIcon from "@/Icons/ProfileIcon";
+import HomeFilled from "@/Icons/HomeFilled";
+import SavesFilled from "@/Icons/SavesFilled";
+import ProfileFilled from "@/Icons/ProfileFilled";
+import GenIcon from "@/Icons/GenIcon";
 import { COLORS } from "@/constants/theme";
 import { Pressable, View } from "react-native";
 import { Platform } from "react-native";
@@ -33,11 +33,11 @@ export default function TabsLayout() {
 
             ...(Platform.OS === "web"
               ? {
-                  borderRightColor: COLORS.navBorder,
+                  borderRightColor: COLORS.newHeaderB,
                   borderRightWidth: 3,
                 }
               : {
-                  borderTopColor: COLORS.navBorder,
+                  borderTopColor: COLORS.newHeaderB,
                   borderTopWidth: 3,
                 }),
           },
@@ -67,7 +67,7 @@ export default function TabsLayout() {
 
           tabBarLabelPosition: "beside-icon",
           tabBarActiveTintColor: COLORS.navSecondary,
-          tabBarInactiveTintColor: COLORS.navPrimary,
+          tabBarInactiveTintColor: "#7F7D7D",
           headerShadowVisible: false,
           tabBarActiveBackgroundColor:
             Platform.OS == "web" ? COLORS.navSelected : undefined,
@@ -75,6 +75,25 @@ export default function TabsLayout() {
             Platform.OS == "web" ? COLORS.navUnselected : undefined,
         }}
       >
+        <Tabs.Screen
+          name="index"
+          options={{
+            tabBarLabel: "Home",
+            tabBarIcon: ({ color, focused }) =>
+              focused ? (
+                <HomeFilled
+                  iconsetcolor={color}
+                  setheight={Platform.OS === "web" ? iconSizeWeb : undefined}
+                ></HomeFilled>
+              ) : (
+                <HomeIcon
+                  iconsetcolor={color}
+                  setheight={Platform.OS === "web" ? iconSizeWeb : undefined}
+                ></HomeIcon>
+              ),
+          }}
+        />
+
         <Tabs.Screen
           name="saves"
           options={{
@@ -96,24 +115,6 @@ export default function TabsLayout() {
         />
 
         <Tabs.Screen
-          name="index"
-          options={{
-            tabBarLabel: "Home",
-            tabBarIcon: ({ color, focused }) =>
-              focused ? (
-                <HomeFilled
-                  iconsetcolor={color}
-                  setheight={Platform.OS === "web" ? iconSizeWeb : undefined}
-                ></HomeFilled>
-              ) : (
-                <HomeIcon
-                  iconsetcolor={color}
-                  setheight={Platform.OS === "web" ? iconSizeWeb : undefined}
-                ></HomeIcon>
-              ),
-          }}
-        />
-        <Tabs.Screen
           name="profile"
           options={{
             tabBarLabel: "Profile",
@@ -129,6 +130,24 @@ export default function TabsLayout() {
                   iconsetcolor={color}
                   setheight={Platform.OS === "web" ? iconSizeWeb : undefined}
                 ></ProfileIcon>
+              ),
+          }}
+        />
+        <Tabs.Screen
+          name="generationpage"
+          options={{
+            tabBarLabel: "Generator",
+            tabBarIcon: ({ color, focused }) =>
+              focused ? (
+                <GenIcon
+                  iconsetcolor={"#a759c8"}
+                  setheight={Platform.OS === "web" ? iconSizeWeb : undefined}
+                ></GenIcon>
+              ) : (
+                <GenIcon
+                  iconsetcolor={COLORS.genBorder}
+                  setheight={Platform.OS === "web" ? iconSizeWeb : undefined}
+                ></GenIcon>
               ),
           }}
         />

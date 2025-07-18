@@ -4,6 +4,7 @@ import React, {
   ReactNode,
   SetStateAction,
   useActionState,
+  useContext,
 } from "react";
 import { styles } from "@/styles/auth.styles";
 import GenIcon from "@/Icons/GenIcon";
@@ -13,16 +14,18 @@ import { StatusBar } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { router } from "expo-router";
 import DiscardIcon from "@/Icons/DiscardIcon";
+import { Image } from "expo-image";
+import MealsLeftContext from "@/contexts/MealsLeftContext";
 
 type HeaderProps = {
   pageTitle: string;
   backEnabled: boolean;
-  setGenEnabled?: Dispatch<SetStateAction<boolean>>;
   setGenerated?: Dispatch<SetStateAction<boolean>>;
 };
 
 export default function MobileHeader(props: HeaderProps) {
   const navigation = useNavigation();
+  const [mealsLeft, setMealsLeft] = useContext(MealsLeftContext);
   return (
     <>
       <View
@@ -67,7 +70,19 @@ export default function MobileHeader(props: HeaderProps) {
           <Text style={styles.headerText}>{props.pageTitle}</Text>
         </View>
 
-        <View style={[{ flex: 1.5 }, styles.centeredBox]}></View>
+        <View style={[{ flex: 1.5, flexDirection: "row" }, styles.centeredBox]}>
+          <View style={[styles.centeredBox]}>
+            <Text style={[styles.textCentered, { fontSize: 20 }]}>
+              {mealsLeft}
+            </Text>
+          </View>
+          <View style={[styles.centeredBox]}>
+            <Image
+              source={require("@/assets/images/Meal.png")}
+              style={{ width: 30, height: 30, marginHorizontal: 8 }}
+            ></Image>
+          </View>
+        </View>
       </View>
     </>
   );

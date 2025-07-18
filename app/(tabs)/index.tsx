@@ -10,33 +10,19 @@ import NewCard from "../../components/newcard";
 import { useState } from "react";
 import { storage } from "../../utils/storage";
 import FavoritesContext from "../../contexts/FavoritesContext";
-import Welcome from "../../components/welcome";
+import Welcome from "@/components/welcome";
 
 export default function Index() {
   const image =
     Platform.OS == "web"
-      ? require("../../assets/images/AppBackgroundDesktop.png")
-      : require("../../assets/images/AppBackground.png");
+      ? require("@/assets/images/AppBackgroundDesktop.png")
+      : require("@/assets/images/AppBackground.png");
 
-  const [genEnabled, setGenEnabled] = useState(false);
-  const [generated, setGenerated] = useState(false);
   return (
     <ImageBackground source={image} style={styles.image} resizeMode="cover">
-      <MobileHeader
-        pageTitle={genEnabled ? (generated ? "Recipe" : "Generator") : "Home"}
-        backEnabled={!generated}
-        setGenerated={setGenerated}
-        setGenEnabled={setGenEnabled}
-      ></MobileHeader>
+      <MobileHeader pageTitle={"Home"} backEnabled={true}></MobileHeader>
 
-      {genEnabled ? (
-        <Generate generated={generated} setGenerated={setGenerated}></Generate>
-      ) : (
-        <Welcome
-          genEnabled={genEnabled}
-          setGenEnabled={setGenEnabled}
-        ></Welcome>
-      )}
+      <Welcome></Welcome>
     </ImageBackground>
   );
 }

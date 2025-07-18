@@ -4,13 +4,10 @@ import { styles } from "@/styles/auth.styles";
 import { COLORS } from "@/constants/theme";
 import { Image } from "expo-image";
 import { ScrollView } from "react-native-gesture-handler";
+import { useRouter } from "expo-router";
 
-type HomeProps = {
-  genEnabled: boolean;
-  setGenEnabled: Dispatch<SetStateAction<boolean>>;
-};
-
-export default function Welcome(props: HomeProps) {
+export default function Welcome() {
+  const router = useRouter();
   return (
     <ScrollView
       contentContainerStyle={{ flexGrow: 1 }}
@@ -60,7 +57,7 @@ export default function Welcome(props: HomeProps) {
                 borderColor: COLORS.blueHeaderBorder,
               },
             ]}
-            onPress={() => props.setGenEnabled(true)}
+            onPress={() => router.push("/(tabs)/generationpage" as any)}
           >
             <Text
               style={[styles.textCentered, { fontFamily: "Nunito-SemiBold" }]}

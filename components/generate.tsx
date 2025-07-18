@@ -43,6 +43,7 @@ import { storage } from "@/utils/storage";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import ProgressBar from "@/components/progressbar";
 import { ScrollView } from "react-native-gesture-handler";
+import MealsLeftContext from "@/contexts/MealsLeftContext";
 
 type GeneratedProps = {
   generated: boolean;
@@ -51,7 +52,7 @@ type GeneratedProps = {
 
 export default function Generate(props: GeneratedProps) {
   const [isChecked, setChecked] = useState(false);
-
+  const [mealsLeft, setMealsLeft] = useContext(MealsLeftContext);
   const ai = new GoogleGenAI({ apiKey: APIKEY });
   var hsl = require("hsl-to-hex");
   let first = true;
@@ -116,7 +117,7 @@ export default function Generate(props: GeneratedProps) {
       setLoading(false);
       props.setGenerated(true);
       const totalMeals = storage.getNumber("mealsnumber") ?? 0;
-
+      setMealsLeft(mealsLeft - 1);
       storage.set("mealsnumber", totalMeals + 1);
     }
   };
@@ -432,7 +433,12 @@ export default function Generate(props: GeneratedProps) {
                           ]}
                           onPress={
                             leftovers.length > 0 || ingredients.length > 0
-                              ? () => [handleGenerateRecipe(recipePrompt)]
+                              ? mealsLeft > 0
+                                ? () => [handleGenerateRecipe(recipePrompt)]
+                                : () =>
+                                    alert(
+                                      "You have run out of meal generations today. Come again tomorrow!"
+                                    )
                               : () =>
                                   alert(
                                     "Add a leftover or ingredient to generate meal!"
@@ -461,7 +467,14 @@ export default function Generate(props: GeneratedProps) {
                                 borderColor: COLORS.genBorder,
                               },
                             ]}
-                            onPress={() => handleGenerateRecipe(recipePrompt)}
+                            onPress={
+                              mealsLeft > 0
+                                ? () => [handleGenerateRecipe(recipePrompt)]
+                                : () =>
+                                    alert(
+                                      "You ran out of meal generations today. Come again tomorrow!"
+                                    )
+                            }
                           >
                             <View>
                               <ResetTimer

@@ -14,6 +14,7 @@ import FavLeftoversContext from "../contexts/FavLeftoversContext";
 import SavedRecipesContext from "../contexts/SavedRecipesContext";
 import LeftoversContext from "../contexts/LeftoversContext";
 import IngredientsContext from "../contexts/IngredientsContext";
+import MealsLeftContext from "@/contexts/MealsLeftContext";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -23,6 +24,15 @@ export default function RootLayout() {
   const [savedRecipes, setSavedRecipes] = useState<string[]>([]);
   const [ingredients, setIngredients] = useState<string[]>([]);
   const [leftovers, setLeftovers] = useState<string[]>([]);
+  const [mealsLeft, setMealsLeft] = useState<number>(5);
+
+  const getTodayDate = () => {
+    return new Date().toISOString().split("T")[0];
+  };
+
+  const [currentDate, setCurrentDate] = useState(getTodayDate());
+
+  //if currentDate != storage date then setMealsLeft to 5 again and set the currentDate to storage date
 
   const image =
     Platform.OS == "web"
@@ -91,11 +101,6 @@ export default function RootLayout() {
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.blueHeader }}>
           <LeftoversContext.Provider value={[leftovers, setLeftovers]}>
             <IngredientsContext.Provider value={[ingredients, setIngredients]}>
-              <StatusBar
-                barStyle="dark-content"
-                backgroundColor={COLORS.blueHeader}
-              />
-
               <FavoritesContext.Provider value={[favorites, setFavorites]}>
                 <FavLeftoversContext.Provider
                   value={[favoritesL, setFavoritesL]}
@@ -103,11 +108,19 @@ export default function RootLayout() {
                   <SavedRecipesContext.Provider
                     value={[savedRecipes, setSavedRecipes]}
                   >
-                    <Stack
-                      screenOptions={{
-                        headerShown: false,
-                      }}
-                    ></Stack>
+                    <MealsLeftContext.Provider
+                      value={[mealsLeft, setMealsLeft]}
+                    >
+                      <StatusBar
+                        barStyle="dark-content"
+                        backgroundColor={COLORS.blueHeader}
+                      />
+                      <Stack
+                        screenOptions={{
+                          headerShown: false,
+                        }}
+                      ></Stack>
+                    </MealsLeftContext.Provider>
                   </SavedRecipesContext.Provider>
                 </FavLeftoversContext.Provider>
               </FavoritesContext.Provider>
