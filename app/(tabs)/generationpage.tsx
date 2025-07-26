@@ -1,8 +1,14 @@
-import { Platform, StyleSheet, Text, View } from "react-native";
+import {
+  Platform,
+  ImageBackground,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import React, { useState } from "react";
 import Generate from "@/components/generate";
 import MobileHeader from "@/components/mobileheader";
-import { ImageBackground } from "expo-image";
+
 import { styles } from "@/styles/auth.styles";
 
 export default function GenerationPage() {

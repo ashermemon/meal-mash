@@ -15,6 +15,8 @@ import SavedRecipesContext from "../contexts/SavedRecipesContext";
 import LeftoversContext from "../contexts/LeftoversContext";
 import IngredientsContext from "../contexts/IngredientsContext";
 import MealsLeftContext from "@/contexts/MealsLeftContext";
+import { NotificationProvider } from "@/contexts/NotificationContext";
+import * as Notifications from "expo-notifications";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -95,39 +97,52 @@ export default function RootLayout() {
     return null;
   }
 
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldPlaySound: true,
+      shouldSetBadge: false,
+      shouldShowBanner: false,
+      shouldShowList: false,
+    }),
+  });
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <SafeAreaProvider>
-        <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.blueHeader }}>
-          <LeftoversContext.Provider value={[leftovers, setLeftovers]}>
-            <IngredientsContext.Provider value={[ingredients, setIngredients]}>
-              <FavoritesContext.Provider value={[favorites, setFavorites]}>
-                <FavLeftoversContext.Provider
-                  value={[favoritesL, setFavoritesL]}
-                >
-                  <SavedRecipesContext.Provider
-                    value={[savedRecipes, setSavedRecipes]}
+      <NotificationProvider>
+        <SafeAreaProvider>
+          <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.blueHeader }}>
+            <LeftoversContext.Provider value={[leftovers, setLeftovers]}>
+              <IngredientsContext.Provider
+                value={[ingredients, setIngredients]}
+              >
+                <FavoritesContext.Provider value={[favorites, setFavorites]}>
+                  <FavLeftoversContext.Provider
+                    value={[favoritesL, setFavoritesL]}
                   >
-                    <MealsLeftContext.Provider
-                      value={[mealsLeft, setMealsLeft]}
+                    <SavedRecipesContext.Provider
+                      value={[savedRecipes, setSavedRecipes]}
                     >
-                      <StatusBar
-                        barStyle="dark-content"
-                        backgroundColor={COLORS.blueHeader}
-                      />
-                      <Stack
-                        screenOptions={{
-                          headerShown: false,
-                        }}
-                      ></Stack>
-                    </MealsLeftContext.Provider>
-                  </SavedRecipesContext.Provider>
-                </FavLeftoversContext.Provider>
-              </FavoritesContext.Provider>
-            </IngredientsContext.Provider>
-          </LeftoversContext.Provider>
-        </SafeAreaView>
-      </SafeAreaProvider>
+                      <MealsLeftContext.Provider
+                        value={[mealsLeft, setMealsLeft]}
+                      >
+                        <StatusBar
+                          barStyle="dark-content"
+                          backgroundColor={COLORS.blueHeader}
+                        />
+                        <Stack
+                          screenOptions={{
+                            headerShown: false,
+                          }}
+                        ></Stack>
+                      </MealsLeftContext.Provider>
+                    </SavedRecipesContext.Provider>
+                  </FavLeftoversContext.Provider>
+                </FavoritesContext.Provider>
+              </IngredientsContext.Provider>
+            </LeftoversContext.Provider>
+          </SafeAreaView>
+        </SafeAreaProvider>
+      </NotificationProvider>
     </GestureHandlerRootView>
   );
 }

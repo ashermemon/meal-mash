@@ -1,1 +1,3 @@
-export const APIKEY = "" as const;
+import Constants from "expo-constants";
+
+export const APIKEY = Constants.expoConfig?.extra?.apiKey;
