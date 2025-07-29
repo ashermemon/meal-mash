@@ -3,4 +3,4 @@
 ## Download coming soon!
 
 Watch the sneak peak here!
-[https://youtu.be/_k0OMKlk9lk](url)
+https://youtu.be/_k0OMKlk9lk
