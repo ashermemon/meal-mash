@@ -58,6 +58,9 @@ const Prompt = (props: PromptProps) => {
 
         Use "<step>" at the beginning of each step/section and "</step>" at the end of the step/section as shown in the structure
 
+        Use the <checkbox> before and </checkbox> after as shown in the structure (<checkbox> before the quantity and </checkbox> after the ingredient)
+
+
         For protein, fat and carbs, wrap in the appropiate tags as shown in the structure
 
 
@@ -82,16 +85,16 @@ const Prompt = (props: PromptProps) => {
       <step>
       <head>Ingredients:</head> (HAS TO BE A HEADER)(THIS MUST INCLUDE EVERYTHING USED IN THE RECIPE!)
 
- ${
-   props.leftovers.length !== 0
-     ? `      <replace>Quantity of leftovers</replace> <replace>leftover name</replace> - (YOU MUST USE AT LEAST ONE LEFTOVER)
-      <replace>etc..</replace>`
-     : ``
- } 
 
+      Collect the following ingredients in the specified amounts. Check each one off as you gather it:
+      ${
+        props.leftovers.length !== 0
+          ? `<checkbox><replace>Quantity of leftovers</replace> <replace>leftover name</replace> - (YOU MUST USE AT LEAST ONE LEFTOVER)<replace>etc..</replace></checkbox>`
+          : ``
+      } <checkbox><replace>Quantity of ingredient</replace> <replace>ingredient name</replace></checkbox>
       
       
-      <replace>Quantity of ingredient</replace> <replace>ingredient name</replace>
+      
       <replace>etc…</replace>
       
       </step>

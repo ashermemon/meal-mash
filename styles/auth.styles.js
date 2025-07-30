@@ -7,6 +7,12 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 15,
   },
+  ingredientContainer: {
+    flex: 1,
+    width: "100%",
+    alignItems: "flex-start",
+    alignSelf: "flex-start",
+  },
   image: {
     flex: 1,
     justifyContent: "center",
@@ -262,7 +268,7 @@ export const styles = StyleSheet.create({
   arrowButtons: {
     flexDirection: "row",
     width: "100%",
-    paddingTop: 10,
+    paddingTop: 15,
     justifyContent: "center",
     position: "relative",
     bottom: 0,

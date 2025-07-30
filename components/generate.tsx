@@ -57,7 +57,6 @@ export default function Generate(props: GeneratedProps) {
   const [mealsLeft, setMealsLeft] = useContext(MealsLeftContext);
   const ai = new GoogleGenAI({ apiKey: APIKEY });
   var hsl = require("hsl-to-hex");
-  let first = true;
 
   const [responseRecipe, setResponseRecipe] = useState("");
   const [searchActive, setSearchActive] = useState(false);
@@ -73,6 +72,9 @@ export default function Generate(props: GeneratedProps) {
   const [leftoversEnabled, setLeftoversEnabled] = useState(false);
   const [nutrients, setNutrients] = useState<number[]>([]);
   const [saved, setSaved] = useState(false);
+  const [checkboxStates, setCheckboxStates] = useState<Record<number, boolean>>(
+    {}
+  );
 
   let recipePrompt = "";
   let stepNum = 0;
@@ -127,7 +129,7 @@ export default function Generate(props: GeneratedProps) {
 
   const handleGenerateRecipe = (inputRecipe: string) => {
     setCurrentStep(1);
-    first = false;
+    setCheckboxStates({});
     title = undefined;
     setSaved(false);
     setTotalSteps(0);
@@ -186,7 +188,7 @@ export default function Generate(props: GeneratedProps) {
       .replace(/^\s+|\s+$/g, "");
 
     const texts = cleanInput.split(
-      /(<(?:bold|timer|title|head|line)>[\s\S]*?<\/(?:bold|timer|title|head|line)>)/g
+      /(<(?:bold|timer|title|head|line|checkbox)>[\s\S]*?<\/(?:bold|timer|title|head|line|checkbox)>)/g
     );
     let timerIndex = -1;
 
@@ -250,6 +252,51 @@ export default function Generate(props: GeneratedProps) {
           ></Timer>
         ) : null;
       }
+
+      if (text.startsWith("<checkbox>") && text.endsWith("</checkbox>")) {
+        const content = text.slice(10, -11);
+        const isCheckeda = checkboxStates[index] || false;
+
+        return (
+          <View key={index} style={styles.ingredientContainer}>
+            <BouncyCheckbox
+              style={{
+                marginVertical: 20,
+                marginHorizontal: 25,
+                alignSelf: "flex-start",
+                alignItems: "flex-start",
+                borderRadius: 5,
+              }}
+              size={25}
+              fillColor={"#939396"}
+              unFillColor={COLORS.newHeader}
+              text={content}
+              iconStyle={{
+                borderColor: COLORS.fontColor,
+                borderRadius: 5,
+              }}
+              isChecked={isCheckeda}
+              innerIconStyle={{ borderWidth: 2, borderRadius: 5 }}
+              textStyle={[
+                styles.textLeftSemiBold,
+                { color: isCheckeda ? "#939396" : COLORS.fontColor },
+              ]}
+              textContainerStyle={{
+                flex: 0,
+              }}
+              useBuiltInState={false}
+              onPress={() => {
+                setCheckboxStates((prev) => ({
+                  ...prev,
+                  [index]: !prev[index],
+                }));
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
+              }}
+            />
+          </View>
+        );
+      }
+
       if (text.startsWith("<line>") && text.endsWith("</line>")) {
         return <Text key={index}>{"\n"}</Text>;
       } else if ((text || "").replace(/\n/g, "").trim() !== "") {
