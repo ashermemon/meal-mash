@@ -393,7 +393,12 @@ export default function Generate(props: GeneratedProps) {
                           }}
                           useBuiltInState={false}
                           isChecked={isChecked}
-                          onPress={() => setChecked(!isChecked)}
+                          onPress={() => [
+                            setChecked(!isChecked),
+                            Haptics.impactAsync(
+                              Haptics.ImpactFeedbackStyle.Soft
+                            ),
+                          ]}
                         />
                       </View>
                     </>
