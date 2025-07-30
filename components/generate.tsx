@@ -108,7 +108,7 @@ export default function Generate(props: GeneratedProps) {
       if (response.text) {
         const geminiText = (response.text || "").replace(/^\s+/, "");
 
-        const stepMatches = geminiText.match(/«[^»]+»/g);
+        const stepMatches = geminiText.match(/<step>[\s\S]*?<\/step>/g);
         setTotalSteps(stepMatches ? stepMatches.length : 0);
 
         setResponseRecipe(geminiText);
@@ -145,7 +145,7 @@ export default function Generate(props: GeneratedProps) {
     if (!responseRecipe) return;
 
     const modifiedTexts = responseRecipe.split(
-      /(\↾[^↿]+\↿|\⇸[^⇷]+\⇷|\⇨[^⇦]+\⇦)/g
+      /(<(?:protein|fat|carbs)>[\s\S]*?<\/(?:protein|fat|carbs)>)/g
     );
 
     let protein = 0;
@@ -153,12 +153,12 @@ export default function Generate(props: GeneratedProps) {
     let carbs = 0;
 
     modifiedTexts.forEach((text) => {
-      if (text.startsWith("↾") && text.endsWith("↿")) {
-        protein = Number(text.slice(1, -1));
-      } else if (text.startsWith("⇨") && text.endsWith("⇦")) {
-        fat = Number(text.slice(1, -1));
-      } else if (text.startsWith("⇸") && text.endsWith("⇷")) {
-        carbs = Number(text.slice(1, -1));
+      if (text.startsWith("<protein>") && text.endsWith("</protein>")) {
+        protein = Number(text.slice(9, -10));
+      } else if (text.startsWith("<fat>") && text.endsWith("</fat>")) {
+        fat = Number(text.slice(5, -6));
+      } else if (text.startsWith("<carbs>") && text.endsWith("</carbs>")) {
+        carbs = Number(text.slice(7, -8));
       }
     });
 
@@ -166,37 +166,63 @@ export default function Generate(props: GeneratedProps) {
   }, [responseRecipe]);
 
   const parseMarkdownText = (input: string) => {
-    const texts = input.split(/(\«[^»]+\»)/g);
+    const texts = input.split(/(<step>[\s\S]*?<\/step>)/g);
 
     return texts.map((text, index) => {
-      if (text.startsWith("«") && text.endsWith("»")) {
-        const content = text.slice(1, -1);
+      if (text.startsWith("<step>") && text.endsWith("</step>")) {
+        const content = text.slice(6, -7);
         stepNum += 1;
-        parseMarkdownTextInline(content);
         return currentStep == stepNum ? parseMarkdownTextInline(content) : null;
       } else {
         return null;
       }
     });
   };
-  function removeCharacters(str: string, charsToRemove: string[]) {
-    const regex = new RegExp(`[${charsToRemove.join("")}]`, "g");
-    return (str || "").replace(regex, "");
-  }
 
   const parseMarkdownTextInline = (input: string) => {
-    const texts = input.split(/(\*\*[^*]+\*\*|\{[^}]+\})/g);
+    console.log(input);
+    const cleanInput = input
+      .replace(/<\/?(protein|fat|carbs|replace)>/g, "")
+      .replace(/^\s+|\s+$/g, "");
+
+    const texts = cleanInput.split(
+      /(<(?:bold|timer|title|head|line)>[\s\S]*?<\/(?:bold|timer|title|head|line)>)/g
+    );
     let timerIndex = -1;
 
     return texts.map((text, index) => {
-      text = removeCharacters(text, ["↾", "↿", "⇨", "⇦", "⇸", "⇷"]);
-      if (text.startsWith("**") && text.endsWith("**")) {
-        const content = text.slice(2, -2);
+      if (text.startsWith("<head>") && text.endsWith("</head>")) {
+        const content = text.slice(6, -7);
+        return (
+          <Text
+            key={index}
+            style={[
+              styles.textCentered,
+              { fontFamily: "Nunito-Bold", fontSize: 20 },
+            ]}
+          >
+            {content}
+          </Text>
+        );
+      }
+      if (text.startsWith("<title>") && text.endsWith("</title>")) {
+        const content = text.slice(7, -8);
+        title = content;
+        return (
+          <Text
+            key={index}
+            style={[
+              styles.textCentered,
+              { fontFamily: "Nunito-Bold", fontSize: 20 },
+            ]}
+          >
+            {content}
+          </Text>
+        );
+      }
+      if (text.startsWith("<bold>") && text.endsWith("</bold>")) {
+        const content = text.slice(6, -7);
 
-        if (first == true) {
-          title = content;
-        }
-        first = false;
         return (
           <Text
             key={index}
@@ -205,9 +231,10 @@ export default function Generate(props: GeneratedProps) {
             {content}
           </Text>
         );
-      } else if (text.startsWith("{") && text.endsWith("}")) {
-        const content = text.slice(1, -1);
-        let timeSec = parseInt(content) * 60;
+      }
+      if (text.startsWith("<timer>") && text.endsWith("</timer>")) {
+        const content = text.slice(7, -8);
+        let timeSec = parseInt(content) != null ? parseInt(content) * 60 : 0;
         timerIndex++;
         let color1 = hsl(Math.random() * 359, 45, 79);
         let color2 = hsl(Math.random() * 359, 45, 79);
@@ -222,6 +249,9 @@ export default function Generate(props: GeneratedProps) {
             color3={color3}
           ></Timer>
         ) : null;
+      }
+      if (text.startsWith("<line>") && text.endsWith("</line>")) {
+        return <Text key={index}>{"\n"}</Text>;
       } else if ((text || "").replace(/\n/g, "").trim() !== "") {
         return (
           <Text key={index} style={styles.textCentered}>

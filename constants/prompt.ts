@@ -37,109 +37,118 @@ const Prompt = (props: PromptProps) => {
       
       
       
-        With your response, Follow this structure exactly, without any exceptions at all. Text in square brackets ([]) is for you to replace appropriately to form the recipe. 
-        If you need to use a TIMER IN A STEP, use THIS FORMAT: "[timer length in minutes] minutes" and at the end of the step, simply put this after the period: {minutes}. ALWAYS PUT IT AT THE END OF THE STEP, ON A NEW LINE AFTER ALL OTHER WORDS, YOU MUST DO THIS!
-        Don't approximate. Be exact and put just the number inside the curly brackets. For example, "Put the rice in the boiling water for 5 minutes, then remove. 
-        {5}". 
+        With your response, Follow this structure exactly, without any exceptions at all. Text in replace tags, <replace> before, and </replace>, is for you to replace appropriately to form the recipe. 
+        If you need to use a TIMER IN A STEP, use THIS FORMAT: "<replace>timer length in minutes</replace> minutes" and at the end of the step, simply put this after the period: <timer>minutes</timer>. ALWAYS PUT IT AT THE END OF THE STEP, ON A NEW LINE AFTER ALL OTHER WORDS!
+        Don't approximate. Be exact and put just the number inside the timer tag. For example, "Put the rice in the boiling water for 5 minutes, then remove.  **IMPORTANT, for content inside <replace></replace> tags, you should not output the <replace></replace> tags. Just the content inside!
+        DO NOT SHOW THE REPLACE TAGS!!
+        <timer>5</timer>". 
 
         
-        ALWAYS use a timer with greater than 0 minutes in it and always use whole numbers. ONLY USE A TIMER and USE CURLY BRACKETS IF IT IS NECCESSARY
+        ALWAYS use a timer with greater than 0 minutes in it and always use whole numbers. ONLY USE A TIMER IF NECCESSARY
       
-        You must bold the recipe name and each step using "**" before and after the desired bold text.
+        You must wrap the recipe name with "<title>" and "</title>"
+        
+        BOLD each step using "<bold>" before and "</bold> after the desired bold text.
+
+        For the current heading (Ingredients, or Instructions or Helpful Tips) use "<head>" before and "</head> after. There must be a heading on every step.
       
-        Use "«" at the beginning of each step/section and "»" at the end of the step/section as shown in the structure
+        For the instructions heading, add a <line></line> after the heading, before the bolded step!
 
       
+
+        Use "<step>" at the beginning of each step/section and "</step>" at the end of the step/section as shown in the structure
+
+        For protein, fat and carbs, wrap in the appropiate tags as shown in the structure
+
+
         HERE IS THE STRUCTURE:
       
       
-      «
-      
-      **[Recipe Name]**
-      [total recipe time]
-      
-      
+      <step>
+      <title><replace>Recipe Name</replace></title>
+
+      <replace>total recipe time</replace>
       
       Nutrition Facts:
 
-      Protein: ↾[protein]↿g
-      Fat: ⇨[fat]⇦g
-      Carbs: ⇸[carbs]⇷g
+      Protein: <protein><replace>protein in grams</replace></protein>g
+      Fat: <fat><replace>fat in grams</replace></fat>g
+      Carbs: <carbs><replace>carbs in grams</replace></carbs>g
 
-       **Nutrition Chart:**
-      »
+      <bold>Nutrition Chart:</bold>
+      </step>
       
       
-      «
-      **Ingredients:** (THIS MUST INCLUDE EVERYTHING USED IN THE RECIPE!)
+      <step>
+      <head>Ingredients:</head> (HAS TO BE A HEADER)(THIS MUST INCLUDE EVERYTHING USED IN THE RECIPE!)
+
  ${
    props.leftovers.length !== 0
-     ? `      [Quantity of leftovers] [leftover name] - (YOU MUST USE AT LEAST ONE LEFTOVER)
-      [etc..]`
+     ? `      <replace>Quantity of leftovers</replace> <replace>leftover name</replace> - (YOU MUST USE AT LEAST ONE LEFTOVER)
+      <replace>etc..</replace>`
      : ``
  } 
 
       
       
-      [Quantity of ingredient] [ingredient name]
-      [etc…]
+      <replace>Quantity of ingredient</replace> <replace>ingredient name</replace>
+      <replace>etc…</replace>
       
-      »
+      </step>
       
 
 
-      «
+      <step>
+      <head>Instructions:</head> (HAS TO BE ON EVERY STEP of instruction)
+      <line></line>
+      <bold>Step 1:</bold>
+      <replace>ENTIRE TEXT of step 1</replace>
       
-      **Instructions:**
-
-      **Step 1:**
-      [ENTIRE TEXT of step 1]
+      <timer>time in minutes</timer> - OPTIONAL
       
-      {timer} - OPTIONAL
-      
-      »
-
-
-
-      «
-      
-      **Step 2:**
-      [ENTIRE TEXT of step 2]
-      
-      {timer} - OPTIONAL
-      
-      »
+      </step>
 
 
 
-      «
+      <step>
+      <head>Instructions:</head> (HAS TO BE ON EVERY STEP of instruction)
+      <line></line>
+      <bold>Step 2:</bold>
+
+      <replace>ENTIRE TEXT of step 2</replace>
       
-      [etc..]
+      <timer>time in minutes</timer>  - OPTIONAL
       
-      »
+      </step>
+
+
+
+      <step>
+      <replace>etc..</replace>
+      
+      </step>
 
 
       
-      «
+      <step>
+      <head>Helpful Tips</head> 
       
-      **Helpful Tips** - OPTIONAL
+      - <replace>Tip 1</replace>
       
-      - [Tip 1]
+      - <replace>Tip 2</replace>
       
-      - [Tip 2]
-      
-      - [etc..]
+      - <replace>etc..</replace>
       
       
-      **Enjoy your [Recipe Name]**
+      <bold>Enjoy your <replace>Recipe Name</replace></bold>
       
-      »  
+      </step>  
 
-        IMPORTANT FINAL NOTE: WHEN USING THIS STRUCTURE, MAKE 100% SURE THAT THE TIMER CURLY BRACKETS COME AT THE VERY END OF THE STEP, AFTER ALL OTHER INSTRUCTIONS AND TEXT AND ON A BRAND NEW LINE: FOR INSTANCE:
+        IMPORTANT FINAL NOTE: WHEN USING THIS STRUCTURE, MAKE 100% SURE THAT THE TIMER COMES AT THE VERY END OF THE STEP, AFTER ALL OTHER INSTRUCTIONS AND TEXT AND ON A BRAND NEW LINE: FOR INSTANCE:
       "
         Step 1: Place the noodles into the pot and cook for 12 minutes. Then remove them and serve!
       
-        {12}
+        <timer>12</timer>
       "
       
       THE MOST IMPORTANT THING IS MAKING IT A CONSISTENT STRUCTURE - NO EXCEPTIONS AT ALL. FOLLOW THE STRUCTURE EXACTLY 
