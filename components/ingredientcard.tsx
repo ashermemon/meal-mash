@@ -20,6 +20,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { COLORS } from "@/constants/theme";
 import { runOnJS } from "react-native-reanimated";
+import * as Haptics from "expo-haptics";
 
 interface IngredientProps {
   ingredientName: string;
@@ -55,12 +56,14 @@ export default function IngredientCard(props: IngredientProps) {
     <Pressable
       onPressIn={() => {
         scale.value = withTiming(1.06);
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
       }}
       onPressOut={() => {
         scale.value = withTiming(1);
       }}
       onPress={() => {
         if (searchActive) {
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
           if (leftoversEnabled) {
             setLeftovers((prev) => [...prev, props.ingredientName]);
           } else {

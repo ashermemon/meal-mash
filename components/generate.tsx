@@ -45,6 +45,8 @@ import ProgressBar from "@/components/progressbar";
 import { ScrollView } from "react-native-gesture-handler";
 import MealsLeftContext from "@/contexts/MealsLeftContext";
 
+import * as Haptics from "expo-haptics";
+
 type GeneratedProps = {
   generated: boolean;
   setGenerated: Dispatch<SetStateAction<boolean>>;
@@ -118,6 +120,7 @@ export default function Generate(props: GeneratedProps) {
       props.setGenerated(true);
       const totalMeals = storage.getNumber("mealsnumber") ?? 0;
       setMealsLeft(mealsLeft - 1);
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
       storage.set("mealsnumber", totalMeals + 1);
     }
   };
@@ -402,7 +405,10 @@ export default function Generate(props: GeneratedProps) {
                     {!loading && props.generated && currentStep > 1 ? (
                       <Pressable
                         style={styles.nextButton}
-                        onPress={() => [setCurrentStep(currentStep - 1)]}
+                        onPress={() => [
+                          setCurrentStep(currentStep - 1),
+                          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft),
+                        ]}
                       >
                         <BackArrow
                           iconsetcolor={COLORS.fontColor}
@@ -434,7 +440,12 @@ export default function Generate(props: GeneratedProps) {
                           onPress={
                             leftovers.length > 0 || ingredients.length > 0
                               ? mealsLeft > 0
-                                ? () => [handleGenerateRecipe(recipePrompt)]
+                                ? () => [
+                                    handleGenerateRecipe(recipePrompt),
+                                    Haptics.impactAsync(
+                                      Haptics.ImpactFeedbackStyle.Light
+                                    ),
+                                  ]
                                 : () =>
                                     alert(
                                       "You have run out of meal generations today. Come again tomorrow!"
@@ -469,7 +480,13 @@ export default function Generate(props: GeneratedProps) {
                             ]}
                             onPress={
                               mealsLeft > 0
-                                ? () => [handleGenerateRecipe(recipePrompt)]
+                                ? () => [
+                                    handleGenerateRecipe(recipePrompt),
+
+                                    Haptics.impactAsync(
+                                      Haptics.ImpactFeedbackStyle.Light
+                                    ),
+                                  ]
                                 : () =>
                                     alert(
                                       "You ran out of meal generations today. Come again tomorrow!"
@@ -493,7 +510,17 @@ export default function Generate(props: GeneratedProps) {
                               },
                             ]}
                             onPress={() =>
-                              title ? saveRecipe(title) : alert("title")
+                              title
+                                ? [
+                                    saveRecipe(title),
+
+                                    Haptics.impactAsync(
+                                      Haptics.ImpactFeedbackStyle.Light
+                                    ),
+                                  ]
+                                : alert(
+                                    "Error, please regenerate and try again"
+                                  )
                             }
                           >
                             <View>
@@ -518,7 +545,12 @@ export default function Generate(props: GeneratedProps) {
                                 borderColor: COLORS.deleteBorder,
                               },
                             ]}
-                            onPress={() => newMeal()}
+                            onPress={() => [
+                              newMeal(),
+                              Haptics.notificationAsync(
+                                Haptics.NotificationFeedbackType.Error
+                              ),
+                            ]}
                           >
                             <View>
                               <DiscardIcon
@@ -536,7 +568,10 @@ export default function Generate(props: GeneratedProps) {
                     {!loading && props.generated && currentStep < totalSteps ? (
                       <Pressable
                         style={styles.nextButton}
-                        onPress={() => [setCurrentStep(currentStep + 1)]}
+                        onPress={() => [
+                          setCurrentStep(currentStep + 1),
+                          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft),
+                        ]}
                       >
                         <ForwardArrow
                           iconsetcolor={COLORS.fontColor}

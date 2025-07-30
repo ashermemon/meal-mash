@@ -7,7 +7,7 @@ module.exports = function (api) {
         "module-resolver",
         {
           alias: {
-            "@": "./", // this makes `@/utils/...` work
+            "@": "./",
           },
         },
       ],

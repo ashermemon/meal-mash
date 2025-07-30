@@ -15,7 +15,7 @@ export default function DisplaySaved() {
   const [saves, setSaves] = useContext(SavedRecipesContext);
 
   return (
-    <View style={{ width: "100%", paddingHorizontal: 20, paddingBottom: 20 }}>
+    <View style={{ width: "100%", paddingHorizontal: 20, paddingBottom: 30 }}>
       {favorites.length === 0 &&
       favoritesL.length === 0 &&
       saves.length === 0 ? (

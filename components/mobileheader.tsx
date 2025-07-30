@@ -16,6 +16,7 @@ import { router } from "expo-router";
 import DiscardIcon from "@/Icons/DiscardIcon";
 import { Image } from "expo-image";
 import MealsLeftContext from "@/contexts/MealsLeftContext";
+import * as Haptics from "expo-haptics";
 
 type HeaderProps = {
   pageTitle: string;
@@ -41,10 +42,10 @@ export default function MobileHeader(props: HeaderProps) {
             onPress={() =>
               props.backEnabled
                 ? navigation.canGoBack()
-                  ? navigation.goBack()
+                  ? [navigation.goBack(), Haptics.selectionAsync()]
                   : null
                 : props.setGenerated
-                ? props.setGenerated(false)
+                ? [props.setGenerated(false), Haptics.selectionAsync()]
                 : null
             }
           >

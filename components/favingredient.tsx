@@ -22,6 +22,7 @@ type CardProps = {
   ingredientName: string;
   leftover: boolean;
 };
+import * as Haptics from "expo-haptics";
 
 export default function FavIngredient(props: CardProps) {
   const [favorite, setFavorite] = useState(true);
@@ -88,14 +89,14 @@ export default function FavIngredient(props: CardProps) {
       props.leftover &&
       upperCaseArrayL.includes(props.ingredientName.toUpperCase()) == false
     ) {
-      router.push("/");
+      router.push("/(tabs)/generationpage");
       setLeftovers((prev: string[]) => [...prev, props.ingredientName]);
     } else if (
       !props.leftover &&
       upperCaseArrayI.includes(props.ingredientName.toUpperCase()) == false
     ) {
       setIngredients((prev: string[]) => [...prev, props.ingredientName]);
-      router.push("/");
+      router.push("/(tabs)/generationpage");
     } else {
       alert("Ingredient already added!");
     }
@@ -122,6 +123,7 @@ export default function FavIngredient(props: CardProps) {
         pressed.value = false;
       }}
       onPress={() => {
+        Haptics.selectionAsync();
         addIngredient();
       }}
     >

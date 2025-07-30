@@ -31,6 +31,7 @@ import { Image } from "expo-image";
 import LeftoversContext from "@/contexts/LeftoversContext";
 import FavoritesContext from "@/contexts/FavoritesContext";
 import FavLeftoversContext from "@/contexts/FavLeftoversContext";
+import * as Haptics from "expo-haptics";
 
 export default function Search() {
   type Ingredient = {
@@ -189,11 +190,12 @@ export default function Search() {
         <View style={styles.exitSearchContainer}>
           <Pressable
             style={styles.exitSearch}
-            onPress={
+            onPress={() => [
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft),
               customModal
-                ? () => [setCustomModal(false), setCustomQuery(undefined)]
-                : () => handleExitSearch()
-            }
+                ? [setCustomModal(false), setCustomQuery(undefined)]
+                : handleExitSearch(),
+            ]}
           >
             {customModal ? (
               <BackArrow
@@ -269,7 +271,10 @@ export default function Search() {
               ></Image>
             </View>
             <Pressable
-              onPress={addCustom}
+              onPress={() => [
+                addCustom(),
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft),
+              ]}
               style={[
                 styles.generateButton,
                 {
@@ -332,7 +337,10 @@ export default function Search() {
                         : COLORS.greenButtonColorOuline,
                     },
                   ]}
-                  onPress={() => enableCustomModal(searchQuery)}
+                  onPress={() => [
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium),
+                    enableCustomModal(searchQuery),
+                  ]}
                 >
                   <Text
                     style={

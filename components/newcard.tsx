@@ -16,6 +16,8 @@ import {
   GestureHandlerRootView,
 } from "react-native-gesture-handler";
 
+import * as Haptics from "expo-haptics";
+
 type CardProps = {
   bColor: string;
   leftover: boolean;
@@ -65,6 +67,7 @@ export default function NewCard(props: CardProps) {
         <Animated.View
           style={[styles.addButton, animatedStyles]}
           onTouchStart={() => (
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft),
             setSearchActive(true),
             props.leftover
               ? setLeftoversEnabled(true)

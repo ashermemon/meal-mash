@@ -6,6 +6,7 @@ import ResetTimer from "@/Icons/ResetTimer";
 import { COLORS } from "@/constants/theme";
 import StopTimer from "@/Icons/StopTimer";
 import PlayTimer from "@/Icons/PlayTimer";
+import * as Haptics from "expo-haptics";
 
 type TimerProps = {
   time: number;
@@ -27,9 +28,10 @@ export default function Timer(props: TimerProps) {
         <Pressable
           style={styles.timerButton}
           onPress={() => {
-            timerFinished
-              ? [setTimerKey(timerKey + 1), setTimerFinished(false)]
-              : setIsPlaying(!isPlaying);
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft),
+              timerFinished
+                ? [setTimerKey(timerKey + 1), setTimerFinished(false)]
+                : setIsPlaying(!isPlaying);
           }}
         >
           {isPlaying && !timerFinished ? (
@@ -74,9 +76,10 @@ export default function Timer(props: TimerProps) {
         <Pressable
           style={styles.timerButton}
           onPress={() => {
-            timerFinished
-              ? [setTimerKey(timerKey + 1), setTimerFinished(false)]
-              : setTimerKey(timerKey + 1);
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft),
+              timerFinished
+                ? [setTimerKey(timerKey + 1), setTimerFinished(false)]
+                : setTimerKey(timerKey + 1);
           }}
         >
           <ResetTimer
