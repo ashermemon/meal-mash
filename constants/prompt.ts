@@ -58,11 +58,12 @@ const Prompt = (props: PromptProps) => {
 
         Use "<step>" at the beginning of each step/section and "</step>" at the end of the step/section as shown in the structure
 
-        Use the <checkbox> before and </checkbox> after as shown in the structure (<checkbox> before the quantity and </checkbox> after the ingredient)
+        Use the <checkbox> before and </checkbox> after as shown in the structure (<checkbox> before the line and </checkbox> after the line)
 
 
         For protein, fat and carbs, wrap in the appropiate tags as shown in the structure
 
+        Use the <tip></tip> tag for the tips in the helpful tips section.
 
         HERE IS THE STRUCTURE:
       
@@ -89,13 +90,11 @@ const Prompt = (props: PromptProps) => {
       Collect the following ingredients in the specified amounts. Check each one off as you gather it:
       ${
         props.leftovers.length !== 0
-          ? `<checkbox><replace>Quantity of leftovers</replace> <replace>leftover name</replace> - (YOU MUST USE AT LEAST ONE LEFTOVER)<replace>etc..</replace></checkbox>`
+          ? `<checkbox> <replace> Quantity </replace> <replace> leftover name </replace> </checkbox> - (YOU MUST USE AT LEAST ONE LEFTOVER)
+          <replace>etc..</replace>`
           : ``
-      } <checkbox><replace>Quantity of ingredient</replace> <replace>ingredient name</replace></checkbox>
-      
-      
-      
-      <replace>etc…</replace>
+      } <checkbox> <replace> Quantity </replace> <replace> ingredient name </replace> </checkbox>
+       <replace>etc…</replace>
       
       </step>
       
@@ -135,14 +134,13 @@ const Prompt = (props: PromptProps) => {
       
       <step>
       <head>Helpful Tips</head> 
+      <line></line>
+      <tip><replace>Tip 1</replace></tip>
       
-      - <replace>Tip 1</replace>
+      <tip><replace>Tip 2</replace></tip>
       
-      - <replace>Tip 2</replace>
-      
-      - <replace>etc..</replace>
-      
-      
+      <tip><replace>etc..</replace></tip>
+      <line></line>
       <bold>Enjoy your <replace>Recipe Name</replace></bold>
       
       </step>  
@@ -155,6 +153,109 @@ const Prompt = (props: PromptProps) => {
       "
       
       THE MOST IMPORTANT THING IS MAKING IT A CONSISTENT STRUCTURE - NO EXCEPTIONS AT ALL. FOLLOW THE STRUCTURE EXACTLY 
+      HERE IS AN EXAMPLE FOLLOWING THE STRUCTURE:
+      <step>
+<title>Salmon & Beef Spinach Salad with Ranch Dressing</title>
+
+20 minutes
+
+Nutrition Facts:
+
+Protein: <protein>45</protein>g
+Fat: <fat>30</fat>g
+Carbs: <carbs>10</carbs>g
+
+<bold>Nutrition Chart:</bold>
+</step>
+
+<step>
+<head>Ingredients:</head>
+
+Collect the following ingredients in the specified amounts. Check each one off as you gather it:
+<checkbox> 4 oz grilled salmon fillet </checkbox>
+<checkbox> 4 oz ground beef </checkbox>
+<checkbox> 5 oz spinach </checkbox>
+<checkbox> 1/2 cup ranch dressing </checkbox>
+<checkbox> 1/4 cup onion (sliced) </checkbox>
+<checkbox> 1 tomato (chopped) </checkbox>
+<checkbox> 1 tbsp olive oil </checkbox>
+<checkbox> Salt to taste </checkbox>
+<checkbox> Pepper to taste </checkbox>
+<checkbox> Optional: Lettuce (for a milder base if spinach is too strong) </checkbox>
+
+</step>
+
+<step>
+<head>Instructions:</head>
+<line></line>
+<bold>Step 1:</bold>
+Heat the olive oil in a skillet over medium heat. Add the sliced onion and cook until softened, about 3 minutes. <timer>3</timer>
+
+</step>
+
+<step>
+<head>Instructions:</head>
+<line></line>
+<bold>Step 2:</bold>
+Add the ground beef to the skillet with the onions. Season with salt and pepper to taste. Cook until the beef is heated through, about 5 minutes, breaking it up with a spoon as it cooks. <timer>5</timer>
+
+</step>
+
+<step>
+<head>Instructions:</head>
+<line></line>
+<bold>Step 3:</bold>
+While the beef is cooking, flake the grilled salmon fillet into bite-sized pieces. Set aside.
+
+</step>
+
+<step>
+<head>Instructions:</head>
+<line></line>
+<bold>Step 4:</bold>
+In a large bowl, combine the spinach (and lettuce, if using) and chopped tomato.
+
+</step>
+
+<step>
+<head>Instructions:</head>
+<line></line>
+<bold>Step 5:</bold>
+Add the cooked ground beef and onions to the salad bowl.
+
+</step>
+
+<step>
+<head>Instructions:</head>
+<line></line>
+<bold>Step 6:</bold>
+Gently toss in the flaked salmon.
+
+</step>
+
+<step>
+<head>Instructions:</head>
+<line></line>
+<bold>Step 7:</bold>
+Drizzle the ranch dressing over the salad. Toss gently to coat.
+
+</step>
+
+<step>
+<head>Helpful Tips</head>
+<line></line>
+<tip>If you prefer warm salmon, gently warm the salmon in the microwave for 30 seconds before adding to the salad</tip>
+<tip>For a spicier kick, add a pinch of red pepper flakes to the ground beef while cooking</tip>
+<tip>If you don't have sliced onion, onion powder works in a pinch</tip>
+<tip>If you want to add more ingredients, croutons or shredded cheese will work well</tip>
+<line></line>
+<bold>Enjoy your Salmon & Beef Spinach Salad with Ranch Dressing</bold>
+
+</step>
+
+
+
+
         `;
 };
 export default Prompt;

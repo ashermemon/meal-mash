@@ -68,4 +68,5 @@ export const COLORS = {
   cat13: hsl(100, sat, lightness),
 
   greenProgressBar: "#6BBA83",
+  tipOutline: "#ECC090",
 } as const;

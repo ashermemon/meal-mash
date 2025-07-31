@@ -13,6 +13,20 @@ export const styles = StyleSheet.create({
     alignItems: "flex-start",
     alignSelf: "flex-start",
   },
+  tipContainer: {
+    flex: 1,
+
+    marginVertical: 8,
+    marginHorizontal: 25,
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    backgroundColor: "white",
+    outlineColor: COLORS.tipOutline,
+    outlineWidth: 3,
+    flexDirection: "row",
+    justifyContent: "space-around",
+  },
   image: {
     flex: 1,
     justifyContent: "center",

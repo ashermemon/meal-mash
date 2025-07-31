@@ -46,6 +46,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import MealsLeftContext from "@/contexts/MealsLeftContext";
 
 import * as Haptics from "expo-haptics";
+import { Image } from "expo-image";
 
 type GeneratedProps = {
   generated: boolean;
@@ -168,6 +169,7 @@ export default function Generate(props: GeneratedProps) {
   }, [responseRecipe]);
 
   const parseMarkdownText = (input: string) => {
+    console.log(input);
     const texts = input.split(/(<step>[\s\S]*?<\/step>)/g);
 
     return texts.map((text, index) => {
@@ -182,13 +184,12 @@ export default function Generate(props: GeneratedProps) {
   };
 
   const parseMarkdownTextInline = (input: string) => {
-    console.log(input);
     const cleanInput = input
       .replace(/<\/?(protein|fat|carbs|replace)>/g, "")
       .replace(/^\s+|\s+$/g, "");
 
     const texts = cleanInput.split(
-      /(<(?:bold|timer|title|head|line|checkbox)>[\s\S]*?<\/(?:bold|timer|title|head|line|checkbox)>)/g
+      /(<(?:bold|timer|title|head|line|checkbox|tip)>[\s\S]*?<\/(?:bold|timer|title|head|line|checkbox|tip)>)/g
     );
     let timerIndex = -1;
 
@@ -296,7 +297,25 @@ export default function Generate(props: GeneratedProps) {
           </View>
         );
       }
+      if (text.startsWith("<tip>") && text.endsWith("</tip>")) {
+        const content = text.slice(5, -6);
 
+        return (
+          <View key={index} style={styles.tipContainer}>
+            <View style={[styles.centeredBox]}>
+              <Image
+                source={require(`../assets/3DIcons/LightBulbEmoji.png`)}
+                style={{ width: 35, height: 50 }}
+              ></Image>
+            </View>
+            <View style={styles.centeredBox}>
+              <Text style={[styles.textLeftBold, { marginLeft: 20 }]}>
+                {content}
+              </Text>
+            </View>
+          </View>
+        );
+      }
       if (text.startsWith("<line>") && text.endsWith("</line>")) {
         return <Text key={index}>{"\n"}</Text>;
       } else if ((text || "").replace(/\n/g, "").trim() !== "") {
