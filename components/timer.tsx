@@ -19,12 +19,56 @@ export default function Timer(props: TimerProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [timerKey, setTimerKey] = useState(0);
   const [timerFinished, setTimerFinished] = useState(false);
+  const [remainingTime, setRemainingTime] = useState(props.time);
 
   var hsl = require("hsl-to-hex");
 
   return (
     <View style={styles.timer}>
-      <View style={styles.timerButtons}>
+      <View style={{ flexDirection: "row" }}>
+        <CountdownCircleTimer
+          key={timerKey}
+          size={60}
+          isPlaying={isPlaying}
+          duration={props.time}
+          colors={[props.color1, props.color2, props.color3, hsl(359, 55, 69)]}
+          colorsTime={[props.time, (props.time / 3) * 2, props.time / 3, 0]}
+          onComplete={() => {
+            setTimerFinished(true);
+            return { shouldRepeat: false };
+          }}
+        >
+          {({ remainingTime: rt }) => {
+            setRemainingTime(rt);
+            return null;
+          }}
+        </CountdownCircleTimer>
+        <View style={{ marginLeft: 22 }}>
+          <Text style={[styles.textLeftBold, { fontSize: 16 }]}>Timer</Text>
+          <Text style={[styles.textLeftBold, { fontSize: 27 }]}>
+            {`${Math.floor(remainingTime / 60)}:${String(
+              remainingTime % 60
+            ).padStart(2, "0")}`}
+          </Text>
+        </View>
+      </View>
+      <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
+        <Pressable
+          style={styles.timerButton}
+          onPress={() => {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft),
+              timerFinished
+                ? [setTimerKey(timerKey + 1), setTimerFinished(false)]
+                : setTimerKey(timerKey + 1);
+          }}
+        >
+          <ResetTimer
+            iconsetcolor={COLORS.greyBtns}
+            setheight={30}
+            setwidth={40}
+          ></ResetTimer>
+        </Pressable>
+
         <Pressable
           style={styles.timerButton}
           onPress={() => {
@@ -36,56 +80,17 @@ export default function Timer(props: TimerProps) {
         >
           {isPlaying && !timerFinished ? (
             <StopTimer
-              iconsetcolor={COLORS.fontColor}
-              setheight={20}
-              setwidth={40}
+              iconsetcolor={COLORS.greyBtns}
+              setheight={28}
+              setwidth={28}
             ></StopTimer>
           ) : (
             <PlayTimer
-              iconsetcolor={COLORS.fontColor}
-              setheight={20}
-              setwidth={40}
+              iconsetcolor={COLORS.greyBtns}
+              setheight={28}
+              setwidth={28}
             ></PlayTimer>
           )}
-        </Pressable>
-      </View>
-
-      <View style={styles.timerMiddle}>
-        <CountdownCircleTimer
-          key={timerKey}
-          isPlaying={isPlaying}
-          duration={props.time}
-          colors={[props.color1, props.color2, props.color3, hsl(0, 45, 79)]}
-          colorsTime={[props.time, (props.time / 3) * 2, props.time / 3, 0]}
-          onComplete={() => {
-            setTimerFinished(true);
-            return { shouldRepeat: false };
-          }}
-        >
-          {({ remainingTime }) => (
-            <Text style={styles.textCentered}>
-              {`${Math.floor(remainingTime / 60)}:${String(
-                remainingTime % 60
-              ).padStart(2, "0")}`}
-            </Text>
-          )}
-        </CountdownCircleTimer>
-      </View>
-
-      <View style={styles.timerButtons}>
-        <Pressable
-          style={styles.timerButton}
-          onPress={() => {
-            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft),
-              timerFinished
-                ? [setTimerKey(timerKey + 1), setTimerFinished(false)]
-                : setTimerKey(timerKey + 1);
-          }}
-        >
-          <ResetTimer
-            iconsetcolor={COLORS.fontColor}
-            setheight={20}
-          ></ResetTimer>
         </Pressable>
       </View>
     </View>

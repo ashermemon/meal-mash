@@ -69,4 +69,5 @@ export const COLORS = {
 
   greenProgressBar: "#6BBA83",
   tipOutline: "#ECC090",
+  greyBtns: "#7B7B7B",
 } as const;

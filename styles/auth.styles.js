@@ -25,7 +25,7 @@ export const styles = StyleSheet.create({
     outlineColor: COLORS.tipOutline,
     outlineWidth: 3,
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
   },
   image: {
     flex: 1,
@@ -157,9 +157,18 @@ export const styles = StyleSheet.create({
     //backgroundColor: "white",
   },
   timer: {
-    paddingVertical: 20,
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    marginVertical: 20,
+    marginHorizontal: 25,
+    backgroundColor: "white",
+    outlineColor: COLORS.addButtonStroke,
+    flex: 1,
+    width: "100%",
+    outlineWidth: 3,
+    borderRadius: 10,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-between",
     alignSelf: "center",
     flexDirection: "row",
   },
@@ -299,29 +308,16 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
   },
   timerButton: {
-    alignItems: "center",
+    alignItems: "flex-end",
     justifyContent: "center",
-
-    width: 50,
-    height: 50,
-    borderRadius: "100%",
-
-    alignItems: "center",
-    backgroundColor: COLORS.blueHeader,
-    borderColor: COLORS.blueHeaderBorder,
-    borderWidth: 3,
-    padding: 10,
+    marginHorizontal: 10,
   },
   timerButtons: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
   },
-  timerMiddle: {
-    flex: 3,
-    alignItems: "center",
-    justifyContent: "center",
-  },
+
   spacer: {
     height: 20,
   },

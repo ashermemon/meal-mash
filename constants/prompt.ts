@@ -90,10 +90,10 @@ const Prompt = (props: PromptProps) => {
       Collect the following ingredients in the specified amounts. Check each one off as you gather it:
       ${
         props.leftovers.length !== 0
-          ? `<checkbox> <replace> Quantity </replace> <replace> leftover name </replace> </checkbox> - (YOU MUST USE AT LEAST ONE LEFTOVER)
+          ? `<checkbox><replace>Quantity </replace> <replace> leftover name </replace> </checkbox> - (YOU MUST USE AT LEAST ONE LEFTOVER)
           <replace>etc..</replace>`
           : ``
-      } <checkbox> <replace> Quantity </replace> <replace> ingredient name </replace> </checkbox>
+      } <checkbox><replace>Quantity </replace> <replace> ingredient name </replace> </checkbox>
        <replace>etc…</replace>
       
       </step>
@@ -172,16 +172,16 @@ Carbs: <carbs>10</carbs>g
 <head>Ingredients:</head>
 
 Collect the following ingredients in the specified amounts. Check each one off as you gather it:
-<checkbox> 4 oz grilled salmon fillet </checkbox>
-<checkbox> 4 oz ground beef </checkbox>
-<checkbox> 5 oz spinach </checkbox>
-<checkbox> 1/2 cup ranch dressing </checkbox>
-<checkbox> 1/4 cup onion (sliced) </checkbox>
-<checkbox> 1 tomato (chopped) </checkbox>
-<checkbox> 1 tbsp olive oil </checkbox>
-<checkbox> Salt to taste </checkbox>
-<checkbox> Pepper to taste </checkbox>
-<checkbox> Optional: Lettuce (for a milder base if spinach is too strong) </checkbox>
+<checkbox>4 oz grilled salmon fillet </checkbox>
+<checkbox>4 oz ground beef </checkbox>
+<checkbox>5 oz spinach </checkbox>
+<checkbox>1/2 cup ranch dressing </checkbox>
+<checkbox>1/4 cup onion (sliced) </checkbox>
+<checkbox>1 tomato (chopped) </checkbox>
+<checkbox>1 tbsp olive oil </checkbox>
+<checkbox>Salt to taste </checkbox>
+<checkbox>Pepper to taste </checkbox>
+<checkbox>Optional: Lettuce (for a milder base if spinach is too strong) </checkbox>
 
 </step>
 

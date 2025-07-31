@@ -229,7 +229,10 @@ export default function Generate(props: GeneratedProps) {
         return (
           <Text
             key={index}
-            style={[styles.textCentered, { fontFamily: "Nunito-Bold" }]}
+            style={[
+              styles.textCentered,
+              { fontFamily: "Nunito-Bold", fontSize: 16 },
+            ]}
           >
             {content}
           </Text>
@@ -239,9 +242,9 @@ export default function Generate(props: GeneratedProps) {
         const content = text.slice(7, -8);
         let timeSec = parseInt(content) != null ? parseInt(content) * 60 : 0;
         timerIndex++;
-        let color1 = hsl(Math.random() * 359, 45, 79);
-        let color2 = hsl(Math.random() * 359, 45, 79);
-        let color3 = hsl(Math.random() * 359, 45, 79);
+        let color1 = hsl(Math.random() * 359, 55, 69);
+        let color2 = hsl(Math.random() * 359, 55, 69);
+        let color3 = hsl(Math.random() * 359, 55, 69);
 
         return timeSec > 0 ? (
           <Timer
@@ -280,10 +283,16 @@ export default function Generate(props: GeneratedProps) {
               innerIconStyle={{ borderWidth: 2, borderRadius: 5 }}
               textStyle={[
                 styles.textLeftSemiBold,
-                { color: isCheckeda ? "#939396" : COLORS.fontColor },
+                {
+                  justifyContent: "center",
+                  alignItems: "center",
+                  alignSelf: "center",
+                  color: isCheckeda ? "#939396" : COLORS.fontColor,
+                },
               ]}
               textContainerStyle={{
                 flex: 0,
+                justifyContent: "center",
               }}
               useBuiltInState={false}
               onPress={() => {
@@ -320,7 +329,7 @@ export default function Generate(props: GeneratedProps) {
         return <Text key={index}>{"\n"}</Text>;
       } else if ((text || "").replace(/\n/g, "").trim() !== "") {
         return (
-          <Text key={index} style={styles.textCentered}>
+          <Text key={index} style={[styles.textCentered, { fontSize: 16 }]}>
             {text}
           </Text>
         );
@@ -597,7 +606,8 @@ export default function Generate(props: GeneratedProps) {
                             <View>
                               <ResetTimer
                                 iconsetcolor="#a759c8"
-                                setheight={25}
+                                setheight={23}
+                                setwidth={25}
                               ></ResetTimer>
                             </View>
                           </Pressable>

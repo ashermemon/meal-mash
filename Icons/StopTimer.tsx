@@ -11,16 +11,16 @@ const StopTimer = (props: Props) => (
   <Svg
     height={props.setheight}
     width={props.setwidth}
-    viewBox="0 0 917.57 825.98"
+    viewBox="0 0 426.2 426.2"
     {...props}
   >
     <Rect
       width={425.2}
       height={425.2}
-      x={246.19}
-      y={189.87}
-      rx={70.87}
-      ry={70.87}
+      x={0.5}
+      y={0.5}
+      rx={70.9}
+      ry={70.9}
       fill={props.iconsetcolor}
       stroke={props.iconsetcolor}
       strokeMiterlimit={10}

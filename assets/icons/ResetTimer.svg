@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg id="Layer_4" data-name="Layer 4" xmlns="http://www.w3.org/2000/svg" width="32.37cm" height="29.14cm" viewBox="0 0 917.57 825.98">
+<svg id="Layer_4" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 751.6 834.5">
+  <!-- Generator: Adobe Illustrator 29.6.1, SVG Export Plug-In . SVG Version: 2.1.1 Build 9)  -->
   <defs>
     <style>
-      .cls-1 {
+      .st0 {
+        stroke-linejoin: round;
+      }
+
+      .st0, .st1 {
         fill: none;
-        stroke: #fff;
+        stroke: #000;
+        stroke-linecap: round;
+        stroke-width: 100px;
+      }
+
+      .st1 {
         stroke-miterlimit: 10;
       }
     </style>
   </defs>
-  <path class="cls-1" d="M241.47,217.78c-59.74,59.06-96.75,141.05-96.75,231.69,0,179.93,145.86,325.78,325.78,325.78s325.78-145.86,325.78-325.78S650.43,123.69,470.5,123.69"/>
-  <polyline class="cls-1" points="601.76 40.76 435.75 99.99 540.86 241.49"/>
+  <path class="st1" d="M146.8,227c-59.8,59.1-96.8,141-96.8,231.7,0,179.9,145.9,325.8,325.8,325.8s325.8-145.9,325.8-325.8-145.9-325.8-325.8-325.8"/>
+  <polyline class="st0" points="507 50 341 109.2 446.1 250.7"/>
 </svg>

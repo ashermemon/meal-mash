@@ -11,14 +11,14 @@ const PlayTimer = (props: Props) => (
   <Svg
     height={props.setheight}
     width={props.setwidth}
-    viewBox="0 0 917.57 825.98"
+    viewBox="0 0 426.2 426.2"
     {...props}
   >
     <Path
       stroke={props.iconsetcolor}
       fill={props.iconsetcolor}
       strokeMiterlimit={10}
-      d="m632.66 340.13-283.08-142.5c-47.28-23.8-103.39 10.03-103.39 62.34v285c0 52.31 56.11 86.14 103.39 62.34l283.08-142.5c51.64-25.99 51.64-98.69 0-124.68Z"
+      d="M387 150.8 103.9 8.3C56.6-15.5.5 18.3.5 70.6v285c0 52.3 56.1 86.1 103.4 62.3L387 275.4c51.6-26 51.6-98.7 0-124.7Z"
     />
   </Svg>
 );
