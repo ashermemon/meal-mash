@@ -22,6 +22,8 @@ type HeaderProps = {
   pageTitle: string;
   backEnabled: boolean;
   setGenerated?: Dispatch<SetStateAction<boolean>>;
+  setTitle?: Dispatch<SetStateAction<string | undefined>>;
+  title?: string | undefined;
 };
 
 export default function MobileHeader(props: HeaderProps) {
@@ -45,7 +47,13 @@ export default function MobileHeader(props: HeaderProps) {
                   ? [navigation.goBack(), Haptics.selectionAsync()]
                   : null
                 : props.setGenerated
-                ? [props.setGenerated(false), Haptics.selectionAsync()]
+                ? [
+                    props.setGenerated(false),
+                    Haptics.selectionAsync(),
+                    props.title && props.setTitle
+                      ? props.setTitle(undefined)
+                      : null,
+                  ]
                 : null
             }
           >
@@ -68,7 +76,14 @@ export default function MobileHeader(props: HeaderProps) {
         </View>
 
         <View style={[{ flex: 3 }, styles.centeredBox]}>
-          <Text style={styles.headerText}>{props.pageTitle}</Text>
+          <Text
+            style={[
+              styles.headerText,
+              { fontSize: props.title != undefined ? 14 : 20 },
+            ]}
+          >
+            {props.pageTitle}
+          </Text>
         </View>
 
         <View style={[{ flex: 1.5, flexDirection: "row" }, styles.centeredBox]}>

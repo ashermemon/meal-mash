@@ -51,6 +51,8 @@ import { Image } from "expo-image";
 type GeneratedProps = {
   generated: boolean;
   setGenerated: Dispatch<SetStateAction<boolean>>;
+  title: string | undefined;
+  setTitle: Dispatch<SetStateAction<string | undefined>>;
 };
 
 export default function Generate(props: GeneratedProps) {
@@ -86,15 +88,14 @@ export default function Generate(props: GeneratedProps) {
 
   const screenWidth = Dimensions.get("window").width;
   const screenHeight = Dimensions.get("window").height;
-  let title: undefined | string;
 
   const [saves, setSaves] = useContext(SavedRecipesContext);
 
   useEffect(() => {
-    if (title != undefined) {
-      setSaved(saves.includes(title));
+    if (props.title != undefined) {
+      setSaved(saves.includes(props.title));
     }
-  }, [saves, title]);
+  }, [saves, props.title]);
 
   useEffect(() => {
     const totalSaves = storage.getNumber("mealsnumber") ?? 0;
@@ -131,7 +132,7 @@ export default function Generate(props: GeneratedProps) {
   const handleGenerateRecipe = (inputRecipe: string) => {
     setCurrentStep(1);
     setCheckboxStates({});
-    title = undefined;
+    props.setTitle(undefined);
     setSaved(false);
     setTotalSteps(0);
     stepNum = 0;
@@ -210,7 +211,7 @@ export default function Generate(props: GeneratedProps) {
       }
       if (text.startsWith("<title>") && text.endsWith("</title>")) {
         const content = text.slice(7, -8);
-        title = content;
+        props.setTitle(content);
         return (
           <Text
             key={index}
@@ -362,6 +363,7 @@ export default function Generate(props: GeneratedProps) {
     setSaved(false);
     setIngredients([]);
     setLeftovers([]);
+    props.setTitle(undefined);
   };
 
   return (
@@ -621,9 +623,9 @@ export default function Generate(props: GeneratedProps) {
                               },
                             ]}
                             onPress={() =>
-                              title
+                              props.title != undefined
                                 ? [
-                                    saveRecipe(title),
+                                    saveRecipe(props.title),
 
                                     Haptics.impactAsync(
                                       Haptics.ImpactFeedbackStyle.Light

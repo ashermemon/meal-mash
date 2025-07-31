@@ -13,6 +13,7 @@ import { styles } from "@/styles/auth.styles";
 
 export default function GenerationPage() {
   const [generated, setGenerated] = useState(false);
+  const [title, setTitle] = useState<string | undefined>(undefined);
   const image =
     Platform.OS == "web"
       ? require("@/assets/images/AppBackgroundDesktop.png")
@@ -21,11 +22,18 @@ export default function GenerationPage() {
   return (
     <ImageBackground source={image} style={styles.image} resizeMode="cover">
       <MobileHeader
-        pageTitle="Generator"
+        pageTitle={title != undefined ? title : "Generator"}
         backEnabled={!generated}
         setGenerated={setGenerated}
+        setTitle={setTitle}
+        title={title}
       ></MobileHeader>
-      <Generate generated={generated} setGenerated={setGenerated}></Generate>
+      <Generate
+        title={title}
+        setTitle={setTitle}
+        generated={generated}
+        setGenerated={setGenerated}
+      ></Generate>
     </ImageBackground>
   );
 }
