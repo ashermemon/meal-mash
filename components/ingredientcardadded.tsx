@@ -153,26 +153,23 @@ export default function IngredientCardAdded(props: CardProps) {
             styles.addContainerIngredient,
           ]}
         >
-          <View style={styles.ingredientPanel}>
-            <View style={styles.ingredientFlexEmojiCard}>
-              <View
-                style={[
-                  styles.emojiWrapCard,
-                  {
-                    borderColor: strokeColor,
-                    backgroundColor: backgroundColor,
-                  },
-                ]}
-              >
-                <Image
-                  style={styles.ingredientEmoji}
-                  source={ingredientImage}
-                ></Image>
-              </View>
-            </View>
-            <View style={styles.ingredientFlexCard}>
-              <Text style={styles.textLeftBold}>{props.ingredientName}</Text>
-            </View>
+          <View
+            style={[
+              styles.emojiWrapCard,
+              {
+                borderColor: strokeColor,
+                backgroundColor: backgroundColor,
+              },
+            ]}
+          >
+            <Image
+              style={styles.ingredientEmoji}
+              source={ingredientImage}
+            ></Image>
+          </View>
+
+          <View style={styles.ingredientFlexCard}>
+            <Text style={styles.textLeftBold}>{props.ingredientName}</Text>
           </View>
         </View>
       </ReanimatedSwipeable>

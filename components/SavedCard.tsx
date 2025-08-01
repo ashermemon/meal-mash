@@ -72,23 +72,22 @@ export default function SavedCard(props: SavedProps) {
     <>
       <GestureDetector gesture={tap}>
         <Animated.View style={[styles.favRecipe, animatedStyles]}>
-          <View style={styles.ingredientPanel}>
-            <View style={styles.ingredientFlexEmojiCard}>
-              <View
-                style={[
-                  styles.emojiWrapCard,
-                  {
-                    borderColor: COLORS.genBorder,
-                    backgroundColor: "#fcf5ff",
-                  },
-                ]}
-              >
-                <Image
-                  style={styles.ingredientEmoji}
-                  source={emojiImages.Default}
-                ></Image>
-              </View>
+          <View style={styles.ingredientPanelFav}>
+            <View
+              style={[
+                styles.emojiWrapCard,
+                {
+                  borderColor: COLORS.genBorder,
+                  backgroundColor: "#fcf5ff",
+                },
+              ]}
+            >
+              <Image
+                style={styles.ingredientEmoji}
+                source={emojiImages.Default}
+              ></Image>
             </View>
+
             <View style={styles.ingredientFlexCard}>
               <Text
                 style={[styles.textLeftBold, { fontSize: 13, width: "100%" }]}

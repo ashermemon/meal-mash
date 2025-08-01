@@ -187,51 +187,47 @@ export default function Search() {
   return (
     <View style={styles.searchWrap}>
       <View style={styles.searchContainer}>
-        <View style={styles.exitSearchContainer}>
-          <Pressable
-            style={styles.exitSearch}
-            onPress={() => [
-              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft),
-              customModal
-                ? [setCustomModal(false), setCustomQuery(undefined)]
-                : handleExitSearch(),
-            ]}
-          >
-            {customModal ? (
-              <BackArrow
-                iconsetcolor={COLORS.fontColor}
-                setheight={18}
-                setwidth={18}
-              ></BackArrow>
-            ) : (
-              <DiscardIcon
-                iconsetcolor={COLORS.fontColor}
-                setheight={13}
-                setwidth={13}
-              />
-            )}
-          </Pressable>
-        </View>
+        <Pressable
+          style={styles.exitSearch}
+          onPress={() => [
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft),
+            customModal
+              ? [setCustomModal(false), setCustomQuery(undefined)]
+              : handleExitSearch(),
+          ]}
+        >
+          {customModal ? (
+            <BackArrow
+              iconsetcolor={COLORS.fontColor}
+              setheight={18}
+              setwidth={18}
+            ></BackArrow>
+          ) : (
+            <DiscardIcon
+              iconsetcolor={COLORS.fontColor}
+              setheight={13}
+              setwidth={13}
+            />
+          )}
+        </Pressable>
 
         {customModal ? (
           <></>
         ) : (
-          <View style={styles.searchContentContainer}>
-            <View style={styles.searchBar}>
-              <TextInput
-                autoCorrect={false}
-                autoCapitalize="none"
-                keyboardType="default"
-                spellCheck={false}
-                style={styles.searchText}
-                placeholder={`Search for ${
-                  leftoversEnabled ? `a leftover` : `an ingredient`
-                }...`}
-                placeholderTextColor={COLORS.searchPlaceholder}
-                value={searchQuery}
-                onChangeText={setSearchQuery}
-              ></TextInput>
-            </View>
+          <View style={styles.searchBar}>
+            <TextInput
+              autoCorrect={false}
+              autoCapitalize="none"
+              keyboardType="default"
+              spellCheck={false}
+              style={styles.searchText}
+              placeholder={`Search for ${
+                leftoversEnabled ? `a leftover` : `an ingredient`
+              }...`}
+              placeholderTextColor={COLORS.searchPlaceholder}
+              value={searchQuery}
+              onChangeText={setSearchQuery}
+            ></TextInput>
           </View>
         )}
       </View>

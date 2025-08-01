@@ -138,26 +138,24 @@ export default function FavIngredient(props: CardProps) {
           animatedStyles,
         ]}
       >
-        <View style={styles.ingredientPanel}>
-          <View style={styles.ingredientFlexEmojiCard}>
-            <View
-              style={[
-                styles.emojiWrapCard,
-                {
-                  borderColor: props.leftover
-                    ? COLORS.saveBorder
-                    : COLORS.greenButtonColorOuline,
-                  backgroundColor: props.leftover
-                    ? COLORS.saveFill
-                    : COLORS.greenButtonColor,
-                },
-              ]}
-            >
-              <Image
-                style={styles.ingredientEmoji}
-                source={emojiImages.Default}
-              />
-            </View>
+        <View style={styles.ingredientPanelFav}>
+          <View
+            style={[
+              styles.emojiWrapCard,
+              {
+                borderColor: props.leftover
+                  ? COLORS.saveBorder
+                  : COLORS.greenButtonColorOuline,
+                backgroundColor: props.leftover
+                  ? COLORS.saveFill
+                  : COLORS.greenButtonColor,
+              },
+            ]}
+          >
+            <Image
+              style={styles.ingredientEmoji}
+              source={emojiImages.Default}
+            />
           </View>
           <View style={styles.ingredientFlexCard}>
             <Text style={styles.textLeftBold}>{props.ingredientName}</Text>

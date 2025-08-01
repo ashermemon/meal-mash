@@ -93,6 +93,24 @@ export default function TabsLayout() {
               ),
           }}
         />
+        <Tabs.Screen
+          name="generationpage"
+          options={{
+            tabBarLabel: "Generator",
+            tabBarIcon: ({ color, focused }) =>
+              focused ? (
+                <GenIcon
+                  iconsetcolor={"#a759c8"}
+                  setheight={Platform.OS === "web" ? iconSizeWeb : undefined}
+                ></GenIcon>
+              ) : (
+                <GenIcon
+                  iconsetcolor={COLORS.genBorder}
+                  setheight={Platform.OS === "web" ? iconSizeWeb : undefined}
+                ></GenIcon>
+              ),
+          }}
+        />
 
         <Tabs.Screen
           name="saves"
@@ -130,24 +148,6 @@ export default function TabsLayout() {
                   iconsetcolor={color}
                   setheight={Platform.OS === "web" ? iconSizeWeb : undefined}
                 ></ProfileIcon>
-              ),
-          }}
-        />
-        <Tabs.Screen
-          name="generationpage"
-          options={{
-            tabBarLabel: "Generator",
-            tabBarIcon: ({ color, focused }) =>
-              focused ? (
-                <GenIcon
-                  iconsetcolor={"#a759c8"}
-                  setheight={Platform.OS === "web" ? iconSizeWeb : undefined}
-                ></GenIcon>
-              ) : (
-                <GenIcon
-                  iconsetcolor={COLORS.genBorder}
-                  setheight={Platform.OS === "web" ? iconSizeWeb : undefined}
-                ></GenIcon>
               ),
           }}
         />

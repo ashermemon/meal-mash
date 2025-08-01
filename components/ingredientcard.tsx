@@ -83,26 +83,23 @@ export default function IngredientCard(props: IngredientProps) {
         ]}
       >
         <View style={styles.ingredientPanel}>
-          <View style={styles.ingredientFlex}>
-            <Text style={[styles.textLeftSemiBold]}>
-              {props.ingredientName}
-            </Text>
-          </View>
-          <View style={styles.ingredientFlexEmoji}>
-            <View
-              style={[
-                styles.emojiWrap,
-                {
-                  borderColor: strokeColor,
-                  backgroundColor: backgroundColor,
-                },
-              ]}
-            >
-              <Image
-                style={styles.ingredientEmoji}
-                source={ingredientImage}
-              ></Image>
-            </View>
+          <Text style={[styles.textLeftSemiBold, { marginLeft: 10 }]}>
+            {props.ingredientName}
+          </Text>
+
+          <View
+            style={[
+              styles.emojiWrap,
+              {
+                borderColor: strokeColor,
+                backgroundColor: backgroundColor,
+              },
+            ]}
+          >
+            <Image
+              style={styles.ingredientEmoji}
+              source={ingredientImage}
+            ></Image>
           </View>
         </View>
       </Animated.View>

@@ -173,9 +173,13 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
   },
   ingredientPanel: {
+    justifyContent: "space-between",
     alignItems: "center",
-    justifyContent: "center",
-    alignSelf: "center",
+    flexDirection: "row",
+  },
+  ingredientPanelFav: {
+    justifyContent: "flex-start",
+    alignItems: "center",
     flexDirection: "row",
   },
 
@@ -221,7 +225,8 @@ export const styles = StyleSheet.create({
     color: COLORS.fontColor,
   },
   searchContainer: {
-    alignSelf: "center",
+    justifyContent: "space-between",
+    alignItems: "center",
     paddingBottom: 7,
     flexDirection: "row",
     borderBottomWidth: 2,
@@ -230,8 +235,7 @@ export const styles = StyleSheet.create({
   searchWrap: {
     borderRadius: 30,
     justifyContent: "center",
-    alignSelf: "center",
-    alignItems: "center",
+
     padding: 10,
     paddingBottom: 5,
     width: 300,
@@ -258,11 +262,9 @@ export const styles = StyleSheet.create({
     borderRadius: "100%",
     borderWidth: 3,
     borderColor: COLORS.deleteExitStroke,
-    position: "relative",
+
     justifyContent: "center",
     alignItems: "center",
-    top: 0,
-    left: 0,
   },
 
   searchContentContainer: {
@@ -333,6 +335,8 @@ export const styles = StyleSheet.create({
     minHeight: 40,
     justifyContent: "center",
     borderRadius: 50,
+    flex: 1,
+    marginLeft: 10,
   },
   ingredientEmoji: {
     width: 30,
@@ -358,8 +362,6 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
   },
   ingredientFlexEmoji: {
-    flex: 1,
-
     alignItems: "flex-end",
     justifyContent: "center",
   },
@@ -374,10 +376,9 @@ export const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 100,
     marginLeft: 15,
-    marginRight: 5,
+    marginRight: 10,
   },
   ingredientFlexCard: {
-    flex: 6,
     padding: 10,
     alignItems: "flex-start",
     justifyContent: "center",
@@ -394,7 +395,8 @@ export const styles = StyleSheet.create({
   },
   addContainerIngredient: {
     alignItems: "center",
-
+    justifyContent: "flex-start",
+    flexDirection: "row",
     borderRightWidth: 5,
 
     borderRightColor: COLORS.favoriteColor,
@@ -407,8 +409,6 @@ export const styles = StyleSheet.create({
     borderTopWidth: 3,
   },
   favoritedContainer: {
-    alignItems: "center",
-
     borderWidth: 3,
     backgroundColor: "white",
 
@@ -419,7 +419,6 @@ export const styles = StyleSheet.create({
     marginTop: 10,
   },
   favRecipe: {
-    alignItems: "center",
     borderColor: COLORS.genBorder,
     borderWidth: 3,
     backgroundColor: "white",
