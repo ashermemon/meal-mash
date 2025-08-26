@@ -49,6 +49,14 @@ export default function RootLayout() {
     "Nunito-SemiBold": require("../assets/fonts/Nunito-Weights/Nunito-SemiBold.ttf"),
     "Nunito-Bold": require("../assets/fonts/Nunito-Weights/Nunito-Bold.ttf"),
     "Nunito-ExtraBold": require("../assets/fonts/Nunito-Weights/Nunito-ExtraBold.ttf"),
+
+    "Nunito-ExtraLightItalic": require("../assets/fonts/Nunito-Weights/Nunito-ExtraLightItalic.ttf"),
+    "Nunito-LightItalic": require("../assets/fonts/Nunito-Weights/Nunito-LightItalic.ttf"),
+    "Nunito-MediumItalic": require("../assets/fonts/Nunito-Weights/Nunito-MediumItalic.ttf"),
+    "Nunito-Italic": require("../assets/fonts/Nunito-Weights/Nunito-Italic.ttf"),
+    "Nunito-SemiBoldItalic": require("../assets/fonts/Nunito-Weights/Nunito-SemiBoldItalic.ttf"),
+    "Nunito-BoldItalic": require("../assets/fonts/Nunito-Weights/Nunito-BoldItalic.ttf"),
+    "Nunito-ExtraBoldItalic": require("../assets/fonts/Nunito-Weights/Nunito-ExtraBoldItalic.ttf"),
   });
 
   useEffect(() => {

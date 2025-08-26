@@ -82,10 +82,6 @@ export default function Generate(props: GeneratedProps) {
   let recipePrompt = "";
   let stepNum = 0;
 
-  let carbs: number;
-  let fat: number;
-  let protien: number;
-
   const screenWidth = Dimensions.get("window").width;
   const screenHeight = Dimensions.get("window").height;
 
@@ -186,11 +182,15 @@ export default function Generate(props: GeneratedProps) {
 
   const parseMarkdownTextInline = (input: string) => {
     const cleanInput = input
-      .replace(/<\/?(protein|fat|carbs|replace)>/g, "")
+      .replace(/<protein>[\s\S]*?<\/protein>/g, "")
+      .replace(/<fat>[\s\S]*?<\/fat>/g, "")
+      .replace(/<carbs>[\s\S]*?<\/carbs>/g, "")
+      .replace(/\n{2,}/g, "\n")
+      .replace(/<\/?replace>/g, "") // Optional: keep this if <replace> is still used
       .replace(/^\s+|\s+$/g, "");
 
     const texts = cleanInput.split(
-      /(<(?:bold|timer|title|head|line|checkbox|tip)>[\s\S]*?<\/(?:bold|timer|title|head|line|checkbox|tip)>)/g
+      /(<(?:bold|timer|title|head|line|checkbox|tip|desc|box)>[\s\S]*?<\/(?:bold|timer|title|head|line|checkbox|tip|desc|box)>)/g
     );
     let timerIndex = -1;
 
@@ -239,6 +239,24 @@ export default function Generate(props: GeneratedProps) {
           </Text>
         );
       }
+      if (text.startsWith("<desc>") && text.endsWith("</desc>")) {
+        const content = text.slice(6, -7);
+
+        return (
+          <>
+            <Text key={index}>{"\n"}</Text>
+            <Text
+              key={index}
+              style={[
+                styles.textCentered,
+                { fontFamily: "Nunito-Italic", fontSize: 16 },
+              ]}
+            >
+              {content}
+            </Text>
+          </>
+        );
+      }
       if (text.startsWith("<timer>") && text.endsWith("</timer>")) {
         const content = text.slice(7, -8);
         let timeSec = parseInt(content) != null ? parseInt(content) * 60 : 0;
@@ -257,22 +275,160 @@ export default function Generate(props: GeneratedProps) {
           ></Timer>
         ) : null;
       }
+      if (text.startsWith("<box>") && text.endsWith("</box>")) {
+        const content = text.slice(5, -6);
+
+        const innerTexts = content.split(
+          /(<(?:duration|servings|difficulty)>[\s\S]*?<\/(?:duration|servings|difficulty)>)/g
+        );
+
+        return (
+          <View
+            key={index}
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-evenly",
+              width: "100%",
+              marginTop: 15,
+              marginBottom: 30,
+            }}
+          >
+            {innerTexts.map((innerText, innerIndex) => {
+              if (
+                innerText.startsWith("<duration>") &&
+                innerText.endsWith("</duration>")
+              ) {
+                const durationContent = innerText.slice(10, -11);
+                return (
+                  <View
+                    key={innerIndex}
+                    style={[
+                      styles.overviewBoxes,
+                      {
+                        backgroundColor: COLORS.deleteFill,
+                        borderColor: COLORS.deleteBorder,
+                      },
+                    ]}
+                  >
+                    <Text
+                      numberOfLines={1}
+                      adjustsFontSizeToFit
+                      style={[
+                        styles.textCentered,
+                        { fontFamily: "Nunito-Bold" },
+                      ]}
+                    >
+                      {durationContent}
+                    </Text>
+                    <Text
+                      style={[
+                        styles.textCentered,
+                        { fontFamily: "Nunito-Medium", fontSize: 12 },
+                      ]}
+                    >
+                      Duration
+                    </Text>
+                  </View>
+                );
+              }
+              if (
+                innerText.startsWith("<servings>") &&
+                innerText.endsWith("</servings>")
+              ) {
+                const servingsContent = innerText.slice(10, -11);
+                return (
+                  <View
+                    key={innerIndex}
+                    style={[
+                      styles.overviewBoxes,
+                      {
+                        backgroundColor: COLORS.saveFill,
+                        borderColor: COLORS.saveBorder,
+                      },
+                    ]}
+                  >
+                    <Text
+                      numberOfLines={1}
+                      adjustsFontSizeToFit
+                      style={[
+                        styles.textCentered,
+                        { fontFamily: "Nunito-Bold" },
+                      ]}
+                    >
+                      {"Makes " + servingsContent}
+                    </Text>
+                    <Text
+                      style={[
+                        styles.textCentered,
+                        { fontFamily: "Nunito-Medium", fontSize: 12 },
+                      ]}
+                    >
+                      Servings
+                    </Text>
+                  </View>
+                );
+              }
+              if (
+                innerText.startsWith("<difficulty>") &&
+                innerText.endsWith("</difficulty>")
+              ) {
+                const difficultyContent = innerText.slice(12, -13);
+                return (
+                  <View
+                    key={innerIndex}
+                    style={[
+                      styles.overviewBoxes,
+                      {
+                        backgroundColor: COLORS.greenButtonColor,
+                        borderColor: COLORS.greenButtonColorOuline,
+                      },
+                    ]}
+                  >
+                    <Text
+                      numberOfLines={1}
+                      adjustsFontSizeToFit
+                      style={[
+                        styles.textCentered,
+                        { fontFamily: "Nunito-Bold" },
+                      ]}
+                    >
+                      {difficultyContent}
+                    </Text>
+                    <Text
+                      style={[
+                        styles.textCentered,
+                        { fontFamily: "Nunito-Medium", fontSize: 12 },
+                      ]}
+                    >
+                      Difficulty
+                    </Text>
+                  </View>
+                );
+              }
+              return null;
+            })}
+          </View>
+        );
+      }
 
       if (text.startsWith("<checkbox>") && text.endsWith("</checkbox>")) {
         const content = text.slice(10, -11);
         const isCheckeda = checkboxStates[index] || false;
 
         return (
-          <View key={index} style={styles.ingredientContainer}>
+          <View
+            key={index}
+            style={[styles.ingredientContainer, { marginBottom: 10 }]}
+          >
             <BouncyCheckbox
               style={{
-                marginVertical: 20,
+                marginVertical: 10,
                 marginHorizontal: 25,
-                alignSelf: "flex-start",
-                alignItems: "flex-start",
+                alignSelf: "center",
+                alignItems: "center",
                 borderRadius: 5,
               }}
-              size={25}
+              size={20}
               fillColor={"#939396"}
               unFillColor={COLORS.newHeader}
               text={content}
@@ -285,6 +441,7 @@ export default function Generate(props: GeneratedProps) {
               textStyle={[
                 styles.textLeftSemiBold,
                 {
+                  fontSize: 14,
                   justifyContent: "center",
                   alignItems: "center",
                   alignSelf: "center",
@@ -328,7 +485,7 @@ export default function Generate(props: GeneratedProps) {
       }
       if (text.startsWith("<line>") && text.endsWith("</line>")) {
         return <Text key={index}>{"\n"}</Text>;
-      } else if ((text || "").replace(/\n/g, "").trim() !== "") {
+      } else if (text.replace(/\s+/g, "").length > 0) {
         return (
           <Text key={index} style={[styles.textCentered, { fontSize: 16 }]}>
             {text}
@@ -373,11 +530,6 @@ export default function Generate(props: GeneratedProps) {
           value={[leftoversEnabled, setLeftoversEnabled]}
         >
           <SearchContext.Provider value={[searchActive, setSearchActive]}>
-            {!loading && props.generated && (
-              <ProgressBar
-                progress={(currentStep - 1) / (totalSteps - 1)}
-              ></ProgressBar>
-            )}
             <ScrollView
               contentContainerStyle={{ flexGrow: 1 }}
               overScrollMode="never"
@@ -398,7 +550,7 @@ export default function Generate(props: GeneratedProps) {
                 >
                   <View
                     style={{
-                      paddingHorizontal: 20,
+                      paddingHorizontal: 25,
                       alignItems: "center",
                     }}
                   >
@@ -512,191 +664,107 @@ export default function Generate(props: GeneratedProps) {
                   )}
                 </View>
 
-                <View style={styles.arrowButtons}>
-                  <View style={styles.flexBTN}>
-                    {!loading && props.generated && currentStep > 1 ? (
-                      <Pressable
-                        style={styles.nextButton}
-                        onPress={() => [
+                {!loading && !props.generated && (
+                  <Pressable
+                    style={[
+                      styles.generateButton,
+                      {
+                        backgroundColor:
+                          leftovers.length > 0 || ingredients.length > 0
+                            ? COLORS.blueHeader
+                            : COLORS.searchGreyBG,
+                        borderColor:
+                          leftovers.length > 0 || ingredients.length > 0
+                            ? COLORS.blueHeaderBorder
+                            : COLORS.searchGreyBorder,
+                      },
+                    ]}
+                    onPress={
+                      leftovers.length > 0 || ingredients.length > 0
+                        ? mealsLeft > 0
+                          ? () => [
+                              handleGenerateRecipe(recipePrompt),
+                              Haptics.impactAsync(
+                                Haptics.ImpactFeedbackStyle.Light
+                              ),
+                            ]
+                          : () =>
+                              alert(
+                                "You have run out of meal generations today. Come again tomorrow!"
+                              )
+                        : () =>
+                            alert(
+                              "Add a leftover or ingredient to generate meal!"
+                            )
+                    }
+                  >
+                    <Text
+                      style={[
+                        styles.textCentered,
+                        { fontFamily: "Nunito-SemiBold" },
+                      ]}
+                      adjustsFontSizeToFit={true}
+                    >
+                      Create Meal
+                    </Text>
+                  </Pressable>
+                )}
+
+                {!loading && props.generated && (
+                  <View style={styles.recipeMovement}>
+                    <Pressable
+                      style={
+                        currentStep > 1
+                          ? styles.nextButton
+                          : styles.nextButtonEmpty
+                      }
+                      onPress={() =>
+                        currentStep > 1 && [
                           setCurrentStep(currentStep - 1),
                           Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft),
-                        ]}
-                      >
-                        <BackArrow
-                          iconsetcolor={COLORS.fontColor}
-                          setheight={14}
-                          setwidth={30}
-                        ></BackArrow>
-                      </Pressable>
-                    ) : (
-                      <View style={{ width: 40 }} />
-                    )}
-                  </View>
-                  <View style={styles.flexMiddle}>
-                    <View style={styles.generateButtonContainer}>
-                      {!loading && !props.generated && (
-                        <Pressable
-                          style={[
-                            styles.generateButton,
-                            {
-                              backgroundColor:
-                                leftovers.length > 0 || ingredients.length > 0
-                                  ? COLORS.blueHeader
-                                  : COLORS.searchGreyBG,
-                              borderColor:
-                                leftovers.length > 0 || ingredients.length > 0
-                                  ? COLORS.blueHeaderBorder
-                                  : COLORS.searchGreyBorder,
-                            },
-                          ]}
-                          onPress={
-                            leftovers.length > 0 || ingredients.length > 0
-                              ? mealsLeft > 0
-                                ? () => [
-                                    handleGenerateRecipe(recipePrompt),
-                                    Haptics.impactAsync(
-                                      Haptics.ImpactFeedbackStyle.Light
-                                    ),
-                                  ]
-                                : () =>
-                                    alert(
-                                      "You have run out of meal generations today. Come again tomorrow!"
-                                    )
-                              : () =>
-                                  alert(
-                                    "Add a leftover or ingredient to generate meal!"
-                                  )
-                          }
-                        >
-                          <Text
-                            style={[
-                              styles.textCentered,
-                              { fontFamily: "Nunito-SemiBold" },
-                            ]}
-                            adjustsFontSizeToFit={true}
-                          >
-                            Create Meal
-                          </Text>
-                        </Pressable>
-                      )}
+                        ]
+                      }
+                    >
+                      <BackArrow
+                        iconsetcolor={
+                          currentStep > 1
+                            ? COLORS.fontColor
+                            : COLORS.addPlusGrey
+                        }
+                        setheight={23}
+                        setwidth={23}
+                      ></BackArrow>
+                    </Pressable>
 
-                      {!loading && props.generated && (
-                        <>
-                          <Pressable
-                            style={[
-                              styles.generateButtonNew,
-                              {
-                                backgroundColor: COLORS.genFill,
-                                borderColor: COLORS.genBorder,
-                              },
-                            ]}
-                            onPress={
-                              mealsLeft > 0
-                                ? () => [
-                                    handleGenerateRecipe(recipePrompt),
+                    <ProgressBar
+                      progress={(currentStep - 1) / (totalSteps - 1)}
+                    ></ProgressBar>
 
-                                    Haptics.impactAsync(
-                                      Haptics.ImpactFeedbackStyle.Light
-                                    ),
-                                  ]
-                                : () =>
-                                    alert(
-                                      "You ran out of meal generations today. Come again tomorrow!"
-                                    )
-                            }
-                          >
-                            <View>
-                              <ResetTimer
-                                iconsetcolor="#a759c8"
-                                setheight={23}
-                                setwidth={25}
-                              ></ResetTimer>
-                            </View>
-                          </Pressable>
-
-                          <Pressable
-                            style={[
-                              styles.generateButtonNew,
-                              {
-                                backgroundColor: COLORS.saveFill,
-                                borderColor: COLORS.saveBorder,
-                              },
-                            ]}
-                            onPress={() =>
-                              props.title != undefined
-                                ? [
-                                    saveRecipe(props.title),
-
-                                    Haptics.impactAsync(
-                                      Haptics.ImpactFeedbackStyle.Light
-                                    ),
-                                  ]
-                                : alert(
-                                    "Error, please regenerate and try again"
-                                  )
-                            }
-                          >
-                            <View>
-                              {saved ? (
-                                <SavesFilled
-                                  iconsetcolor={"#5983C8"}
-                                  setheight={25}
-                                ></SavesFilled>
-                              ) : (
-                                <SavesIcon
-                                  iconsetcolor={"#5983C8"}
-                                  setheight={25}
-                                ></SavesIcon>
-                              )}
-                            </View>
-                          </Pressable>
-                          <Pressable
-                            style={[
-                              styles.generateButtonNew,
-                              {
-                                backgroundColor: COLORS.deleteFill,
-                                borderColor: COLORS.deleteBorder,
-                              },
-                            ]}
-                            onPress={() => [
-                              newMeal(),
-                              Haptics.notificationAsync(
-                                Haptics.NotificationFeedbackType.Error
-                              ),
-                            ]}
-                          >
-                            <View>
-                              <DiscardIcon
-                                iconsetcolor={"#db904f"}
-                                setheight={20}
-                                setwidth={20}
-                              />
-                            </View>
-                          </Pressable>
-                        </>
-                      )}
-                    </View>
-                  </View>
-                  <View style={styles.flexBTN}>
-                    {!loading && props.generated && currentStep < totalSteps ? (
-                      <Pressable
-                        style={styles.nextButton}
-                        onPress={() => [
+                    <Pressable
+                      style={
+                        currentStep < totalSteps
+                          ? styles.nextButton
+                          : styles.nextButtonEmpty
+                      }
+                      onPress={() =>
+                        currentStep < totalSteps && [
                           setCurrentStep(currentStep + 1),
                           Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft),
-                        ]}
-                      >
-                        <ForwardArrow
-                          iconsetcolor={COLORS.fontColor}
-                          setheight={14}
-                          setwidth={30}
-                        ></ForwardArrow>
-                      </Pressable>
-                    ) : (
-                      <View style={{ width: 40 }} />
-                    )}
+                        ]
+                      }
+                    >
+                      <ForwardArrow
+                        iconsetcolor={
+                          currentStep < totalSteps
+                            ? COLORS.fontColor
+                            : COLORS.addPlusGrey
+                        }
+                        setheight={23}
+                        setwidth={23}
+                      ></ForwardArrow>
+                    </Pressable>
                   </View>
-                </View>
+                )}
                 <View style={styles.spacer}></View>
               </View>
             </ScrollView>

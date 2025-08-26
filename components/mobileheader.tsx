@@ -4,7 +4,10 @@ import React, {
   ReactNode,
   SetStateAction,
   useActionState,
+  useCallback,
   useContext,
+  useRef,
+  useState,
 } from "react";
 import { styles } from "@/styles/auth.styles";
 import GenIcon from "@/Icons/GenIcon";
@@ -27,8 +30,10 @@ type HeaderProps = {
 };
 
 export default function MobileHeader(props: HeaderProps) {
+  const [dropdownActive, setDropdownActive] = useState(false);
   const navigation = useNavigation();
   const [mealsLeft, setMealsLeft] = useContext(MealsLeftContext);
+
   return (
     <>
       <View
@@ -62,8 +67,8 @@ export default function MobileHeader(props: HeaderProps) {
                 iconsetcolor={
                   navigation.canGoBack() ? COLORS.fontColor : COLORS.addPlusGrey
                 }
-                setheight={14}
-                setwidth={30}
+                setheight={20}
+                setwidth={20}
               ></BackArrow>
             ) : (
               <DiscardIcon
@@ -75,29 +80,23 @@ export default function MobileHeader(props: HeaderProps) {
           </Pressable>
         </View>
 
-        <View style={[{ flex: 3 }, styles.centeredBox]}>
+        <View style={[{ flex: 3, paddingHorizontal: 15 }, styles.centeredBox]}>
           <Text
-            style={[
-              styles.headerText,
-              { fontSize: props.title != undefined ? 14 : 20 },
-            ]}
+            numberOfLines={1}
+            adjustsFontSizeToFit
+            style={[styles.headerText]}
           >
             {props.pageTitle}
           </Text>
         </View>
 
         <View style={[{ flex: 1.5, flexDirection: "row" }, styles.centeredBox]}>
-          <View style={[styles.centeredBox]}>
-            <Text style={[styles.textCentered, { fontSize: 20 }]}>
-              {mealsLeft}
-            </Text>
-          </View>
-          <View style={[styles.centeredBox]}>
-            <Image
-              source={require("@/assets/images/Meal.png")}
-              style={{ width: 30, height: 30, marginHorizontal: 8 }}
-            ></Image>
-          </View>
+          <Pressable
+            style={[styles.centeredBox]}
+            onPress={() => setDropdownActive(true)}
+          >
+            <Text style={[styles.textCentered, { fontSize: 20 }]}>|</Text>
+          </Pressable>
         </View>
       </View>
     </>

@@ -47,6 +47,8 @@ const Prompt = (props: PromptProps) => {
         ALWAYS use a timer with greater than 0 minutes in it and always use whole numbers. ONLY USE A TIMER IF NECCESSARY
       
         You must wrap the recipe name with "<title>" and "</title>"
+
+        You must wrap the recipe description with "<desc>" and "</desc>"
         
         BOLD each step using "<bold>" before and "</bold> after the desired bold text.
 
@@ -63,7 +65,7 @@ const Prompt = (props: PromptProps) => {
 
         For protein, fat and carbs, wrap in the appropiate tags as shown in the structure
 
-        Use the <tip></tip> tag for the tips in the helpful tips section.
+        Use the <tip></tip> tag for the tips in the helpful tips section. Note: No <timer> <bold> or any other tags are allowed inside of <tip> tags!
 
         HERE IS THE STRUCTURE:
       
@@ -71,13 +73,17 @@ const Prompt = (props: PromptProps) => {
       <step>
       <title><replace>Recipe Name</replace></title>
 
-      <replace>total recipe time</replace>
-      
-      Nutrition Facts:
+      <desc><replace>Recipe Description</replace></desc>
 
-      Protein: <protein><replace>protein in grams</replace></protein>g
-      Fat: <fat><replace>fat in grams</replace></fat>g
-      Carbs: <carbs><replace>carbs in grams</replace></carbs>g
+      <box>
+      <duration><replace>total recipe time</replace></duration>
+      <servings><replace>how many servings will this recipe make</replace></servings>
+      <difficulty><replace>Beginner, Intermediate, Expert, Impossible</replace></difficulty>
+      </box>
+
+      <protein><replace>protein in grams</replace></protein>
+      <fat><replace>fat in grams</replace></fat>
+      <carbs><replace>carbs in grams</replace></carbs>
 
       <bold>Nutrition Chart:</bold>
       </step>
@@ -157,13 +163,17 @@ const Prompt = (props: PromptProps) => {
       <step>
 <title>Salmon & Beef Spinach Salad with Ranch Dressing</title>
 
-20 minutes
+<desc><replace>This Salmon & Beef Spinach Salad with Ranch Dressing is a protein-packed, flavor-rich dish that combines the heartiness of ground beef with the light, flaky texture of grilled salmon. Tossed with fresh spinach, juicy tomatoes, and sweet onions, and finished with a creamy ranch dressing, this 20-minute salad strikes the perfect balance between freshness and indulgence. Whether you're fueling up post-workout or just craving something savory and satisfying, this nutrient-dense salad delivers bold taste with every bite.</replace></desc>
 
-Nutrition Facts:
+<box>
+<duration>20 minutes</duration>
+<servings>2</servings>
+<difficulty>Beginner</difficulty>
+</box>
 
-Protein: <protein>45</protein>g
-Fat: <fat>30</fat>g
-Carbs: <carbs>10</carbs>g
+<protein>45</protein>
+<fat>30</fat>
+<carbs>10</carbs>
 
 <bold>Nutrition Chart:</bold>
 </step>
