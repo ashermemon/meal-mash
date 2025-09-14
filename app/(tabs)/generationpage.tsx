@@ -8,7 +8,7 @@ import {
 import React, { useCallback, useRef, useState } from "react";
 import Generate from "@/components/generate";
 import MobileHeader from "@/components/mobileheader";
-import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
+
 import { styles } from "@/styles/auth.styles";
 
 export default function GenerationPage() {
