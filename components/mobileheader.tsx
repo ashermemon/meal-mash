@@ -94,9 +94,11 @@ export default function MobileHeader(props: HeaderProps) {
         <View style={[{ flex: 1.5, flexDirection: "row" }, styles.centeredBox]}>
           <Pressable
             style={[styles.centeredBox]}
-            onPress={() => setDropdownActive(true)}
+            onPress={() => (
+              handlePresentModalPress(), Haptics.selectionAsync()
+            )}
           >
-            <CustomIcon name="more_2" filled={false} color={"red"} />
+            <CustomIcon name="more_2" filled={false} color={"black"} />
           </Pressable>
         </View>
       </View>

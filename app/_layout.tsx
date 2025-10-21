@@ -1,11 +1,11 @@
 import { Stack } from "expo-router";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { Platform, StatusBar } from "react-native";
+import { Button, Platform, StatusBar, Text } from "react-native";
 import { View, ImageBackground } from "react-native";
 import { styles } from "@/styles/auth.styles";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { COLORS } from "@/constants/theme";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { storage } from "@/utils/storage";
@@ -17,6 +17,11 @@ import IngredientsContext from "../contexts/IngredientsContext";
 import MealsLeftContext from "@/contexts/MealsLeftContext";
 import { NotificationProvider } from "@/contexts/NotificationContext";
 import * as Notifications from "expo-notifications";
+import {
+  BottomSheetModal,
+  BottomSheetModalProvider,
+  BottomSheetView,
+} from "@gorhom/bottom-sheet";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -27,6 +32,15 @@ export default function RootLayout() {
   const [ingredients, setIngredients] = useState<string[]>([]);
   const [leftovers, setLeftovers] = useState<string[]>([]);
   const [mealsLeft, setMealsLeft] = useState<number>(5);
+
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, []);
+  const handleSheetChanges = useCallback((index: number) => {
+    console.log("handleSheetChanges", index);
+  }, []);
 
   const getTodayDate = () => {
     return new Date().toISOString().split("T")[0];
@@ -115,42 +129,54 @@ export default function RootLayout() {
   });
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <NotificationProvider>
-        <SafeAreaProvider>
-          <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.blueHeader }}>
-            <LeftoversContext.Provider value={[leftovers, setLeftovers]}>
-              <IngredientsContext.Provider
-                value={[ingredients, setIngredients]}
-              >
-                <FavoritesContext.Provider value={[favorites, setFavorites]}>
-                  <FavLeftoversContext.Provider
-                    value={[favoritesL, setFavoritesL]}
-                  >
-                    <SavedRecipesContext.Provider
-                      value={[savedRecipes, setSavedRecipes]}
+    <BottomSheetModalProvider>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <NotificationProvider>
+          <SafeAreaProvider>
+            <SafeAreaView
+              style={{ flex: 1, backgroundColor: COLORS.blueHeader }}
+            >
+              <LeftoversContext.Provider value={[leftovers, setLeftovers]}>
+                <IngredientsContext.Provider
+                  value={[ingredients, setIngredients]}
+                >
+                  <FavoritesContext.Provider value={[favorites, setFavorites]}>
+                    <FavLeftoversContext.Provider
+                      value={[favoritesL, setFavoritesL]}
                     >
-                      <MealsLeftContext.Provider
-                        value={[mealsLeft, setMealsLeft]}
+                      <SavedRecipesContext.Provider
+                        value={[savedRecipes, setSavedRecipes]}
                       >
-                        <StatusBar
-                          barStyle="dark-content"
-                          backgroundColor={COLORS.blueHeader}
-                        />
-                        <Stack
-                          screenOptions={{
-                            headerShown: false,
-                          }}
-                        ></Stack>
-                      </MealsLeftContext.Provider>
-                    </SavedRecipesContext.Provider>
-                  </FavLeftoversContext.Provider>
-                </FavoritesContext.Provider>
-              </IngredientsContext.Provider>
-            </LeftoversContext.Provider>
-          </SafeAreaView>
-        </SafeAreaProvider>
-      </NotificationProvider>
-    </GestureHandlerRootView>
+                        <MealsLeftContext.Provider
+                          value={[mealsLeft, setMealsLeft]}
+                        >
+                          <StatusBar
+                            barStyle="dark-content"
+                            backgroundColor={COLORS.blueHeader}
+                          />
+                          <Stack
+                            screenOptions={{
+                              headerShown: false,
+                            }}
+                          ></Stack>
+                          <BottomSheetModal
+                            ref={bottomSheetModalRef}
+                            onChange={handleSheetChanges}
+                          >
+                            <BottomSheetView style={styles.contentContainer}>
+                              <Text>Wow</Text>
+                            </BottomSheetView>
+                          </BottomSheetModal>
+                        </MealsLeftContext.Provider>
+                      </SavedRecipesContext.Provider>
+                    </FavLeftoversContext.Provider>
+                  </FavoritesContext.Provider>
+                </IngredientsContext.Provider>
+              </LeftoversContext.Provider>
+            </SafeAreaView>
+          </SafeAreaProvider>
+        </NotificationProvider>
+      </GestureHandlerRootView>
+    </BottomSheetModalProvider>
   );
 }

@@ -544,6 +544,11 @@ export const styles = StyleSheet.create({
     outlineWidth: 2,
     backgroundColor: COLORS.blueHeader,
   },
+  contentContainer: {
+    flex: 1,
+    padding: 36,
+    alignItems: "center",
+  },
   recipeMovement: {
     alignItems: "center",
     justifyContent: "space-between",

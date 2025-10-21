@@ -4,12 +4,18 @@ import {
   StyleSheet,
   Text,
   View,
+  Button,
 } from "react-native";
 import React, { useCallback, useRef, useState } from "react";
 import Generate from "@/components/generate";
 import MobileHeader from "@/components/mobileheader";
-
+import BottomSheet, {
+  BottomSheetView,
+  BottomSheetModalProvider,
+  BottomSheetModal,
+} from "@gorhom/bottom-sheet";
 import { styles } from "@/styles/auth.styles";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function GenerationPage() {
   const [generated, setGenerated] = useState(false);
@@ -28,6 +34,7 @@ export default function GenerationPage() {
         setTitle={setTitle}
         title={title}
       ></MobileHeader>
+
       <Generate
         title={title}
         setTitle={setTitle}
