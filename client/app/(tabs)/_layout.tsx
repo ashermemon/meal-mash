@@ -93,6 +93,8 @@ export default function TabsLayout() {
               ),
           }}
         />
+
+        
         <Tabs.Screen
           name="generationpage"
           options={{
@@ -149,6 +151,14 @@ export default function TabsLayout() {
                   setheight={Platform.OS === "web" ? iconSizeWeb : undefined}
                 ></ProfileIcon>
               ),
+          }}
+        />
+
+        <Tabs.Screen
+          name="login"
+          options={{
+            tabBarLabel: "login",
+
           }}
         />
       </Tabs>
