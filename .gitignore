@@ -43,3 +43,7 @@ google-services.json
 /android
 .env
 
+
+#venv
+venv/
+.venv/
