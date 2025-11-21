@@ -1,3 +1,4 @@
+import { NEWCOLORS } from "@/constants/newtheme";
 import { COLORS } from "@/constants/theme";
 import { StyleSheet } from "react-native";
 
@@ -582,5 +583,48 @@ export const styles = StyleSheet.create({
     borderColor: COLORS.searchGreyBorder,
     borderWidth: 3,
     marginTop: 100,
+  },
+
+  // --------------------------------------------//
+
+  // New Styles Below
+  homeBlock: {
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: NEWCOLORS.greyBlock,
+    padding: 10,
+    marginVertical: 10,
+    borderRadius: 10,
+  },
+  circleButton: {
+    backgroundColor: NEWCOLORS.darkButton,
+    borderRadius: 100,
+  },
+  recipeBar: {
+    height: 46,
+    borderRadius: 400,
+    padding: 5,
+    width: "100%",
+    backgroundColor: NEWCOLORS.greyBlock,
+
+    alignItems: "center",
+    justifyContent: "flex-start",
+    flexDirection: "row",
+  },
+  basicTextCenter: {
+    fontFamily: "Nunito-Regular",
+    textAlign: "center",
+    justifyContent: "center",
+
+    color: COLORS.fontColor,
+  },
+  basicTextLeft: {
+    fontFamily: "Nunito-Regular",
+    textAlign: "left",
+
+    color: COLORS.fontColor,
+  },
+  bold: {
+    fontFamily: "Nunito-Bold",
   },
 });

@@ -1,10 +1,19 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  Button,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import React, { Dispatch, SetStateAction } from "react";
 import { styles } from "@/styles/auth.styles";
 import { COLORS } from "@/constants/theme";
 import { Image } from "expo-image";
 import { ScrollView } from "react-native-gesture-handler";
 import { useRouter } from "expo-router";
+import { NEWCOLORS } from "@/constants/newtheme";
+import { CustomIcon } from "@/icon-loader/icon-loader";
 
 export default function Welcome() {
   const router = useRouter();
@@ -19,51 +28,68 @@ export default function Welcome() {
         paddingVertical: 20,
       }}
     >
-      <View style={{ alignItems: "center", width: "100%" }}>
+      <View style={{ width: "100%" }}>
         <Text
           style={[
-            styles.textCentered,
+            styles.basicTextLeft,
+            styles.bold,
             {
-              fontFamily: "Nunito-Bold",
-              fontSize: 20,
+              fontSize: 28,
               marginTop: 5,
-              marginBottom: 20,
+              marginBottom: 15,
             },
           ]}
         >
-          Welcome to Meal Mash
+          Welcome to MealMash!
         </Text>
+        <View style={styles.recipeBar}>
+          <Pressable
+            style={[styles.circleButton, { height: 38, width: 38 }]}
+            onPress={() => console.log("pressed")}
+          ></Pressable>
+          <TextInput
+            keyboardType="default"
+            spellCheck={false}
+            autoCorrect={false}
+            autoCapitalize="sentences"
+            placeholder={"What are you craving today?"}
+            placeholderTextColor={NEWCOLORS.placeholderText}
+            style={[
+              styles.basicTextLeft,
+              {
+                flex: 1,
+                fontSize: 18,
+                color: NEWCOLORS.basicText,
+                marginLeft: 15,
+                marginRight: 15,
+              },
+            ]}
+          ></TextInput>
+          <View style={{ marginRight: 5 }}>
+            <CustomIcon name="sparkles" filled={true} color={"grey"} />
+          </View>
+        </View>
 
-        <Image
-          source={require("@/assets/images/iconround.png")}
-          style={{ width: 150, height: 150, marginVertical: 20 }}
-        ></Image>
-        <Text
-          style={[styles.textCentered, { fontSize: 20, marginVertical: 20 }]}
-        >
-          Meal Mash is an app designed to help you save leftovers by
-          transforming them into delicious meals. We want to make eating
-          leftovers fun, interesting and most importantly, tasty!
-        </Text>
-
-        <View style={styles.generateButtonContainer}>
+        <View>
           <Pressable
             style={[
-              styles.generateButton,
+              styles.homeBlock,
               {
-                backgroundColor: COLORS.blueHeader,
+                backgroundColor: NEWCOLORS.blueBlock,
                 width: 200,
                 marginTop: 20,
-                borderColor: COLORS.blueHeaderBorder,
               },
             ]}
             onPress={() => router.push("/(tabs)/generationpage" as any)}
           >
             <Text
-              style={[styles.textCentered, { fontFamily: "Nunito-SemiBold" }]}
+              style={[
+                styles.textCentered,
+                { fontFamily: "Nunito-SemiBold", fontSize: 20 },
+              ]}
               adjustsFontSizeToFit={true}
             >
-              Save your leftovers!
+              Meal Generator
             </Text>
           </Pressable>
         </View>
