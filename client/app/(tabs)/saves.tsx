@@ -10,10 +10,7 @@ import FavoritesContext from "../../contexts/FavoritesContext";
 import { storage } from "../../utils/storage";
 import { useState } from "react";
 
-const image =
-  Platform.OS == "web"
-    ? require("../../assets/images/AppBackgroundDesktop.png")
-    : require("../../assets/images/AppBackground.png");
+const image = require("@/assets/images/newBackground.png");
 
 export default function Saves() {
   return (

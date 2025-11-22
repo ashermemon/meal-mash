@@ -593,7 +593,6 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: NEWCOLORS.greyBlock,
     padding: 10,
-    marginVertical: 10,
     borderRadius: 10,
   },
   circleButton: {
@@ -611,6 +610,9 @@ export const styles = StyleSheet.create({
     justifyContent: "flex-start",
     flexDirection: "row",
   },
+  basicBoxShadow: {
+    boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.15)",
+  },
   basicTextCenter: {
     fontFamily: "Nunito-Regular",
     textAlign: "center",
@@ -626,5 +628,17 @@ export const styles = StyleSheet.create({
   },
   bold: {
     fontFamily: "Nunito-Bold",
+  },
+  sectionalWrapper: {
+    marginVertical: 15,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    flex: 1,
+    alignItems: "center",
+    flexWrap: "wrap",
+    gap: 10,
+  },
+  paddingOnlyWrapper: {
+    marginVertical: 15,
   },
 });

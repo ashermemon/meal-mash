@@ -20,10 +20,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 export default function GenerationPage() {
   const [generated, setGenerated] = useState(false);
   const [title, setTitle] = useState<string | undefined>(undefined);
-  const image =
-    Platform.OS == "web"
-      ? require("@/assets/images/AppBackgroundDesktop.png")
-      : require("@/assets/images/AppBackground.png");
+  const image = require("@/assets/images/newBackground.png");
 
   return (
     <ImageBackground source={image} style={styles.image} resizeMode="cover">

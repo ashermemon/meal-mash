@@ -18,11 +18,7 @@ import DiscardIcon from "../../Icons/DiscardIcon";
 import { storage } from "../../utils/storage";
 
 export default function Profile() {
-  const image =
-    Platform.OS == "web"
-      ? require("../../assets/images/AppBackgroundDesktop.png")
-      : require("../../assets/images/AppBackground.png");
-
+  const image = require("@/assets/images/newBackground.png");
   const [editMode, setEditMode] = useState(false);
 
   const [lastSavedName, setLastSavedName] = useState("");

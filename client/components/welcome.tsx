@@ -14,6 +14,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { useRouter } from "expo-router";
 import { NEWCOLORS } from "@/constants/newtheme";
 import { CustomIcon } from "@/icon-loader/icon-loader";
+import FeaturedRecipes from "./featuredrecipes";
 
 export default function Welcome() {
   const router = useRouter();
@@ -42,7 +43,7 @@ export default function Welcome() {
         >
           Welcome to MealMash!
         </Text>
-        <View style={styles.recipeBar}>
+        <View style={[styles.recipeBar, styles.basicBoxShadow]}>
           <Pressable
             style={[styles.circleButton, { height: 38, width: 38 }]}
             onPress={() => console.log("pressed")}
@@ -70,15 +71,31 @@ export default function Welcome() {
           </View>
         </View>
 
+        <FeaturedRecipes></FeaturedRecipes>
+
+        <Text
+          style={[
+            styles.basicTextLeft,
+            styles.bold,
+            {
+              fontSize: 28,
+              marginTop: 5,
+              marginBottom: 15,
+            },
+          ]}
+        >
+          Explore
+        </Text>
+
         <View>
           <Pressable
             style={[
               styles.homeBlock,
               {
                 backgroundColor: NEWCOLORS.blueBlock,
-                width: 200,
-                marginTop: 20,
+                width: "100%",
               },
+              styles.basicBoxShadow,
             ]}
             onPress={() => router.push("/(tabs)/generationpage" as any)}
           >
