@@ -5,12 +5,7 @@ import { COLORS } from "@/constants/theme";
 import { useContext, useEffect, useRef, useState } from "react";
 import emojiImages from "@/components/emoji-images";
 import ReanimatedSwipeable from "react-native-gesture-handler/ReanimatedSwipeable";
-import {
-  Gesture,
-  GestureDetector,
-  Swipeable,
-} from "react-native-gesture-handler";
-import { red } from "react-native-reanimated/lib/typescript/Colors";
+
 import IngredientsContext from "@/contexts/IngredientsContext";
 import LeftoversContext from "@/contexts/LeftoversContext";
 import LeftoversEnabled from "@/contexts/LeftoversOn";
@@ -24,13 +19,11 @@ import Animated, {
   SlideInDown,
   SlideOutUp,
 } from "react-native-reanimated";
-import { LinearGradient } from "expo-linear-gradient";
-import FavIcon from "../Icons/FavIcon";
-import DiscardIcon from "../Icons/DiscardIcon";
-import FavIconFilled from "../Icons/FavIconFilled";
+
 import { storage } from "../utils/storage";
 import FavoritesContext from "../contexts/FavoritesContext";
 import FavLeftoversContext from "../contexts/FavLeftoversContext";
+import { CustomIcon } from "@/icon-loader/icon-loader";
 
 type CardProps = {
   cardBColor: string;
@@ -123,23 +116,46 @@ export default function IngredientCardAdded(props: CardProps) {
         overshootFriction={1.5}
         renderRightActions={() => (
           <>
-            <Pressable style={styles.swipeable} onPress={removeCard}>
-              <DiscardIcon
-                iconsetcolor={"#FFEFEE"}
-                setheight={23}
-                setwidth={23}
-              ></DiscardIcon>
-            </Pressable>
-            <Pressable style={styles.favSave} onPress={saveCard}>
-              {favorite ? (
-                <FavIconFilled
-                  iconsetcolor={"#FFF7EE"}
-                  setheight={35}
-                ></FavIconFilled>
-              ) : (
-                <FavIcon iconsetcolor={"#FFF7EE"} setheight={35}></FavIcon>
-              )}
-            </Pressable>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "flex-start",
+
+                width: "45%",
+              }}
+            >
+              <Pressable
+                style={[styles.favSave, { flex: 1 }]}
+                onPress={saveCard}
+              >
+                {favorite ? (
+                  <CustomIcon
+                    name="star"
+                    filled={true}
+                    color={"#FFF7EE"}
+                    size={30}
+                  />
+                ) : (
+                  <CustomIcon
+                    name="star"
+                    filled={false}
+                    color={"#FFF7EE"}
+                    size={30}
+                  ></CustomIcon>
+                )}
+              </Pressable>
+              <Pressable
+                style={[styles.swipeable, { flex: 1 }]}
+                onPress={removeCard}
+              >
+                <CustomIcon
+                  name="close"
+                  filled={true}
+                  color={"#FFEFEE"}
+                  size={30}
+                />
+              </Pressable>
+            </View>
           </>
         )}
       >

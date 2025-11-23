@@ -101,3 +101,4 @@ export default function Welcome() {
     </ScrollView>
   );
 }
+//<CustomIcon name="heart" filled={true} color="red" size={24} />

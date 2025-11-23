@@ -16,6 +16,7 @@ import EditIcon from "../../Icons/EditIcon";
 import CheckIcon from "../../Icons/CheckIcon";
 import DiscardIcon from "../../Icons/DiscardIcon";
 import { storage } from "../../utils/storage";
+import { CustomIcon } from "@/icon-loader/icon-loader";
 
 export default function Profile() {
   const image = require("@/assets/images/newBackground.png");
@@ -86,12 +87,19 @@ export default function Profile() {
             }}
           >
             {editMode ? (
-              <CheckIcon
-                iconsetcolor={COLORS.fontColor}
-                setheight={20}
-              ></CheckIcon>
+              <CustomIcon
+                name="check"
+                filled={true}
+                color={COLORS.fontColor}
+                size={20}
+              />
             ) : (
-              <EditIcon iconsetcolor={COLORS.fontColor} setheight={20} />
+              <CustomIcon
+                name="pencil"
+                filled={true}
+                color={COLORS.fontColor}
+                size={20}
+              />
             )}
           </Pressable>
 
@@ -105,11 +113,12 @@ export default function Profile() {
                 margin: 20,
               }}
             >
-              <DiscardIcon
-                iconsetcolor={COLORS.fontColor}
-                setheight={18}
-                setwidth={18}
-              ></DiscardIcon>
+              <CustomIcon
+                name="close"
+                filled={true}
+                color={COLORS.fontColor}
+                size={20}
+              />
             </Pressable>
           ) : (
             <></>

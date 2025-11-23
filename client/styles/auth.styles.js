@@ -406,7 +406,6 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
     flexDirection: "row",
-    borderRightWidth: 5,
 
     borderRightColor: COLORS.favoriteColor,
     shadowColor: "black",

@@ -14,9 +14,11 @@ import { Pressable, View } from "react-native";
 import { Platform } from "react-native";
 import { ImageBackground } from "react-native";
 import { styles } from "@/styles/auth.styles";
+import { CustomIcon } from "@/icon-loader/icon-loader";
 
 export default function TabsLayout() {
   const iconSizeWeb = 40;
+  const iconSizeMobile = 30;
 
   return (
     <>
@@ -79,38 +81,29 @@ export default function TabsLayout() {
           name="index"
           options={{
             tabBarLabel: "Home",
-            tabBarIcon: ({ color, focused }) =>
-              focused ? (
-                <HomeFilled
-                  iconsetcolor={color}
-                  setheight={Platform.OS === "web" ? iconSizeWeb : undefined}
-                ></HomeFilled>
-              ) : (
-                <HomeIcon
-                  iconsetcolor={color}
-                  setheight={Platform.OS === "web" ? iconSizeWeb : undefined}
-                ></HomeIcon>
-              ),
+            tabBarIcon: ({ color, focused }) => (
+              <CustomIcon
+                name="home-4"
+                filled={focused ? true : false}
+                color={color}
+                size={iconSizeMobile}
+              />
+            ),
           }}
         />
 
-        
         <Tabs.Screen
           name="generationpage"
           options={{
             tabBarLabel: "Generator",
-            tabBarIcon: ({ color, focused }) =>
-              focused ? (
-                <GenIcon
-                  iconsetcolor={"#a759c8"}
-                  setheight={Platform.OS === "web" ? iconSizeWeb : undefined}
-                ></GenIcon>
-              ) : (
-                <GenIcon
-                  iconsetcolor={COLORS.genBorder}
-                  setheight={Platform.OS === "web" ? iconSizeWeb : undefined}
-                ></GenIcon>
-              ),
+            tabBarIcon: ({ color, focused }) => (
+              <CustomIcon
+                name="sparkles"
+                filled={focused ? true : false}
+                color={color}
+                size={iconSizeMobile}
+              />
+            ),
           }}
         />
 
@@ -119,18 +112,14 @@ export default function TabsLayout() {
           options={{
             tabBarLabel: "Saves",
 
-            tabBarIcon: ({ color, focused }) =>
-              focused ? (
-                <SavesFilled
-                  iconsetcolor={color}
-                  setheight={Platform.OS === "web" ? iconSizeWeb : undefined}
-                ></SavesFilled>
-              ) : (
-                <SavesIcon
-                  iconsetcolor={color}
-                  setheight={Platform.OS === "web" ? iconSizeWeb : undefined}
-                ></SavesIcon>
-              ),
+            tabBarIcon: ({ color, focused }) => (
+              <CustomIcon
+                name="bookmark"
+                filled={focused ? true : false}
+                color={color}
+                size={iconSizeMobile}
+              />
+            ),
           }}
         />
 
@@ -139,18 +128,14 @@ export default function TabsLayout() {
           options={{
             tabBarLabel: "Profile",
 
-            tabBarIcon: ({ color, focused }) =>
-              focused ? (
-                <ProfileFilled
-                  iconsetcolor={color}
-                  setheight={Platform.OS === "web" ? iconSizeWeb : undefined}
-                ></ProfileFilled>
-              ) : (
-                <ProfileIcon
-                  iconsetcolor={color}
-                  setheight={Platform.OS === "web" ? iconSizeWeb : undefined}
-                ></ProfileIcon>
-              ),
+            tabBarIcon: ({ color, focused }) => (
+              <CustomIcon
+                name="user-2"
+                filled={focused ? true : false}
+                color={color}
+                size={iconSizeMobile}
+              />
+            ),
           }}
         />
 
@@ -158,7 +143,6 @@ export default function TabsLayout() {
           name="login"
           options={{
             tabBarLabel: "login",
-
           }}
         />
       </Tabs>

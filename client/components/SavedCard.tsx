@@ -14,6 +14,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import { CustomIcon } from "@/icon-loader/icon-loader";
 
 type SavedProps = {
   SavedRecipe: string;
@@ -98,15 +99,19 @@ export default function SavedCard(props: SavedProps) {
             <View style={styles.favFlex}>
               <Pressable onPress={() => saveCard()}>
                 {saved ? (
-                  <SavesFilled
-                    iconsetcolor={COLORS.saveBorder}
-                    setheight={30}
-                  ></SavesFilled>
+                  <CustomIcon
+                    name="bookmark"
+                    filled={true}
+                    color={COLORS.saveBorder}
+                    size={30}
+                  />
                 ) : (
-                  <SavesIcon
-                    iconsetcolor={COLORS.saveBorder}
-                    setheight={30}
-                  ></SavesIcon>
+                  <CustomIcon
+                    name="bookmark"
+                    filled={false}
+                    color={COLORS.saveBorder}
+                    size={30}
+                  />
                 )}
               </Pressable>
             </View>
