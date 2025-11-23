@@ -605,6 +605,8 @@ export const styles = StyleSheet.create({
     padding: 5,
     width: "100%",
     backgroundColor: NEWCOLORS.greyBlock,
+    marginTop: 5,
+    marginBottom: 10,
 
     alignItems: "center",
     justifyContent: "flex-start",
@@ -630,7 +632,7 @@ export const styles = StyleSheet.create({
     fontFamily: "Nunito-Bold",
   },
   sectionalWrapper: {
-    marginVertical: 15,
+    marginVertical: 5,
     flexDirection: "row",
     justifyContent: "space-between",
     flex: 1,
@@ -638,7 +640,10 @@ export const styles = StyleSheet.create({
     flexWrap: "wrap",
     gap: 10,
   },
+  categoriesSlider: {
+    marginVertical: 5,
+  },
   paddingOnlyWrapper: {
-    marginVertical: 15,
+    marginVertical: 10,
   },
 });

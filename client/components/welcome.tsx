@@ -15,6 +15,7 @@ import { useRouter } from "expo-router";
 import { NEWCOLORS } from "@/constants/newtheme";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import FeaturedRecipes from "./featuredrecipes";
+import ExploreSection from "./exploresection";
 
 export default function Welcome() {
   const router = useRouter();
@@ -36,8 +37,7 @@ export default function Welcome() {
             styles.bold,
             {
               fontSize: 28,
-              marginTop: 5,
-              marginBottom: 15,
+              marginVertical: 5,
             },
           ]}
         >
@@ -79,37 +79,14 @@ export default function Welcome() {
             styles.bold,
             {
               fontSize: 28,
-              marginTop: 5,
-              marginBottom: 15,
+              marginBottom: 10,
             },
           ]}
         >
           Explore
         </Text>
 
-        <View>
-          <Pressable
-            style={[
-              styles.homeBlock,
-              {
-                backgroundColor: NEWCOLORS.blueBlock,
-                width: "100%",
-              },
-              styles.basicBoxShadow,
-            ]}
-            onPress={() => router.push("/(tabs)/generationpage" as any)}
-          >
-            <Text
-              style={[
-                styles.textCentered,
-                { fontFamily: "Nunito-SemiBold", fontSize: 20 },
-              ]}
-              adjustsFontSizeToFit={true}
-            >
-              Meal Generator
-            </Text>
-          </Pressable>
-        </View>
+        <ExploreSection></ExploreSection>
       </View>
     </ScrollView>
   );
