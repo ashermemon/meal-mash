@@ -10,17 +10,20 @@ export default function ExploreSection() {
     color,
     children,
     link,
+    height,
   }: {
     title: string;
     color: string;
     children?: React.ReactNode;
     link?: string;
+    height?: number;
   }) => (
     <Pressable
       style={[
         styles.homeBlock,
         { flex: 1, backgroundColor: color },
         styles.basicBoxShadow,
+        { height: height ? height : undefined },
       ]}
       onPress={() => router.push(`/(tabs)/${link}` as any)}
     >
@@ -40,12 +43,14 @@ export default function ExploreSection() {
     <View style={{ flexDirection: "column", gap: 10, width: "100%" }}>
       <Block
         title="Explore"
+        height={120}
         color={NEWCOLORS.greyBlock}
         link="generationpage"
       />
 
       <View style={{ flexDirection: "row", gap: 10, width: "100%" }}>
         <Block
+          height={200}
           title="Meal Generator"
           color={NEWCOLORS.blueBlock}
           link="generationpage"

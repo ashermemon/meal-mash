@@ -30,7 +30,7 @@ export default function Welcome() {
         paddingVertical: 20,
       }}
     >
-      <View style={{ width: "100%" }}>
+      <View style={{ width: "100%", marginBottom: 30 }}>
         <Text
           style={[
             styles.basicTextLeft,
