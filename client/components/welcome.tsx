@@ -45,9 +45,19 @@ export default function Welcome() {
         </Text>
         <View style={[styles.recipeBar, styles.basicBoxShadow]}>
           <Pressable
-            style={[styles.circleButton, { height: 38, width: 38 }]}
+            style={[
+              styles.circleButton,
+              {
+                height: 38,
+                width: 38,
+                justifyContent: "center",
+                alignItems: "center",
+              },
+            ]}
             onPress={() => console.log("pressed")}
-          ></Pressable>
+          >
+            <CustomIcon name="camera" filled={true} color={"white"} />
+          </Pressable>
           <TextInput
             keyboardType="default"
             spellCheck={false}
