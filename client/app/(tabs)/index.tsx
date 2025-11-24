@@ -13,13 +13,11 @@ import FavoritesContext from "../../contexts/FavoritesContext";
 import Welcome from "@/components/welcome";
 
 export default function Index() {
-  const image = require("@/assets/images/newBackground.png");
-
   return (
-    <ImageBackground source={image} style={styles.image} resizeMode="cover">
+    <>
       <MobileHeader pageTitle={"Home"} backEnabled={true}></MobileHeader>
 
       <Welcome></Welcome>
-    </ImageBackground>
+    </>
   );
 }

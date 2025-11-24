@@ -15,13 +15,15 @@ import { Platform } from "react-native";
 import { ImageBackground } from "react-native";
 import { styles } from "@/styles/auth.styles";
 import { CustomIcon } from "@/icon-loader/icon-loader";
+import { Image } from "expo-image";
 
 export default function TabsLayout() {
   const iconSizeWeb = 40;
   const iconSizeMobile = 30;
-
+  const image = require("@/assets/images/newBackground.png");
   return (
     <>
+      <ImageBackground source={image} style={styles.image} />
       <Tabs
         initialRouteName="index"
         backBehavior="history"
@@ -31,8 +33,14 @@ export default function TabsLayout() {
 
           tabBarPosition: Platform.OS == "web" ? "left" : "bottom",
           tabBarStyle: {
-            backgroundColor: COLORS.navBG,
-
+            backgroundColor: COLORS.newHeader,
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: 60,
+            borderTopWidth: 3,
+            paddingBottom: 5,
             ...(Platform.OS === "web"
               ? {
                   borderRightColor: COLORS.newHeaderB,
@@ -48,15 +56,19 @@ export default function TabsLayout() {
             paddingVertical: 10,
             paddingHorizontal: Platform.OS == "web" ? 20 : 10,
           },
-          tabBarLabelStyle: {
-            fontSize: 35,
-            fontFamily: "Nunito",
-            fontWeight: 700,
-            margin: "auto",
-            textAlign: "center",
-            lineHeight: 60,
-            height: 60,
+          sceneStyle: {
+            backgroundColor: "transparent",
           },
+
+          //tabBarLabelStyle: {
+          // fontSize: 35,
+          // fontFamily: "Nunito",
+          // fontWeight: 700,
+          // margin: "auto",
+          //textAlign: "center",
+          //lineHeight: 60,
+          //height: 60,
+          // },
           tabBarIconStyle: {
             ...(Platform.OS === "web"
               ? {

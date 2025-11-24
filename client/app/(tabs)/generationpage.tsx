@@ -20,10 +20,9 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 export default function GenerationPage() {
   const [generated, setGenerated] = useState(false);
   const [title, setTitle] = useState<string | undefined>(undefined);
-  const image = require("@/assets/images/newBackground.png");
 
   return (
-    <ImageBackground source={image} style={styles.image} resizeMode="cover">
+    <>
       <MobileHeader
         pageTitle={title != undefined ? title : "Generator"}
         backEnabled={!generated}
@@ -38,6 +37,6 @@ export default function GenerationPage() {
         generated={generated}
         setGenerated={setGenerated}
       ></Generate>
-    </ImageBackground>
+    </>
   );
 }

@@ -29,12 +29,8 @@ export const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   image: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    height: "100%",
-
-    width: "100%",
+    ...StyleSheet.absoluteFillObject,
+    resizeMode: "cover",
   },
   text: {
     fontFamily: "Nunito-Regular",
@@ -608,7 +604,7 @@ export const styles = StyleSheet.create({
     marginBottom: 10,
 
     alignItems: "center",
-    justifyContent: "flex-start",
+    justifyContent: "center",
     flexDirection: "row",
   },
   basicBoxShadow: {

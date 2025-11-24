@@ -73,6 +73,7 @@ export default function Welcome() {
                 color: NEWCOLORS.basicText,
                 marginLeft: 15,
                 marginRight: 15,
+                height: 46,
               },
             ]}
           ></TextInput>
