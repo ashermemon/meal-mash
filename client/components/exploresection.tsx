@@ -4,6 +4,33 @@ import { styles } from "@/styles/auth.styles";
 import { NEWCOLORS } from "@/constants/newtheme";
 import { router } from "expo-router";
 
+const featuredRecipes = [
+  {
+    id: "1",
+    title: "Rice + Salad Mix Bowl",
+    description:
+      "Tasty and healthy bowl filled with veggies, meat and rice! Ready to eat in under 20 minutes!",
+    difficulty: "Intermediate",
+    icon: "Rice",
+  },
+  {
+    id: "2",
+    title: "Recipe Name",
+    description:
+      "Tasty and healthy bowl filled with veggies, meat and rice! Ready to eat in under 20 minutes!",
+    difficulty: "Expert",
+    icon: "Placeholder",
+  },
+  {
+    id: "3",
+    title: "Recipe Name",
+    description:
+      "Tasty and healthy bowl filled with veggies, meat and rice! Ready to eat in under 20 minutes!",
+    difficulty: "Beginner",
+    icon: "Placeholder",
+  },
+];
+
 export default function ExploreSection() {
   const Block = ({
     title,
@@ -11,25 +38,45 @@ export default function ExploreSection() {
     children,
     link,
     height,
+    featured,
   }: {
     title: string;
     color: string;
     children?: React.ReactNode;
     link?: string;
     height?: number;
+    featured?: boolean;
   }) => (
     <Pressable
       style={[
         styles.homeBlock,
-        { flex: 1, backgroundColor: color },
+        {
+          flex: 1,
+          backgroundColor: color,
+          height: height ? height : undefined,
+          alignItems: featured ? "flex-start" : "center",
+          paddingHorizontal: featured ? 15 : 10,
+        },
         styles.basicBoxShadow,
-        { height: height ? height : undefined },
       ]}
       onPress={() => router.push(`/(tabs)/${link}` as any)}
     >
+      {featured ? (
+        <Text
+          style={[
+            styles.basicTextLeft,
+            { textDecorationLine: "underline", fontSize: 12, marginBottom: 5 },
+          ]}
+        >
+          Featured Recipes
+        </Text>
+      ) : (
+        <></>
+      )}
       <Text
         style={[
-          styles.textCentered,
+          styles.basicTextLeft,
+          styles.bold,
           { fontFamily: "Nunito-SemiBold", fontSize: 20 },
         ]}
         adjustsFontSizeToFit
@@ -46,6 +93,7 @@ export default function ExploreSection() {
         height={120}
         color={NEWCOLORS.greyBlock}
         link="generationpage"
+        featured
       />
 
       <View style={{ flexDirection: "row", gap: 10, width: "100%" }}>

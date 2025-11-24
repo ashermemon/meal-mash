@@ -71,8 +71,8 @@ export default function Welcome() {
                 flex: 1,
                 fontSize: 18,
                 color: NEWCOLORS.basicText,
-                marginLeft: 15,
-                marginRight: 15,
+                marginLeft: 10,
+                marginRight: 10,
                 height: 46,
               },
             ]}

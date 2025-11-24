@@ -584,11 +584,11 @@ export const styles = StyleSheet.create({
 
   // New Styles Below
   homeBlock: {
-    alignItems: "center",
-    justifyContent: "center",
     backgroundColor: NEWCOLORS.greyBlock,
-    padding: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
     borderRadius: 10,
+    justifyContent: "flex-start",
   },
   circleButton: {
     backgroundColor: NEWCOLORS.darkButton,

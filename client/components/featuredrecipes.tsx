@@ -87,7 +87,7 @@ const FeaturedRecipes = () => {
   return (
     <View style={styles.paddingOnlyWrapper}>
       <Text style={[styles.basicTextLeft, { fontSize: 20, marginVertical: 5 }]}>
-        Recipe Categories
+        Browse Recipes
       </Text>
       <FeaturedRecipeButton></FeaturedRecipeButton>
     </View>
