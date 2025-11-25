@@ -104,6 +104,7 @@ def ping():
 @app.route("/droptable")
 def drop():
     db.drop_all()
+    db.create_all()
     return jsonify({"message" : "dropped tables"}), 200
 
     
