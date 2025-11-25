@@ -45,7 +45,7 @@ export default function LoginPage() {
 
   const registerUser = async () => {
     try {
-      const resp = await httpClient.post("http://127.0.0.1:5000/register", {
+      const resp = await httpClient.post("/register", {
         email,
         password,
       });
@@ -68,7 +68,7 @@ export default function LoginPage() {
 
   const logInUser = async () => {
     try {
-      const resp = await httpClient.post("http://127.0.0.1:5000/login", {
+      const resp = await httpClient.post("/login", {
         email,
         password,
       });
@@ -103,7 +103,7 @@ export default function LoginPage() {
     useCallback(() => {
       const checkUser = async () => {
         try {
-          const resp = await httpClient.get("http://127.0.0.1:5000/@me");
+          const resp = await httpClient.get("/@me");
           setUser(resp.data);
         } catch (error: any) {
           console.log("Not authenticated:", error.message);

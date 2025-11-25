@@ -7,7 +7,7 @@ class User(db.Model):
     __tablename__ = "User"
     id = db.Column(db.Integer, primary_key = True)
     email = db.Column(db.String, unique = True)
-    password = db.Column(db.String(30))
+    password = db.Column(db.String(72))
 
 
 
