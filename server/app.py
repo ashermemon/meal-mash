@@ -96,6 +96,10 @@ def logout_user():
     # With JWT, logout is typically handled client-side by removing the token
     return jsonify({"message": "Logged out. Remove token on client."}), 200
 
+@app.route("/ping")
+def ping():
+    return jsonify({"message" : "ping"}), 200
+
 @jwt.invalid_token_loader
 def invalid_token_callback(error):
     print("Invalid token:", error)
