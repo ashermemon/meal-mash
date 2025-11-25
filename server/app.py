@@ -100,6 +100,14 @@ def logout_user():
 def ping():
     return jsonify({"message" : "ping"}), 200
 
+
+@app.route("/droptable")
+def drop():
+    db.drop_all()
+    return jsonify({"message" : "dropped tables"}), 200
+
+    
+
 @jwt.invalid_token_loader
 def invalid_token_callback(error):
     print("Invalid token:", error)
