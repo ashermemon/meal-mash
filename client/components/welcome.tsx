@@ -98,6 +98,7 @@ export default function Welcome() {
         </Text>
 
         <ExploreSection></ExploreSection>
+        <View style={{ paddingVertical: 25 }}></View>
       </View>
     </ScrollView>
   );

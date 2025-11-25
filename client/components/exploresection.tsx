@@ -3,6 +3,8 @@ import React from "react";
 import { styles } from "@/styles/auth.styles";
 import { NEWCOLORS } from "@/constants/newtheme";
 import { router } from "expo-router";
+import emojiImages from "./emoji-images";
+import { Image } from "expo-image";
 
 const featuredRecipes = [
   {
@@ -54,7 +56,7 @@ export default function ExploreSection() {
           flex: 1,
           backgroundColor: color,
           height: height ? height : undefined,
-          alignItems: featured ? "flex-start" : "center",
+
           paddingHorizontal: featured ? 15 : 10,
         },
         styles.basicBoxShadow,
@@ -65,7 +67,11 @@ export default function ExploreSection() {
         <Text
           style={[
             styles.basicTextLeft,
-            { textDecorationLine: "underline", fontSize: 12, marginBottom: 5 },
+            {
+              textDecorationLine: "underline",
+              fontSize: 12,
+              marginBottom: 5,
+            },
           ]}
         >
           Featured Recipes
@@ -73,16 +79,22 @@ export default function ExploreSection() {
       ) : (
         <></>
       )}
+
       <Text
         style={[
           styles.basicTextLeft,
           styles.bold,
-          { fontFamily: "Nunito-SemiBold", fontSize: 20 },
+          {
+            fontFamily: "Nunito-SemiBold",
+            fontSize: 20,
+            textAlign: featured ? "left" : "center",
+          },
         ]}
         adjustsFontSizeToFit
       >
         {title}
       </Text>
+      {children}
     </Pressable>
   );
 
@@ -102,7 +114,29 @@ export default function ExploreSection() {
           title="Meal Generator"
           color={NEWCOLORS.blueBlock}
           link="generationpage"
-        />
+        >
+          <Text
+            style={[
+              styles.basicTextCenter,
+              { fontSize: 10, marginVertical: 5 },
+            ]}
+          >
+            Make a new dish from your leftovers and ingredients you already have
+            at home!
+          </Text>
+          <View style={{ justifyContent: "flex-end", flex: 1 }}>
+            <Image
+              source={emojiImages["Burrito"] || emojiImages.Default}
+              contentFit="cover"
+              style={{
+                minWidth: 30,
+                minHeight: 30,
+                marginVertical: 10,
+                alignSelf: "center",
+              }}
+            />
+          </View>
+        </Block>
 
         <View style={{ flex: 1, flexDirection: "column", gap: 10 }}>
           <Block
