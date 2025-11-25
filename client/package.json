@@ -57,6 +57,7 @@
     "react-native-modal": "^14.0.0-rc.1",
     "react-native-progress": "^5.0.1",
     "react-native-reanimated": "~3.17.4",
+    "react-native-reanimated-carousel": "^4.0.3",
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.11.1",
     "react-native-svg": "^15.11.2",
@@ -67,6 +68,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
+    "@iconify-json/mingcute": "^1.2.5",
     "@types/jest": "^29.5.12",
     "@types/react": "~19.0.0",
     "@types/react-test-renderer": "^19.0.0",

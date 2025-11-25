@@ -14,12 +14,16 @@ import { Pressable, View } from "react-native";
 import { Platform } from "react-native";
 import { ImageBackground } from "react-native";
 import { styles } from "@/styles/auth.styles";
+import { CustomIcon } from "@/icon-loader/icon-loader";
+import { Image } from "expo-image";
 
 export default function TabsLayout() {
   const iconSizeWeb = 40;
-
+  const iconSizeMobile = 30;
+  const image = require("@/assets/images/newBackground.png");
   return (
     <>
+      <ImageBackground source={image} style={styles.image} />
       <Tabs
         initialRouteName="index"
         backBehavior="history"
@@ -29,8 +33,14 @@ export default function TabsLayout() {
 
           tabBarPosition: Platform.OS == "web" ? "left" : "bottom",
           tabBarStyle: {
-            backgroundColor: COLORS.navBG,
-
+            backgroundColor: COLORS.newHeader,
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: 60,
+            borderTopWidth: 3,
+            paddingBottom: 5,
             ...(Platform.OS === "web"
               ? {
                   borderRightColor: COLORS.newHeaderB,
@@ -46,15 +56,19 @@ export default function TabsLayout() {
             paddingVertical: 10,
             paddingHorizontal: Platform.OS == "web" ? 20 : 10,
           },
-          tabBarLabelStyle: {
-            fontSize: 35,
-            fontFamily: "Nunito",
-            fontWeight: 700,
-            margin: "auto",
-            textAlign: "center",
-            lineHeight: 60,
-            height: 60,
+          sceneStyle: {
+            backgroundColor: "transparent",
           },
+
+          //tabBarLabelStyle: {
+          // fontSize: 35,
+          // fontFamily: "Nunito",
+          // fontWeight: 700,
+          // margin: "auto",
+          //textAlign: "center",
+          //lineHeight: 60,
+          //height: 60,
+          // },
           tabBarIconStyle: {
             ...(Platform.OS === "web"
               ? {
@@ -79,38 +93,29 @@ export default function TabsLayout() {
           name="index"
           options={{
             tabBarLabel: "Home",
-            tabBarIcon: ({ color, focused }) =>
-              focused ? (
-                <HomeFilled
-                  iconsetcolor={color}
-                  setheight={Platform.OS === "web" ? iconSizeWeb : undefined}
-                ></HomeFilled>
-              ) : (
-                <HomeIcon
-                  iconsetcolor={color}
-                  setheight={Platform.OS === "web" ? iconSizeWeb : undefined}
-                ></HomeIcon>
-              ),
+            tabBarIcon: ({ color, focused }) => (
+              <CustomIcon
+                name="home-4"
+                filled={focused ? true : false}
+                color={color}
+                size={iconSizeMobile}
+              />
+            ),
           }}
         />
 
-        
         <Tabs.Screen
           name="generationpage"
           options={{
             tabBarLabel: "Generator",
-            tabBarIcon: ({ color, focused }) =>
-              focused ? (
-                <GenIcon
-                  iconsetcolor={"#a759c8"}
-                  setheight={Platform.OS === "web" ? iconSizeWeb : undefined}
-                ></GenIcon>
-              ) : (
-                <GenIcon
-                  iconsetcolor={COLORS.genBorder}
-                  setheight={Platform.OS === "web" ? iconSizeWeb : undefined}
-                ></GenIcon>
-              ),
+            tabBarIcon: ({ color, focused }) => (
+              <CustomIcon
+                name="sparkles"
+                filled={focused ? true : false}
+                color={color}
+                size={iconSizeMobile}
+              />
+            ),
           }}
         />
 
@@ -119,18 +124,14 @@ export default function TabsLayout() {
           options={{
             tabBarLabel: "Saves",
 
-            tabBarIcon: ({ color, focused }) =>
-              focused ? (
-                <SavesFilled
-                  iconsetcolor={color}
-                  setheight={Platform.OS === "web" ? iconSizeWeb : undefined}
-                ></SavesFilled>
-              ) : (
-                <SavesIcon
-                  iconsetcolor={color}
-                  setheight={Platform.OS === "web" ? iconSizeWeb : undefined}
-                ></SavesIcon>
-              ),
+            tabBarIcon: ({ color, focused }) => (
+              <CustomIcon
+                name="bookmark"
+                filled={focused ? true : false}
+                color={color}
+                size={iconSizeMobile}
+              />
+            ),
           }}
         />
 
@@ -139,18 +140,14 @@ export default function TabsLayout() {
           options={{
             tabBarLabel: "Profile",
 
-            tabBarIcon: ({ color, focused }) =>
-              focused ? (
-                <ProfileFilled
-                  iconsetcolor={color}
-                  setheight={Platform.OS === "web" ? iconSizeWeb : undefined}
-                ></ProfileFilled>
-              ) : (
-                <ProfileIcon
-                  iconsetcolor={color}
-                  setheight={Platform.OS === "web" ? iconSizeWeb : undefined}
-                ></ProfileIcon>
-              ),
+            tabBarIcon: ({ color, focused }) => (
+              <CustomIcon
+                name="user-2"
+                filled={focused ? true : false}
+                color={color}
+                size={iconSizeMobile}
+              />
+            ),
           }}
         />
 
@@ -158,7 +155,6 @@ export default function TabsLayout() {
           name="login"
           options={{
             tabBarLabel: "login",
-
           }}
         />
       </Tabs>

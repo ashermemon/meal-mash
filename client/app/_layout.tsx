@@ -133,47 +133,50 @@ export default function RootLayout() {
       <GestureHandlerRootView style={{ flex: 1 }}>
         <NotificationProvider>
           <SafeAreaProvider>
-            <SafeAreaView
-              style={{ flex: 1, backgroundColor: COLORS.blueHeader }}
-            >
-              <LeftoversContext.Provider value={[leftovers, setLeftovers]}>
-                <IngredientsContext.Provider
-                  value={[ingredients, setIngredients]}
-                >
-                  <FavoritesContext.Provider value={[favorites, setFavorites]}>
-                    <FavLeftoversContext.Provider
-                      value={[favoritesL, setFavoritesL]}
+            <LeftoversContext.Provider value={[leftovers, setLeftovers]}>
+              <IngredientsContext.Provider
+                value={[ingredients, setIngredients]}
+              >
+                <FavoritesContext.Provider value={[favorites, setFavorites]}>
+                  <FavLeftoversContext.Provider
+                    value={[favoritesL, setFavoritesL]}
+                  >
+                    <SavedRecipesContext.Provider
+                      value={[savedRecipes, setSavedRecipes]}
                     >
-                      <SavedRecipesContext.Provider
-                        value={[savedRecipes, setSavedRecipes]}
+                      <MealsLeftContext.Provider
+                        value={[mealsLeft, setMealsLeft]}
                       >
-                        <MealsLeftContext.Provider
-                          value={[mealsLeft, setMealsLeft]}
+                        <StatusBar
+                          barStyle="dark-content"
+                          backgroundColor={COLORS.newHeader}
+                        />
+                        <SafeAreaView
+                          style={{
+                            flex: 1,
+                            backgroundColor: COLORS.newHeader,
+                          }}
                         >
-                          <StatusBar
-                            barStyle="dark-content"
-                            backgroundColor={COLORS.blueHeader}
-                          />
                           <Stack
                             screenOptions={{
                               headerShown: false,
                             }}
                           ></Stack>
-                          <BottomSheetModal
-                            ref={bottomSheetModalRef}
-                            onChange={handleSheetChanges}
-                          >
-                            <BottomSheetView style={styles.contentContainer}>
-                              <Text>Wow</Text>
-                            </BottomSheetView>
-                          </BottomSheetModal>
-                        </MealsLeftContext.Provider>
-                      </SavedRecipesContext.Provider>
-                    </FavLeftoversContext.Provider>
-                  </FavoritesContext.Provider>
-                </IngredientsContext.Provider>
-              </LeftoversContext.Provider>
-            </SafeAreaView>
+                        </SafeAreaView>
+                        <BottomSheetModal
+                          ref={bottomSheetModalRef}
+                          onChange={handleSheetChanges}
+                        >
+                          <BottomSheetView style={styles.contentContainer}>
+                            <Text>Wow</Text>
+                          </BottomSheetView>
+                        </BottomSheetModal>
+                      </MealsLeftContext.Provider>
+                    </SavedRecipesContext.Provider>
+                  </FavLeftoversContext.Provider>
+                </FavoritesContext.Provider>
+              </IngredientsContext.Provider>
+            </LeftoversContext.Provider>
           </SafeAreaProvider>
         </NotificationProvider>
       </GestureHandlerRootView>

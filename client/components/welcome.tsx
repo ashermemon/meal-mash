@@ -14,6 +14,8 @@ import { ScrollView } from "react-native-gesture-handler";
 import { useRouter } from "expo-router";
 import { NEWCOLORS } from "@/constants/newtheme";
 import { CustomIcon } from "@/icon-loader/icon-loader";
+import FeaturedRecipes from "./featuredrecipes";
+import ExploreSection from "./exploresection";
 
 export default function Welcome() {
   const router = useRouter();
@@ -28,25 +30,34 @@ export default function Welcome() {
         paddingVertical: 20,
       }}
     >
-      <View style={{ width: "100%" }}>
+      <View style={{ width: "100%", marginBottom: 30 }}>
         <Text
           style={[
             styles.basicTextLeft,
             styles.bold,
             {
               fontSize: 28,
-              marginTop: 5,
-              marginBottom: 15,
+              marginVertical: 5,
             },
           ]}
         >
           Welcome to MealMash!
         </Text>
-        <View style={styles.recipeBar}>
+        <View style={[styles.recipeBar, styles.basicBoxShadow]}>
           <Pressable
-            style={[styles.circleButton, { height: 38, width: 38 }]}
+            style={[
+              styles.circleButton,
+              {
+                height: 38,
+                width: 38,
+                justifyContent: "center",
+                alignItems: "center",
+              },
+            ]}
             onPress={() => console.log("pressed")}
-          ></Pressable>
+          >
+            <CustomIcon name="camera" filled={true} color={"white"} />
+          </Pressable>
           <TextInput
             keyboardType="default"
             spellCheck={false}
@@ -60,8 +71,9 @@ export default function Welcome() {
                 flex: 1,
                 fontSize: 18,
                 color: NEWCOLORS.basicText,
-                marginLeft: 15,
-                marginRight: 15,
+                marginLeft: 10,
+                marginRight: 10,
+                height: 46,
               },
             ]}
           ></TextInput>
@@ -70,30 +82,25 @@ export default function Welcome() {
           </View>
         </View>
 
-        <View>
-          <Pressable
-            style={[
-              styles.homeBlock,
-              {
-                backgroundColor: NEWCOLORS.blueBlock,
-                width: 200,
-                marginTop: 20,
-              },
-            ]}
-            onPress={() => router.push("/(tabs)/generationpage" as any)}
-          >
-            <Text
-              style={[
-                styles.textCentered,
-                { fontFamily: "Nunito-SemiBold", fontSize: 20 },
-              ]}
-              adjustsFontSizeToFit={true}
-            >
-              Meal Generator
-            </Text>
-          </Pressable>
-        </View>
+        <FeaturedRecipes></FeaturedRecipes>
+
+        <Text
+          style={[
+            styles.basicTextLeft,
+            styles.bold,
+            {
+              fontSize: 28,
+              marginBottom: 10,
+            },
+          ]}
+        >
+          Explore
+        </Text>
+
+        <ExploreSection></ExploreSection>
+        <View style={{ paddingVertical: 25 }}></View>
       </View>
     </ScrollView>
   );
 }
+//<CustomIcon name="heart" filled={true} color="red" size={24} />

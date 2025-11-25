@@ -23,6 +23,7 @@ type CardProps = {
   leftover: boolean;
 };
 import * as Haptics from "expo-haptics";
+import { CustomIcon } from "@/icon-loader/icon-loader";
 
 export default function FavIngredient(props: CardProps) {
   const [favorite, setFavorite] = useState(true);
@@ -161,14 +162,24 @@ export default function FavIngredient(props: CardProps) {
             <Text style={styles.textLeftBold}>{props.ingredientName}</Text>
           </View>
           <View style={styles.favFlex}>
-            <Pressable onPress={saveCard}>
+            <Pressable
+              onPress={saveCard}
+              style={{ alignItems: "center", justifyContent: "center" }}
+            >
               {favorite ? (
-                <FavIconFilled
-                  iconsetcolor={COLORS.favoriteColor}
-                  setheight={35}
+                <CustomIcon
+                  name="star"
+                  filled={true}
+                  color={COLORS.favoriteColor}
+                  size={30}
                 />
               ) : (
-                <FavIcon iconsetcolor={COLORS.favoriteColor} setheight={35} />
+                <CustomIcon
+                  name="star"
+                  filled={false}
+                  color={COLORS.favoriteColor}
+                  size={30}
+                />
               )}
             </Pressable>
           </View>

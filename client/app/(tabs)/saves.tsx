@@ -10,14 +10,9 @@ import FavoritesContext from "../../contexts/FavoritesContext";
 import { storage } from "../../utils/storage";
 import { useState } from "react";
 
-const image =
-  Platform.OS == "web"
-    ? require("../../assets/images/AppBackgroundDesktop.png")
-    : require("../../assets/images/AppBackground.png");
-
 export default function Saves() {
   return (
-    <ImageBackground source={image} style={styles.image} resizeMode="cover">
+    <>
       <MobileHeader pageTitle="Saves" backEnabled={true}></MobileHeader>
       <ScrollView
         contentContainerStyle={{ flexGrow: 1 }}
@@ -27,6 +22,6 @@ export default function Saves() {
           <DisplaySaved></DisplaySaved>
         </View>
       </ScrollView>
-    </ImageBackground>
+    </>
   );
 }

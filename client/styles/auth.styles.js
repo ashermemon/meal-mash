@@ -29,12 +29,8 @@ export const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   image: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    height: "100%",
-
-    width: "100%",
+    ...StyleSheet.absoluteFillObject,
+    resizeMode: "cover",
   },
   text: {
     fontFamily: "Nunito-Regular",
@@ -406,7 +402,6 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
     flexDirection: "row",
-    borderRightWidth: 5,
 
     borderRightColor: COLORS.favoriteColor,
     shadowColor: "black",
@@ -589,12 +584,11 @@ export const styles = StyleSheet.create({
 
   // New Styles Below
   homeBlock: {
-    alignItems: "center",
-    justifyContent: "center",
     backgroundColor: NEWCOLORS.greyBlock,
-    padding: 10,
-    marginVertical: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 10,
     borderRadius: 10,
+    justifyContent: "flex-start",
   },
   circleButton: {
     backgroundColor: NEWCOLORS.darkButton,
@@ -606,10 +600,15 @@ export const styles = StyleSheet.create({
     padding: 5,
     width: "100%",
     backgroundColor: NEWCOLORS.greyBlock,
+    marginTop: 5,
+    marginBottom: 10,
 
     alignItems: "center",
-    justifyContent: "flex-start",
+    justifyContent: "center",
     flexDirection: "row",
+  },
+  basicBoxShadow: {
+    boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.15)",
   },
   basicTextCenter: {
     fontFamily: "Nunito-Regular",
@@ -626,5 +625,20 @@ export const styles = StyleSheet.create({
   },
   bold: {
     fontFamily: "Nunito-Bold",
+  },
+  sectionalWrapper: {
+    marginVertical: 5,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    flex: 1,
+    alignItems: "center",
+    flexWrap: "wrap",
+    gap: 10,
+  },
+  categoriesSlider: {
+    marginVertical: 5,
+  },
+  paddingOnlyWrapper: {
+    marginVertical: 10,
   },
 });

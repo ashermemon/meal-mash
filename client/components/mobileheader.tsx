@@ -64,19 +64,23 @@ export default function MobileHeader(props: HeaderProps) {
             }
           >
             {props.backEnabled ? (
-              <BackArrow
-                iconsetcolor={
+              <CustomIcon
+                name="arrow-left"
+                filled={false}
+                color={
                   navigation.canGoBack() ? COLORS.fontColor : COLORS.addPlusGrey
                 }
-                setheight={20}
-                setwidth={20}
-              ></BackArrow>
+                size={20}
+              />
             ) : (
-              <DiscardIcon
-                iconsetcolor={COLORS.fontColor}
-                setheight={14}
-                setwidth={14}
-              ></DiscardIcon>
+              <CustomIcon
+                name="close"
+                filled={false}
+                color={
+                  navigation.canGoBack() ? COLORS.fontColor : COLORS.addPlusGrey
+                }
+                size={20}
+              ></CustomIcon>
             )}
           </Pressable>
         </View>
@@ -98,7 +102,12 @@ export default function MobileHeader(props: HeaderProps) {
               handlePresentModalPress(), Haptics.selectionAsync()
             )}
           >
-            <CustomIcon name="more_2" filled={false} color={"black"} />
+            <CustomIcon
+              name="menu"
+              filled={false}
+              color={COLORS.fontColor}
+              size={20}
+            ></CustomIcon>
           </Pressable>
         </View>
       </View>
