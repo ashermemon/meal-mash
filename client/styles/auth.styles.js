@@ -92,13 +92,11 @@ export const styles = StyleSheet.create({
     color: COLORS.fontColor,
   },
   headerContainer: {
-    paddingVertical: 8,
-    backgroundColor: COLORS.newHeader,
-    margin: 0,
-    width: "100%",
-    borderColor: COLORS.newHeaderB,
+    paddingTop: 8,
 
-    borderBottomWidth: 3,
+    margin: 0,
+    paddingBottom: 5,
+    width: "100%",
   },
   generateButtonContainer: {
     alignItems: "center",
