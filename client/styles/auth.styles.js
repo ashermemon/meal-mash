@@ -95,6 +95,7 @@ export const styles = StyleSheet.create({
     paddingTop: 8,
 
     margin: 0,
+    paddingBottom: 5,
     width: "100%",
   },
   generateButtonContainer: {

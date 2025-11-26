@@ -37,7 +37,7 @@ export default function Welcome() {
             styles.bold,
             {
               fontSize: 28,
-              marginVertical: 5,
+              marginBottom: 5,
             },
           ]}
         >

@@ -124,15 +124,22 @@ export default function ExploreSection() {
             Make a new dish from your leftovers and ingredients you already have
             at home!
           </Text>
-          <View style={{ justifyContent: "flex-end", flex: 1 }}>
+          <View
+            style={{
+              justifyContent: "flex-end",
+              flex: 1,
+              minHeight: 100,
+              minWidth: 100,
+            }}
+          >
             <Image
               source={emojiImages["Burrito"] || emojiImages.Default}
-              contentFit="cover"
+              contentFit="contain"
               style={{
-                minWidth: 30,
-                minHeight: 30,
                 marginVertical: 10,
                 alignSelf: "center",
+                flex: 1,
+                aspectRatio: 1,
               }}
             />
           </View>
