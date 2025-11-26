@@ -1,163 +1,183 @@
-import { Redirect, Stack } from "expo-router";
 import { Tabs } from "expo-router";
-import { Ionicons } from "@expo/vector-icons";
-import Svg, { G, Path } from "react-native-svg";
-import SavesIcon from "@/Icons/SavesIcon";
-import HomeIcon from "@/Icons/HomeIcon";
-import ProfileIcon from "@/Icons/ProfileIcon";
-import HomeFilled from "@/Icons/HomeFilled";
-import SavesFilled from "@/Icons/SavesFilled";
-import ProfileFilled from "@/Icons/ProfileFilled";
-import GenIcon from "@/Icons/GenIcon";
+import { Platform, View } from "react-native";
+import { CustomIcon } from "@/icon-loader/icon-loader";
 import { COLORS } from "@/constants/theme";
-import { Pressable, View } from "react-native";
-import { Platform } from "react-native";
 import { ImageBackground } from "react-native";
 import { styles } from "@/styles/auth.styles";
-import { CustomIcon } from "@/icon-loader/icon-loader";
-import { Image } from "expo-image";
+import { NEWCOLORS } from "@/constants/newtheme";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 export default function TabsLayout() {
-  const iconSizeWeb = 40;
   const iconSizeMobile = 30;
   const image = require("@/assets/images/newBackground.png");
+
   return (
     <>
       <ImageBackground source={image} style={styles.image} />
-      <Tabs
-        initialRouteName="index"
-        backBehavior="history"
-        screenOptions={{
-          tabBarShowLabel: Platform.OS == "web" ? true : false,
-          headerShown: false,
+      <SafeAreaProvider>
+        <SafeAreaView style={{ flex: 1 }}>
+          <Tabs
+            initialRouteName="index"
+            backBehavior="history"
+            screenOptions={{
+              tabBarShowLabel: Platform.OS == "web" ? true : false,
+              headerShown: false,
+              tabBarPosition: Platform.OS == "web" ? "left" : "bottom",
 
-          tabBarPosition: Platform.OS == "web" ? "left" : "bottom",
-          tabBarStyle: {
-            backgroundColor: COLORS.newHeader,
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            right: 0,
-            height: 60,
-            borderTopWidth: 3,
-            paddingBottom: 5,
-            ...(Platform.OS === "web"
-              ? {
-                  borderRightColor: COLORS.newHeaderB,
-                  borderRightWidth: 3,
-                }
-              : {
-                  borderTopColor: COLORS.newHeaderB,
-                  borderTopWidth: 3,
-                }),
-          },
+              tabBarStyle: {
+                position: "absolute",
 
-          tabBarItemStyle: {
-            paddingVertical: 10,
-            paddingHorizontal: Platform.OS == "web" ? 20 : 10,
-          },
-          sceneStyle: {
-            backgroundColor: "transparent",
-          },
+                height: 60,
+                marginHorizontal: 20,
+                borderRadius: 100,
+                backgroundColor: NEWCOLORS.greyBlock,
 
-          //tabBarLabelStyle: {
-          // fontSize: 35,
-          // fontFamily: "Nunito",
-          // fontWeight: 700,
-          // margin: "auto",
-          //textAlign: "center",
-          //lineHeight: 60,
-          //height: 60,
-          // },
-          tabBarIconStyle: {
-            ...(Platform.OS === "web"
-              ? {
-                  marginHorizontal: 20,
-                  marginVertical: 10,
-                  height: iconSizeWeb,
-                }
-              : {}),
-          },
+                shadowColor: "#000",
+                shadowOffset: { width: 0, height: 10 },
+                shadowOpacity: 0.1,
+                shadowRadius: 5,
+                paddingBottom: 0,
+                borderTopWidth: 0,
+              },
 
-          tabBarLabelPosition: "beside-icon",
-          tabBarActiveTintColor: COLORS.navSecondary,
-          tabBarInactiveTintColor: "#7F7D7D",
-          headerShadowVisible: false,
-          tabBarActiveBackgroundColor:
-            Platform.OS == "web" ? COLORS.navSelected : undefined,
-          tabBarInactiveBackgroundColor:
-            Platform.OS == "web" ? COLORS.navUnselected : undefined,
-        }}
-      >
-        <Tabs.Screen
-          name="index"
-          options={{
-            tabBarLabel: "Home",
-            tabBarIcon: ({ color, focused }) => (
-              <CustomIcon
-                name="home-4"
-                filled={focused ? true : false}
-                color={color}
-                size={iconSizeMobile}
-              />
-            ),
-          }}
-        />
+              tabBarItemStyle: {
+                paddingVertical: 10,
+                paddingHorizontal: Platform.OS == "web" ? 20 : 10,
+              },
 
-        <Tabs.Screen
-          name="generationpage"
-          options={{
-            tabBarLabel: "Generator",
-            tabBarIcon: ({ color, focused }) => (
-              <CustomIcon
-                name="sparkles"
-                filled={focused ? true : false}
-                color={color}
-                size={iconSizeMobile}
-              />
-            ),
-          }}
-        />
+              sceneStyle: {
+                backgroundColor: "transparent",
+              },
 
-        <Tabs.Screen
-          name="saves"
-          options={{
-            tabBarLabel: "Saves",
+              tabBarLabelPosition: "beside-icon",
+              tabBarActiveTintColor: NEWCOLORS.greyBlock,
+              tabBarInactiveTintColor: NEWCOLORS.darkButton,
+              headerShadowVisible: false,
+              tabBarActiveBackgroundColor: "transparent",
+              tabBarInactiveBackgroundColor: "transparent",
+            }}
+          >
+            <Tabs.Screen
+              name="index"
+              options={{
+                tabBarLabel: "Home",
+                tabBarIcon: ({ color, focused }) => (
+                  <View
+                    style={{
+                      width: 48,
+                      height: 48,
+                      borderRadius: 100,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      backgroundColor: focused
+                        ? NEWCOLORS.darkButton
+                        : "transparent",
+                    }}
+                  >
+                    <CustomIcon
+                      name="home-4"
+                      filled={focused}
+                      color={color}
+                      size={iconSizeMobile}
+                    />
+                  </View>
+                ),
+              }}
+            />
 
-            tabBarIcon: ({ color, focused }) => (
-              <CustomIcon
-                name="bookmark"
-                filled={focused ? true : false}
-                color={color}
-                size={iconSizeMobile}
-              />
-            ),
-          }}
-        />
+            <Tabs.Screen
+              name="generationpage"
+              options={{
+                tabBarLabel: "Generator",
+                tabBarIcon: ({ color, focused }) => (
+                  <View
+                    style={{
+                      width: 48,
+                      height: 48,
+                      borderRadius: 100,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      backgroundColor: focused
+                        ? NEWCOLORS.darkButton
+                        : "transparent",
+                    }}
+                  >
+                    <CustomIcon
+                      name="sparkles"
+                      filled={focused}
+                      color={color}
+                      size={iconSizeMobile}
+                    />
+                  </View>
+                ),
+              }}
+            />
 
-        <Tabs.Screen
-          name="profile"
-          options={{
-            tabBarLabel: "Profile",
+            <Tabs.Screen
+              name="saves"
+              options={{
+                tabBarLabel: "Saves",
+                tabBarIcon: ({ color, focused }) => (
+                  <View
+                    style={{
+                      width: 48,
+                      height: 48,
+                      borderRadius: 100,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      backgroundColor: focused
+                        ? NEWCOLORS.darkButton
+                        : "transparent",
+                    }}
+                  >
+                    <CustomIcon
+                      name="bookmark"
+                      filled={focused}
+                      color={color}
+                      size={iconSizeMobile}
+                    />
+                  </View>
+                ),
+              }}
+            />
 
-            tabBarIcon: ({ color, focused }) => (
-              <CustomIcon
-                name="user-2"
-                filled={focused ? true : false}
-                color={color}
-                size={iconSizeMobile}
-              />
-            ),
-          }}
-        />
+            <Tabs.Screen
+              name="profile"
+              options={{
+                tabBarLabel: "Profile",
+                tabBarIcon: ({ color, focused }) => (
+                  <View
+                    style={{
+                      width: 48,
+                      height: 48,
+                      borderRadius: 100,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      backgroundColor: focused
+                        ? NEWCOLORS.darkButton
+                        : "transparent",
+                    }}
+                  >
+                    <CustomIcon
+                      name="user-2"
+                      filled={focused}
+                      color={color}
+                      size={iconSizeMobile}
+                    />
+                  </View>
+                ),
+              }}
+            />
 
-        <Tabs.Screen
-          name="login"
-          options={{
-            tabBarLabel: "login",
-          }}
-        />
-      </Tabs>
+            <Tabs.Screen
+              name="login"
+              options={{
+                tabBarLabel: "login",
+              }}
+            />
+          </Tabs>
+        </SafeAreaView>
+      </SafeAreaProvider>
     </>
   );
 }

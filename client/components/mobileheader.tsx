@@ -42,10 +42,13 @@ export default function MobileHeader(props: HeaderProps) {
           styles.headerContainer,
           {
             flexDirection: "row",
+            alignItems: "center",
+
+            justifyContent: "space-between",
           },
         ]}
       >
-        <View style={[{ flex: 1.5 }, styles.centeredBox]}>
+        <View style={{ marginLeft: 20 }}>
           <Pressable
             onPress={() =>
               props.backEnabled
@@ -84,18 +87,16 @@ export default function MobileHeader(props: HeaderProps) {
             )}
           </Pressable>
         </View>
-
-        <View style={[{ flex: 3, paddingHorizontal: 15 }, styles.centeredBox]}>
+        <View>
           <Text
             numberOfLines={1}
             adjustsFontSizeToFit
-            style={[styles.headerText]}
+            style={[styles.headerText, { alignSelf: "center" }]}
           >
             {props.pageTitle}
           </Text>
         </View>
-
-        <View style={[{ flex: 1.5, flexDirection: "row" }, styles.centeredBox]}>
+        <View style={{ marginRight: 20 }}>
           <Pressable
             style={[styles.centeredBox]}
             onPress={() => (
