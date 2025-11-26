@@ -41,6 +41,7 @@ export default function ExploreSection() {
     link,
     height,
     featured,
+    icon,
   }: {
     title: string;
     color: string;
@@ -48,6 +49,7 @@ export default function ExploreSection() {
     link?: string;
     height?: number;
     featured?: boolean;
+    icon?: string;
   }) => (
     <Pressable
       style={[
@@ -95,6 +97,30 @@ export default function ExploreSection() {
         {title}
       </Text>
       {children}
+      {featured ? (
+        <></>
+      ) : (
+        <View
+          style={{
+            justifyContent: "flex-end",
+            flex: 1,
+          }}
+        >
+          <Image
+            source={
+              (icon ? emojiImages[icon] : emojiImages.Default) ||
+              emojiImages.Default
+            }
+            contentFit="contain"
+            style={{
+              marginVertical: 10,
+              alignSelf: "center",
+              flex: 1,
+              aspectRatio: 1,
+            }}
+          />
+        </View>
+      )}
     </Pressable>
   );
 
@@ -114,6 +140,7 @@ export default function ExploreSection() {
           title="Meal Generator"
           color={NEWCOLORS.blueBlock}
           link="generationpage"
+          icon="Burrito"
         >
           <Text
             style={[
@@ -124,25 +151,6 @@ export default function ExploreSection() {
             Make a new dish from your leftovers and ingredients you already have
             at home!
           </Text>
-          <View
-            style={{
-              justifyContent: "flex-end",
-              flex: 1,
-              minHeight: 100,
-              minWidth: 100,
-            }}
-          >
-            <Image
-              source={emojiImages["Burrito"] || emojiImages.Default}
-              contentFit="contain"
-              style={{
-                marginVertical: 10,
-                alignSelf: "center",
-                flex: 1,
-                aspectRatio: 1,
-              }}
-            />
-          </View>
         </Block>
 
         <View style={{ flex: 1, flexDirection: "column", gap: 10 }}>
@@ -150,8 +158,14 @@ export default function ExploreSection() {
             title="Profile & Stats"
             color={NEWCOLORS.orangeBlock}
             link="profile"
+            icon="Banana"
           />
-          <Block title="Cookbook" color={NEWCOLORS.greenBlock} link="saves" />
+          <Block
+            title="Cookbook"
+            color={NEWCOLORS.greenBlock}
+            link="saves"
+            icon="Book"
+          />
         </View>
       </View>
     </View>
