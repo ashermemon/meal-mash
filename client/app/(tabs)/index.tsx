@@ -1,5 +1,4 @@
 import { View, Text, ImageBackground, ScrollView } from "react-native";
-
 import { styles } from "@/styles/auth.styles";
 import { Platform } from "react-native";
 import Generate from "../../components/generate";

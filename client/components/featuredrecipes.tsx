@@ -5,6 +5,7 @@ import { NEWCOLORS } from "@/constants/newtheme";
 import { FlashList } from "@shopify/flash-list";
 import { Image } from "expo-image";
 import emojiImages from "./emoji-images";
+import { router } from "expo-router";
 
 const data = [
   { id: "1", name: "Leftovers", color: "grey", icon: "Avocado" },
@@ -53,7 +54,7 @@ const FeaturedRecipeButton = () => {
                 },
                 styles.basicBoxShadow,
               ]}
-              onPress={() => console.log("pressed")}
+              //onPress={() => router.push("/pages/test")} fix this
             >
               <Text
                 style={[styles.textCentered, { fontFamily: "Nunito-SemiBold" }]}
@@ -71,7 +72,7 @@ const FeaturedRecipeButton = () => {
                 style={{
                   width: 50,
                   height: 50,
-                  marginBottom: 5,
+
                   alignSelf: "center",
                 }}
               ></Image>
