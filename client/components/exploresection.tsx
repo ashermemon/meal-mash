@@ -54,7 +54,6 @@ export default function ExploreSection() {
     children,
     link,
     height,
-    featured,
     icon,
   }: {
     title: string;
@@ -62,7 +61,6 @@ export default function ExploreSection() {
     children?: React.ReactNode;
     link?: string;
     height?: number;
-    featured?: boolean;
     icon?: string;
   }) => (
     <Pressable
@@ -73,7 +71,7 @@ export default function ExploreSection() {
           backgroundColor: color,
           height: height ? height : undefined,
 
-          paddingHorizontal: featured ? 15 : 10,
+          paddingHorizontal: 10,
         },
         styles.basicBoxShadow,
       ]}
