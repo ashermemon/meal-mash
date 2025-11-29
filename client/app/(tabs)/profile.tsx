@@ -17,6 +17,8 @@ import CheckIcon from "../../Icons/CheckIcon";
 import DiscardIcon from "../../Icons/DiscardIcon";
 import { storage } from "../../utils/storage";
 import { CustomIcon } from "@/icon-loader/icon-loader";
+import { NEWCOLORS } from "@/constants/newtheme";
+import LoginPage from "@/components/login";
 
 export default function Profile() {
   const [editMode, setEditMode] = useState(false);
@@ -24,6 +26,7 @@ export default function Profile() {
   const [lastSavedName, setLastSavedName] = useState("");
 
   const [nameQ, setNameQ] = useState("");
+  const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
     const storedName = storage.getString("name") ?? "";
@@ -38,7 +41,9 @@ export default function Profile() {
     }
   }, []);
 
-  return (
+  return loggedIn ? (
+    <LoginPage></LoginPage>
+  ) : (
     <>
       <MobileHeader pageTitle="Profile" backEnabled={true}></MobileHeader>
       <View style={styles.profileHeader}>
@@ -68,6 +73,25 @@ export default function Profile() {
               {nameQ == "" ? "Add Name" : nameQ}
             </Text>
           )}
+          <Pressable
+            onPress={() => setLoggedIn(true)}
+            style={[
+              styles.circleButton,
+              {
+                width: 100,
+                height: 30,
+                borderRadius: 10,
+                margin: 20,
+                justifyContent: "center",
+              },
+            ]}
+          >
+            <Text
+              style={[styles.basicTextCenter, { color: NEWCOLORS.greyBlock }]}
+            >
+              Log In
+            </Text>
+          </Pressable>
         </View>
 
         <Pressable
