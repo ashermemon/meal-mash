@@ -17,12 +17,17 @@ export default {
         light: "./assets/images/IconLight.png",
         dark: "./assets/images/IconDark.png",
       },
+      statusBar: {
+        translucent: true,
+        style: "dark",
+      },
     },
     android: {
       adaptiveIcon: {
         foregroundImage: "./assets/images/adaptivef.png",
         backgroundImage: "./assets/images/adaptiveb.png",
       },
+      edgeToEdgeEnabled: true,
       package: "com.sdsecureapp.neverleftovernew",
       googleServicesFile: "./google-services.json",
     },
@@ -42,6 +47,17 @@ export default {
           backgroundColor: "#ffffff",
         },
       ],
+
+      [
+        "expo-camera",
+        {
+          cameraPermission: "Allow $(PRODUCT_NAME) to access your camera",
+          microphonePermission:
+            "Allow $(PRODUCT_NAME) to access your microphone",
+          recordAudioAndroid: true,
+        },
+      ],
+
       "expo-font",
       "expo-web-browser",
       "expo-notifications",

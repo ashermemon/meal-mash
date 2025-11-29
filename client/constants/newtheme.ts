@@ -9,4 +9,6 @@ export const NEWCOLORS = {
 
   placeholderText: "#696969",
   basicText: "#39393A",
+
+  lightGrey: "#e6e6e6",
 } as const;

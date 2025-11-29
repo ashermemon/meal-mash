@@ -6,20 +6,48 @@ import {
   TextInput,
   View,
 } from "react-native";
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useCallback, useState } from "react";
 import { styles } from "@/styles/auth.styles";
 import { COLORS } from "@/constants/theme";
 import { Image } from "expo-image";
 import { ScrollView } from "react-native-gesture-handler";
-import { useRouter } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 import { NEWCOLORS } from "@/constants/newtheme";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import FeaturedRecipes from "./featuredrecipes";
 import ExploreSection from "./exploresection";
+import Camera from "./camera";
+import { useCameraPermissions } from "expo-camera";
+import { BackHandler } from "react-native";
 
 export default function Welcome() {
   const router = useRouter();
-  return (
+  const [showCamera, setShowCamera] = useState(false);
+  const [permission, requestPermission] = useCameraPermissions();
+
+  useFocusEffect(
+    useCallback(() => {
+      const onBackPress = () => {
+        if (showCamera) {
+          setShowCamera(false);
+          return true;
+        }
+        return false;
+      };
+
+      const subscription = BackHandler.addEventListener(
+        "hardwareBackPress",
+        onBackPress
+      );
+
+      return () => subscription.remove();
+    }, [showCamera])
+  );
+  return showCamera ? (
+    <View style={{ width: "100%", flex: 1 }}>
+      <Camera></Camera>
+    </View>
+  ) : (
     <ScrollView
       contentContainerStyle={{ flexGrow: 1 }}
       overScrollMode="never"
@@ -54,7 +82,13 @@ export default function Welcome() {
                 alignItems: "center",
               },
             ]}
-            onPress={() => console.log("pressed")}
+            onPress={() => [
+              permission
+                ? !permission.granted
+                  ? [requestPermission(), setShowCamera(true)]
+                  : setShowCamera(true)
+                : [requestPermission(), setShowCamera(true)],
+            ]}
           >
             <CustomIcon name="camera" filled={true} color={"white"} />
           </Pressable>

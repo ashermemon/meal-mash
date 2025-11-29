@@ -639,4 +639,31 @@ export const styles = StyleSheet.create({
   paddingOnlyWrapper: {
     marginVertical: 10,
   },
+  shutterContainer: {
+    position: "absolute",
+    bottom: 15,
+
+    width: "100%",
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  flipContainer: {
+    position: "absolute",
+    top: 15,
+
+    width: "100%",
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  shutterBtn: {
+    backgroundColor: "transparent",
+    borderWidth: 5,
+    borderColor: NEWCOLORS.lightGrey,
+
+    borderRadius: 45,
+    alignItems: "center",
+    justifyContent: "center",
+  },
 });
