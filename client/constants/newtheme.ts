@@ -11,4 +11,5 @@ export const NEWCOLORS = {
   basicText: "#39393A",
 
   lightGrey: "#e6e6e6",
+  dividerGrey: "#D1D1D6",
 } as const;

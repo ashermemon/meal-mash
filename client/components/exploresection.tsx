@@ -84,7 +84,7 @@ export default function ExploreSection() {
       <Text
         style={[
           styles.basicTextLeft,
-          styles.bold,
+
           {
             fontFamily: "Nunito-SemiBold",
             fontSize: 20,
@@ -149,12 +149,11 @@ export default function ExploreSection() {
             <View
               style={{
                 flexDirection: "row",
-                paddingHorizontal: 15,
 
                 alignItems: "center",
               }}
             >
-              <View style={{ flex: 1, height: "100%" }}>
+              <View style={{ flex: 1, height: "100%", paddingHorizontal: 15 }}>
                 <Text
                   style={[
                     styles.basicTextLeft,
@@ -167,7 +166,7 @@ export default function ExploreSection() {
                 <Text
                   style={[
                     styles.basicTextLeft,
-                    styles.bold,
+
                     {
                       fontFamily: "Nunito-SemiBold",
                       fontSize: 22,
@@ -192,7 +191,7 @@ export default function ExploreSection() {
                   flex: 0,
                   height: "100%",
                   paddingVertical: 35,
-                  marginHorizontal: 15,
+                  marginHorizontal: 20,
                 }}
               >
                 <Image
@@ -200,12 +199,22 @@ export default function ExploreSection() {
                     emojiImages[item.icon ?? "Default"] ?? emojiImages.Default
                   }
                   style={{
-                    width: 50,
-                    height: 50,
+                    width: 55,
+                    height: 55,
                   }}
                   contentFit="contain"
                 />
               </View>
+              <View
+                style={{
+                  width: 1,
+                  height: "60%",
+                  backgroundColor: NEWCOLORS.dividerGrey,
+                  alignSelf: "center",
+                  borderRadius: 1,
+                  marginRight: 12,
+                }}
+              />
             </View>
           )}
         />
