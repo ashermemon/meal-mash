@@ -2,11 +2,11 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
 import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
 import { styles } from "@/styles/auth.styles";
-import ResetTimer from "@/Icons/ResetTimer";
+
 import { COLORS } from "@/constants/theme";
-import StopTimer from "@/Icons/StopTimer";
-import PlayTimer from "@/Icons/PlayTimer";
+
 import * as Haptics from "expo-haptics";
+import { CustomIcon } from "@/icon-loader/icon-loader";
 
 type TimerProps = {
   time: number;
@@ -62,11 +62,12 @@ export default function Timer(props: TimerProps) {
                 : setTimerKey(timerKey + 1);
           }}
         >
-          <ResetTimer
-            iconsetcolor={COLORS.greyBtns}
-            setheight={30}
-            setwidth={40}
-          ></ResetTimer>
+          <CustomIcon
+            color={COLORS.greyBtns}
+            name={"refresh-1"}
+            size={30}
+            filled={true}
+          ></CustomIcon>
         </Pressable>
 
         <Pressable
@@ -79,17 +80,19 @@ export default function Timer(props: TimerProps) {
           }}
         >
           {isPlaying && !timerFinished ? (
-            <StopTimer
-              iconsetcolor={COLORS.greyBtns}
-              setheight={28}
-              setwidth={28}
-            ></StopTimer>
+            <CustomIcon
+              color={COLORS.greyBtns}
+              name={"stop"}
+              size={30}
+              filled={true}
+            ></CustomIcon>
           ) : (
-            <PlayTimer
-              iconsetcolor={COLORS.greyBtns}
-              setheight={28}
-              setwidth={28}
-            ></PlayTimer>
+            <CustomIcon
+              color={COLORS.greyBtns}
+              name={"miniplayer"}
+              size={30}
+              filled={true}
+            ></CustomIcon>
           )}
         </Pressable>
       </View>

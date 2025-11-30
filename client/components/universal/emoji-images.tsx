@@ -1,0 +1,23 @@
+const emojiImages: { [key: string]: any } = {
+  Avocado: require(`@/assets/emojis/avocado.png`),
+  Banana: require(`@/assets/emojis/banana.png`),
+  Bread: require(`@/assets/emojis/bread.png`),
+  Burrito: require(`@/assets/emojis/burrito.png`),
+  Cake: require(`@/assets/emojis/cake.png`),
+  Chicken: require(`@/assets/emojis/chicken.png`),
+  Dumpling: require(`@/assets/emojis/dumpling.png`),
+  Egg: require(`@/assets/emojis/egg.png`),
+  Eggplant: require(`@/assets/emojis/eggplant.png`),
+  Fries: require(`@/assets/emojis/fries.png`),
+  Grapes: require(`@/assets/emojis/grapes.png`),
+  Meat: require(`@/assets/emojis/meat.png`),
+  Pizza: require(`@/assets/emojis/pizza.png`),
+  Rice: require(`@/assets/emojis/rice.png`),
+  Spaghetti: require(`@/assets/emojis/spaghetti.png`),
+  Tangerine: require(`@/assets/emojis/tangerine.png`),
+  Watermelon: require(`@/assets/emojis/watermelon.png`),
+  Yam: require(`@/assets/emojis/yam.png`),
+  Book: require(`@/assets/emojis/book.png`),
+  Default: require(`@/assets/emojis/placeholder.png`),
+};
+export default emojiImages;

@@ -4,7 +4,7 @@ import { styles } from "@/styles/auth.styles";
 import { NEWCOLORS } from "@/constants/newtheme";
 import { FlashList } from "@shopify/flash-list";
 import { Image } from "expo-image";
-import emojiImages from "./emoji-images";
+import emojiImages from "../universal/emoji-images";
 import { router } from "expo-router";
 
 const data = [

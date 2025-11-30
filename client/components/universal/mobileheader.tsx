@@ -10,13 +10,9 @@ import React, {
   useState,
 } from "react";
 import { styles } from "@/styles/auth.styles";
-import GenIcon from "@/Icons/GenIcon";
-import BackArrow from "@/Icons/BackArrow";
 import { COLORS } from "@/constants/theme";
-import { StatusBar } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { router } from "expo-router";
-import DiscardIcon from "@/Icons/DiscardIcon";
 import { Image } from "expo-image";
 import MealsLeftContext from "@/contexts/MealsLeftContext";
 import * as Haptics from "expo-haptics";

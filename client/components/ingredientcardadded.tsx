@@ -3,7 +3,7 @@ import { Pressable, View, Text } from "react-native";
 import { Image } from "expo-image";
 import { COLORS } from "@/constants/theme";
 import { useContext, useEffect, useRef, useState } from "react";
-import emojiImages from "@/components/emoji-images";
+import emojiImages from "@/components/universal/emoji-images";
 import ReanimatedSwipeable from "react-native-gesture-handler/ReanimatedSwipeable";
 
 import IngredientsContext from "@/contexts/IngredientsContext";

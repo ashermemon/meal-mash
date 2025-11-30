@@ -24,19 +24,14 @@ import AddIngredients from "@/components/addingredients";
 import AddLeftovers from "@/components/addleftovers";
 import SearchContext from "@/contexts/SearchContext";
 import Search from "@/components/search";
-import BackArrow from "@/Icons/BackArrow";
-import ForwardArrow from "@/Icons/ForwardArrow";
+
 import { Dimensions } from "react-native";
 import IngredientsContext from "@/contexts/IngredientsContext";
 import LeftoversEnabled from "@/contexts/LeftoversOn";
 import LeftoversContext from "@/contexts/LeftoversContext";
 import NutrientsContext from "@/contexts/NutrientsContext";
 import NutrientCircle from "./nutrientcircle";
-import SavesIcon from "@/Icons/SavesIcon";
 
-import ResetTimer from "@/Icons/ResetTimer";
-import DiscardIcon from "@/Icons/DiscardIcon";
-import SavesFilled from "@/Icons/SavesFilled";
 import { APIKEY } from "@/utils/apikey";
 import SavedRecipesContext from "../contexts/SavedRecipesContext";
 import { storage } from "@/utils/storage";
@@ -47,6 +42,7 @@ import MealsLeftContext from "@/contexts/MealsLeftContext";
 
 import * as Haptics from "expo-haptics";
 import { Image } from "expo-image";
+import { CustomIcon } from "@/icon-loader/icon-loader";
 
 type GeneratedProps = {
   generated: boolean;
@@ -725,15 +721,16 @@ export default function Generate(props: GeneratedProps) {
                         ]
                       }
                     >
-                      <BackArrow
-                        iconsetcolor={
+                      <CustomIcon
+                        color={
                           currentStep > 1
                             ? COLORS.fontColor
                             : COLORS.addPlusGrey
                         }
-                        setheight={23}
-                        setwidth={23}
-                      ></BackArrow>
+                        name={"arrow-left"}
+                        size={20}
+                        filled={true}
+                      ></CustomIcon>
                     </Pressable>
 
                     <ProgressBar
@@ -753,15 +750,7 @@ export default function Generate(props: GeneratedProps) {
                         ]
                       }
                     >
-                      <ForwardArrow
-                        iconsetcolor={
-                          currentStep < totalSteps
-                            ? COLORS.fontColor
-                            : COLORS.addPlusGrey
-                        }
-                        setheight={23}
-                        setwidth={23}
-                      ></ForwardArrow>
+                      <></>
                     </Pressable>
                   </View>
                 )}

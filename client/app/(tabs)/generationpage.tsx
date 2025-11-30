@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import React, { useCallback, useRef, useState } from "react";
 import Generate from "@/components/generate";
-import MobileHeader from "@/components/mobileheader";
+import MobileHeader from "@/components/universal/mobileheader";
 import BottomSheet, {
   BottomSheetView,
   BottomSheetModalProvider,

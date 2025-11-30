@@ -16,7 +16,7 @@ import { NEWCOLORS } from "@/constants/newtheme";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import FeaturedRecipes from "./featuredrecipes";
 import ExploreSection from "./exploresection";
-import Camera from "./camera";
+import Camera from "../universal/camera";
 import { useCameraPermissions } from "expo-camera";
 import { BackHandler } from "react-native";
 

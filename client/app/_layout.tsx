@@ -48,13 +48,6 @@ export default function RootLayout() {
 
   const [currentDate, setCurrentDate] = useState(getTodayDate());
 
-  //if currentDate != storage date then setMealsLeft to 5 again and set the currentDate to storage date
-
-  const image =
-    Platform.OS == "web"
-      ? require("../assets/images/AppBackgroundDesktop.png")
-      : require("../assets/images/AppBackground.png");
-
   const [loaded, error] = useFonts({
     "Nunito-ExtraLight": require("../assets/fonts/Nunito-Weights/Nunito-ExtraLight.ttf"),
     "Nunito-Light": require("../assets/fonts/Nunito-Weights/Nunito-Light.ttf"),

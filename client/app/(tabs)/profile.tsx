@@ -7,14 +7,11 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { styles } from "@/styles/auth.styles";
-import MobileHeader from "../../components/mobileheader";
-import ProfileFilled from "../../Icons/ProfileFilled";
+import MobileHeader from "../../components/universal/mobileheader";
 import { COLORS } from "@/constants/theme";
 import Counter from "../../components/counter";
 import { Pressable, TextInput } from "react-native-gesture-handler";
-import EditIcon from "../../Icons/EditIcon";
-import CheckIcon from "../../Icons/CheckIcon";
-import DiscardIcon from "../../Icons/DiscardIcon";
+
 import { storage } from "../../utils/storage";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import { NEWCOLORS } from "@/constants/newtheme";

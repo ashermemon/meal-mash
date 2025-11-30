@@ -1,6 +1,5 @@
 import { styles } from "@/styles/auth.styles";
 import { Pressable, View } from "react-native";
-import AddIcon from "@/Icons/AddIcon";
 import { COLORS } from "@/constants/theme";
 import { useContext, useState } from "react";
 import SearchContext from "@/contexts/SearchContext";
@@ -17,6 +16,7 @@ import {
 } from "react-native-gesture-handler";
 
 import * as Haptics from "expo-haptics";
+import { CustomIcon } from "@/icon-loader/icon-loader";
 
 type CardProps = {
   bColor: string;
@@ -74,7 +74,12 @@ export default function NewCard(props: CardProps) {
               : setLeftoversEnabled(false)
           )}
         >
-          <AddIcon iconsetcolor={COLORS.addPlusGrey} setheight={35}></AddIcon>
+          <CustomIcon
+            color={COLORS.addPlusGrey}
+            name={"plus"}
+            size={30}
+            filled={true}
+          ></CustomIcon>
         </Animated.View>
       </GestureDetector>
     </Pressable>

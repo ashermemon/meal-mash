@@ -2,7 +2,7 @@ import { View, Text, ScrollView } from "react-native";
 import { ImageBackground } from "react-native";
 import { styles } from "@/styles/auth.styles";
 import { Platform } from "react-native";
-import MobileHeader from "../../components/mobileheader";
+import MobileHeader from "../../components/universal/mobileheader";
 import SavesFilled from "../../Icons/SavesFilled";
 import { COLORS } from "@/constants/theme";
 import DisplaySaved from "../../components/displaysaved";

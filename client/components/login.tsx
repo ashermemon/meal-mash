@@ -49,7 +49,7 @@ export default function LoginPage() {
         email,
         password,
       });
-      // Store token for authenticated requests
+
       await AsyncStorage.setItem("token", resp.data.access_token);
       Alert.alert("Success", "Account created and logged in");
       setUser(resp.data);

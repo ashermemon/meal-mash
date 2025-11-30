@@ -25,13 +25,12 @@ import ingredientsDB from "@/ingredientDatabase/ingredientsDB.json";
 import leftoversDB from "@/ingredientDatabase/leftoversDB.json";
 import { FlashList } from "@shopify/flash-list";
 import useDebounce from "@/hooks/debounceHook";
-import DiscardIcon from "@/Icons/DiscardIcon";
-import BackArrow from "@/Icons/BackArrow";
 import { Image } from "expo-image";
 import LeftoversContext from "@/contexts/LeftoversContext";
 import FavoritesContext from "@/contexts/FavoritesContext";
 import FavLeftoversContext from "@/contexts/FavLeftoversContext";
 import * as Haptics from "expo-haptics";
+import { CustomIcon } from "@/icon-loader/icon-loader";
 
 export default function Search() {
   type Ingredient = {
@@ -197,17 +196,19 @@ export default function Search() {
           ]}
         >
           {customModal ? (
-            <BackArrow
-              iconsetcolor={COLORS.fontColor}
-              setheight={18}
-              setwidth={18}
-            ></BackArrow>
+            <CustomIcon
+              color={COLORS.fontColor}
+              name={"close"}
+              size={30}
+              filled={true}
+            ></CustomIcon>
           ) : (
-            <DiscardIcon
-              iconsetcolor={COLORS.fontColor}
-              setheight={13}
-              setwidth={13}
-            />
+            <CustomIcon
+              color={COLORS.fontColor}
+              name={"arrow-left"}
+              size={30}
+              filled={true}
+            ></CustomIcon>
           )}
         </Pressable>
 
@@ -263,7 +264,7 @@ export default function Search() {
             >
               <Image
                 style={styles.customEmoji}
-                source={require("@/assets/exampleemojis/placeholder.png")}
+                source={require("@/assets/emojis/placeholder.png")}
               ></Image>
             </View>
             <Pressable

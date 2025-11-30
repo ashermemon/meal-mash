@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { styles } from "@/styles/auth.styles";
 import { NEWCOLORS } from "@/constants/newtheme";
 import { router } from "expo-router";
-import emojiImages from "./emoji-images";
+import emojiImages from "../universal/emoji-images";
 import { Image } from "expo-image";
 import { useSharedValue } from "react-native-reanimated";
 import Carousel, {
