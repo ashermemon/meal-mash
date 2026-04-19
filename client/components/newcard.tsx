@@ -78,7 +78,7 @@ export default function NewCard(props: CardProps) {
             color={COLORS.addPlusGrey}
             name={"plus"}
             size={30}
-            filled={true}
+            filled={false}
           ></CustomIcon>
         </Animated.View>
       </GestureDetector>

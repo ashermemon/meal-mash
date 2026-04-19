@@ -14,27 +14,27 @@ import Carousel, {
 const featuredRecipes = [
   {
     id: "1",
-    title: "Rice + Salad Mix Bowl",
+    title: "Salad Mix Bowl",
     description:
-      "Tasty and healthy bowl filled with veggies, meat and rice! Ready to eat in under 20 minutes!",
+      "Tasty and healthy bowl filled with veggies and meat! Ready to eat in under 20 minutes!",
     difficulty: "Intermediate",
-    icon: "Rice",
+    icon: "Salad",
   },
   {
     id: "2",
-    title: "Recipe Name",
+    title: "Mashed Potatoes",
     description:
-      "Lorem ipsum dolor sit amet!Lorem ipsum dolor sit amet! Lorem ipsum dolor sit amet!",
+      "Simple, one ingredient mashed potatoes! Perfect as a side with any meal!",
     difficulty: "Expert",
     icon: "Placeholder",
   },
   {
     id: "3",
-    title: "Chicken Sandwich",
+    title: "Chicken Sliders",
     description:
-      "Tasty and healthy bowl filled with veggies, meat and rice! Ready to eat in under 20 minutes!",
+      "A quick, easy-to-make chicken slider filled with a homemade sauce, crsipy chicken and coleslaw!",
     difficulty: "Beginner",
-    icon: "Placeholder",
+    icon: "Chicken",
   },
 ];
 

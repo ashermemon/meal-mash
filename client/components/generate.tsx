@@ -72,7 +72,7 @@ export default function Generate(props: GeneratedProps) {
   const [nutrients, setNutrients] = useState<number[]>([]);
   const [saved, setSaved] = useState(false);
   const [checkboxStates, setCheckboxStates] = useState<Record<number, boolean>>(
-    {}
+    {},
   );
 
   let recipePrompt = "";
@@ -98,9 +98,10 @@ export default function Generate(props: GeneratedProps) {
     setLoading(true);
     try {
       const response = await ai.models.generateContent({
-        model: "gemini-2.0-flash",
+        model: "gemini-3-flash-preview",
         contents: prompt,
       });
+
       if (response.text) {
         const geminiText = (response.text || "").replace(/^\s+/, "");
 
@@ -141,7 +142,7 @@ export default function Generate(props: GeneratedProps) {
     if (!responseRecipe) return;
 
     const modifiedTexts = responseRecipe.split(
-      /(<(?:protein|fat|carbs)>[\s\S]*?<\/(?:protein|fat|carbs)>)/g
+      /(<(?:protein|fat|carbs)>[\s\S]*?<\/(?:protein|fat|carbs)>)/g,
     );
 
     let protein = 0;
@@ -186,7 +187,7 @@ export default function Generate(props: GeneratedProps) {
       .replace(/^\s+|\s+$/g, "");
 
     const texts = cleanInput.split(
-      /(<(?:bold|timer|title|head|line|checkbox|tip|desc|box)>[\s\S]*?<\/(?:bold|timer|title|head|line|checkbox|tip|desc|box)>)/g
+      /(<(?:bold|timer|title|head|line|checkbox|tip|desc|box)>[\s\S]*?<\/(?:bold|timer|title|head|line|checkbox|tip|desc|box)>)/g,
     );
     let timerIndex = -1;
 
@@ -275,7 +276,7 @@ export default function Generate(props: GeneratedProps) {
         const content = text.slice(5, -6);
 
         const innerTexts = content.split(
-          /(<(?:duration|servings|difficulty)>[\s\S]*?<\/(?:duration|servings|difficulty)>)/g
+          /(<(?:duration|servings|difficulty)>[\s\S]*?<\/(?:duration|servings|difficulty)>)/g,
         );
 
         return (
@@ -651,7 +652,7 @@ export default function Generate(props: GeneratedProps) {
                           onPress={() => [
                             setChecked(!isChecked),
                             Haptics.impactAsync(
-                              Haptics.ImpactFeedbackStyle.Soft
+                              Haptics.ImpactFeedbackStyle.Soft,
                             ),
                           ]}
                         />
@@ -681,16 +682,16 @@ export default function Generate(props: GeneratedProps) {
                           ? () => [
                               handleGenerateRecipe(recipePrompt),
                               Haptics.impactAsync(
-                                Haptics.ImpactFeedbackStyle.Light
+                                Haptics.ImpactFeedbackStyle.Light,
                               ),
                             ]
                           : () =>
                               alert(
-                                "You have run out of meal generations today. Come again tomorrow!"
+                                "You have run out of meal generations today. Come again tomorrow!",
                               )
                         : () =>
                             alert(
-                              "Add a leftover or ingredient to generate meal!"
+                              "Add a leftover or ingredient to generate meal!",
                             )
                     }
                   >

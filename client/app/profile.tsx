@@ -7,12 +7,11 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { styles } from "@/styles/auth.styles";
-import MobileHeader from "../../components/universal/mobileheader";
 import { COLORS } from "@/constants/theme";
-import Counter from "../../components/counter";
+import Counter from "../components/counter";
 import { Pressable, TextInput } from "react-native-gesture-handler";
 
-import { storage } from "../../utils/storage";
+import { storage } from "../utils/storage";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import { NEWCOLORS } from "@/constants/newtheme";
 import LoginPage from "@/components/login";
@@ -42,7 +41,7 @@ export default function Profile() {
     <LoginPage></LoginPage>
   ) : (
     <>
-      <MobileHeader pageTitle="Profile" backEnabled={true}></MobileHeader>
+      <></>
       <View style={styles.profileHeader}>
         <View
           style={{
