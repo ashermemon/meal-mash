@@ -12,4 +12,10 @@ export const NEWCOLORS = {
 
   lightGrey: "#e6e6e6",
   dividerGrey: "#D1D1D6",
+
+  greenAccent: "#4BA75C",
+  blueAccent: "#0088FF",
+  orangeAccent: "#FFA600",
+  secondaryBoxGrey: "#F6F6F6",
+  nestedBG: "#FCFCFC",
 } as const;

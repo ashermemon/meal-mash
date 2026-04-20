@@ -433,8 +433,9 @@ export const styles = StyleSheet.create({
   },
   nutrientCircle: {
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     flexDirection: "row",
+
     marginHorizontal: 8,
     marginVertical: 20,
   },
@@ -665,5 +666,11 @@ export const styles = StyleSheet.create({
     borderRadius: 45,
     alignItems: "center",
     justifyContent: "center",
+  },
+  newShadow: {
+    shadowColor: "#000000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
   },
 });

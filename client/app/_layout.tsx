@@ -22,6 +22,7 @@ import {
   BottomSheetModalProvider,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
+import { RecipeProvider } from "@/contexts/RecipeContext";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -137,10 +138,11 @@ export default function RootLayout() {
                     <MealsLeftContext.Provider
                       value={[mealsLeft, setMealsLeft]}
                     >
-                      <StatusBar
-                        barStyle="dark-content"
-                        backgroundColor={COLORS.newHeader}
-                      />
+                      <RecipeProvider>
+                        <StatusBar
+                          barStyle="dark-content"
+                          backgroundColor={COLORS.newHeader}
+                        />
 
                       <Stack
                         screenOptions={{
@@ -156,7 +158,8 @@ export default function RootLayout() {
                           <Text>Wow</Text>
                         </BottomSheetView>
                       </BottomSheetModal>
-                    </MealsLeftContext.Provider>
+                        </RecipeProvider>
+                      </MealsLeftContext.Provider>
                   </SavedRecipesContext.Provider>
                 </FavLeftoversContext.Provider>
               </FavoritesContext.Provider>
