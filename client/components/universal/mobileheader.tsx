@@ -56,14 +56,14 @@ export default function MobileHeader(props: HeaderProps) {
                   ? [navigation.goBack(), Haptics.selectionAsync()]
                   : null
                 : props.setGenerated
-                ? [
-                    props.setGenerated(false),
-                    Haptics.selectionAsync(),
-                    props.title && props.setTitle
-                      ? props.setTitle(undefined)
-                      : null,
-                  ]
-                : null
+                  ? [
+                      props.setGenerated(false),
+                      Haptics.selectionAsync(),
+                      props.title && props.setTitle
+                        ? props.setTitle(undefined)
+                        : null,
+                    ]
+                  : null
             }
           >
             {props.backEnabled ? (

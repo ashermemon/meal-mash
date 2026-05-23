@@ -46,9 +46,9 @@ const Prompt = (props: PromptProps) => {
         
         ALWAYS use a timer with greater than 0 minutes in it and always use whole numbers. ONLY USE A TIMER IF NECCESSARY
       
-        You must wrap the recipe name with "<title>" and "</title>"
+        You must wrap the recipe name (under 33 characters) with "<title>" and "</title>"
 
-        You must wrap the recipe description with "<desc>" and "</desc>"
+        You must wrap the recipe description (under 30 words) with "<desc>" and "</desc>"
         
         BOLD each step using "<bold>" before and "</bold> after the desired bold text.
 
@@ -71,14 +71,14 @@ const Prompt = (props: PromptProps) => {
       
       
       <step>
-      <title><replace>Recipe Name</replace></title>
+      <title><replace>Recipe Name, under 33 characters</replace></title>
 
-      <desc><replace>Recipe Description</replace></desc>
+      <desc><replace>Recipe Description, under 30 words</replace></desc>
 
       <box>
       <duration><replace>total recipe time</replace></duration>
       <servings><replace>how many servings will this recipe make</replace></servings>
-      <difficulty><replace>Beginner, Intermediate, Expert, Impossible</replace></difficulty>
+      <difficulty><replace>Easy, Intermediate, Expert</replace></difficulty>
       </box>
 
       <protein><replace>protein in grams</replace></protein>

@@ -194,9 +194,11 @@ export default function RecipePage() {
               time={recipeData.time}
               tags={recipeData.tags}
             />
+            {/*  
             <View style={{ marginTop: 20 }}>
               {parseMarkdownText(recipeData.responseRecipe)}
             </View>
+            */}
           </View>
         </ScrollView>
       </NutrientsContext.Provider>

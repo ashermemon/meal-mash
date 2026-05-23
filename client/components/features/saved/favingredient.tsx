@@ -52,7 +52,7 @@ export default function FavIngredient(props: CardProps) {
     if (isCurrentlyFavorite) {
       if (props.leftover) {
         updatedFavoritesL = favoritesL.filter(
-          (name) => name !== ingredientName
+          (name) => name !== ingredientName,
         );
       } else {
         updatedFavorites = favorites.filter((name) => name !== ingredientName);
@@ -76,7 +76,7 @@ export default function FavIngredient(props: CardProps) {
     alert(
       `${ingredientName} was ${
         isCurrentlyFavorite ? "removed from favorites" : "favorited"
-      }`
+      }`,
     );
   };
 

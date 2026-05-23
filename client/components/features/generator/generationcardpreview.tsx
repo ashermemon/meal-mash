@@ -2,6 +2,7 @@ import { View, Text } from "react-native";
 import React from "react";
 import NutrientCircle from "@/components/features/recipe/NutrientCircle";
 import { styles } from "@/styles/GlobalStyles";
+import { Image } from "expo-image";
 
 type Props = {
   title: string | undefined;
@@ -17,19 +18,27 @@ const GenerationCardPreview = (props: Props) => {
       <Text
         style={[
           styles.textCentered,
-          { fontFamily: "Nunito-Bold", fontSize: 23 },
+          { fontFamily: "Nunito-Bold", fontSize: 25 },
         ]}
       >
         {props.title}
       </Text>
 
+      <Image
+        source={require("../../../assets/images/mealExample.png")}
+        style={{
+          width: "65%",
+          aspectRatio: 1,
+          alignSelf: "center",
+          marginVertical: 25,
+          borderRadius: 12,
+        }}
+        contentFit="cover"
+      />
+
       <>
-        <Text>{"\n"}</Text>
         <Text
-          style={[
-            styles.textCentered,
-            { fontFamily: "Nunito-Italic", fontSize: 20 },
-          ]}
+          style={[styles.textCentered, { fontFamily: "Nunito", fontSize: 17 }]}
         >
           {props.description}
         </Text>

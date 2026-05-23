@@ -153,7 +153,7 @@ export default function Generate() {
       difficulty: diff,
       time: dur,
       nutrients: [protein, fat, carbs],
-      tags: [], // Tags were empty in the original component too
+      tags: [],
     });
 
     router.push("/recipe");
