@@ -5,8 +5,8 @@ import { NEWCOLORS } from "@/constants/newtheme";
 import RecipeContext from "@/contexts/RecipeContext";
 import NutrientsContext from "@/contexts/NutrientsContext";
 import MobileHeader from "@/components/universal/mobileheader";
-import GenerationCardPreview from "@/components/generationcardpreview";
-import Timer from "@/components/timer";
+import GenerationCardPreview from "@/components/features/generator/generationcardpreview";
+import Timer from "@/components/features/recipe/timer";
 import { Image } from "expo-image";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { COLORS } from "@/constants/theme";
@@ -18,7 +18,10 @@ export default function RecipePage() {
 
   const parseMarkdownTextInline = (input: string) => {
     const cleanInput = input
-      .replace(/<(?:protein|fat|carbs|difficulty|duration|servings|title|desc|box)>[\s\S]*?<\/(?:protein|fat|carbs|difficulty|duration|servings|title|desc|box)>/g, "")
+      .replace(
+        /<(?:protein|fat|carbs|difficulty|duration|servings|title|desc|box)>[\s\S]*?<\/(?:protein|fat|carbs|difficulty|duration|servings|title|desc|box)>/g,
+        "",
+      )
       .replace(/\n{2,}/g, "\n")
       .replace(/<\/?replace>/g, "")
       .replace(/^\s+|\s+$/g, "");
@@ -98,16 +101,28 @@ export default function RecipePage() {
       if (text.startsWith("<checkbox>") && text.endsWith("</checkbox>")) {
         const content = text.slice(10, -11);
         return (
-          <View key={index} style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 5, paddingHorizontal: 20 }}>
+          <View
+            key={index}
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              marginVertical: 5,
+              paddingHorizontal: 20,
+            }}
+          >
             <BouncyCheckbox
               size={20}
               fillColor={COLORS.greenProgressBar}
               unFillColor={COLORS.greenButtonColor}
               iconStyle={{ borderColor: COLORS.fontColor }}
               innerIconStyle={{ borderWidth: 2 }}
-              onPress={() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft)}
+              onPress={() =>
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft)
+              }
             />
-            <Text style={[styles.textLeftSemiBold, { marginLeft: 10, flex: 1 }]}>
+            <Text
+              style={[styles.textLeftSemiBold, { marginLeft: 10, flex: 1 }]}
+            >
               {content}
             </Text>
           </View>
@@ -135,16 +150,16 @@ export default function RecipePage() {
     return texts.map((text, index) => {
       if (text.startsWith("<step>") && text.endsWith("</step>")) {
         const content = text.slice(6, -7);
-        
+
         if (content.includes("<title>") || content.includes("<protein>")) {
           return null;
         }
 
         stepNum += 1;
         return (
-           <View key={index} style={{marginVertical: 15}}>
-             {parseMarkdownTextInline(content)}
-           </View>
+          <View key={index} style={{ marginVertical: 15 }}>
+            {parseMarkdownTextInline(content)}
+          </View>
         );
       } else {
         return null;

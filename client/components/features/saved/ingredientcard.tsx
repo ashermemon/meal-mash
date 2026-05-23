@@ -2,7 +2,7 @@ import { Pressable, Text, View } from "react-native";
 import { Image } from "expo-image";
 import React, { useContext, useEffect, useState } from "react";
 import { styles } from "@/styles/auth.styles";
-import AddIngredients from "./addingredients";
+import AddIngredients from "@/components/features/generator/addingredients";
 import emojiImages from "@/components/universal/emoji-images";
 import SearchContext from "@/contexts/SearchContext";
 import IngredientsContext from "@/contexts/IngredientsContext";

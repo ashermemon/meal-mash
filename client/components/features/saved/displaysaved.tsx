@@ -3,11 +3,11 @@ import React, { useContext, useEffect, useState } from "react";
 import { storage } from "@/utils/storage";
 import { styles } from "@/styles/auth.styles";
 
-import FavIngredient from "@/components/favingredient";
+import FavIngredient from "@/components/features/saved/favingredient";
 import FavoritesContext from "@/contexts/FavoritesContext";
 import FavLeftoversContext from "@/contexts/FavLeftoversContext";
 import SavedRecipesContext from "@/contexts/SavedRecipesContext";
-import SavedCard from "@/components/SavedCard";
+import SavedCard from "@/components/features/saved/SavedCard";
 
 export default function DisplaySaved() {
   const [favorites, setFavorites] = useContext(FavoritesContext);

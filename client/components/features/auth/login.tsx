@@ -12,7 +12,7 @@ import {
 import { useState, useCallback, useEffect } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
-import httpClient from "../app/httpClient";
+import httpClient from "@/app/httpClient";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function LoginPage() {
@@ -116,7 +116,7 @@ export default function LoginPage() {
       return () => {
         backButton();
       };
-    }, [])
+    }, []),
   );
 
   if (user != "none") {

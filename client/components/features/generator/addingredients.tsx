@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
-import NewCard from "@/components/newcard";
+import NewCard from "@/components/features/generator/newcard";
 import { styles } from "@/styles/auth.styles";
 import { COLORS } from "@/constants/theme";
-import IngredientCardAdded from "@/components/ingredientcardadded";
+import IngredientCardAdded from "@/components/features/generator/ingredientcardadded";
 import IngredientsContext from "@/contexts/IngredientsContext";
 
 export default function AddIngredients() {

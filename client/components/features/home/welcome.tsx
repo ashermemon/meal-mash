@@ -14,9 +14,9 @@ import { ScrollView } from "react-native-gesture-handler";
 import { useFocusEffect, useRouter } from "expo-router";
 import { NEWCOLORS } from "@/constants/newtheme";
 import { CustomIcon } from "@/icon-loader/icon-loader";
-import FeaturedRecipes from "./featuredrecipes";
-import ExploreSection from "./exploresection";
-import Camera from "../universal/camera";
+import FeaturedRecipes from "@/components/features/home/featuredrecipes";
+import ExploreSection from "@/components/features/home/exploresection";
+import Camera from "@/components/universal/camera";
 import { useCameraPermissions } from "expo-camera";
 import { BackHandler } from "react-native";
 
@@ -37,11 +37,11 @@ export default function Welcome() {
 
       const subscription = BackHandler.addEventListener(
         "hardwareBackPress",
-        onBackPress
+        onBackPress,
       );
 
       return () => subscription.remove();
-    }, [showCamera])
+    }, [showCamera]),
   );
   return showCamera ? (
     <View style={{ width: "100%", flex: 1 }}>

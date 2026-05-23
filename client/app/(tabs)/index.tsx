@@ -1,4 +1,4 @@
-import Welcome from "@/components/homePage/welcome";
+import Welcome from "@/components/features/home/welcome";
 
 export default function Index() {
   return (

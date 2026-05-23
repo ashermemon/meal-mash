@@ -18,7 +18,7 @@ import React, {
 import { styles } from "@/styles/auth.styles";
 import SearchContext from "@/contexts/SearchContext";
 import { COLORS } from "@/constants/theme";
-import IngredientCard from "@/components/ingredientcard";
+import IngredientCard from "@/components/features/saved/ingredientcard";
 import IngredientsContext from "@/contexts/IngredientsContext";
 import LeftoversEnabled from "@/contexts/LeftoversOn";
 import ingredientsDB from "@/ingredientDatabase/ingredientsDB.json";
@@ -129,10 +129,10 @@ export default function Search() {
     if (searchActive) {
       if (
         !upperCaseArrayI.includes(
-          customQuery?.toUpperCase() ?? savedSearchQuery?.toUpperCase()
+          customQuery?.toUpperCase() ?? savedSearchQuery?.toUpperCase(),
         ) &&
         !upperCaseArrayL.includes(
-          customQuery?.toUpperCase() ?? savedSearchQuery?.toUpperCase()
+          customQuery?.toUpperCase() ?? savedSearchQuery?.toUpperCase(),
         )
       ) {
         setSearchActive(false);

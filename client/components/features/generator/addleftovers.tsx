@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
-import NewCard from "@/components/newcard";
+import NewCard from "@/components/features/generator/newcard";
 import { styles } from "@/styles/auth.styles";
 import { COLORS } from "@/constants/theme";
 import LeftoversContext from "@/contexts/LeftoversContext";
-import IngredientCardAdded from "@/components/ingredientcardadded";
+import IngredientCardAdded from "@/components/features/generator/ingredientcardadded";
 
 export default function AddLeftovers() {
   const [leftovers, setLeftovers] = useContext(LeftoversContext);

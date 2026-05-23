@@ -9,11 +9,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { COLORS } from "@/constants/theme";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { storage } from "@/utils/storage";
-import FavoritesContext from "../contexts/FavoritesContext";
-import FavLeftoversContext from "../contexts/FavLeftoversContext";
-import SavedRecipesContext from "../contexts/SavedRecipesContext";
-import LeftoversContext from "../contexts/LeftoversContext";
-import IngredientsContext from "../contexts/IngredientsContext";
+import FavoritesContext from "@/contexts/FavoritesContext";
+import FavLeftoversContext from "@/contexts/FavLeftoversContext";
+import SavedRecipesContext from "@/contexts/SavedRecipesContext";
+import LeftoversContext from "@/contexts/LeftoversContext";
+import IngredientsContext from "@/contexts/IngredientsContext";
 import MealsLeftContext from "@/contexts/MealsLeftContext";
 import { NotificationProvider } from "@/contexts/NotificationContext";
 import * as Notifications from "expo-notifications";
@@ -144,22 +144,22 @@ export default function RootLayout() {
                           backgroundColor={COLORS.newHeader}
                         />
 
-                      <Stack
-                        screenOptions={{
-                          headerShown: false,
-                        }}
-                      ></Stack>
+                        <Stack
+                          screenOptions={{
+                            headerShown: false,
+                          }}
+                        ></Stack>
 
-                      <BottomSheetModal
-                        ref={bottomSheetModalRef}
-                        onChange={handleSheetChanges}
-                      >
-                        <BottomSheetView style={styles.contentContainer}>
-                          <Text>Wow</Text>
-                        </BottomSheetView>
-                      </BottomSheetModal>
-                        </RecipeProvider>
-                      </MealsLeftContext.Provider>
+                        <BottomSheetModal
+                          ref={bottomSheetModalRef}
+                          onChange={handleSheetChanges}
+                        >
+                          <BottomSheetView style={styles.contentContainer}>
+                            <Text>Wow</Text>
+                          </BottomSheetView>
+                        </BottomSheetModal>
+                      </RecipeProvider>
+                    </MealsLeftContext.Provider>
                   </SavedRecipesContext.Provider>
                 </FavLeftoversContext.Provider>
               </FavoritesContext.Provider>

@@ -8,13 +8,13 @@ import {
 import React, { useEffect, useState } from "react";
 import { styles } from "@/styles/auth.styles";
 import { COLORS } from "@/constants/theme";
-import Counter from "../components/counter";
+import Counter from "@/components/features/profile/counter";
 import { Pressable, TextInput } from "react-native-gesture-handler";
 
-import { storage } from "../utils/storage";
+import { storage } from "@/utils/storage";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import { NEWCOLORS } from "@/constants/newtheme";
-import LoginPage from "@/components/login";
+import LoginPage from "@/components/features/auth/login";
 
 export default function Profile() {
   const [editMode, setEditMode] = useState(false);

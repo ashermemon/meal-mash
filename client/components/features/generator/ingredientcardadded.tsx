@@ -20,9 +20,9 @@ import Animated, {
   SlideOutUp,
 } from "react-native-reanimated";
 
-import { storage } from "../utils/storage";
-import FavoritesContext from "../contexts/FavoritesContext";
-import FavLeftoversContext from "../contexts/FavLeftoversContext";
+import { storage } from "@/utils/storage";
+import FavoritesContext from "@/contexts/FavoritesContext";
+import FavLeftoversContext from "@/contexts/FavLeftoversContext";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 
 type CardProps = {
@@ -51,17 +51,17 @@ export default function IngredientCardAdded(props: CardProps) {
   useEffect(() => {
     setFavorite(
       favorites.includes(props.ingredientName) ||
-        favoritesL.includes(props.ingredientName)
+        favoritesL.includes(props.ingredientName),
     );
   }, [favorites, favoritesL, props.ingredientName]);
   const removeCard = () => {
     if (props.leftover) {
       setLeftovers((prevLeftovers) =>
-        prevLeftovers.filter((item) => item !== props.ingredientName)
+        prevLeftovers.filter((item) => item !== props.ingredientName),
       );
     } else {
       setIngredients((prevIngredients) =>
-        prevIngredients.filter((item) => item !== props.ingredientName)
+        prevIngredients.filter((item) => item !== props.ingredientName),
       );
     }
     swipeableRef.current?.close();
@@ -76,7 +76,7 @@ export default function IngredientCardAdded(props: CardProps) {
     if (isCurrentlyFavorite) {
       if (props.leftover) {
         updatedFavoritesL = favoritesL.filter(
-          (name) => name !== ingredientName
+          (name) => name !== ingredientName,
         );
       } else {
         updatedFavorites = favorites.filter((name) => name !== ingredientName);
@@ -101,7 +101,7 @@ export default function IngredientCardAdded(props: CardProps) {
     alert(
       `${props.ingredientName} was ${
         favorite ? `removed from favorites` : `favorited`
-      }`
+      }`,
     );
   };
 
