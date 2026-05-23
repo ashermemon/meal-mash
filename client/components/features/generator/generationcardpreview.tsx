@@ -1,7 +1,7 @@
 import { View, Text } from "react-native";
 import React from "react";
-import NutrientCircle from "@/components/features/recipe/nutrientcircle";
-import { styles } from "@/styles/auth.styles";
+import NutrientCircle from "@/components/features/recipe/NutrientCircle";
+import { styles } from "@/styles/GlobalStyles";
 
 type Props = {
   title: string | undefined;

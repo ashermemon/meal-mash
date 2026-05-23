@@ -1,9 +1,9 @@
 import { Pressable, Text, View } from "react-native";
 import { Image } from "expo-image";
 import React, { useContext, useEffect, useState } from "react";
-import { styles } from "@/styles/auth.styles";
-import AddIngredients from "@/components/features/generator/addingredients";
-import emojiImages from "@/components/universal/emoji-images";
+import { styles } from "@/styles/GlobalStyles";
+import AddIngredients from "@/components/features/generator/AddIngredients";
+import emojiImages from "@/components/universal/EmojiImages";
 import SearchContext from "@/contexts/SearchContext";
 import IngredientsContext from "@/contexts/IngredientsContext";
 import LeftoversEnabled from "@/contexts/LeftoversOn";
@@ -18,7 +18,7 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-import { COLORS } from "@/constants/theme";
+import { COLORS } from "@/constants/Theme";
 import { runOnJS } from "react-native-reanimated";
 import * as Haptics from "expo-haptics";
 
@@ -78,7 +78,9 @@ export default function IngredientCard(props: IngredientProps) {
           styles.ingredientResult,
           animatedStyling,
           {
-            backgroundColor: COLORS[props.colorTing] ?? COLORS.searchGreyPicker,
+            backgroundColor:
+              COLORS[props.colorTing as keyof typeof COLORS] ??
+              COLORS.searchGreyPicker,
           },
         ]}
       >

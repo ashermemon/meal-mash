@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { storage } from "@/utils/storage";
-import { styles } from "@/styles/auth.styles";
+import { styles } from "@/styles/GlobalStyles";
 import { ColorProperties } from "react-native-reanimated/lib/typescript/Colors";
-import { COLORS } from "@/constants/theme";
+import { COLORS } from "@/constants/Theme";
 
 type counterProps = {
   variable: string;

@@ -1,10 +1,10 @@
 import { View, Text, Pressable } from "react-native";
 import React from "react";
-import { styles } from "@/styles/auth.styles";
-import { NEWCOLORS } from "@/constants/newtheme";
+import { styles } from "@/styles/GlobalStyles";
+import { NEWCOLORS } from "@/constants/NewTheme";
 import { FlashList } from "@shopify/flash-list";
 import { Image } from "expo-image";
-import emojiImages from "@/components/universal/emoji-images";
+import emojiImages from "@/components/universal/EmojiImages";
 import { router } from "expo-router";
 
 const data = [
@@ -34,6 +34,7 @@ const FeaturedRecipeButton = () => {
         bounces={false}
         decelerationRate={0.85}
         overScrollMode="never"
+        // @ts-ignore
         estimatedItemSize={30}
         contentContainerStyle={{ paddingBottom: 15 }}
         renderItem={({ item }) => {

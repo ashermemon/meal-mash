@@ -15,10 +15,10 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import { styles } from "@/styles/auth.styles";
+import { styles } from "@/styles/GlobalStyles";
 import SearchContext from "@/contexts/SearchContext";
-import { COLORS } from "@/constants/theme";
-import IngredientCard from "@/components/features/saved/ingredientcard";
+import { COLORS } from "@/constants/Theme";
+import IngredientCard from "@/components/features/generator/IngredientCard";
 import IngredientsContext from "@/contexts/IngredientsContext";
 import LeftoversEnabled from "@/contexts/LeftoversOn";
 import ingredientsDB from "@/ingredientDatabase/ingredientsDB.json";
@@ -308,6 +308,7 @@ export default function Search() {
                 }
                 return item.id?.toString() ?? index.toString();
               }}
+              // @ts-ignore
               estimatedItemSize={leftoversEnabled ? 1000 : 500}
               renderItem={renderListItem}
               getItemType={(item) => {

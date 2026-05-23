@@ -1,10 +1,10 @@
 import { View, Text, ScrollView } from "react-native";
 import { ImageBackground } from "react-native";
-import { styles } from "@/styles/auth.styles";
+import { styles } from "@/styles/GlobalStyles";
 import { Platform } from "react-native";
-import MobileHeader from "@/components/universal/mobileheader";
-import { COLORS } from "@/constants/theme";
-import DisplaySaved from "@/components/features/saved/displaysaved";
+import MobileHeader from "@/components/universal/MobileHeader";
+import { COLORS } from "@/constants/Theme";
+import DisplaySaved from "@/components/features/saved/DisplaySaved";
 import FavoritesContext from "@/contexts/FavoritesContext";
 import { storage } from "@/utils/storage";
 import { useState } from "react";

@@ -6,15 +6,15 @@ import {
   ScrollView,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { styles } from "@/styles/auth.styles";
-import { COLORS } from "@/constants/theme";
-import Counter from "@/components/features/profile/counter";
+import { styles } from "@/styles/GlobalStyles";
+import { COLORS } from "@/constants/Theme";
+import Counter from "@/components/features/profile/Counter";
 import { Pressable, TextInput } from "react-native-gesture-handler";
 
 import { storage } from "@/utils/storage";
 import { CustomIcon } from "@/icon-loader/icon-loader";
-import { NEWCOLORS } from "@/constants/newtheme";
-import LoginPage from "@/components/features/auth/login";
+import { NEWCOLORS } from "@/constants/NewTheme";
+import LoginPage from "@/components/features/auth/Login";
 
 export default function Profile() {
   const [editMode, setEditMode] = useState(false);

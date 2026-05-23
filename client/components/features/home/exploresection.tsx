@@ -1,9 +1,9 @@
 import { Dimensions, Pressable, Text, View } from "react-native";
 import React, { useState } from "react";
-import { styles } from "@/styles/auth.styles";
-import { NEWCOLORS } from "@/constants/newtheme";
+import { styles } from "@/styles/GlobalStyles";
+import { NEWCOLORS } from "@/constants/NewTheme";
 import { router } from "expo-router";
-import emojiImages from "@/components/universal/emoji-images";
+import emojiImages from "@/components/universal/EmojiImages";
 import { Image } from "expo-image";
 import { useSharedValue } from "react-native-reanimated";
 import Carousel, {

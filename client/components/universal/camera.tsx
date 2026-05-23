@@ -1,11 +1,11 @@
 import { Button, Pressable, StyleSheet, Text, View } from "react-native";
 import React, { useRef, useState } from "react";
 import { CameraView, CameraType, useCameraPermissions } from "expo-camera";
-import { styles } from "@/styles/auth.styles";
+import { styles } from "@/styles/GlobalStyles";
 import { Image } from "expo-image";
 import { CustomIcon } from "@/icon-loader/icon-loader";
-import { COLORS } from "@/constants/theme";
-import { NEWCOLORS } from "@/constants/newtheme";
+import { COLORS } from "@/constants/Theme";
+import { NEWCOLORS } from "@/constants/NewTheme";
 
 export default function Camera() {
   const ref = useRef<CameraView>(null);

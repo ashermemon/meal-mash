@@ -1,6 +1,6 @@
-import { styles } from "@/styles/auth.styles";
+import { styles } from "@/styles/GlobalStyles";
 import { Pressable, View } from "react-native";
-import { COLORS } from "@/constants/theme";
+import { COLORS } from "@/constants/Theme";
 import { useContext, useState } from "react";
 import SearchContext from "@/contexts/SearchContext";
 import LeftoversEnabled from "@/contexts/LeftoversOn";

@@ -15,6 +15,8 @@ import { Ionicons } from "@expo/vector-icons";
 import httpClient from "@/app/httpClient";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+type UserState = { email: string } | "none";
+
 export default function LoginPage() {
   const [isLogin, setIsLogin] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
@@ -22,7 +24,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [isValid, setIsValid] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState<UserState>("none");
 
   const logoutUser = async () => {
     try {

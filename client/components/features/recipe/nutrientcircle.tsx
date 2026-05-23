@@ -1,11 +1,11 @@
 import { StyleSheet, Text, View } from "react-native";
 import React, { useContext, useState } from "react";
-import { styles } from "@/styles/auth.styles";
+import { styles } from "@/styles/GlobalStyles";
 import { PieChart } from "react-native-gifted-charts";
 import NutrientsContext from "@/contexts/NutrientsContext";
-import { COLORS } from "@/constants/theme";
+import { COLORS } from "@/constants/Theme";
 import { ColorHex } from "react-native-countdown-circle-timer";
-import { NEWCOLORS } from "@/constants/newtheme";
+import { NEWCOLORS } from "@/constants/NewTheme";
 
 export default function NutrientCircle() {
   const [nutrients, setNutrients] = useContext(NutrientsContext);

@@ -1,7 +1,7 @@
 import { LayoutChangeEvent, StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
 import * as Progress from "react-native-progress";
-import { COLORS } from "@/constants/theme";
+import { COLORS } from "@/constants/Theme";
 
 import { Dimensions } from "react-native";
 

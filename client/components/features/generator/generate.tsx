@@ -16,35 +16,35 @@ import React, {
   useState,
 } from "react";
 import { GoogleGenAI } from "@google/genai";
-import { styles } from "@/styles/auth.styles";
-import { COLORS } from "@/constants/theme";
-import { NEWCOLORS } from "@/constants/newtheme";
+import { styles } from "@/styles/GlobalStyles";
+import { COLORS } from "@/constants/Theme";
+import { NEWCOLORS } from "@/constants/NewTheme";
 import Prompt from "@/constants/prompt";
-import Timer from "@/components/features/recipe/timer";
-import AddIngredients from "@/components/features/generator/addingredients";
-import AddLeftovers from "@/components/features/generator/addleftovers";
+import Timer from "@/components/features/recipe/Timer";
+import AddIngredients from "@/components/features/generator/AddIngredients";
+import AddLeftovers from "@/components/features/generator/AddLeftovers";
 import SearchContext from "@/contexts/SearchContext";
-import Search from "@/components/features/generator/search";
+import Search from "@/components/features/generator/Search";
 
 import { Dimensions } from "react-native";
 import IngredientsContext from "@/contexts/IngredientsContext";
 import LeftoversEnabled from "@/contexts/LeftoversOn";
 import LeftoversContext from "@/contexts/LeftoversContext";
 import NutrientsContext from "@/contexts/NutrientsContext";
-import NutrientCircle from "@/components/features/recipe/nutrientcircle";
+import NutrientCircle from "@/components/features/recipe/NutrientCircle";
 
 import { APIKEY } from "@/utils/apikey";
 import SavedRecipesContext from "@/contexts/SavedRecipesContext";
 import { storage } from "@/utils/storage";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
-import ProgressBar from "@/components/features/recipe/progressbar";
+import ProgressBar from "@/components/features/recipe/ProgressBar";
 import { ScrollView } from "react-native-gesture-handler";
 import MealsLeftContext from "@/contexts/MealsLeftContext";
 
 import * as Haptics from "expo-haptics";
 import { Image } from "expo-image";
 import { CustomIcon } from "@/icon-loader/icon-loader";
-import GenerationCardPreview from "@/components/features/generator/generationcardpreview";
+import GenerationCardPreview from "@/components/features/generator/GenerationCardPreview";
 import RecipeContext from "@/contexts/RecipeContext";
 import { router } from "expo-router";
 

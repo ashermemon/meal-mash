@@ -1,9 +1,9 @@
-import { styles } from "@/styles/auth.styles";
+import { styles } from "@/styles/GlobalStyles";
 import { Pressable, View, Text } from "react-native";
 import { Image } from "expo-image";
-import { COLORS } from "@/constants/theme";
+import { COLORS } from "@/constants/Theme";
 import { useContext, useEffect, useRef, useState } from "react";
-import emojiImages from "@/components/universal/emoji-images";
+import emojiImages from "@/components/universal/EmojiImages";
 import ReanimatedSwipeable from "react-native-gesture-handler/ReanimatedSwipeable";
 
 import IngredientsContext from "@/contexts/IngredientsContext";

@@ -1,9 +1,9 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
-import { styles } from "@/styles/auth.styles";
-import { COLORS } from "@/constants/theme";
+import { styles } from "@/styles/GlobalStyles";
+import { COLORS } from "@/constants/Theme";
 import { Image } from "expo-image";
-import emojiImages from "@/components/universal/emoji-images";
+import emojiImages from "@/components/universal/EmojiImages";
 
 import SavedRecipesContext from "@/contexts/SavedRecipesContext";
 import { storage } from "@/utils/storage";

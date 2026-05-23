@@ -1,15 +1,15 @@
 import { View, Text, ScrollView, Platform, SafeAreaView } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
-import { styles } from "@/styles/auth.styles";
-import { NEWCOLORS } from "@/constants/newtheme";
+import { styles } from "@/styles/GlobalStyles";
+import { NEWCOLORS } from "@/constants/NewTheme";
 import RecipeContext from "@/contexts/RecipeContext";
 import NutrientsContext from "@/contexts/NutrientsContext";
-import MobileHeader from "@/components/universal/mobileheader";
-import GenerationCardPreview from "@/components/features/generator/generationcardpreview";
-import Timer from "@/components/features/recipe/timer";
+import MobileHeader from "@/components/universal/MobileHeader";
+import GenerationCardPreview from "@/components/features/generator/GenerationCardPreview";
+import Timer from "@/components/features/recipe/Timer";
 import { Image } from "expo-image";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
-import { COLORS } from "@/constants/theme";
+import { COLORS } from "@/constants/Theme";
 import * as Haptics from "expo-haptics";
 
 export default function RecipePage() {

@@ -7,16 +7,16 @@ import {
   View,
 } from "react-native";
 import React, { Dispatch, SetStateAction, useCallback, useState } from "react";
-import { styles } from "@/styles/auth.styles";
-import { COLORS } from "@/constants/theme";
+import { styles } from "@/styles/GlobalStyles";
+import { COLORS } from "@/constants/Theme";
 import { Image } from "expo-image";
 import { ScrollView } from "react-native-gesture-handler";
 import { useFocusEffect, useRouter } from "expo-router";
-import { NEWCOLORS } from "@/constants/newtheme";
+import { NEWCOLORS } from "@/constants/NewTheme";
 import { CustomIcon } from "@/icon-loader/icon-loader";
-import FeaturedRecipes from "@/components/features/home/featuredrecipes";
-import ExploreSection from "@/components/features/home/exploresection";
-import Camera from "@/components/universal/camera";
+import FeaturedRecipes from "@/components/features/home/FeaturedRecipes";
+import ExploreSection from "@/components/features/home/ExploreSection";
+import Camera from "@/components/universal/Camera";
 import { useCameraPermissions } from "expo-camera";
 import { BackHandler } from "react-native";
 

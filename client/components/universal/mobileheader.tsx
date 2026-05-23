@@ -9,8 +9,8 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { styles } from "@/styles/auth.styles";
-import { COLORS } from "@/constants/theme";
+import { styles } from "@/styles/GlobalStyles";
+import { COLORS } from "@/constants/Theme";
 import { useNavigation } from "@react-navigation/native";
 import { router } from "expo-router";
 import { Image } from "expo-image";
@@ -30,6 +30,10 @@ export default function MobileHeader(props: HeaderProps) {
   const [dropdownActive, setDropdownActive] = useState(false);
   const navigation = useNavigation();
   const [mealsLeft, setMealsLeft] = useContext(MealsLeftContext);
+
+  const handlePresentModalPress = () => {
+    setDropdownActive((active) => !active);
+  };
 
   return (
     <>
@@ -95,9 +99,10 @@ export default function MobileHeader(props: HeaderProps) {
         <View style={{ marginRight: 20 }}>
           <Pressable
             style={[styles.centeredBox]}
-            onPress={() => (
-              handlePresentModalPress(), Haptics.selectionAsync()
-            )}
+            onPress={() => {
+              handlePresentModalPress();
+              Haptics.selectionAsync();
+            }}
           >
             <CustomIcon
               name="menu"

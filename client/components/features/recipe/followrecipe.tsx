@@ -1,7 +1,7 @@
 import { View, Text } from "react-native";
 import React from "react";
-import ProgressBar from "@/components/features/recipe/progressbar";
-import { styles } from "@/styles/auth.styles";
+import ProgressBar from "@/components/features/recipe/ProgressBar";
+import { styles } from "@/styles/GlobalStyles";
 
 type Props = {};
 

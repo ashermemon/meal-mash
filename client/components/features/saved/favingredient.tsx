@@ -1,14 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import { storage } from "@/utils/storage";
-import { styles } from "@/styles/auth.styles";
+import { styles } from "@/styles/GlobalStyles";
 import { Image } from "expo-image";
 import FavoritesContext from "@/contexts/FavoritesContext";
 import FavLeftoversContext from "@/contexts/FavLeftoversContext";
 import LeftoversContext from "@/contexts/LeftoversContext";
 import IngredientsContext from "@/contexts/IngredientsContext";
-import { COLORS } from "@/constants/theme";
-import emojiImages from "@/components/universal/emoji-images";
+import { COLORS } from "@/constants/Theme";
+import emojiImages from "@/components/universal/EmojiImages";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -88,14 +88,14 @@ export default function FavIngredient(props: CardProps) {
       props.leftover &&
       upperCaseArrayL.includes(props.ingredientName.toUpperCase()) == false
     ) {
-      router.push("/(tabs)/generationpage");
+      router.push("/(tabs)/generationpage" as any);
       setLeftovers((prev: string[]) => [...prev, props.ingredientName]);
     } else if (
       !props.leftover &&
       upperCaseArrayI.includes(props.ingredientName.toUpperCase()) == false
     ) {
       setIngredients((prev: string[]) => [...prev, props.ingredientName]);
-      router.push("/(tabs)/generationpage");
+      router.push("/(tabs)/generationpage" as any);
     } else {
       alert("Ingredient already added!");
     }
