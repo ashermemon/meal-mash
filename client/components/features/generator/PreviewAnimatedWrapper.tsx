@@ -7,6 +7,7 @@ import Animated, {
   withTiming,
   interpolate,
   runOnJS,
+  Easing,
 } from "react-native-reanimated";
 
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
@@ -32,19 +33,23 @@ const PreviewAnimatedWrapper = (props: Props) => {
 
   const saveRecipe = () => {
     "worklet";
-    translateX.value = withTiming(SCREEN_WIDTH + 100, undefined, (finished) => {
-      if (finished) {
-        translateX.value = 0;
-        runOnJS(removeTopCardJS)();
-      }
-    });
+    translateX.value = withTiming(
+      SCREEN_WIDTH + 100,
+      { duration: 400, easing: Easing.inOut(Easing.cubic) },
+      (finished) => {
+        if (finished) {
+          translateX.value = 0;
+          runOnJS(removeTopCardJS)();
+        }
+      },
+    );
   };
 
   const skipRecipe = () => {
     "worklet";
     translateX.value = withTiming(
       -SCREEN_WIDTH - 100,
-      undefined,
+      { duration: 600, easing: Easing.inOut(Easing.cubic) },
       (finished) => {
         if (finished) {
           translateX.value = 0;
@@ -65,7 +70,11 @@ const PreviewAnimatedWrapper = (props: Props) => {
       } else if (translateX.value < -120) {
         skipRecipe();
       } else {
-        translateX.value = withSpring(0);
+        // extra spring back (remove if needed)
+        translateX.value = withSpring(0, {
+          damping: 20,
+          stiffness: 100,
+        });
       }
     });
 
