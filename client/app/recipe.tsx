@@ -1,7 +1,6 @@
 import {
   View,
   Text,
-  ScrollView,
   Platform,
   SafeAreaView,
   Pressable,
@@ -11,8 +10,7 @@ import { styles } from "@/styles/GlobalStyles";
 import { NEWCOLORS } from "@/constants/NewTheme";
 import RecipeContext from "@/contexts/RecipeContext";
 import NutrientsContext from "@/contexts/NutrientsContext";
-import MobileHeader from "@/components/universal/MobileHeader";
-import GenerationCardPreview from "@/components/features/generator/GenerationCardPreview";
+import { GenerationCardPreview } from "../components/features/generator/GenerationCardPreview";
 import Timer from "@/components/features/recipe/Timer";
 import { Image } from "expo-image";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
@@ -185,32 +183,28 @@ export default function RecipePage() {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: NEWCOLORS.nestedBG }}>
-      <Pressable
-        style={{
-          marginTop: 8,
-          marginLeft: 20,
-        }}
-        onPress={() =>
-          navigation.canGoBack()
-            ? [navigation.goBack(), Haptics.selectionAsync()]
-            : null
-        }
-      >
-        <CustomIcon
-          name="arrow-left"
-          filled={false}
-          color={navigation.canGoBack() ? COLORS.fontColor : COLORS.addPlusGrey}
-          size={20}
-        />
-      </Pressable>
-      <NutrientsContext.Provider value={[nutrients, setNutrients]}>
-        <ScrollView
-          contentContainerStyle={{ paddingBottom: 40 }}
-          overScrollMode="never"
-          alwaysBounceVertical={false}
-          style={{ flex: 1 }}
+      <View style={{ paddingHorizontal: 30, flex: 1 }}>
+        <Pressable
+          style={{
+            marginTop: 8,
+            marginLeft: 0,
+          }}
+          onPress={() =>
+            navigation.canGoBack()
+              ? [navigation.goBack(), Haptics.selectionAsync()]
+              : null
+          }
         >
-          <View style={{ paddingHorizontal: 30, marginBottom: 10 }}>
+          <CustomIcon
+            name="arrow-left"
+            filled={false}
+            color={navigation.canGoBack() ? COLORS.fontColor : COLORS.addPlusGrey}
+            size={20}
+          />
+        </Pressable>
+
+        <NutrientsContext.Provider value={[nutrients, setNutrients]}>
+          <View style={{ flex: 1, justifyContent: "center" }}>
             <GenerationCardPreview
               title={recipeData.title}
               description={recipeData.description}
@@ -218,14 +212,9 @@ export default function RecipePage() {
               time={recipeData.time}
               tags={recipeData.tags}
             />
-            {/*  
-            <View style={{ marginTop: 20 }}>
-              {parseMarkdownText(recipeData.responseRecipe)}
-            </View>
-            */}
           </View>
-        </ScrollView>
-      </NutrientsContext.Provider>
+        </NutrientsContext.Provider>
+      </View>
     </SafeAreaView>
   );
 }

@@ -14,113 +14,129 @@ type Props = {
   tags: string[];
 };
 
-const GenerationCardPreview = (props: Props) => {
+export const GenerationCardPreview = (props: Props) => {
   return (
-    <View style={{ alignItems: "center" }}>
-      <Text
-        style={[
-          styles.textCentered,
-          { fontFamily: "Nunito-Bold", fontSize: 25, marginBottom: 5 },
-        ]}
-      >
-        {props.title}
-      </Text>
-
-      <RecipeInfoTags
-        difficulty={props.difficulty}
-        time={props.time}
-        tags={props.tags}
-      />
-
-      <Image
-        source={require("../../../assets/images/mealExample.png")}
-        style={{
-          width: "65%",
-          aspectRatio: 1,
-          alignSelf: "center",
-          marginVertical: 25,
-          borderRadius: 12,
-        }}
-        contentFit="cover"
-      />
-
-      <>
+    <View
+      style={{
+        flex: 1,
+        width: "100%",
+        justifyContent: "space-between",
+        paddingVertical: 8,
+      }}
+    >
+      <View style={{ width: "100%", alignItems: "center", marginBottom: 8 }}>
         <Text
           style={[
             styles.textCentered,
-            { fontFamily: "Nunito", fontSize: 17, marginBottom: 25 },
+            { fontFamily: "Nunito-Bold", fontSize: 24, marginBottom: 4 },
+          ]}
+          numberOfLines={1}
+        >
+          {props.title}
+        </Text>
+
+        <RecipeInfoTags
+          difficulty={props.difficulty}
+          time={props.time}
+          tags={props.tags}
+        />
+      </View>
+
+      <View style={{ width: "100%", alignItems: "center", flexShrink: 0 }}>
+        <Image
+          source={require("../../../assets/images/mealExample.png")}
+          style={{
+            width: "70%",
+            aspectRatio: 1,
+            minHeight: 190,
+            maxHeight: 260,
+            alignSelf: "center",
+            borderRadius: 12,
+          }}
+          contentFit="cover"
+        />
+      </View>
+
+      <View style={{ width: "100%", alignItems: "center", paddingHorizontal: 10 }}>
+        <Text
+          style={[
+            styles.textCentered,
+            {
+              fontFamily: "Nunito",
+              fontSize: 15,
+              lineHeight: 20,
+            },
           ]}
         >
           {props.description}
         </Text>
-      </>
-
-      <NutrientCircle />
-
-      <Pressable
-        style={[
-          styles.basicBoxShadow,
-          {
-            backgroundColor: NEWCOLORS.darkButton,
-            paddingVertical: 20,
-            borderRadius: 15,
-            width: "90%",
-          },
-        ]}
-      >
-        <Text style={[styles.textCenterBold, { color: "white", fontSize: 20 }]}>
-          Make Recipe
-        </Text>
-      </Pressable>
-
-      <View
-        style={{
-          width: "100%",
-          flexDirection: "row",
-          gap: "4%",
-          marginTop: 15,
-          justifyContent: "center",
-        }}
-      >
-        <Pressable
-          style={[
-            styles.basicBoxShadow,
-            {
-              backgroundColor: NEWCOLORS.redBlock,
-              paddingVertical: 20,
-              borderRadius: 15,
-              width: "43%",
-            },
-          ]}
-        >
-          <Text style={[styles.textCenterBold, { fontSize: 20 }]}>← Skip</Text>
-        </Pressable>
-
-        <Pressable
-          style={[
-            styles.basicBoxShadow,
-            {
-              backgroundColor: NEWCOLORS.greenBlock,
-              paddingVertical: 20,
-              borderRadius: 15,
-              width: "43%",
-            },
-          ]}
-        >
-          <Text style={[styles.textCenterBold, { fontSize: 20 }]}>Save →</Text>
-        </Pressable>
       </View>
 
-      {/* ---------- */}
+      <View style={{ width: "100%", alignItems: "center", marginVertical: 8 }}>
+        <NutrientCircle />
+      </View>
 
-      {/*<Text
-        style={[
-          styles.textCentered,
-          { fontFamily: "Nunito-Bold", fontSize: 16 },
-        ]}
-      >
-        bold:
-      </Text>*/}
+      <View style={{ width: "100%", alignItems: "center" }}>
+        <Pressable
+          style={[
+            styles.basicBoxShadow,
+            {
+              backgroundColor: NEWCOLORS.darkButton,
+              paddingVertical: 14,
+              borderRadius: 15,
+              width: "100%",
+            },
+          ]}
+        >
+          <Text
+            style={[styles.textCenterBold, { color: "white", fontSize: 18 }]}
+          >
+            Make Recipe
+          </Text>
+        </Pressable>
+
+        <View
+          style={{
+            width: "100%",
+            flexDirection: "row",
+            gap: "4%",
+            marginTop: 10,
+            justifyContent: "center",
+          }}
+        >
+          <Pressable
+            style={[
+              styles.basicBoxShadow,
+              {
+                backgroundColor: NEWCOLORS.redBlock,
+                paddingVertical: 14,
+                borderRadius: 15,
+                width: "48%",
+              },
+            ]}
+          >
+            <Text style={[styles.textCenterBold, { fontSize: 17 }]}>
+              ← Skip
+            </Text>
+          </Pressable>
+
+          <Pressable
+            style={[
+              styles.basicBoxShadow,
+              {
+                backgroundColor: NEWCOLORS.greenBlock,
+                paddingVertical: 14,
+                borderRadius: 15,
+                width: "48%",
+              },
+            ]}
+          >
+            <Text style={[styles.textCenterBold, { fontSize: 17 }]}>
+              Save →
+            </Text>
+          </Pressable>
+        </View>
+      </View>
     </View>
   );
 };

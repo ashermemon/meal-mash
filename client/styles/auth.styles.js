@@ -612,7 +612,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
   },
   basicBoxShadow: {
-    boxShadow: "0px 2px 2px rgba(0, 0, 0, 0.10)",
+    boxShadow: "0px 2px 2px rgba(0, 0, 0, 0.10s)",
   },
   basicTextCenter: {
     fontFamily: "Nunito-Regular",

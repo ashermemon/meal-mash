@@ -44,7 +44,7 @@ import MealsLeftContext from "@/contexts/MealsLeftContext";
 import * as Haptics from "expo-haptics";
 import { Image } from "expo-image";
 import { CustomIcon } from "@/icon-loader/icon-loader";
-import GenerationCardPreview from "@/components/features/generator/GenerationCardPreview";
+import { GenerationCardPreview } from "@/components/features/generator/GenerationCardPreview";
 import RecipeContext from "@/contexts/RecipeContext";
 import { router } from "expo-router";
 

@@ -71,7 +71,15 @@ export default function InfoTag(props: Props) {
       ]}
     >
       {props.type == "difficulty" ? difficultyShape() : <></>}
-      <Text style={styles.textCentered}>{props.data}</Text>
+      <Text
+        style={[
+          styles.textCentered,
+          { flexShrink: 1, fontSize: props.type === "tags" ? 13 : 15 },
+        ]}
+        numberOfLines={1}
+      >
+        {props.data}
+      </Text>
     </View>
   );
 }
