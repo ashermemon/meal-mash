@@ -1,10 +1,14 @@
-import { View, Text, Pressable } from "react-native";
+import { View, Text, Pressable, Dimensions } from "react-native";
 import React from "react";
 import NutrientCircle from "@/components/features/recipe/NutrientCircle";
 import { styles } from "@/styles/GlobalStyles";
 import { Image } from "expo-image";
 import RecipeInfoTags from "../recipe/RecipeInfoTags";
 import { NEWCOLORS } from "@/constants/NewTheme";
+
+const SCREEN_WIDTH = Dimensions.get("window").width;
+const CARD_HORIZONTAL_MARGIN = 13;
+const CARD_WIDTH = SCREEN_WIDTH - CARD_HORIZONTAL_MARGIN * 2;
 
 type Props = {
   title: string | undefined;
@@ -20,9 +24,14 @@ export const GenerationCardPreview = (props: Props) => {
   return (
     <View
       style={{
+        width: CARD_WIDTH,
+        alignSelf: "center",
         flex: 1,
-        width: "100%",
+        paddingHorizontal: 15,
         paddingVertical: 8,
+        backgroundColor: NEWCOLORS.nestedBG,
+        borderRadius: 5,
+        overflow: "hidden",
       }}
     >
       <View style={{ width: "100%", alignItems: "center", marginBottom: 6 }}>
@@ -63,6 +72,7 @@ export const GenerationCardPreview = (props: Props) => {
             borderRadius: 12,
           }}
           contentFit="cover"
+          transition={0}
         />
 
         <Text

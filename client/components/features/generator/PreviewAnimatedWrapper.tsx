@@ -1,5 +1,5 @@
-import React from "react";
-import { Dimensions } from "react-native";
+import React, { useState } from "react";
+import { View, Dimensions, ViewStyle } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -23,20 +23,35 @@ type Props = {
 };
 
 const PreviewAnimatedWrapper = (props: Props) => {
+  const [cards, setCards] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
   const translateX = useSharedValue(0);
 
   const ROTATION = 10;
 
-  const recipes = [1];
+  const removeTopCardJS = () => setCards((prev) => prev.slice(0, -1));
 
   const saveRecipe = () => {
-    translateX.value = withTiming(SCREEN_WIDTH + 100);
-    console.log("SAVE");
+    "worklet";
+    translateX.value = withTiming(SCREEN_WIDTH + 100, undefined, (finished) => {
+      if (finished) {
+        translateX.value = 0;
+        runOnJS(removeTopCardJS)();
+      }
+    });
   };
 
   const skipRecipe = () => {
-    translateX.value = withTiming(-SCREEN_WIDTH - 100);
-    console.log("SKIP");
+    "worklet";
+    translateX.value = withTiming(
+      -SCREEN_WIDTH - 100,
+      undefined,
+      (finished) => {
+        if (finished) {
+          translateX.value = 0;
+          runOnJS(removeTopCardJS)();
+        }
+      },
+    );
   };
 
   const pan = Gesture.Pan()
@@ -45,18 +60,11 @@ const PreviewAnimatedWrapper = (props: Props) => {
     })
 
     .onEnd(() => {
-      // RIGHT SWIPE
       if (translateX.value > 120) {
-        runOnJS(saveRecipe)();
-      }
-
-      // LEFT SWIPE
-      else if (translateX.value < -120) {
-        runOnJS(skipRecipe)();
-      }
-
-      // SNAP BACK
-      else {
+        saveRecipe();
+      } else if (translateX.value < -120) {
+        skipRecipe();
+      } else {
         translateX.value = withSpring(0);
       }
     });
@@ -73,20 +81,37 @@ const PreviewAnimatedWrapper = (props: Props) => {
     };
   });
 
-  return (
-    <GestureDetector gesture={pan}>
-      <>
-        {recipes.map((recipe, index) => (
-          <Animated.View
-            key={index}
-            style={[
-              {
-                width: "100%",
-                flex: 1,
-              },
+  const reversedCards = [...cards].reverse();
 
-              animatedStyle,
-            ]}
+  const cardOffsetStyle = (index: number): ViewStyle => ({
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: cards.length - index,
+    alignSelf: "center",
+  });
+
+  return (
+    <View
+      style={{
+        width: "100%",
+
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        position: "relative",
+      }}
+    >
+      {reversedCards.map((recipe, index) => {
+        const isTop = index === 0;
+        const card = (
+          <Animated.View
+            key={recipe}
+            style={[cardOffsetStyle(index), isTop ? animatedStyle : null]}
           >
             <GenerationCardPreview
               title={props.title}
@@ -98,9 +123,17 @@ const PreviewAnimatedWrapper = (props: Props) => {
               skipRecipe={skipRecipe}
             />
           </Animated.View>
-        ))}
-      </>
-    </GestureDetector>
+        );
+
+        return isTop ? (
+          <GestureDetector gesture={pan} key={recipe}>
+            {card}
+          </GestureDetector>
+        ) : (
+          card
+        );
+      })}
+    </View>
   );
 };
 
