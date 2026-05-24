@@ -1,4 +1,4 @@
-import { View, Text, Platform, SafeAreaView, Pressable } from "react-native";
+import { View, Text, Platform, Pressable } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { styles } from "@/styles/GlobalStyles";
 import { NEWCOLORS } from "@/constants/NewTheme";
@@ -13,6 +13,7 @@ import * as Haptics from "expo-haptics";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import { useNavigation } from "@react-navigation/native";
 import PreviewAnimatedWrapper from "@/components/features/generator/PreviewAnimatedWrapper";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function RecipePage() {
   const [recipeData] = useContext(RecipeContext);
