@@ -52,6 +52,11 @@ export default function InfoTag(props: Props) {
     return null;
   };
 
+  const displayData =
+    props.type === "time"
+      ? props.data.replace(/minutes?/gi, "min")
+      : props.data;
+
   return (
     <View
       style={[
@@ -78,7 +83,7 @@ export default function InfoTag(props: Props) {
         ]}
         numberOfLines={1}
       >
-        {props.data}
+        {displayData}
       </Text>
     </View>
   );

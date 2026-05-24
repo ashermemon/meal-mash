@@ -22,7 +22,8 @@ export default function RecipeInfoTags(props: Props) {
     >
       <InfoTag type="difficulty" data={props.difficulty} />
       <InfoTag type="time" data={props.time} />
-      <InfoTag type="tags" data={props.tags.map((tag) => tag).join(", ")} />
+      <InfoTag type="tags" data={props.tags[0]} />
+      {/* {props.tags.map((tag) => tag).join(", ")} */}
     </View>
   );
 }

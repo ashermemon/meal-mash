@@ -20,7 +20,6 @@ export const GenerationCardPreview = (props: Props) => {
       style={{
         flex: 1,
         width: "100%",
-        justifyContent: "space-between",
         paddingVertical: 8,
       }}
     >
@@ -42,7 +41,15 @@ export const GenerationCardPreview = (props: Props) => {
         />
       </View>
 
-      <View style={{ width: "100%", alignItems: "center", flexShrink: 0 }}>
+      <View
+        style={{
+          flex: 1,
+          width: "100%",
+          justifyContent: "space-evenly",
+          alignItems: "center",
+          paddingHorizontal: 10,
+        }}
+      >
         <Image
           source={require("../../../assets/images/mealExample.png")}
           style={{
@@ -55,9 +62,7 @@ export const GenerationCardPreview = (props: Props) => {
           }}
           contentFit="cover"
         />
-      </View>
 
-      <View style={{ width: "100%", alignItems: "center", paddingHorizontal: 10 }}>
         <Text
           style={[
             styles.textCentered,
@@ -70,13 +75,10 @@ export const GenerationCardPreview = (props: Props) => {
         >
           {props.description}
         </Text>
-      </View>
 
-      <View style={{ width: "100%", alignItems: "center", marginVertical: 8 }}>
         <NutrientCircle />
-      </View>
 
-      <View style={{ width: "100%", alignItems: "center" }}>
+        <View style={{ width: "100%", alignItems: "center" }}>
         <Pressable
           style={[
             styles.basicBoxShadow,
@@ -135,6 +137,7 @@ export const GenerationCardPreview = (props: Props) => {
               Save →
             </Text>
           </Pressable>
+        </View>
         </View>
       </View>
     </View>

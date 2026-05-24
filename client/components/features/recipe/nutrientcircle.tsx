@@ -59,12 +59,11 @@ export default function NutrientCircle() {
           backgroundColor: NEWCOLORS.secondaryBoxGrey,
           borderRadius: 15,
           alignItems: "center",
-          marginBottom: 25,
         },
       ]}
     >
       <View style={styles.nutrientCircle}>
-        <View style={{ alignItems: "flex-start", flex: 1, marginLeft: 18 }}>
+        <View style={{ alignItems: "flex-start", flex: 1, marginLeft: 10 }}>
           <PieChart
             innerRadius={43}
             donut
@@ -109,7 +108,7 @@ export default function NutrientCircle() {
             }}
           />
         </View>
-        <View style={{ marginRight: 36, justifyContent: "flex-end" }}>
+        <View style={{ marginRight: 26, justifyContent: "flex-end" }}>
           {renderLegend(`Protein (${nutrients[0]}g)`, "#5983C8")}
           {renderLegend(`Fat (${nutrients[1]}g)`, "#44A54D")}
           {renderLegend(`Carbs (${nutrients[2]}g)`, "#db904f")}
