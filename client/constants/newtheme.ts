@@ -1,9 +1,11 @@
 export const NEWCOLORS = {
   blueBlock: "#E4F7FF",
-  orangeBlock: "#FFF6E4",
-  greenBlock: "#EDFFE4",
+  orangeBlock: "#FFF2D9",
+  greenBlock: "#EBF6ED",
   purpleBlock: "#FBE8FF",
+  purpblueBlock: "#E3E4FF",
   greyBlock: "#FEFEFE",
+  redBlock: "#F1D1D1",
 
   darkButton: "#39393A",
 
@@ -16,6 +18,7 @@ export const NEWCOLORS = {
   greenAccent: "#4BA75C",
   blueAccent: "#0088FF",
   orangeAccent: "#FFA600",
-  secondaryBoxGrey: "#F6F6F6",
+  redAccent: "#BF5E5E",
+  secondaryBoxGrey: "#F2F2F2",
   nestedBG: "#FCFCFC",
 } as const;

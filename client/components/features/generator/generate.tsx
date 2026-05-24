@@ -111,7 +111,7 @@ export default function Generate() {
     if (!responseRecipe) return;
 
     const modifiedTexts = responseRecipe.split(
-      /(<(?:protein|fat|carbs|difficulty|duration|title|desc)>[\s\S]*?<\/(?:protein|fat|carbs|difficulty|duration|title|desc)>)/g,
+      /(<(?:protein|fat|carbs|difficulty|duration|title|desc|category)>[\s\S]*?<\/(?:protein|fat|carbs|difficulty|duration|title|desc|category)>)/g,
     );
 
     let protein = 0;
@@ -121,7 +121,7 @@ export default function Generate() {
     let dur = "";
     let titleContent = "";
     let descContent = "";
-
+    let cat: string[] = [];
     modifiedTexts.forEach((text) => {
       if (text.startsWith("<protein>") && text.endsWith("</protein>")) {
         protein = Number(text.slice(9, -10));
@@ -134,6 +134,11 @@ export default function Generate() {
         text.endsWith("</difficulty>")
       ) {
         diff = text.slice(12, -13);
+      } else if (
+        text.startsWith("<category>") &&
+        text.endsWith("</category>")
+      ) {
+        cat.push(text.slice(10, -11));
       } else if (
         text.startsWith("<duration>") &&
         text.endsWith("</duration>")
@@ -153,7 +158,7 @@ export default function Generate() {
       difficulty: diff,
       time: dur,
       nutrients: [protein, fat, carbs],
-      tags: [],
+      tags: cat,
     });
 
     router.push("/recipe");

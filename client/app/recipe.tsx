@@ -1,4 +1,11 @@
-import { View, Text, ScrollView, Platform, SafeAreaView } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  Platform,
+  SafeAreaView,
+  Pressable,
+} from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { styles } from "@/styles/GlobalStyles";
 import { NEWCOLORS } from "@/constants/NewTheme";
@@ -11,10 +18,13 @@ import { Image } from "expo-image";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { COLORS } from "@/constants/Theme";
 import * as Haptics from "expo-haptics";
+import { CustomIcon } from "@/icon-loader/icon-loader";
+import { useNavigation } from "@react-navigation/native";
 
 export default function RecipePage() {
   const [recipeData] = useContext(RecipeContext);
   const hsl = require("hsl-to-hex");
+  const navigation = useNavigation();
 
   const parseMarkdownTextInline = (input: string) => {
     const cleanInput = input
@@ -175,10 +185,24 @@ export default function RecipePage() {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: NEWCOLORS.nestedBG }}>
-      <MobileHeader
-        pageTitle={recipeData.title || "Recipe"}
-        backEnabled={true}
-      />
+      <Pressable
+        style={{
+          marginTop: 8,
+          marginLeft: 20,
+        }}
+        onPress={() =>
+          navigation.canGoBack()
+            ? [navigation.goBack(), Haptics.selectionAsync()]
+            : null
+        }
+      >
+        <CustomIcon
+          name="arrow-left"
+          filled={false}
+          color={navigation.canGoBack() ? COLORS.fontColor : COLORS.addPlusGrey}
+          size={20}
+        />
+      </Pressable>
       <NutrientsContext.Provider value={[nutrients, setNutrients]}>
         <ScrollView
           contentContainerStyle={{ paddingBottom: 40 }}
@@ -186,7 +210,7 @@ export default function RecipePage() {
           alwaysBounceVertical={false}
           style={{ flex: 1 }}
         >
-          <View style={{ padding: 20 }}>
+          <View style={{ paddingHorizontal: 30, marginBottom: 10 }}>
             <GenerationCardPreview
               title={recipeData.title}
               description={recipeData.description}

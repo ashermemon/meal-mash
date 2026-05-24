@@ -46,9 +46,9 @@ const Prompt = (props: PromptProps) => {
         
         ALWAYS use a timer with greater than 0 minutes in it and always use whole numbers. ONLY USE A TIMER IF NECCESSARY
       
-        You must wrap the recipe name (under 33 characters) with "<title>" and "</title>"
+        You must wrap the recipe name (under 23 characters including spaces) with "<title>" and "</title>"
 
-        You must wrap the recipe description (under 30 words) with "<desc>" and "</desc>"
+        You must wrap the recipe description (under 23 words) with "<desc>" and "</desc>"
         
         BOLD each step using "<bold>" before and "</bold> after the desired bold text.
 
@@ -71,14 +71,16 @@ const Prompt = (props: PromptProps) => {
       
       
       <step>
-      <title><replace>Recipe Name, under 33 characters</replace></title>
+      <title><replace>Recipe Name, under 23 characters including spaces</replace></title>
 
-      <desc><replace>Recipe Description, under 30 words</replace></desc>
+      <desc><replace>Recipe Description, under 23 words</replace></desc>
 
       <box>
       <duration><replace>total recipe time</replace></duration>
       <servings><replace>how many servings will this recipe make</replace></servings>
       <difficulty><replace>Easy, Intermediate, Expert</replace></difficulty>
+      <category>Meal Type (Breakfast, Lunch, Dinner, Desert, Beverage, Snack, Brunch, Side, etc.)</category>
+      <category>Anything else about the meal like the cuisine, dietary restrictions (vegetarian, gluten-free, etc.), etc.</category>
       </box>
 
       <protein><replace>protein in grams</replace></protein>
@@ -169,6 +171,8 @@ const Prompt = (props: PromptProps) => {
 <duration>20 minutes</duration>
 <servings>2</servings>
 <difficulty>Beginner</difficulty>
+<category>Lunch</category>
+<category>High Protein</category>
 </box>
 
 <protein>45</protein>

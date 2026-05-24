@@ -82,6 +82,12 @@ export const styles = StyleSheet.create({
     color: COLORS.fontColor,
     fontSize: 17,
   },
+  textCenterBold: {
+    fontFamily: "Nunito-Bold",
+    textAlign: "center",
+    color: COLORS.fontColor,
+    fontSize: 17,
+  },
   headerText: {
     fontFamily: "Nunito-Bold",
     textAlign: "center",
@@ -435,9 +441,8 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-around",
     flexDirection: "row",
-
+    marginVertical: 10,
     marginHorizontal: 8,
-    marginVertical: 20,
   },
   legendBox: {
     height: 18,
@@ -607,7 +612,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
   },
   basicBoxShadow: {
-    boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.15)",
+    boxShadow: "0px 2px 2px rgba(0, 0, 0, 0.10)",
   },
   basicTextCenter: {
     fontFamily: "Nunito-Regular",
@@ -672,5 +677,14 @@ export const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 2,
+  },
+  infoTag: {
+    backgroundColor: NEWCOLORS.greyBlock,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 7,
   },
 });
