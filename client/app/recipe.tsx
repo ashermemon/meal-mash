@@ -1,10 +1,4 @@
-import {
-  View,
-  Text,
-  Platform,
-  SafeAreaView,
-  Pressable,
-} from "react-native";
+import { View, Text, Platform, SafeAreaView, Pressable } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { styles } from "@/styles/GlobalStyles";
 import { NEWCOLORS } from "@/constants/NewTheme";
@@ -18,6 +12,7 @@ import { COLORS } from "@/constants/Theme";
 import * as Haptics from "expo-haptics";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import { useNavigation } from "@react-navigation/native";
+import PreviewAnimatedWrapper from "@/components/features/generator/PreviewAnimatedWrapper";
 
 export default function RecipePage() {
   const [recipeData] = useContext(RecipeContext);
@@ -198,14 +193,16 @@ export default function RecipePage() {
           <CustomIcon
             name="arrow-left"
             filled={false}
-            color={navigation.canGoBack() ? COLORS.fontColor : COLORS.addPlusGrey}
+            color={
+              navigation.canGoBack() ? COLORS.fontColor : COLORS.addPlusGrey
+            }
             size={20}
           />
         </Pressable>
 
         <NutrientsContext.Provider value={[nutrients, setNutrients]}>
           <View style={{ flex: 1, justifyContent: "center" }}>
-            <GenerationCardPreview
+            <PreviewAnimatedWrapper
               title={recipeData.title}
               description={recipeData.description}
               difficulty={recipeData.difficulty}

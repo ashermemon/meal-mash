@@ -12,6 +12,8 @@ type Props = {
   difficulty: string;
   time: string;
   tags: string[];
+  saveRecipe: () => void;
+  skipRecipe: () => void;
 };
 
 export const GenerationCardPreview = (props: Props) => {
@@ -23,11 +25,11 @@ export const GenerationCardPreview = (props: Props) => {
         paddingVertical: 8,
       }}
     >
-      <View style={{ width: "100%", alignItems: "center", marginBottom: 8 }}>
+      <View style={{ width: "100%", alignItems: "center", marginBottom: 6 }}>
         <Text
           style={[
             styles.textCentered,
-            { fontFamily: "Nunito-Bold", fontSize: 24, marginBottom: 4 },
+            { fontFamily: "Nunito-Bold", fontSize: 30 },
           ]}
           numberOfLines={1}
         >
@@ -79,65 +81,67 @@ export const GenerationCardPreview = (props: Props) => {
         <NutrientCircle />
 
         <View style={{ width: "100%", alignItems: "center" }}>
-        <Pressable
-          style={[
-            styles.basicBoxShadow,
-            {
-              backgroundColor: NEWCOLORS.darkButton,
-              paddingVertical: 14,
-              borderRadius: 15,
+          <Pressable
+            style={[
+              styles.basicBoxShadow,
+              {
+                backgroundColor: NEWCOLORS.darkButton,
+                paddingVertical: 14,
+                borderRadius: 15,
+                width: "100%",
+              },
+            ]}
+          >
+            <Text
+              style={[styles.textCenterBold, { color: "white", fontSize: 18 }]}
+            >
+              Make Recipe
+            </Text>
+          </Pressable>
+
+          <View
+            style={{
               width: "100%",
-            },
-          ]}
-        >
-          <Text
-            style={[styles.textCenterBold, { color: "white", fontSize: 18 }]}
+              flexDirection: "row",
+              gap: "4%",
+              marginTop: 10,
+              justifyContent: "center",
+            }}
           >
-            Make Recipe
-          </Text>
-        </Pressable>
+            <Pressable
+              style={[
+                styles.basicBoxShadow,
+                {
+                  backgroundColor: NEWCOLORS.redBlock,
+                  paddingVertical: 14,
+                  borderRadius: 15,
+                  width: "48%",
+                },
+              ]}
+              onPress={props.skipRecipe}
+            >
+              <Text style={[styles.textCenterBold, { fontSize: 17 }]}>
+                ← Skip
+              </Text>
+            </Pressable>
 
-        <View
-          style={{
-            width: "100%",
-            flexDirection: "row",
-            gap: "4%",
-            marginTop: 10,
-            justifyContent: "center",
-          }}
-        >
-          <Pressable
-            style={[
-              styles.basicBoxShadow,
-              {
-                backgroundColor: NEWCOLORS.redBlock,
-                paddingVertical: 14,
-                borderRadius: 15,
-                width: "48%",
-              },
-            ]}
-          >
-            <Text style={[styles.textCenterBold, { fontSize: 17 }]}>
-              ← Skip
-            </Text>
-          </Pressable>
-
-          <Pressable
-            style={[
-              styles.basicBoxShadow,
-              {
-                backgroundColor: NEWCOLORS.greenBlock,
-                paddingVertical: 14,
-                borderRadius: 15,
-                width: "48%",
-              },
-            ]}
-          >
-            <Text style={[styles.textCenterBold, { fontSize: 17 }]}>
-              Save →
-            </Text>
-          </Pressable>
-        </View>
+            <Pressable
+              style={[
+                styles.basicBoxShadow,
+                {
+                  backgroundColor: NEWCOLORS.greenBlock,
+                  paddingVertical: 14,
+                  borderRadius: 15,
+                  width: "48%",
+                },
+              ]}
+              onPress={props.saveRecipe}
+            >
+              <Text style={[styles.textCenterBold, { fontSize: 17 }]}>
+                Save →
+              </Text>
+            </Pressable>
+          </View>
         </View>
       </View>
     </View>
