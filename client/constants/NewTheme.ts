@@ -13,12 +13,17 @@ export const NEWCOLORS = {
   basicText: "#39393A",
 
   lightGrey: "#e6e6e6",
-  dividerGrey: "#D1D1D6",
+  dividerGrey: "#d1d1d6",
+  dividerGrey2: "#ECECEC",
 
   greenAccent: "#4BA75C",
   blueAccent: "#0088FF",
   orangeAccent: "#FFA600",
   redAccent: "#BF5E5E",
-  secondaryBoxGrey: "#F2F2F2",
+  secondaryBoxGrey: "rgb(244, 244, 244)",
   nestedBG: "#FCFCFC",
+  cardWhite: "#FFFFFF",
+  stepCircle: "#E7F5EB",
+  tipBadgeBg: "#FFF2D9",
+  checkboxOutline: "#D9D9D9",
 } as const;

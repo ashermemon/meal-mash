@@ -5,6 +5,7 @@ import { styles } from "@/styles/GlobalStyles";
 import { Image } from "expo-image";
 import RecipeInfoTags from "../recipe/RecipeInfoTags";
 import { NEWCOLORS } from "@/constants/NewTheme";
+import { router } from "expo-router";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 const CARD_HORIZONTAL_MARGIN = 13;
@@ -15,6 +16,8 @@ type Props = {
   description: string;
   difficulty: string;
   time: string;
+  servings: number | null;
+  steps: number;
   tags: string[];
   saveRecipe: () => void;
   skipRecipe: () => void;
@@ -88,10 +91,46 @@ export const GenerationCardPreview = (props: Props) => {
         >
           {props.description}
         </Text>
+        {/*
+        <View style={{ width: "100%", marginTop: 10 }}>
+          <View
+            style={{
+              flexDirection: "row",
+              flexWrap: "wrap",
+              gap: 10,
+              justifyContent: "center",
+              marginBottom: 10,
+            }}
+          >
+            {props.servings !== null && (
+              <View
+                style={{
+                  backgroundColor: NEWCOLORS.secondaryBoxGrey,
+                  borderRadius: 12,
+                  paddingHorizontal: 12,
+                  paddingVertical: 8,
+                }}
+              >
+                <Text style={[styles.textCenterBold, { fontSize: 13 }]}>Serves {props.servings}</Text>
+              </View>
+            )}
+            <View
+              style={{
+                backgroundColor: NEWCOLORS.secondaryBoxGrey,
+                borderRadius: 12,
+                paddingHorizontal: 12,
+                paddingVertical: 8,
+              }}
+            >
+              <Text style={[styles.textCenterBold, { fontSize: 13 }]}>Steps {props.steps}</Text>
+            </View>
+          </View>
+        </View>
+        */}
 
-        <NutrientCircle />
+        <NutrientCircle textInBox={false} />
 
-        <View style={{ width: "100%", alignItems: "center" }}>
+        <View style={{ width: "100%", alignItems: "center", marginTop: 10 }}>
           <Pressable
             style={[
               styles.basicBoxShadow,
@@ -102,6 +141,7 @@ export const GenerationCardPreview = (props: Props) => {
                 width: "100%",
               },
             ]}
+            onPress={() => router.push("/followRecipe")}
           >
             <Text
               style={[styles.textCenterBold, { color: "white", fontSize: 18 }]}

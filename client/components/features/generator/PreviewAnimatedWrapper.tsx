@@ -15,11 +15,18 @@ import GenerationCardPreview from "./GenerationCardPreview";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
+type RecipeInstruction = {
+  step: string;
+  timerMinutes?: number;
+};
+
 type Props = {
   title: string | undefined;
   description: string;
   difficulty: string;
   time: string;
+  servings: number | null;
+  steps: number;
   tags: string[];
 };
 
@@ -127,6 +134,8 @@ const PreviewAnimatedWrapper = (props: Props) => {
               description={props.description}
               difficulty={props.difficulty}
               time={props.time}
+              servings={props.servings}
+              steps={props.steps}
               tags={props.tags}
               saveRecipe={saveRecipe}
               skipRecipe={skipRecipe}

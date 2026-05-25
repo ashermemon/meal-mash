@@ -5,6 +5,7 @@ interface Props {
   difficulty: string;
   time: string;
   tags: string[];
+  marginTop?: number;
 }
 
 export default function RecipeInfoTags(props: Props) {
@@ -12,7 +13,7 @@ export default function RecipeInfoTags(props: Props) {
     <View
       style={{
         width: "100%",
-        marginTop: 13,
+        marginTop: props.marginTop || 13,
         alignItems: "center",
         justifyContent: "center",
         flexDirection: "row",

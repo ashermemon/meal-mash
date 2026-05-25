@@ -454,9 +454,56 @@ export const styles = StyleSheet.create({
   textLegend: {
     fontFamily: "Nunito-SemiBold",
     color: COLORS.fontColor,
-
     fontSize: 16,
     alignItems: "center",
+  },
+  textRight: {
+    fontFamily: "Nunito-Regular",
+    textAlign: "right",
+    color: COLORS.fontColor,
+  },
+  infoTagBox: {
+    backgroundColor: NEWCOLORS.nestedBG,
+    borderRadius: 14,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+  },
+  infoTagText: {
+    fontFamily: "Nunito-SemiBold",
+    color: COLORS.fontColor,
+    fontSize: 13,
+  },
+  legendRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  card: {
+    borderBottomColor: NEWCOLORS.dividerGrey2,
+    borderBottomWidth: 3,
+  },
+  checkboxOutline: {
+    width: 20,
+    height: 20,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: NEWCOLORS.checkboxOutline,
+  },
+  stepCircle: {
+    width: 32,
+    height: 32,
+    borderRadius: 18,
+    backgroundColor: NEWCOLORS.stepCircle,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  tipBadge: {
+    width: 32,
+    height: 32,
+    borderRadius: 12,
+    backgroundColor: NEWCOLORS.tipBadgeBg,
+    alignItems: "center",
+    justifyContent: "center",
   },
   customButton: {
     alignItems: "center",

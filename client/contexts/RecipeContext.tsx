@@ -1,4 +1,15 @@
-import React, { createContext, useState, ReactNode, Dispatch, SetStateAction } from "react";
+import React, {
+  createContext,
+  useState,
+  ReactNode,
+  Dispatch,
+  SetStateAction,
+} from "react";
+
+export type RecipeInstruction = {
+  step: string;
+  timerMinutes?: number;
+};
 
 export type RecipeData = {
   responseRecipe: string;
@@ -6,11 +17,18 @@ export type RecipeData = {
   description: string;
   difficulty: string;
   time: string;
+  servings: number | null;
   nutrients: number[];
   tags: string[];
+  ingredients: string[];
+  instructions: RecipeInstruction[];
+  tips: string[];
 };
 
-export type RecipeContextType = [RecipeData, Dispatch<SetStateAction<RecipeData>>];
+export type RecipeContextType = [
+  RecipeData,
+  Dispatch<SetStateAction<RecipeData>>,
+];
 
 const initialRecipeData: RecipeData = {
   responseRecipe: "",
@@ -18,11 +36,18 @@ const initialRecipeData: RecipeData = {
   description: "",
   difficulty: "",
   time: "",
-  nutrients: [],
+  servings: null,
+  nutrients: [0, 0, 0],
   tags: [],
+  ingredients: [],
+  instructions: [],
+  tips: [],
 };
 
-const RecipeContext = createContext<RecipeContextType>([initialRecipeData, () => {}]);
+const RecipeContext = createContext<RecipeContextType>([
+  initialRecipeData,
+  () => {},
+]);
 
 export const RecipeProvider = ({ children }: { children: ReactNode }) => {
   const [recipeData, setRecipeData] = useState<RecipeData>(initialRecipeData);

@@ -7,7 +7,11 @@ import { COLORS } from "@/constants/Theme";
 import { ColorHex } from "react-native-countdown-circle-timer";
 import { NEWCOLORS } from "@/constants/NewTheme";
 
-export default function NutrientCircle() {
+interface Props {
+  textInBox?: boolean;
+}
+
+export default function NutrientCircle({ textInBox }: Props) {
   const [nutrients, setNutrients] = useContext(NutrientsContext);
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
 
@@ -62,6 +66,16 @@ export default function NutrientCircle() {
         },
       ]}
     >
+      {textInBox ? (
+        <Text
+          style={[
+            styles.textLeftSemiBold,
+            { fontSize: 18, marginTop: 15, textAlign: "center" },
+          ]}
+        >
+          Nutrition Facts
+        </Text>
+      ) : null}
       <View style={styles.nutrientCircle}>
         <View style={{ alignItems: "flex-start", flex: 1, marginLeft: 10 }}>
           <PieChart

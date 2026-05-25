@@ -1,52 +1,40 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Pressable,
-  ActivityIndicator,
-  Alert,
-} from "react-native";
+import { View, Text, Pressable, ActivityIndicator } from "react-native";
 import Modal from "react-native-modal";
-import React, {
-  createContext,
-  Dispatch,
-  SetStateAction,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { GoogleGenAI } from "@google/genai";
 import { styles } from "@/styles/GlobalStyles";
 import { COLORS } from "@/constants/Theme";
 import { NEWCOLORS } from "@/constants/NewTheme";
 import Prompt from "@/constants/prompt";
-import Timer from "@/components/features/recipe/Timer";
 import AddIngredients from "@/components/features/generator/AddIngredients";
 import AddLeftovers from "@/components/features/generator/AddLeftovers";
 import SearchContext from "@/contexts/SearchContext";
 import Search from "@/components/features/generator/Search";
 
-import { Dimensions } from "react-native";
 import IngredientsContext from "@/contexts/IngredientsContext";
 import LeftoversEnabled from "@/contexts/LeftoversOn";
 import LeftoversContext from "@/contexts/LeftoversContext";
-import NutrientsContext from "@/contexts/NutrientsContext";
-import NutrientCircle from "@/components/features/recipe/NutrientCircle";
-
 import { APIKEY } from "@/utils/apikey";
 import SavedRecipesContext from "@/contexts/SavedRecipesContext";
 import { storage } from "@/utils/storage";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
-import ProgressBar from "@/components/features/recipe/ProgressBar";
 import { ScrollView } from "react-native-gesture-handler";
 import MealsLeftContext from "@/contexts/MealsLeftContext";
 
 import * as Haptics from "expo-haptics";
-import { Image } from "expo-image";
-import { CustomIcon } from "@/icon-loader/icon-loader";
-import { GenerationCardPreview } from "@/components/features/generator/GenerationCardPreview";
 import RecipeContext from "@/contexts/RecipeContext";
 import { router } from "expo-router";
+
+export interface Recipe {
+  protein: number;
+  fat: number;
+  carbs: number;
+  difficulty: string;
+  duration: string;
+  title: string;
+  description: string;
+  category: string[];
+}
 
 export default function Generate() {
   const [isChecked, setChecked] = useState(false);
@@ -73,17 +61,118 @@ export default function Generate() {
     storage.set("savesnumber", saves.length);
   });
 
+  const normalizeStringArray = (value: any) => {
+    if (!value) return [];
+    if (Array.isArray(value)) {
+      return value.map((item) => String(item).trim()).filter(Boolean);
+    }
+    if (typeof value === "string") {
+      return value
+        .split(/[,\n]+/)
+        .map((item) => item.trim())
+        .filter(Boolean);
+    }
+    return [];
+  };
+
+  const parseRecipeJson = (rawText: string) => {
+    const trimmed = rawText.trim();
+    const firstBrace = trimmed.indexOf("{");
+    const lastBrace = trimmed.lastIndexOf("}");
+    const jsonText =
+      firstBrace !== -1 && lastBrace > firstBrace
+        ? trimmed.slice(firstBrace, lastBrace + 1)
+        : trimmed;
+
+    const raw = JSON.parse(jsonText);
+
+    const tags = Array.isArray(raw.tags)
+      ? raw.tags.map(String).filter(Boolean)
+      : typeof raw.tags === "string"
+        ? raw.tags
+            .split(/[,\n]+/)
+            .map((tag: string) => tag.trim())
+            .filter(Boolean)
+        : [];
+
+    const nutrients = Array.isArray(raw.nutrients)
+      ? [
+          Number(raw.nutrients[0]) || 0,
+          Number(raw.nutrients[1]) || 0,
+          Number(raw.nutrients[2]) || 0,
+        ]
+      : raw.nutrients && typeof raw.nutrients === "object"
+        ? [
+            Number(raw.nutrients.protein) || 0,
+            Number(raw.nutrients.fat) || 0,
+            Number(raw.nutrients.carbs) || 0,
+          ]
+        : [0, 0, 0];
+
+    const instructions = Array.isArray(raw.instructions)
+      ? raw.instructions
+          .map((instruction: any) => {
+            if (typeof instruction === "string") {
+              return { step: instruction.trim(), timerMinutes: undefined };
+            }
+            return {
+              step: String(instruction.step ?? instruction.text ?? "").trim(),
+              timerMinutes:
+                typeof instruction.timerMinutes === "number"
+                  ? instruction.timerMinutes
+                  : undefined,
+            };
+          })
+          .filter((item: any) => item.step)
+      : [];
+
+    return {
+      title: String(raw.title ?? "").trim(),
+      description: String(raw.description ?? "").trim(),
+      difficulty: String(raw.difficulty ?? "").trim(),
+      time: String(raw.time ?? "").trim(),
+      servings:
+        typeof raw.servings === "number"
+          ? raw.servings
+          : Number.isFinite(Number(raw.servings))
+            ? Number(raw.servings)
+            : null,
+      nutrients,
+      tags,
+      ingredients: normalizeStringArray(raw.ingredients),
+      instructions,
+      tips: normalizeStringArray(raw.tips),
+    };
+  };
+
   const fetchResponse = async (prompt: string) => {
     setLoading(true);
     try {
       const response = await ai.models.generateContent({
-        model: "gemini-3.5-flash", // gemini-3.0-flash
+        model: "gemini-3.1-flash-lite-preview", // gemini-3.5-flash
         contents: prompt,
       });
 
       if (response.text) {
         const geminiText = (response.text || "").replace(/^\s+/, "");
         setResponseRecipe(geminiText);
+
+        const parsedRecipe = parseRecipeJson(geminiText);
+        setRecipeData({
+          responseRecipe: geminiText,
+          title: parsedRecipe.title,
+          description: parsedRecipe.description,
+          difficulty: parsedRecipe.difficulty,
+          time: parsedRecipe.time,
+          servings: parsedRecipe.servings,
+          nutrients: parsedRecipe.nutrients,
+          tags: parsedRecipe.tags,
+          ingredients: parsedRecipe.ingredients,
+          instructions: parsedRecipe.instructions,
+          tips: parsedRecipe.tips,
+        });
+
+        router.push("/recipe");
       }
     } catch (error: any) {
       setError(error);
@@ -106,63 +195,6 @@ export default function Generate() {
     leftovers: leftovers,
     isChecked: isChecked,
   });
-
-  useEffect(() => {
-    if (!responseRecipe) return;
-
-    const modifiedTexts = responseRecipe.split(
-      /(<(?:protein|fat|carbs|difficulty|duration|title|desc|category)>[\s\S]*?<\/(?:protein|fat|carbs|difficulty|duration|title|desc|category)>)/g,
-    );
-
-    let protein = 0;
-    let fat = 0;
-    let carbs = 0;
-    let diff = "";
-    let dur = "";
-    let titleContent = "";
-    let descContent = "";
-    let cat: string[] = [];
-    modifiedTexts.forEach((text) => {
-      if (text.startsWith("<protein>") && text.endsWith("</protein>")) {
-        protein = Number(text.slice(9, -10));
-      } else if (text.startsWith("<fat>") && text.endsWith("</fat>")) {
-        fat = Number(text.slice(5, -6));
-      } else if (text.startsWith("<carbs>") && text.endsWith("</carbs>")) {
-        carbs = Number(text.slice(7, -8));
-      } else if (
-        text.startsWith("<difficulty>") &&
-        text.endsWith("</difficulty>")
-      ) {
-        diff = text.slice(12, -13);
-      } else if (
-        text.startsWith("<category>") &&
-        text.endsWith("</category>")
-      ) {
-        cat.push(text.slice(10, -11));
-      } else if (
-        text.startsWith("<duration>") &&
-        text.endsWith("</duration>")
-      ) {
-        dur = text.slice(10, -11);
-      } else if (text.startsWith("<title>") && text.endsWith("</title>")) {
-        titleContent = text.slice(7, -8);
-      } else if (text.startsWith("<desc>") && text.endsWith("</desc>")) {
-        descContent = text.slice(6, -7);
-      }
-    });
-
-    setRecipeData({
-      responseRecipe: responseRecipe,
-      title: titleContent,
-      description: descContent,
-      difficulty: diff,
-      time: dur,
-      nutrients: [protein, fat, carbs],
-      tags: cat,
-    });
-
-    router.push("/recipe");
-  }, [responseRecipe]);
 
   return (
     <>

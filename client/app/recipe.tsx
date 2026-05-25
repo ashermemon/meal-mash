@@ -208,6 +208,8 @@ export default function RecipePage() {
               description={recipeData.description}
               difficulty={recipeData.difficulty}
               time={recipeData.time}
+              servings={recipeData.servings}
+              steps={recipeData.instructions.length}
               tags={recipeData.tags}
             />
           </View>
