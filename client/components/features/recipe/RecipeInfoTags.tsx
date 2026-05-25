@@ -6,6 +6,7 @@ interface Props {
   time: string;
   tags: string[];
   marginTop?: number;
+  justifyContent?: "flex-start" | "center" | "flex-end";
 }
 
 export default function RecipeInfoTags(props: Props) {
@@ -15,10 +16,12 @@ export default function RecipeInfoTags(props: Props) {
         width: "100%",
         marginTop: props.marginTop || 13,
         alignItems: "center",
-        justifyContent: "center",
+        justifyContent: props.justifyContent || "center",
         flexDirection: "row",
-        flexWrap: "wrap",
-        gap: 12,
+        flexWrap: "nowrap",
+        flexShrink: 1,
+        minWidth: 0,
+        gap: 8,
       }}
     >
       <InfoTag type="difficulty" data={props.difficulty} />

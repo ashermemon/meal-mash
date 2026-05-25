@@ -24,7 +24,7 @@ export default function Timer(props: TimerProps) {
   var hsl = require("hsl-to-hex");
 
   return (
-    <View style={styles.timer}>
+    <View style={[styles.timer, styles.basicBoxShadow]}>
       <View style={{ flexDirection: "row" }}>
         <CountdownCircleTimer
           key={timerKey}
@@ -47,7 +47,7 @@ export default function Timer(props: TimerProps) {
           <Text style={[styles.textLeftBold, { fontSize: 16 }]}>Timer</Text>
           <Text style={[styles.textLeftBold, { fontSize: 27 }]}>
             {`${Math.floor(remainingTime / 60)}:${String(
-              remainingTime % 60
+              remainingTime % 60,
             ).padStart(2, "0")}`}
           </Text>
         </View>
@@ -56,10 +56,10 @@ export default function Timer(props: TimerProps) {
         <Pressable
           style={styles.timerButton}
           onPress={() => {
-            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft),
+            (Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft),
               timerFinished
                 ? [setTimerKey(timerKey + 1), setTimerFinished(false)]
-                : setTimerKey(timerKey + 1);
+                : setTimerKey(timerKey + 1));
           }}
         >
           <CustomIcon
@@ -73,10 +73,10 @@ export default function Timer(props: TimerProps) {
         <Pressable
           style={styles.timerButton}
           onPress={() => {
-            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft),
+            (Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft),
               timerFinished
                 ? [setTimerKey(timerKey + 1), setTimerFinished(false)]
-                : setIsPlaying(!isPlaying);
+                : setIsPlaying(!isPlaying));
           }}
         >
           {isPlaying && !timerFinished ? (

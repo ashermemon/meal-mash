@@ -37,7 +37,7 @@ Return only valid JSON. Do not wrap output in markdown, quotes, or code fences.
 }
 
 - Ingredients List: each item should include quantity and measurement.
-- Instructions: write each step clearly. If a step requires a timer, use integer 'timerMinutes'. Otherwise omit the property. Do not use a timer for every step, only when neccessary.
+- Instructions: write each step clearly, aiming for 6-12 steps. OMIT the 'timerMinutes' property UNLESS a step ABSOLUTELY REQUIRES a timer, ONLY IF NECESSARY. Otherwise omit the property. 
 - Tags: include meal type (e.g. Dinner, Lunch) and any cuisine or dietary labels.
 - Tips: provide 2-3 genuinely helpful cooking tips for this recipe.
 `;

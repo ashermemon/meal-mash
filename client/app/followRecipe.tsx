@@ -130,7 +130,7 @@ const followRecipe = () => {
               style={{ width: 70, height: 70, borderRadius: 110 }}
               contentFit="cover"
             />
-            <View style={{ flex: 1, paddingHorizontal: 7 }}>
+            <View style={{ flex: 1, paddingHorizontal: 12 }}>
               <Text
                 numberOfLines={1}
                 adjustsFontSizeToFit
@@ -161,7 +161,17 @@ const followRecipe = () => {
           </Text>
         </View>
 
-        <View style={[styles.card, { marginBottom: 5, padding: 10 }]}>
+        <View
+          style={[
+            styles.card,
+            {
+              marginBottom: 10,
+              paddingHorizontal: 10,
+              paddingTop: 10,
+              paddingBottom: 25,
+            },
+          ]}
+        >
           <NutrientsContext.Provider value={[nutrients, setNutrients]}>
             <NutrientCircle textInBox={true} />
           </NutrientsContext.Provider>
@@ -176,7 +186,12 @@ const followRecipe = () => {
               marginBottom: 16,
             }}
           >
-            <Text style={[styles.textLeftSemiBold, { fontSize: 18 }]}>
+            <Text
+              style={[
+                styles.textLeftSemiBold,
+                { fontSize: 18, marginBottom: 5 },
+              ]}
+            >
               Ingredients
             </Text>
             {recipeData?.servings !== null ? (
@@ -266,11 +281,16 @@ const followRecipe = () => {
           })}
         </View>
 
-        <View style={[styles.card, { marginBottom: 20, padding: 10 }]}>
+        <View
+          style={[
+            styles.card,
+            { marginBottom: 20, paddingHorizontal: 10, paddingBottom: 15 },
+          ]}
+        >
           <Text
             style={[
               styles.textLeftSemiBold,
-              { fontSize: 18, marginBottom: 16 },
+              { fontSize: 18, marginBottom: 21 },
             ]}
           >
             Instructions
@@ -317,11 +337,16 @@ const followRecipe = () => {
         </View>
 
         {(recipeData?.tips || []).length > 0 ? (
-          <View style={[styles.card, { marginBottom: 20, padding: 10 }]}>
+          <View
+            style={[
+              styles.card,
+              { marginBottom: 20, paddingHorizontal: 10, paddingBottom: 10 },
+            ]}
+          >
             <Text
               style={[
                 styles.textLeftSemiBold,
-                { fontSize: 18, marginBottom: 16 },
+                { fontSize: 18, marginBottom: 21 },
               ]}
             >
               Helpful Tips

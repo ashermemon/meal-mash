@@ -72,6 +72,12 @@ export default function InfoTag(props: Props) {
               : props.type == "time"
                 ? NEWCOLORS.orangeBlock
                 : NEWCOLORS.purpblueBlock,
+          flexShrink: 1,
+          minWidth: 0,
+          paddingHorizontal: 8,
+          paddingVertical: 4,
+          justifyContent: "center",
+          alignItems: "center",
         },
       ]}
     >
@@ -79,6 +85,8 @@ export default function InfoTag(props: Props) {
       <Text
         style={[styles.textCentered, { flexShrink: 1, fontSize: 15 }]}
         numberOfLines={1}
+        adjustsFontSizeToFit
+        minimumFontScale={0.85}
       >
         {displayData}
       </Text>

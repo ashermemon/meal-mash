@@ -53,6 +53,7 @@ export const GenerationCardPreview = (props: Props) => {
           difficulty={props.difficulty}
           time={props.time}
           tags={props.tags}
+          justifyContent="center"
         />
       </View>
 

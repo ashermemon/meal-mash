@@ -59,6 +59,7 @@ export default function NutrientCircle({ textInBox }: Props) {
   return (
     <View
       style={[
+        styles.basicBoxShadow,
         {
           backgroundColor: NEWCOLORS.secondaryBoxGrey,
           borderRadius: 15,
