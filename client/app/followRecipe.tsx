@@ -7,7 +7,7 @@ import NutrientsContext from "@/contexts/NutrientsContext";
 import RecipeInfoTags from "@/components/features/recipe/RecipeInfoTags";
 import NutrientCircle from "@/components/features/recipe/NutrientCircle";
 import Timer from "@/components/features/recipe/Timer";
-import BouncyCheckbox from "react-native-bouncy-checkbox";
+import CustomCheckbox from "@/components/common/CustomCheckbox";
 import { styles } from "@/styles/GlobalStyles";
 import { NEWCOLORS } from "@/constants/NewTheme";
 import { COLORS } from "@/constants/Theme";
@@ -20,6 +20,7 @@ import Svg, { Path } from "react-native-svg";
 const followRecipe = () => {
   const [contextRecipeData] = useContext(RecipeContext);
   const navigation = useNavigation();
+  const hsl = require("hsl-to-hex");
 
   // Default placeholder data when context is empty
   const defaultRecipeData: RecipeData = {
@@ -27,14 +28,14 @@ const followRecipe = () => {
     title: "Recipe Title",
     description:
       "A delicious and easy-to-make meal that is perfect for any occasion. Packed with flavor and nutrients, this recipe is sure to become a family favorite.",
-    difficulty: "Medium",
+    difficulty: "Intermediate",
     time: "30 min",
     tags: ["Lunch", "Vegetarian"],
     servings: 2,
     ingredients: [
-      "1.5 tbsp olive oil",
-      "2 cloves garlic, minced",
-      "1 onion, chopped",
+      ["1.5 tbsp", "olive oil"],
+      ["2 cloves", "garlic, minced"],
+      ["1", "onion, chopped"],
     ],
     instructions: [
       { step: "Heat the olive oil in a pan over medium heat." },
@@ -69,27 +70,6 @@ const followRecipe = () => {
       navigation.goBack();
     }
   };
-
-  const ingredientParts = useMemo(
-    () => (ingredient: string) => {
-      const trimmed = ingredient.trim();
-      const match = trimmed.match(/(.+?)\s*[-–:]\s*(.+)/);
-      if (match && match[1]?.trim() && match[2]?.trim()) {
-        return { name: match[1].trim(), amount: match[2].trim() };
-      }
-
-      const amountMatch = trimmed.match(/(.*?)(\d+[\d\s\/\.]*\w*)$/);
-      if (amountMatch && amountMatch[1]?.trim()) {
-        return {
-          name: amountMatch[1].trim(),
-          amount: amountMatch[2].trim(),
-        };
-      }
-
-      return { name: trimmed, amount: "" };
-    },
-    [],
-  );
 
   const totalCalories = useMemo(
     () => nutrients[0] * 4 + nutrients[1] * 9 + nutrients[2] * 4,
@@ -149,7 +129,7 @@ const followRecipe = () => {
               style={{ width: 70, height: 70, borderRadius: 110 }}
               contentFit="cover"
             />
-            <View style={{ flex: 1, paddingHorizontal: 12 }}>
+            <View style={{ flex: 1, paddingHorizontal: 18 }}>
               <Text
                 numberOfLines={1}
                 adjustsFontSizeToFit
@@ -200,7 +180,8 @@ const followRecipe = () => {
           servings={recipeData?.servings !== null ? recipeData?.servings : null}
         >
           {(recipeData?.ingredients || []).map((ingredient, index) => {
-            const { name, amount } = ingredientParts(ingredient);
+            const amount = ingredient[0];
+            const name = ingredient[1];
             return (
               <View
                 key={index}
@@ -218,29 +199,18 @@ const followRecipe = () => {
                     flex: 1,
                   }}
                 >
-                  <BouncyCheckbox
-                    size={22}
-                    fillColor={COLORS.greenProgressBar}
-                    unFillColor={NEWCOLORS.nestedBG}
-                    iconStyle={{
-                      borderColor: COLORS.addGrey,
-                      borderWidth: 2,
-                      borderRadius: 10,
-                    }}
-                    innerIconStyle={{
-                      borderWidth: 2,
-                      borderColor: COLORS.greenProgressBar,
-                    }}
-                    isChecked={checked[index]}
-                    useBuiltInState={false}
-                    style={{ marginRight: 12 }}
-                    onPress={() => {
-                      const next = [...checked];
-                      next[index] = !next[index];
-                      setChecked(next);
-                      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
-                    }}
-                  />
+                  <View style={{ marginRight: 12 }}>
+                    <CustomCheckbox
+                      checked={checked[index]}
+                      onChange={() => {
+                        const next = [...checked];
+                        next[index] = !next[index];
+                        setChecked(next);
+                        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
+                      }}
+                      size={24}
+                    />
+                  </View>
                   <Text
                     numberOfLines={1}
                     style={[
@@ -253,7 +223,7 @@ const followRecipe = () => {
                       },
                     ]}
                   >
-                    {name || ingredient}
+                    {name}
                   </Text>
                 </View>
                 {amount ? (
@@ -319,9 +289,9 @@ const followRecipe = () => {
                 <View style={{ marginTop: -20, marginBottom: 5 }}>
                   <Timer
                     time={instruction.timerMinutes * 60}
-                    color1={NEWCOLORS.blueAccent}
-                    color2={NEWCOLORS.greenAccent}
-                    color3={NEWCOLORS.orangeAccent}
+                    color1={hsl(Math.random() * 359, 55, 65)}
+                    color2={hsl(Math.random() * 359, 55, 65)}
+                    color3={hsl(Math.random() * 359, 55, 65)}
                   />
                 </View>
               ) : null}

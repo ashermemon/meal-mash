@@ -4,8 +4,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { GoogleGenAI } from "@google/genai";
 import { styles } from "@/styles/GlobalStyles";
 import { COLORS } from "@/constants/Theme";
-import { NEWCOLORS } from "@/constants/NewTheme";
 import Prompt from "@/constants/prompt";
+import { Type } from "@google/genai";
 import AddIngredients from "@/components/features/generator/AddIngredients";
 import AddLeftovers from "@/components/features/generator/AddLeftovers";
 import SearchContext from "@/contexts/SearchContext";
@@ -25,24 +25,11 @@ import * as Haptics from "expo-haptics";
 import RecipeContext from "@/contexts/RecipeContext";
 import { router } from "expo-router";
 
-export interface Recipe {
-  protein: number;
-  fat: number;
-  carbs: number;
-  difficulty: string;
-  duration: string;
-  title: string;
-  description: string;
-  category: string[];
-}
-
 export default function Generate() {
   const [isChecked, setChecked] = useState(false);
   const [mealsLeft, setMealsLeft] = useContext(MealsLeftContext);
   const ai = new GoogleGenAI({ apiKey: APIKEY });
-  var hsl = require("hsl-to-hex");
 
-  const [responseRecipe, setResponseRecipe] = useState("");
   const [searchActive, setSearchActive] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -57,115 +44,100 @@ export default function Generate() {
   const [saves, setSaves] = useContext(SavedRecipesContext);
 
   useEffect(() => {
-    const totalSaves = storage.getNumber("mealsnumber") ?? 0;
     storage.set("savesnumber", saves.length);
-  });
+  }, [saves.length]);
 
-  const normalizeStringArray = (value: any) => {
-    if (!value) return [];
-    if (Array.isArray(value)) {
-      return value.map((item) => String(item).trim()).filter(Boolean);
-    }
-    if (typeof value === "string") {
-      return value
-        .split(/[,\n]+/)
-        .map((item) => item.trim())
-        .filter(Boolean);
-    }
-    return [];
-  };
-
-  const parseRecipeJson = (rawText: string) => {
-    const trimmed = rawText.trim();
-    const firstBrace = trimmed.indexOf("{");
-    const lastBrace = trimmed.lastIndexOf("}");
-    const jsonText =
-      firstBrace !== -1 && lastBrace > firstBrace
-        ? trimmed.slice(firstBrace, lastBrace + 1)
-        : trimmed;
-
-    const raw = JSON.parse(jsonText);
-
-    const tags = Array.isArray(raw.tags)
-      ? raw.tags.map(String).filter(Boolean)
-      : typeof raw.tags === "string"
-        ? raw.tags
-            .split(/[,\n]+/)
-            .map((tag: string) => tag.trim())
-            .filter(Boolean)
-        : [];
-
-    const nutrients = Array.isArray(raw.nutrients)
-      ? [
-          Number(raw.nutrients[0]) || 0,
-          Number(raw.nutrients[1]) || 0,
-          Number(raw.nutrients[2]) || 0,
-        ]
-      : raw.nutrients && typeof raw.nutrients === "object"
-        ? [
-            Number(raw.nutrients.protein) || 0,
-            Number(raw.nutrients.fat) || 0,
-            Number(raw.nutrients.carbs) || 0,
-          ]
-        : [0, 0, 0];
-
-    const instructions = Array.isArray(raw.instructions)
-      ? raw.instructions
-          .map((instruction: any) => {
-            if (typeof instruction === "string") {
-              return { step: instruction.trim(), timerMinutes: undefined };
-            }
-            return {
-              step: String(instruction.step ?? instruction.text ?? "").trim(),
-              timerMinutes:
-                typeof instruction.timerMinutes === "number"
-                  ? instruction.timerMinutes
-                  : undefined,
-            };
-          })
-          .filter((item: any) => item.step)
-      : [];
-
-    return {
-      title: String(raw.title ?? "").trim(),
-      description: String(raw.description ?? "").trim(),
-      difficulty: String(raw.difficulty ?? "").trim(),
-      time: String(raw.time ?? "").trim(),
-      servings:
-        typeof raw.servings === "number"
-          ? raw.servings
-          : Number.isFinite(Number(raw.servings))
-            ? Number(raw.servings)
-            : null,
-      nutrients,
-      tags,
-      ingredients: normalizeStringArray(raw.ingredients),
-      instructions,
-      tips: normalizeStringArray(raw.tips),
-    };
+  const RecipeSchema = {
+    type: Type.OBJECT,
+    properties: {
+      title: { type: Type.STRING },
+      description: { type: Type.STRING },
+      difficulty: {
+        type: Type.STRING,
+        enum: ["Easy", "Intermediate", "Expert"],
+      },
+      time: { type: Type.STRING },
+      servings: { type: Type.INTEGER },
+      tags: { type: Type.ARRAY, items: { type: Type.STRING } },
+      nutrients: {
+        type: Type.OBJECT,
+        properties: {
+          protein: { type: Type.INTEGER },
+          fat: { type: Type.INTEGER },
+          carbs: { type: Type.INTEGER },
+        },
+        required: ["protein", "fat", "carbs"],
+      },
+      ingredients: {
+        type: Type.ARRAY,
+        items: {
+          type: Type.ARRAY,
+          items: { type: Type.STRING },
+          description:
+            "A two-element array tuple representing [quantity, ingredient_name (first letter capitalized)].",
+        },
+      },
+      instructions: {
+        type: Type.ARRAY,
+        items: {
+          type: Type.OBJECT,
+          properties: {
+            step: { type: Type.STRING },
+            timerMinutes: {
+              type: Type.INTEGER,
+              description: "Set to 0 unless a timer is needed for this step.",
+            },
+          },
+          required: ["step", "timerMinutes"],
+        },
+      },
+      tips: { type: Type.ARRAY, items: { type: Type.STRING } },
+    },
+    required: [
+      "title",
+      "description",
+      "difficulty",
+      "time",
+      "servings",
+      "tags",
+      "nutrients",
+      "ingredients",
+      "instructions",
+      "tips",
+    ],
   };
 
   const fetchResponse = async (prompt: string) => {
     setLoading(true);
     try {
       const response = await ai.models.generateContent({
-        model: "gemini-3.1-flash-lite-preview", // BEST MODEL
+        model: "gemini-3.1-flash-lite-preview",
         contents: prompt,
+
+        config: {
+          responseMimeType: "application/json",
+          responseSchema: RecipeSchema,
+        },
       });
 
       if (response.text) {
-        const geminiText = (response.text || "").replace(/^\s+/, "");
-        setResponseRecipe(geminiText);
+        console.log("Raw response text:", response.text);
+        const parsedRecipe = JSON.parse(response.text);
 
-        const parsedRecipe = parseRecipeJson(geminiText);
         setRecipeData({
-          responseRecipe: geminiText,
+          responseRecipe: response.text,
           title: parsedRecipe.title,
           description: parsedRecipe.description,
           difficulty: parsedRecipe.difficulty,
           time: parsedRecipe.time,
           servings: parsedRecipe.servings,
-          nutrients: parsedRecipe.nutrients,
+
+          nutrients: [
+            Number(parsedRecipe.nutrients?.protein) || 0,
+            Number(parsedRecipe.nutrients?.fat) || 0,
+            Number(parsedRecipe.nutrients?.carbs) || 0,
+          ],
+
           tags: parsedRecipe.tags,
           ingredients: parsedRecipe.ingredients,
           instructions: parsedRecipe.instructions,
@@ -181,12 +153,12 @@ export default function Generate() {
       const totalMeals = storage.getNumber("mealsnumber") ?? 0;
       setMealsLeft(mealsLeft - 1);
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+      storage.set("savesnumber", saves.length); // Update total save count in storage
       storage.set("mealsnumber", totalMeals + 1);
     }
   };
 
   const handleGenerateRecipe = (inputRecipe: string) => {
-    setResponseRecipe("");
     fetchResponse(inputRecipe);
   };
 

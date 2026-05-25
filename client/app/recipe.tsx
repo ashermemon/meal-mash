@@ -7,8 +7,8 @@ import NutrientsContext from "@/contexts/NutrientsContext";
 import { GenerationCardPreview } from "../components/features/generator/GenerationCardPreview";
 import Timer from "@/components/features/recipe/Timer";
 import { Image } from "expo-image";
-import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { COLORS } from "@/constants/Theme";
+import CustomCheckbox from "@/components/common/CustomCheckbox";
 import * as Haptics from "expo-haptics";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import { useNavigation } from "@react-navigation/native";
@@ -114,13 +114,9 @@ export default function RecipePage() {
               paddingHorizontal: 20,
             }}
           >
-            <BouncyCheckbox
-              size={20}
-              fillColor={COLORS.greenProgressBar}
-              unFillColor={COLORS.greenButtonColor}
-              iconStyle={{ borderColor: COLORS.fontColor }}
-              innerIconStyle={{ borderWidth: 2 }}
-              onPress={() =>
+            <CustomCheckbox
+              size={22}
+              onChange={() =>
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft)
               }
             />
@@ -184,6 +180,7 @@ export default function RecipePage() {
           style={{
             marginTop: 8,
             marginLeft: 0,
+            zIndex: 1000,
           }}
           onPress={() =>
             navigation.canGoBack()

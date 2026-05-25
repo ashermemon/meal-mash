@@ -82,14 +82,14 @@ export default function Timer(props: TimerProps) {
           {isPlaying && !timerFinished ? (
             <CustomIcon
               color={COLORS.greyBtns}
-              name={"stop"}
+              name={"pause"}
               size={30}
               filled={true}
             ></CustomIcon>
           ) : (
             <CustomIcon
               color={COLORS.greyBtns}
-              name={"miniplayer"}
+              name={"play"}
               size={30}
               filled={true}
             ></CustomIcon>

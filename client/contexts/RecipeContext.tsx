@@ -20,7 +20,7 @@ export type RecipeData = {
   servings: number | null;
   nutrients: number[];
   tags: string[];
-  ingredients: string[];
+  ingredients: [string, string][];
   instructions: RecipeInstruction[];
   tips: string[];
 };
