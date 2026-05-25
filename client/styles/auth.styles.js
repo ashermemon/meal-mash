@@ -477,8 +477,8 @@ export const styles = StyleSheet.create({
     marginBottom: 10,
   },
   card: {
-    borderBottomColor: NEWCOLORS.dividerGrey2,
-    borderBottomWidth: 3,
+    borderTopColor: NEWCOLORS.dividerGrey2,
+    borderTopWidth: 3,
   },
   checkboxOutline: {
     width: 20,
@@ -495,14 +495,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  tipBadge: {
-    width: 32,
-    height: 32,
-    borderRadius: 12,
-    backgroundColor: NEWCOLORS.tipBadgeBg,
-    alignItems: "center",
-    justifyContent: "center",
-  },
+
   customButton: {
     alignItems: "center",
     justifyContent: "center",
@@ -731,5 +724,19 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 7,
+  },
+
+  tipBadgeContainer: {
+    height: 37,
+    width: 32.7, //33
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  svgBackground: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
 });

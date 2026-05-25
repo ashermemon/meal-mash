@@ -23,7 +23,7 @@ export const NEWCOLORS = {
   secondaryBoxGrey: "rgb(244, 244, 244)",
   nestedBG: "#FCFCFC",
   cardWhite: "#FFFFFF",
-  stepCircle: "#E7F5EB",
-  tipBadgeBg: "#FFF2D9",
+  stepCircle: "#D1F1D7",
+  tipBadgeBg: "#FFE7AB",
   checkboxOutline: "#D9D9D9",
 } as const;

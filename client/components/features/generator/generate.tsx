@@ -149,7 +149,7 @@ export default function Generate() {
     setLoading(true);
     try {
       const response = await ai.models.generateContent({
-        model: "gemini-3.1-flash-lite-preview", // gemini-3.5-flash
+        model: "gemini-3.1-flash-lite-preview", // BEST MODEL
         contents: prompt,
       });
 
