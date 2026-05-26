@@ -60,11 +60,11 @@ export default function Timer(props: TimerProps) {
             setTimerFinished(true);
             return { shouldRepeat: false };
           }}
-        >
-          {({ remainingTime: rt }) => {
+          onUpdate={(rt) => {
             setRemainingTime(rt);
-            return null;
           }}
+        >
+          {() => null}
         </CountdownCircleTimer>
         <View style={{ marginLeft: 22, flex: 1, justifyContent: "center" }}>
           <Text

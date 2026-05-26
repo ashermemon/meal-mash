@@ -39,7 +39,7 @@ const RecipeSection = (props: Props) => {
           <Text
             style={[
               styles.textRight,
-              { color: COLORS.searchPlaceholder, fontSize: 13, marginTop: 3 },
+              { color: COLORS.searchPlaceholder, fontSize: 13, marginTop: 1 },
             ]}
           >
             Makes {props.servings} servings

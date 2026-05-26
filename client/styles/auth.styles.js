@@ -161,7 +161,7 @@ export const styles = StyleSheet.create({
   timer: {
     paddingVertical: 15,
     paddingHorizontal: 20,
-    marginVertical: 20,
+    marginBottom: 30,
     marginHorizontal: 25,
     backgroundColor: NEWCOLORS.secondaryBoxGrey,
     flex: 1,

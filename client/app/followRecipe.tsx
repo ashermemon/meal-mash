@@ -21,6 +21,7 @@ import FollowRecipeHeader from "@/components/features/recipe/FollowRecipeHeader"
 const followRecipe = () => {
   const [contextRecipeData] = useContext(RecipeContext);
   const navigation = useNavigation();
+  const bulletMargin = 45; //33
 
   // Default placeholder data when context is empty
   const defaultRecipeData: RecipeData = {
@@ -98,9 +99,11 @@ const followRecipe = () => {
       <ScrollView
         contentContainerStyle={{ padding: 24, paddingBottom: 40 }}
         onScroll={(event) => {
-          const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent;
+          const { layoutMeasurement, contentOffset, contentSize } =
+            event.nativeEvent;
           const totalHeight = contentSize.height - layoutMeasurement.height;
-          const currentProgress = totalHeight > 0 ? contentOffset.y / totalHeight : 0;
+          const currentProgress =
+            totalHeight > 0 ? contentOffset.y / totalHeight : 0;
           setScrollProgress(Math.min(Math.max(currentProgress, 0), 1));
         }}
         scrollEventThrottle={16}
@@ -274,7 +277,7 @@ const followRecipe = () => {
                       lineHeight: 22,
                       marginLeft: 12,
                       marginTop: 5,
-                      marginBottom: 33,
+                      marginBottom: bulletMargin,
                     },
                   ]}
                 >
@@ -333,7 +336,7 @@ const followRecipe = () => {
                       fontSize: 15,
                       lineHeight: 22,
                       marginLeft: 12,
-                      marginBottom: 33,
+                      marginBottom: bulletMargin,
                       marginTop: 5,
                     },
                   ]}

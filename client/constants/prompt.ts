@@ -21,7 +21,7 @@ CULINARY GUIDELINES:
 5. Tags: Generate 3-5 relevant tags (Dinner, Italian, Quick, etc.). The first tag MUST be the meal type (Breakfast, Lunch, Dinner, Snack, Dessert). The rest should be cuisine/style tags.
 6. Description constraint: Must be a short, mouthwatering hook under 23 words.
 7. Ingredients List: Each item must be a 2-element array (tuple) of strings: [quantity, ingredient_name (first letter capitalized)], for example: ["2 tbsp", "Olive oil"] or ["400g", "Ground beef"] or ["To taste", "Salt"]. Do not use any dashes or separators between the quantity and the ingredient name.
-8. Instructions: Write each step clearly, aiming for 6-12 steps. For steps that require specific timing, set a positive integer for timerMinutes and restate the step that needs the timer in a concise, capitalized description of what is being timed for timerTask (e.g., "Bake cookies" or "Simmer sauce"). If a step does not need timing, set timerMinutes to 0 and timerTask to an empty string.
+8. Instructions: Write each step clearly, aiming for 6-12 steps. For steps that require specific timing, set a positive integer for timerMinutes and restate the step that needs the timer in a concise, capitalized description of what is being timed for timerTask (e.g., "Bake cookies" or "Simmer sauce"). If a step does not need timing, set timerMinutes to 0 and timerTask to an empty string. Only use a timer when neccessary (not in every step).
 9. Tips: Provide 3 genuinely helpful cooking tips for this recipe.
 10. Difficulty: Specify a difficulty level: Choose one of these options: "Easy", "Intermediate", or "Expert".
 11. Time: Specify a realistic total cooking duration, e.g., "15 mins", "40 mins", or "1 hr 15 mins".

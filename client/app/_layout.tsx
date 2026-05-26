@@ -77,6 +77,18 @@ export default function RootLayout() {
       SplashScreen.hideAsync();
     }
   }, [loaded, error]);
+
+  useEffect(() => {
+    Notifications.setNotificationHandler({
+      handleNotification: async () => ({
+        shouldPlaySound: true,
+        shouldSetBadge: false,
+        shouldShowBanner: false,
+        shouldShowList: false,
+      }),
+    });
+  }, []);
+
   useEffect(() => {
     const storedFavoritesString = storage.getString("favorites");
     const storedFavoritesStringL = storage.getString("favoritesL");
@@ -112,15 +124,6 @@ export default function RootLayout() {
   if (!loaded && !error) {
     return null;
   }
-
-  Notifications.setNotificationHandler({
-    handleNotification: async () => ({
-      shouldPlaySound: true,
-      shouldSetBadge: false,
-      shouldShowBanner: false,
-      shouldShowList: false,
-    }),
-  });
 
   return (
     <BottomSheetModalProvider>
