@@ -7,6 +7,7 @@ import { Dimensions } from "react-native";
 
 interface ProgressProps {
   progress: number;
+  height?: number;
 }
 
 export default function ProgressBar(props: ProgressProps) {
@@ -22,8 +23,7 @@ export default function ProgressBar(props: ProgressProps) {
   return (
     <View
       style={{
-        flex: 1,
-        marginHorizontal: 25,
+        width: "100%",
         alignItems: "center",
         justifyContent: "center",
       }}
@@ -34,11 +34,10 @@ export default function ProgressBar(props: ProgressProps) {
           progress={props.progress}
           width={containerWidth}
           color="#69CB87"
-          height={13}
-          borderRadius={20}
-          unfilledColor="#f5f6f7"
-          borderColor={COLORS.outlineProgress}
-          borderWidth={3}
+          height={props.height ?? 4}
+          borderRadius={0}
+          unfilledColor="#ECECEC"
+          borderWidth={0}
         />
       )}
     </View>

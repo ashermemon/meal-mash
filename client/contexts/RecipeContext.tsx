@@ -9,6 +9,7 @@ import React, {
 export type RecipeInstruction = {
   step: string;
   timerMinutes?: number;
+  timerTask?: string;
 };
 
 export type RecipeData = {

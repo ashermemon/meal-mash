@@ -16,6 +16,7 @@ import * as Haptics from "expo-haptics";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import RecipeSection from "@/components/features/recipe/RecipeSection";
 import Svg, { Path } from "react-native-svg";
+import FollowRecipeHeader from "@/components/features/recipe/FollowRecipeHeader";
 
 const followRecipe = () => {
   const [contextRecipeData] = useContext(RecipeContext);
@@ -37,12 +38,26 @@ const followRecipe = () => {
       ["1", "onion, chopped"],
     ],
     instructions: [
-      { step: "Heat the olive oil in a pan over medium heat." },
+      {
+        step: "Heat the olive oil in a pan over medium heat.",
+        timerMinutes: 0,
+        timerTask: "",
+      },
       {
         step: "Add the minced garlic and chopped onion, and sauté until fragrant.",
+        timerMinutes: 0,
+        timerTask: "",
       },
-      { step: "Add the rest of the ingredients and cook until done." },
-      { step: "Serve hot and enjoy!" },
+      {
+        step: "Add the rest of the ingredients and cook until done.",
+        timerMinutes: 0,
+        timerTask: "",
+      },
+      {
+        step: "Serve hot and enjoy!",
+        timerMinutes: 0,
+        timerTask: "",
+      },
     ],
     nutrients: [10, 20, 30],
     tips: [
@@ -63,12 +78,7 @@ const followRecipe = () => {
     recipeData?.nutrients || [0, 0, 0],
   );
 
-  const handleBack = () => {
-    if (navigation.canGoBack()) {
-      Haptics.selectionAsync();
-      navigation.goBack();
-    }
-  };
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   const totalCalories = useMemo(
     () => nutrients[0] * 4 + nutrients[1] * 9 + nutrients[2] * 4,
@@ -81,33 +91,20 @@ const followRecipe = () => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: NEWCOLORS.nestedBG }}>
-      <ScrollView contentContainerStyle={{ padding: 24, paddingBottom: 40 }}>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: 16,
-          }}
-        >
-          <Pressable onPress={handleBack}>
-            <CustomIcon
-              name="arrow-left"
-              filled={false}
-              color={COLORS.fontColor}
-              size={20}
-            />
-          </Pressable>
-          <Pressable onPress={() => {}}>
-            <CustomIcon
-              name="bookmark"
-              filled={false}
-              color={COLORS.fontColor}
-              size={20}
-            />
-          </Pressable>
-        </View>
-
+      <FollowRecipeHeader
+        pageTitle={recipeData.title || "Generated Meal"}
+        progress={scrollProgress}
+      />
+      <ScrollView
+        contentContainerStyle={{ padding: 24, paddingBottom: 40 }}
+        onScroll={(event) => {
+          const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent;
+          const totalHeight = contentSize.height - layoutMeasurement.height;
+          const currentProgress = totalHeight > 0 ? contentOffset.y / totalHeight : 0;
+          setScrollProgress(Math.min(Math.max(currentProgress, 0), 1));
+        }}
+        scrollEventThrottle={16}
+      >
         <View
           style={[
             {
@@ -286,7 +283,10 @@ const followRecipe = () => {
               </View>
               {instruction.timerMinutes ? (
                 <View style={{ marginTop: -20, marginBottom: 5 }}>
-                  <Timer time={instruction.timerMinutes * 60} />
+                  <Timer
+                    time={instruction.timerMinutes * 60}
+                    taskDescription={instruction.timerTask}
+                  />
                 </View>
               ) : null}
             </View>

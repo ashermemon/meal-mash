@@ -12,7 +12,6 @@ import { useState } from "react";
 export default function Saves() {
   return (
     <>
-      <MobileHeader pageTitle="Saves" backEnabled={true}></MobileHeader>
       <ScrollView
         contentContainerStyle={{ flexGrow: 1 }}
         style={styles.generatorContainer}

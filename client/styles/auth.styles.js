@@ -101,6 +101,7 @@ export const styles = StyleSheet.create({
     paddingTop: 8,
 
     margin: 0,
+    paddingHorizontal: 10,
     paddingBottom: 5,
     width: "100%",
   },
@@ -328,7 +329,7 @@ export const styles = StyleSheet.create({
   },
 
   spacer: {
-    height: 20,
+    height: 40,
   },
   searchText: {
     fontFamily: "Nunito-Bold",

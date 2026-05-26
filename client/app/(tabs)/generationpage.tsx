@@ -5,8 +5,6 @@ import MobileHeader from "@/components/universal/MobileHeader";
 export default function GenerationPage() {
   return (
     <>
-      <MobileHeader pageTitle="Generator" backEnabled={false} />
-
       <Generate />
     </>
   );

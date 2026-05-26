@@ -9,8 +9,9 @@ import * as Haptics from "expo-haptics";
 
 type HeaderProps = {
   pageTitle: string;
+  progress: number;
 };
-const FollowRecipe = (props: HeaderProps) => {
+const FollowRecipeHeader = (props: HeaderProps) => {
   const navigation = useNavigation();
 
   const handleBack = () => {
@@ -23,57 +24,51 @@ const FollowRecipe = (props: HeaderProps) => {
   return (
     <>
       <View
-        style={[
-          styles.headerContainer,
-          {
+        style={{ marginVertical: 10, width: "100%", paddingHorizontal: 30 }}
+      >
+        <View
+          style={{
             flexDirection: "row",
             alignItems: "center",
-
             justifyContent: "space-between",
-          },
-        ]}
-      >
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    marginBottom: 16,
-                  }}
-                >
-                  <Pressable onPress={handleBack}>
-                    <CustomIcon
-                      name="arrow-left"
-                      filled={false}
-                      color={COLORS.fontColor}
-                      size={20}
-                    />
-                  </Pressable>
-                          <View>
-          <Text
-            numberOfLines={1}
-            adjustsFontSizeToFit
-            style={[styles.headerText, { alignSelf: "center" }]}
-          >
-            {props.pageTitle}
-          </Text>
+            width: "100%",
+            paddingVertical: 8,
+          }}
+        >
+          <Pressable onPress={handleBack}>
+            <CustomIcon
+              name="arrow-left"
+              filled={false}
+              color={COLORS.fontColor}
+              size={20}
+            />
+          </Pressable>
+          <View style={{ flex: 1, alignItems: "center" }}>
+            <Text
+              numberOfLines={1}
+              adjustsFontSizeToFit
+              style={[
+                styles.textCenterBold,
+                { fontSize: 18, fontFamily: "Nunito-SemiBold" },
+              ]}
+            >
+              {props.pageTitle}
+            </Text>
+          </View>
+          <Pressable onPress={() => {}}>
+            <CustomIcon
+              name="bookmark"
+              filled={false}
+              color={COLORS.fontColor}
+              size={20}
+            />
+          </Pressable>
         </View>
-                  <Pressable onPress={() => {}}>
-                    <CustomIcon
-                      name="bookmark"
-                      filled={false}
-                      color={COLORS.fontColor}
-                      size={20}
-                    />
-                  </Pressable>
-                </View>
-
-
       </View>
-      <View style={styles.recipeMovement}>
-        <ProgressBar progress={1}></ProgressBar>
+      <View style={{ width: "100%" }}>
+        <ProgressBar progress={props.progress}></ProgressBar>
       </View>
     </>
   );
-}
-export default FollowRecipe;
+};
+export default FollowRecipeHeader;

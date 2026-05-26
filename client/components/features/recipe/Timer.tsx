@@ -10,6 +10,7 @@ import { CustomIcon } from "@/icon-loader/icon-loader";
 
 type TimerProps = {
   time: number;
+  taskDescription?: string;
   color1?: any;
   color2?: any;
   color3?: any;
@@ -35,13 +36,25 @@ export default function Timer(props: TimerProps) {
 
   return (
     <View style={[styles.timer, styles.basicBoxShadow]}>
-      <View style={{ flexDirection: "row" }}>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          flex: 1,
+          marginRight: 16,
+        }}
+      >
         <CountdownCircleTimer
           key={timerKey}
           size={60}
           isPlaying={isPlaying}
           duration={props.time}
-          colors={[stableColors[0], stableColors[1], stableColors[2], hsl(359, 55, 69)]}
+          colors={[
+            stableColors[0],
+            stableColors[1],
+            stableColors[2],
+            hsl(359, 55, 69),
+          ]}
           colorsTime={[props.time, (props.time / 3) * 2, props.time / 3, 0]}
           onComplete={() => {
             setTimerFinished(true);
@@ -53,8 +66,14 @@ export default function Timer(props: TimerProps) {
             return null;
           }}
         </CountdownCircleTimer>
-        <View style={{ marginLeft: 22 }}>
-          <Text style={[styles.textLeftBold, { fontSize: 16 }]}>Timer</Text>
+        <View style={{ marginLeft: 22, flex: 1, justifyContent: "center" }}>
+          <Text
+            style={[styles.textLeftBold, { fontSize: 16 }]}
+            numberOfLines={1}
+            adjustsFontSizeToFit
+          >
+            {props.taskDescription || "Timer"}
+          </Text>
           <Text style={[styles.textLeftBold, { fontSize: 27 }]}>
             {`${Math.floor(remainingTime / 60)}:${String(
               remainingTime % 60,
@@ -62,7 +81,13 @@ export default function Timer(props: TimerProps) {
           </Text>
         </View>
       </View>
-      <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "flex-end",
+        }}
+      >
         <Pressable
           style={styles.timerButton}
           onPress={() => {

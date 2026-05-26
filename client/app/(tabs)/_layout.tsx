@@ -37,6 +37,7 @@ export default function TabsLayout() {
                 shadowOpacity: 0.1,
                 shadowRadius: 5,
                 paddingBottom: 0,
+                marginBottom: 10,
                 borderTopWidth: 0,
               },
 

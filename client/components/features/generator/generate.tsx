@@ -87,8 +87,13 @@ export default function Generate() {
               type: Type.INTEGER,
               description: "Set to 0 unless a timer is needed for this step.",
             },
+            timerTask: {
+              type: Type.STRING,
+              description:
+                "Brief task description of what is being timed if timerMinutes > 0 (first letter capitalized, e.g. 'Simmer sauce', 'Bake cookies'). Set to empty string if timerMinutes is 0.",
+            },
           },
-          required: ["step", "timerMinutes"],
+          required: ["step", "timerMinutes", "timerTask"],
         },
       },
       tips: { type: Type.ARRAY, items: { type: Type.STRING } },
