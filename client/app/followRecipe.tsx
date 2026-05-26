@@ -20,7 +20,6 @@ import Svg, { Path } from "react-native-svg";
 const followRecipe = () => {
   const [contextRecipeData] = useContext(RecipeContext);
   const navigation = useNavigation();
-  const hsl = require("hsl-to-hex");
 
   // Default placeholder data when context is empty
   const defaultRecipeData: RecipeData = {
@@ -287,12 +286,7 @@ const followRecipe = () => {
               </View>
               {instruction.timerMinutes ? (
                 <View style={{ marginTop: -20, marginBottom: 5 }}>
-                  <Timer
-                    time={instruction.timerMinutes * 60}
-                    color1={hsl(Math.random() * 359, 55, 65)}
-                    color2={hsl(Math.random() * 359, 55, 65)}
-                    color3={hsl(Math.random() * 359, 55, 65)}
-                  />
+                  <Timer time={instruction.timerMinutes * 60} />
                 </View>
               ) : null}
             </View>

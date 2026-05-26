@@ -10,9 +10,9 @@ import { CustomIcon } from "@/icon-loader/icon-loader";
 
 type TimerProps = {
   time: number;
-  color1: any;
-  color2: any;
-  color3: any;
+  color1?: any;
+  color2?: any;
+  color3?: any;
 };
 
 export default function Timer(props: TimerProps) {
@@ -23,6 +23,16 @@ export default function Timer(props: TimerProps) {
 
   var hsl = require("hsl-to-hex");
 
+  // Generate stable random colors on mount using standard Math.random()
+  const [stableColors] = useState(() => {
+    const randomHue = () => Math.floor(Math.random() * 360);
+    return [
+      props.color1 || hsl(randomHue(), 55, 65),
+      props.color2 || hsl(randomHue(), 55, 65),
+      props.color3 || hsl(randomHue(), 55, 65),
+    ];
+  });
+
   return (
     <View style={[styles.timer, styles.basicBoxShadow]}>
       <View style={{ flexDirection: "row" }}>
@@ -31,7 +41,7 @@ export default function Timer(props: TimerProps) {
           size={60}
           isPlaying={isPlaying}
           duration={props.time}
-          colors={[props.color1, props.color2, props.color3, hsl(359, 55, 69)]}
+          colors={[stableColors[0], stableColors[1], stableColors[2], hsl(359, 55, 69)]}
           colorsTime={[props.time, (props.time / 3) * 2, props.time / 3, 0]}
           onComplete={() => {
             setTimerFinished(true);

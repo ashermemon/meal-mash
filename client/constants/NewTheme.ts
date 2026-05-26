@@ -24,6 +24,6 @@ export const NEWCOLORS = {
   nestedBG: "#FCFCFC",
   cardWhite: "#FFFFFF",
   stepCircle: "#D1F1D7",
-  tipBadgeBg: "#ffdcab",
+  tipBadgeBg: "#FFE7AB",
   checkboxOutline: "#D9D9D9",
 } as const;
