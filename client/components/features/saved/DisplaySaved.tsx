@@ -8,6 +8,7 @@ import FavoritesContext from "@/contexts/FavoritesContext";
 import FavLeftoversContext from "@/contexts/FavLeftoversContext";
 import SavedRecipesContext from "@/contexts/SavedRecipesContext";
 import SavedCard from "@/components/features/saved/SavedCard";
+import { type RecipeData } from "@/contexts/RecipeContext";
 
 export default function DisplaySaved() {
   const [favorites, setFavorites] = useContext(FavoritesContext);
@@ -17,8 +18,8 @@ export default function DisplaySaved() {
   return (
     <View style={{ width: "100%", paddingHorizontal: 20, paddingBottom: 30 }}>
       {favorites.length === 0 &&
-      favoritesL.length === 0 &&
-      saves.length === 0 ? (
+        favoritesL.length === 0 &&
+        saves.length === 0 ? (
         <Text style={[styles.textCentered]}>
           Your saves and favorites will show up here.
         </Text>
@@ -39,7 +40,7 @@ export default function DisplaySaved() {
                 Saved Recipes:
               </Text>
 
-              {saves.map((item: string, index: number) => (
+              {saves.map((item: RecipeData, index: number) => (
                 <SavedCard SavedRecipe={item} key={index}></SavedCard>
               ))}
             </>

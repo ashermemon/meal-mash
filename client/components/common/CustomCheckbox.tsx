@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Pressable, StyleSheet, Animated } from "react-native";
 import Svg, { Path } from "react-native-svg";
 import { COLORS } from "@/constants/Theme";
+import { NEWCOLORS } from "@/constants/NewTheme";
 
 interface CustomCheckboxProps {
   checked?: boolean;
@@ -41,7 +42,6 @@ export default function CustomCheckbox({
     }
   };
 
-
   const uncheckedOpacity = animation.interpolate({
     inputRange: [0, 1],
     outputRange: [1, 0],
@@ -69,7 +69,6 @@ export default function CustomCheckbox({
         },
       ]}
     >
-
       <Animated.View
         style={[
           styles.uncheckedLayer,
@@ -79,7 +78,6 @@ export default function CustomCheckbox({
           },
         ]}
       />
-
 
       <Animated.View
         style={[
@@ -118,15 +116,15 @@ const styles = StyleSheet.create({
   },
   uncheckedLayer: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: "#F2F2F5", 
+    backgroundColor: "#F2F2F5",
     borderWidth: 2.5,
-    borderColor: "#C4C4C6", 
+    borderColor: "#C4C4C6",
   },
   checkedLayer: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: COLORS.greenProgressBar, 
+    backgroundColor: NEWCOLORS.greenAccent,
     borderWidth: 1.5,
-    borderColor: COLORS.greenProgressBar,
+    borderColor: NEWCOLORS.greenAccent,
     justifyContent: "center",
     alignItems: "center",
   },

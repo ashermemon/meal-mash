@@ -22,14 +22,14 @@ import {
   BottomSheetModalProvider,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
-import { RecipeProvider } from "@/contexts/RecipeContext";
+import { RecipeProvider, type RecipeData } from "@/contexts/RecipeContext";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [favorites, setFavorites] = useState<string[]>([]);
   const [favoritesL, setFavoritesL] = useState<string[]>([]);
-  const [savedRecipes, setSavedRecipes] = useState<string[]>([]);
+  const [savedRecipes, setSavedRecipes] = useState<RecipeData[]>([]);
   const [ingredients, setIngredients] = useState<string[]>([]);
   const [leftovers, setLeftovers] = useState<string[]>([]);
   const [mealsLeft, setMealsLeft] = useState<number>(5);
@@ -114,7 +114,25 @@ export default function RootLayout() {
     if (storedSaved) {
       try {
         const storedSavedArray = JSON.parse(storedSaved);
-        setSavedRecipes(storedSavedArray);
+        const normalizedSaves = storedSavedArray.map((item: any) => {
+          if (typeof item === "string") {
+            return {
+              responseRecipe: "",
+              title: item,
+              description: "",
+              difficulty: "",
+              time: "",
+              servings: null,
+              nutrients: [0, 0, 0],
+              tags: [],
+              ingredients: [],
+              instructions: [],
+              tips: [],
+            };
+          }
+          return item;
+        });
+        setSavedRecipes(normalizedSaves);
       } catch (e) {
         console.error("Failed to parse favorites from storage:", e);
         setSavedRecipes([]);

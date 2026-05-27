@@ -11,49 +11,48 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withTiming,
+  runOnJS,
 } from "react-native-reanimated";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { CustomIcon } from "@/icon-loader/icon-loader";
+import { saveRecipe } from "@/components/features/recipe/SaveRecipe";
+import { router } from "expo-router";
+import RecipeContext, { type RecipeData } from "@/contexts/RecipeContext";
 
 type SavedProps = {
-  SavedRecipe: string;
+  SavedRecipe: RecipeData;
 };
 
 export default function SavedCard(props: SavedProps) {
   const [saved, setSaved] = useState(true);
   const [savesRecipes, setSavesRecipes] = useContext(SavedRecipesContext);
+  const [recipeData, setRecipeData] = useContext(RecipeContext);
 
   useEffect(() => {
-    setSaved(savesRecipes.includes(props.SavedRecipe));
+    setSaved(savesRecipes.some((r) => r.title === props.SavedRecipe.title));
   }, [props.SavedRecipe, savesRecipes]);
 
-  let updatedSaves: string[];
-
   const saveCard = () => {
-    const ingredientName = props.SavedRecipe;
-    const isCurrentlyFavorite = savesRecipes.includes(ingredientName);
-
-    if (isCurrentlyFavorite) {
-      updatedSaves = savesRecipes.filter((name) => name !== ingredientName);
-    } else {
-      updatedSaves = [...savesRecipes, ingredientName];
-    }
-
-    setSavesRecipes(updatedSaves);
-    storage.set("saves", JSON.stringify(updatedSaves));
+    saveRecipe(props.SavedRecipe, setSavesRecipes);
 
     alert(`
-      ${props.SavedRecipe} was ${
-      saved ? `was removed from saves` : `was saved`
+      ${props.SavedRecipe.title} was ${
+      saved ? `removed from saves` : `saved`
     }`);
   };
   const pressed = useSharedValue<boolean>(false);
+  const handleCardPress = () => {
+    setRecipeData(props.SavedRecipe);
+    router.push("/followRecipe");
+  };
+
   const tap = Gesture.Tap()
     .onBegin(() => {
       pressed.value = true;
     })
     .onFinalize(() => {
       pressed.value = false;
+      runOnJS(handleCardPress)();
     });
   const animatedStyles = useAnimatedStyle(() => {
     let targetColor;
@@ -92,7 +91,7 @@ export default function SavedCard(props: SavedProps) {
               <Text
                 style={[styles.textLeftBold, { fontSize: 13, width: "100%" }]}
               >
-                {props.SavedRecipe}
+                {props.SavedRecipe.title}
               </Text>
             </View>
             <View style={styles.favFlex}>

@@ -1,11 +1,14 @@
 import { View, Text, Pressable } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import ProgressBar from "@/components/features/recipe/ProgressBar";
 import { styles } from "@/styles/GlobalStyles";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import { useNavigation } from "expo-router";
 import { COLORS } from "@/constants/Theme";
 import * as Haptics from "expo-haptics";
+import { saveRecipe } from "@/components/features/recipe/SaveRecipe";
+import SavedRecipesContext from "@/contexts/SavedRecipesContext";
+import RecipeContext from "@/contexts/RecipeContext";
 
 type HeaderProps = {
   pageTitle: string;
@@ -13,6 +16,15 @@ type HeaderProps = {
 };
 const FollowRecipeHeader = (props: HeaderProps) => {
   const navigation = useNavigation();
+  const [recipeData] = useContext(RecipeContext);
+  const [savedRecipes, setSavedRecipes] = useContext(SavedRecipesContext);
+
+  const isSaved = savedRecipes.some((r) => r.title === recipeData.title);
+
+  const handleSave = () => {
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    saveRecipe(recipeData, setSavedRecipes);
+  };
 
   const handleBack = () => {
     if (navigation.canGoBack()) {
@@ -55,10 +67,10 @@ const FollowRecipeHeader = (props: HeaderProps) => {
               {props.pageTitle}
             </Text>
           </View>
-          <Pressable onPress={() => {}}>
+          <Pressable onPress={handleSave}>
             <CustomIcon
               name="bookmark"
-              filled={false}
+              filled={isSaved}
               color={COLORS.fontColor}
               size={20}
             />

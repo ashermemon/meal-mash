@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { View, Dimensions, ViewStyle } from "react-native";
 import Animated, {
   useAnimatedStyle,
@@ -12,6 +12,9 @@ import Animated, {
 
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import GenerationCardPreview from "./GenerationCardPreview";
+import SavedRecipesContext from "@/contexts/SavedRecipesContext";
+import { saveRecipe as persistRecipe } from "@/components/features/recipe/SaveRecipe";
+import RecipeContext from "@/contexts/RecipeContext";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
@@ -31,6 +34,8 @@ type Props = {
 };
 
 const PreviewAnimatedWrapper = (props: Props) => {
+  const [savedRecipes, setSavedRecipes] = useContext(SavedRecipesContext);
+  const [recipeData, setRecipeData] = useContext(RecipeContext);
   const [cards, setCards] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
   const translateX = useSharedValue(0);
 
@@ -38,8 +43,15 @@ const PreviewAnimatedWrapper = (props: Props) => {
 
   const removeTopCardJS = () => setCards((prev) => prev.slice(0, -1));
 
+  const handleSaveRecipeJS = () => {
+    if (recipeData && recipeData.title) {
+      persistRecipe(recipeData, setSavedRecipes);
+    }
+  };
+
   const saveRecipe = () => {
     "worklet";
+    runOnJS(handleSaveRecipeJS)();
     translateX.value = withTiming(
       SCREEN_WIDTH + 100,
       { duration: 400, easing: Easing.inOut(Easing.cubic) },

@@ -4,6 +4,7 @@ import * as Progress from "react-native-progress";
 import { COLORS } from "@/constants/Theme";
 
 import { Dimensions } from "react-native";
+import { NEWCOLORS } from "@/constants/NewTheme";
 
 interface ProgressProps {
   progress: number;
@@ -33,7 +34,7 @@ export default function ProgressBar(props: ProgressProps) {
         <Progress.Bar
           progress={props.progress}
           width={containerWidth}
-          color="#69CB87"
+          color={NEWCOLORS.greenAccent}
           height={props.height ?? 4}
           borderRadius={0}
           unfilledColor="#ECECEC"

@@ -1,7 +1,8 @@
 import { createContext } from "react";
+import { type RecipeData } from "@/contexts/RecipeContext";
 
 const SavedRecipesContext = createContext<
-  [string[], React.Dispatch<React.SetStateAction<string[]>>]
->([[], () => {}]);
+  [RecipeData[], React.Dispatch<React.SetStateAction<RecipeData[]>>]
+>([[], () => { }]);
 
 export default SavedRecipesContext;
