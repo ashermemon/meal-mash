@@ -15,7 +15,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { CustomIcon } from "@/icon-loader/icon-loader";
-import { saveRecipe } from "@/components/features/recipe/SaveRecipe";
+import { saveRecipe, equal } from "@/components/features/recipe/SaveRecipe";
 import { router } from "expo-router";
 import RecipeContext, { type RecipeData } from "@/contexts/RecipeContext";
 
@@ -29,7 +29,7 @@ export default function SavedCard(props: SavedProps) {
   const [recipeData, setRecipeData] = useContext(RecipeContext);
 
   useEffect(() => {
-    setSaved(savesRecipes.some((r) => r.title === props.SavedRecipe.title));
+    setSaved(savesRecipes.some((r) => equal(r, props.SavedRecipe)));
   }, [props.SavedRecipe, savesRecipes]);
 
   const saveCard = () => {
@@ -37,8 +37,8 @@ export default function SavedCard(props: SavedProps) {
 
     alert(`
       ${props.SavedRecipe.title} was ${
-      saved ? `removed from saves` : `saved`
-    }`);
+        saved ? `removed from saves` : `saved`
+      }`);
   };
   const pressed = useSharedValue<boolean>(false);
   const handleCardPress = () => {

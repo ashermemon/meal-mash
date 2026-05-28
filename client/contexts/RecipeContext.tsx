@@ -13,6 +13,8 @@ export type RecipeInstruction = {
 };
 
 export type RecipeData = {
+  id?: string;
+  prompt?: string;
   responseRecipe: string;
   title: string | undefined;
   description: string;
@@ -32,6 +34,8 @@ export type RecipeContextType = [
 ];
 
 const initialRecipeData: RecipeData = {
+  id: undefined,
+  prompt: undefined,
   responseRecipe: "",
   title: undefined,
   description: "",

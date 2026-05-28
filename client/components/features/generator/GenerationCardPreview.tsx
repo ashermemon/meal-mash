@@ -1,4 +1,4 @@
-import { View, Text, Pressable, Dimensions } from "react-native";
+import { View, Text, Pressable, Dimensions, ActivityIndicator } from "react-native";
 import React from "react";
 import NutrientCircle from "@/components/features/recipe/NutrientCircle";
 import { styles } from "@/styles/GlobalStyles";
@@ -21,9 +21,46 @@ type Props = {
   tags: string[];
   saveRecipe: () => void;
   skipRecipe: () => void;
+  isLoading?: boolean;
 };
 
 export const GenerationCardPreview = (props: Props) => {
+  if (props.isLoading) {
+    return (
+      <View
+        style={{
+          width: CARD_WIDTH,
+          alignSelf: "center",
+          flex: 1,
+          paddingHorizontal: 15,
+          paddingTop: 10,
+          paddingBottom: 8,
+          backgroundColor: NEWCOLORS.nestedBG,
+          borderRadius: 5,
+          overflow: "hidden",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 16,
+        }}
+      >
+        <ActivityIndicator size="large" color={NEWCOLORS.darkButton} />
+        <Text
+          style={[
+            styles.textCentered,
+            {
+              fontFamily: "Nunito-SemiBold",
+              fontSize: 16,
+              color: NEWCOLORS.placeholderText,
+            },
+          ]}
+        >
+          Generating next recipe…
+        </Text>
+      </View>
+    );
+  }
+
+
   return (
     <View
       style={{

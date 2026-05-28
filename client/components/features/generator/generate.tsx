@@ -5,7 +5,6 @@ import { GoogleGenAI } from "@google/genai";
 import { styles } from "@/styles/GlobalStyles";
 import { COLORS } from "@/constants/Theme";
 import Prompt from "@/constants/prompt";
-import { Type } from "@google/genai";
 import AddIngredients from "@/components/features/generator/AddIngredients";
 import AddLeftovers from "@/components/features/generator/AddLeftovers";
 import SearchContext from "@/contexts/SearchContext";
@@ -24,6 +23,7 @@ import MealsLeftContext from "@/contexts/MealsLeftContext";
 import * as Haptics from "expo-haptics";
 import RecipeContext from "@/contexts/RecipeContext";
 import { router } from "expo-router";
+import { RecipeSchema } from "@/utils/RecipeSchema";
 
 export default function Generate() {
   const [isChecked, setChecked] = useState(false);
@@ -47,71 +47,6 @@ export default function Generate() {
     storage.set("savesnumber", saves.length);
   }, [saves.length]);
 
-  const RecipeSchema = {
-    type: Type.OBJECT,
-    properties: {
-      title: { type: Type.STRING },
-      description: { type: Type.STRING },
-      difficulty: {
-        type: Type.STRING,
-        enum: ["Easy", "Intermediate", "Expert"],
-      },
-      time: { type: Type.STRING },
-      servings: { type: Type.INTEGER },
-      tags: { type: Type.ARRAY, items: { type: Type.STRING } },
-      nutrients: {
-        type: Type.OBJECT,
-        properties: {
-          protein: { type: Type.INTEGER },
-          fat: { type: Type.INTEGER },
-          carbs: { type: Type.INTEGER },
-        },
-        required: ["protein", "fat", "carbs"],
-      },
-      ingredients: {
-        type: Type.ARRAY,
-        items: {
-          type: Type.ARRAY,
-          items: { type: Type.STRING },
-          description:
-            "A two-element array tuple representing [quantity, ingredient_name (first letter capitalized)].",
-        },
-      },
-      instructions: {
-        type: Type.ARRAY,
-        items: {
-          type: Type.OBJECT,
-          properties: {
-            step: { type: Type.STRING },
-            timerMinutes: {
-              type: Type.INTEGER,
-              description: "Set to 0 unless a timer is needed for this step.",
-            },
-            timerTask: {
-              type: Type.STRING,
-              description:
-                "Brief task description of what is being timed if timerMinutes > 0 (first letter capitalized, e.g. 'Simmer sauce', 'Bake cookies'). Set to empty string if timerMinutes is 0.",
-            },
-          },
-          required: ["step", "timerMinutes", "timerTask"],
-        },
-      },
-      tips: { type: Type.ARRAY, items: { type: Type.STRING } },
-    },
-    required: [
-      "title",
-      "description",
-      "difficulty",
-      "time",
-      "servings",
-      "tags",
-      "nutrients",
-      "ingredients",
-      "instructions",
-      "tips",
-    ],
-  };
-
   const fetchResponse = async (prompt: string) => {
     setLoading(true);
     try {
@@ -130,6 +65,8 @@ export default function Generate() {
         const parsedRecipe = JSON.parse(response.text);
 
         setRecipeData({
+          id: `recipe_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
+          prompt: prompt,
           responseRecipe: response.text,
           title: parsedRecipe.title,
           description: parsedRecipe.description,
@@ -156,7 +93,7 @@ export default function Generate() {
     } finally {
       setLoading(false);
       const totalMeals = storage.getNumber("mealsnumber") ?? 0;
-      setMealsLeft(mealsLeft - 1);
+      setMealsLeft(mealsLeft); //mealsLeft - 1
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
       storage.set("savesnumber", saves.length); // Update total save count in storage
       storage.set("mealsnumber", totalMeals + 1);

@@ -32,7 +32,7 @@ export default function RootLayout() {
   const [savedRecipes, setSavedRecipes] = useState<RecipeData[]>([]);
   const [ingredients, setIngredients] = useState<string[]>([]);
   const [leftovers, setLeftovers] = useState<string[]>([]);
-  const [mealsLeft, setMealsLeft] = useState<number>(5);
+  const [mealsLeft, setMealsLeft] = useState<number>(500);
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 

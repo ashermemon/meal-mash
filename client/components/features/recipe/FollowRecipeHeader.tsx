@@ -6,7 +6,7 @@ import { CustomIcon } from "@/icon-loader/icon-loader";
 import { useNavigation } from "expo-router";
 import { COLORS } from "@/constants/Theme";
 import * as Haptics from "expo-haptics";
-import { saveRecipe } from "@/components/features/recipe/SaveRecipe";
+import { saveRecipe, equal } from "@/components/features/recipe/SaveRecipe";
 import SavedRecipesContext from "@/contexts/SavedRecipesContext";
 import RecipeContext from "@/contexts/RecipeContext";
 
@@ -19,7 +19,7 @@ const FollowRecipeHeader = (props: HeaderProps) => {
   const [recipeData] = useContext(RecipeContext);
   const [savedRecipes, setSavedRecipes] = useContext(SavedRecipesContext);
 
-  const isSaved = savedRecipes.some((r) => r.title === recipeData.title);
+  const isSaved = savedRecipes.some((r) => equal(r, recipeData));
 
   const handleSave = () => {
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
