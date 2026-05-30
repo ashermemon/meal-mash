@@ -1,5 +1,5 @@
-import React, { useState, useContext, useEffect } from "react";
-import { View, Dimensions, ViewStyle } from "react-native";
+import React, { useState, useContext, useEffect, useRef } from "react";
+import { View, Dimensions } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -32,6 +32,124 @@ type Props = {
   tags: string[];
 };
 
+type SwipableCardProps = {
+  recipe?: RecipeData;
+  isTop: boolean;
+  isLoading?: boolean;
+  onSwipeRight: () => void;
+  onSwipeLeft: () => void;
+  onSwipeRightStart?: () => void;
+};
+
+const SwipableCard = ({
+  recipe,
+  isTop,
+  isLoading,
+  onSwipeRight,
+  onSwipeLeft,
+  onSwipeRightStart,
+}: SwipableCardProps) => {
+  const translateX = useSharedValue(0);
+  const ROTATION = 10;
+
+  const saveRecipe = () => {
+    "worklet";
+    if (onSwipeRightStart) {
+      runOnJS(onSwipeRightStart)();
+    }
+    translateX.value = withTiming(
+      SCREEN_WIDTH + 100,
+      { duration: 400, easing: Easing.inOut(Easing.cubic) },
+      (finished) => {
+        if (finished) {
+          runOnJS(onSwipeRight)();
+        }
+      },
+    );
+  };
+
+  const skipRecipe = () => {
+    "worklet";
+    translateX.value = withTiming(
+      -SCREEN_WIDTH - 100,
+      { duration: 600, easing: Easing.inOut(Easing.cubic) },
+      (finished) => {
+        if (finished) {
+          runOnJS(onSwipeLeft)();
+        }
+      },
+    );
+  };
+
+  const pan = Gesture.Pan()
+    .enabled(isTop && !isLoading)
+    .onUpdate((event) => {
+      translateX.value = event.translationX;
+    })
+    .onEnd(() => {
+      if (translateX.value > 120) {
+        saveRecipe();
+      } else if (translateX.value < -120) {
+        skipRecipe();
+      } else {
+        translateX.value = withSpring(0, {
+          damping: 20,
+          stiffness: 100,
+        });
+      }
+    });
+
+  const animatedStyle = useAnimatedStyle(() => {
+    const rotate = interpolate(
+      translateX.value,
+      [-SCREEN_WIDTH, 0, SCREEN_WIDTH],
+      [-ROTATION, 0, ROTATION],
+    );
+
+    return {
+      transform: [{ translateX: translateX.value }, { rotate: `${rotate}deg` }],
+    };
+  });
+
+  const card = (
+    <Animated.View
+      style={[
+        {
+          position: "absolute",
+          width: "100%",
+          height: "100%",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          zIndex: isTop ? 2 : 1,
+          alignSelf: "center",
+        },
+        isTop ? animatedStyle : null,
+      ]}
+    >
+      <GenerationCardPreview
+        title={recipe?.title}
+        description={recipe?.description || ""}
+        difficulty={recipe?.difficulty || ""}
+        time={recipe?.time || ""}
+        servings={recipe?.servings ?? null}
+        steps={recipe?.instructions?.length || 0}
+        tags={recipe?.tags || []}
+        saveRecipe={saveRecipe}
+        skipRecipe={skipRecipe}
+        isLoading={isLoading}
+      />
+    </Animated.View>
+  );
+
+  if (isTop && !isLoading) {
+    return <GestureDetector gesture={pan}>{card}</GestureDetector>;
+  }
+
+  return card;
+};
+
 const PreviewAnimatedWrapper = (props: Props) => {
   const [savedRecipes, setSavedRecipes] = useContext(SavedRecipesContext);
   const [recipeData, setRecipeData] = useContext(RecipeContext);
@@ -41,13 +159,10 @@ const PreviewAnimatedWrapper = (props: Props) => {
   const [isPreFetching, setIsPreFetching] = useState(false);
 
   // Keep a ref of mealsLeft so the async prefetch always reads the latest value
-  const mealsLeftRef = React.useRef(mealsLeft);
+  const mealsLeftRef = useRef(mealsLeft);
   useEffect(() => {
     mealsLeftRef.current = mealsLeft;
   }, [mealsLeft]);
-
-  const translateX = useSharedValue(0);
-  const ROTATION = 10;
 
   // Initialize the queue with the first generated recipe
   useEffect(() => {
@@ -124,99 +239,32 @@ const PreviewAnimatedWrapper = (props: Props) => {
     }
   };
 
-  // Pre-fetch triggered when queue length becomes 1
+  // Pre-fetch triggered when queue length becomes < 2
   useEffect(() => {
-    if (recipeQueue.length === 1 && !isPreFetching) {
+    if (recipeQueue.length < 2 && !isPreFetching) {
       prefetchNextRecipe();
     }
   }, [recipeQueue.length, isPreFetching]);
 
-  const removeTopCardJS = () => {
-    setRecipeQueue((prev) => prev.slice(1));
+  const handleSwipeFinished = (recipe: RecipeData) => {
+    setRecipeQueue((prev) => prev.filter((r) => r.id !== recipe.id));
     setMealsLeft((prev) => Math.max(0, prev - 1));
   };
 
-
-  const handleSaveRecipeJS = () => {
-    if (recipeQueue.length > 0) {
-      persistRecipe(recipeQueue[0], setSavedRecipes);
-    }
+  const handleSaveRecipeJS = (recipe: RecipeData) => {
+    persistRecipe(recipe, setSavedRecipes);
   };
-
-  const saveRecipe = () => {
-    "worklet";
-    runOnJS(handleSaveRecipeJS)();
-    translateX.value = withTiming(
-      SCREEN_WIDTH + 100,
-      { duration: 400, easing: Easing.inOut(Easing.cubic) },
-      (finished) => {
-        if (finished) {
-          translateX.value = 0;
-          runOnJS(removeTopCardJS)();
-        }
-      },
-    );
-  };
-
-  const skipRecipe = () => {
-    "worklet";
-    translateX.value = withTiming(
-      -SCREEN_WIDTH - 100,
-      { duration: 600, easing: Easing.inOut(Easing.cubic) },
-      (finished) => {
-        if (finished) {
-          translateX.value = 0;
-          runOnJS(removeTopCardJS)();
-        }
-      },
-    );
-  };
-
-  const pan = Gesture.Pan()
-    .onUpdate((event) => {
-      translateX.value = event.translationX;
-    })
-    .onEnd(() => {
-      if (translateX.value > 120) {
-        saveRecipe();
-      } else if (translateX.value < -120) {
-        skipRecipe();
-      } else {
-        translateX.value = withSpring(0, {
-          damping: 20,
-          stiffness: 100,
-        });
-      }
-    });
-
-  const animatedStyle = useAnimatedStyle(() => {
-    const rotate = interpolate(
-      translateX.value,
-      [-SCREEN_WIDTH, 0, SCREEN_WIDTH],
-      [-ROTATION, 0, ROTATION],
-    );
-
-    return {
-      transform: [{ translateX: translateX.value }, { rotate: `${rotate}deg` }],
-    };
-  });
-
-  const cardOffsetStyle = (index: number): ViewStyle => ({
-    position: "absolute",
-    width: "100%",
-    height: "100%",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    zIndex: index + 1,
-    alignSelf: "center",
-  });
 
   // Prepare active card layers (max 2 rendered at any time for high performance)
   const cardsToRender: { recipe?: RecipeData; isTop: boolean; isLoading?: boolean; key: string }[] = [];
-  
-  if (recipeQueue.length > 0) {
+
+  if (recipeQueue.length === 0) {
+    cardsToRender.push({
+      isTop: true,
+      isLoading: true,
+      key: "loading-top",
+    });
+  } else {
     cardsToRender.push({
       recipe: recipeQueue[0],
       isTop: true,
@@ -229,11 +277,11 @@ const PreviewAnimatedWrapper = (props: Props) => {
         isTop: false,
         key: recipeQueue[1].id || "second",
       });
-    } else if (isPreFetching) {
+    } else if (mealsLeft > 0) {
       cardsToRender.push({
         isTop: false,
         isLoading: true,
-        key: "loading-placeholder",
+        key: "loading-under",
       });
     }
   }
@@ -251,36 +299,17 @@ const PreviewAnimatedWrapper = (props: Props) => {
         position: "relative",
       }}
     >
-      {stack.map((item, index) => {
-        const isTop = item.isTop;
-        const card = (
-          <Animated.View
-            key={item.key}
-            style={[cardOffsetStyle(index), isTop ? animatedStyle : null]}
-          >
-            <GenerationCardPreview
-              title={item.recipe?.title}
-              description={item.recipe?.description || ""}
-              difficulty={item.recipe?.difficulty || ""}
-              time={item.recipe?.time || ""}
-              servings={item.recipe?.servings ?? null}
-              steps={item.recipe?.instructions?.length || 0}
-              tags={item.recipe?.tags || []}
-              saveRecipe={saveRecipe}
-              skipRecipe={skipRecipe}
-              isLoading={item.isLoading}
-            />
-          </Animated.View>
-        );
-
-        return isTop ? (
-          <GestureDetector gesture={pan} key={item.key}>
-            {card}
-          </GestureDetector>
-        ) : (
-          card
-        );
-      })}
+      {stack.map((item) => (
+        <SwipableCard
+          key={item.key}
+          recipe={item.recipe}
+          isTop={item.isTop}
+          isLoading={item.isLoading}
+          onSwipeRight={() => item.recipe && handleSwipeFinished(item.recipe)}
+          onSwipeLeft={() => item.recipe && handleSwipeFinished(item.recipe)}
+          onSwipeRightStart={() => item.recipe && handleSaveRecipeJS(item.recipe)}
+        />
+      ))}
     </View>
   );
 };
