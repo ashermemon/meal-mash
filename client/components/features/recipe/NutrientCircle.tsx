@@ -1,47 +1,63 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import React, { useContext, useState } from "react";
 import { styles } from "@/styles/GlobalStyles";
-import { PieChart } from "react-native-gifted-charts";
+import Svg, { Path, Circle, G } from "react-native-svg";
 import NutrientsContext from "@/contexts/NutrientsContext";
-import { COLORS } from "@/constants/Theme";
-import { ColorHex } from "react-native-countdown-circle-timer";
 import { NEWCOLORS } from "@/constants/NewTheme";
 
 interface Props {
   textInBox?: boolean;
 }
 
+const NUTRIENT_COLORS = [
+  NEWCOLORS.blueAccent,
+  NEWCOLORS.greenAccent,
+  NEWCOLORS.orangeAccent,
+];
+
+
+const getSlicePath = (
+  startAngle: number,
+  endAngle: number,
+  rIn: number,
+  rOut: number,
+  cx: number,
+  cy: number
+) => {
+  const startRad = (startAngle * Math.PI) / 180;
+  const endRad = (endAngle * Math.PI) / 180;
+
+  const xOutStart = cx + rOut * Math.cos(startRad);
+  const yOutStart = cy + rOut * Math.sin(startRad);
+  const xOutEnd = cx + rOut * Math.cos(endRad);
+  const yOutEnd = cy + rOut * Math.sin(endRad);
+
+  const xInStart = cx + rIn * Math.cos(startRad);
+  const yInStart = cy + rIn * Math.sin(startRad);
+  const xInEnd = cx + rIn * Math.cos(endRad);
+  const yInEnd = cy + rIn * Math.sin(endRad);
+
+  const largeArcFlag = endAngle - startAngle > 180 ? 1 : 0;
+
+  return `M ${xOutStart} ${yOutStart} A ${rOut} ${rOut} 0 ${largeArcFlag} 1 ${xOutEnd} ${yOutEnd} L ${xInEnd} ${yInEnd} A ${rIn} ${rIn} 0 ${largeArcFlag} 0 ${xInStart} ${yInStart} Z`;
+};
+
 export default function NutrientCircle({ textInBox }: Props) {
-  const [nutrients, setNutrients] = useContext(NutrientsContext);
+  const [nutrients] = useContext(NutrientsContext);
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
 
-  const rawData = [
-    {
-      value: nutrients[0] * 4,
-      color: NEWCOLORS.blueAccent,
-      text: "Protein",
-      gradientCenterColor: NEWCOLORS.blueAccent,
-    },
-    {
-      value: nutrients[1] * 9,
-      color: NEWCOLORS.greenAccent,
-      text: "Fat",
-      gradientCenterColor: NEWCOLORS.greenAccent,
-    },
-    {
-      value: nutrients[2] * 4,
-      color: NEWCOLORS.orangeAccent,
-      text: "Carbs",
-      gradientCenterColor: NEWCOLORS.orangeAccent,
-    },
+  const v0 = Math.max(0, nutrients[0] * 4);
+  const v1 = Math.max(0, nutrients[1] * 9);
+  const v2 = Math.max(0, nutrients[2] * 4);
+  const total = v0 + v1 + v2;
+
+  const slicesData = [
+    { value: v0, color: NUTRIENT_COLORS[0], label: "Protein" },
+    { value: v1, color: NUTRIENT_COLORS[1], label: "Fat" },
+    { value: v2, color: NUTRIENT_COLORS[2], label: "Carbs" },
   ];
 
-  const data = rawData.map((item, index) => ({
-    ...item,
-    focused: index === focusedIndex,
-  }));
-
-  const renderLegend = (text: string, color: ColorHex) => {
+  const renderLegend = (text: string, color: string) => {
     return (
       <View
         style={{
@@ -55,6 +71,114 @@ export default function NutrientCircle({ textInBox }: Props) {
       </View>
     );
   };
+
+
+  const cx = 68;
+  const cy = 68;
+  const rOuter = 60;
+  const rOuterInvis = 75;
+  const rInner = 43;
+  const rInnerInvis = 20;
+
+
+  const renderChart = () => {
+    if (total === 0) {
+      return (
+        <Svg width={136} height={136}>
+          <Circle
+            cx={cx}
+            cy={cy}
+            r={(rOuter + rInner) / 2}
+            stroke={NEWCOLORS.dividerGrey2 || "#ECECEC"}
+            strokeWidth={rOuter - rInner}
+            fill="none"
+          />
+        </Svg>
+      );
+    }
+
+    let currentAngle = -90;
+    const activeSlicesCount = slicesData.filter((s) => s.value > 0).length;
+
+    const slices = slicesData
+      .map((slice, index) => {
+        if (slice.value <= 0) {
+          return null;
+        }
+
+        let angleSize = (slice.value / total) * 360;
+        if (angleSize >= 360) {
+          angleSize = 359.99;
+        }
+
+        const startAngle = currentAngle;
+        const endAngle = currentAngle + angleSize;
+        currentAngle = endAngle;
+
+        const gap = activeSlicesCount > 1 ? 1.5 : 0;
+        const displayStartAngle = startAngle + gap / 2;
+        const displayEndAngle = endAngle - gap / 2;
+
+        return {
+          ...slice,
+          startAngle: displayStartAngle,
+          endAngle: displayEndAngle,
+          midAngle: startAngle + angleSize / 2,
+          index,
+        };
+      })
+      .filter((s): s is NonNullable<typeof s> => s !== null);
+
+    return (
+      <Svg width={136} height={136}>
+        {slices.map((slice) => {
+          const isFocused = focusedIndex === slice.index;
+
+          const currentOuterRadius = isFocused ? rOuter + 6 : rOuter;
+          const invisOuterRadius = isFocused ? rOuterInvis + 6 : rOuterInvis;
+          const pathD = getSlicePath(
+            slice.startAngle,
+            slice.endAngle,
+            rInner,
+            currentOuterRadius,
+            cx,
+            cy
+          );
+
+          const invisPath = getSlicePath(
+            slice.startAngle,
+            slice.endAngle,
+            rInnerInvis,
+            invisOuterRadius,
+            cx,
+            cy
+          )
+
+          return (
+            <G
+              key={slice.index}
+
+            >
+              <Path
+                d={pathD}
+                fill={slice.color}
+
+              />
+              <Path
+                d={invisPath}
+                fill="transparent"
+                onPressIn={() => [console.log("pressed", slice.index), setFocusedIndex((prev) => (prev === slice.index ? null : slice.index))]}
+              />
+            </G>
+          );
+        })}
+      </Svg>
+    );
+  };
+
+  const focusedNutrient = focusedIndex !== null ? slicesData[focusedIndex] : null;
+  const caloriesToShow = focusedNutrient ? focusedNutrient.value : total;
+  const textColor = focusedNutrient ? focusedNutrient.color : "#616060";
 
   return (
     <View
@@ -79,54 +203,41 @@ export default function NutrientCircle({ textInBox }: Props) {
       ) : null}
       <View style={styles.nutrientCircle}>
         <View style={{ alignItems: "flex-start", flex: 1, marginLeft: 10 }}>
-          <PieChart
-            innerRadius={43}
-            donut
-            data={data}
-            radius={60}
-            textColor="black"
-            textSize={20}
-            focusOnPress
-            toggleFocusOnPress={true}
-            onPress={(item: any, index: number) => {
-              if (focusedIndex === index) {
-                setFocusedIndex(null);
-              } else {
-                setFocusedIndex(index);
-              }
-            }}
-            centerLabelComponent={() => {
-              return (
-                <View style={{ alignItems: "center", marginTop: -5 }}>
-                  {focusedIndex === 0 ? (
-                    <Text style={{ color: "#5983C8", fontSize: 29 }}>
-                      {nutrients[0] * 4}
-                    </Text>
-                  ) : focusedIndex === 1 ? (
-                    <Text style={{ color: "#44A54D", fontSize: 29 }}>
-                      {nutrients[1] * 9}
-                    </Text>
-                  ) : focusedIndex === 2 ? (
-                    <Text style={{ color: "#db904f", fontSize: 29 }}>
-                      {nutrients[2] * 4}
-                    </Text>
-                  ) : (
-                    <Text style={{ color: "#616060", fontSize: 29 }}>
-                      {nutrients[0] * 4 + nutrients[1] * 9 + nutrients[2] * 4}
-                    </Text>
-                  )}
-                  <Text style={{ color: "#616060", fontSize: 11 }}>
-                    cal / serving
-                  </Text>
-                </View>
-              );
-            }}
-          />
+          <View style={{ width: 136, height: 136, position: "relative" }}>
+            {renderChart()}
+            <View
+              pointerEvents="none"
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: -5,
+              }}
+            >
+              <Text
+                style={{
+                  color: textColor,
+                  fontSize: 29,
+                  lineHeight: 33,
+                  fontFamily: "Nunito-SemiBold",
+                }}
+              >
+                {Math.round(caloriesToShow)}
+              </Text>
+              <Text style={{ color: "#616060", fontSize: 11, fontFamily: "Nunito-Medium", }}>
+                cal / serving
+              </Text>
+            </View>
+          </View>
         </View>
         <View style={{ marginRight: 26, justifyContent: "flex-end" }}>
-          {renderLegend(`Protein (${nutrients[0]}g)`, "#5983C8")}
-          {renderLegend(`Fat (${nutrients[1]}g)`, "#44A54D")}
-          {renderLegend(`Carbs (${nutrients[2]}g)`, "#db904f")}
+          {renderLegend(`Protein (${nutrients[0]}g)`, NUTRIENT_COLORS[0])}
+          {renderLegend(`Fat (${nutrients[1]}g)`, NUTRIENT_COLORS[1])}
+          {renderLegend(`Carbs (${nutrients[2]}g)`, NUTRIENT_COLORS[2])}
         </View>
       </View>
     </View>
