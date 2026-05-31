@@ -47,7 +47,8 @@ const FollowRecipeHeader = (props: HeaderProps) => {
             paddingVertical: 8,
           }}
         >
-          <Pressable onPress={handleBack}>
+          <Pressable onPress={handleBack} hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
+          >
             <CustomIcon
               name="arrow-left"
               filled={false}
@@ -67,7 +68,7 @@ const FollowRecipeHeader = (props: HeaderProps) => {
               {props.pageTitle}
             </Text>
           </View>
-          <Pressable onPress={handleSave}>
+          <Pressable onPress={handleSave} hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}>
             <CustomIcon
               name="bookmark"
               filled={isSaved}
@@ -76,7 +77,7 @@ const FollowRecipeHeader = (props: HeaderProps) => {
             />
           </Pressable>
         </View>
-      </View>
+      </View >
       <View style={{ width: "100%" }}>
         <ProgressBar progress={props.progress}></ProgressBar>
       </View>

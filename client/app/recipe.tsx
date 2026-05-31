@@ -30,15 +30,18 @@ export default function RecipePage() {
     <SafeAreaView style={{ flex: 1, backgroundColor: NEWCOLORS.nestedBG }}>
       <View style={{ paddingHorizontal: 30, flex: 1 }}>
         <Pressable
+          hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
           style={{
             marginTop: 8,
             marginLeft: 0,
+            alignSelf: "flex-start",
             zIndex: 1000,
           }}
           onPress={() =>
             navigation.canGoBack()
               ? [navigation.goBack(), Haptics.selectionAsync()]
               : null
+
           }
         >
           <CustomIcon
@@ -65,6 +68,6 @@ export default function RecipePage() {
           </View>
         </NutrientsContext.Provider>
       </View>
-    </SafeAreaView>
+    </SafeAreaView >
   );
 }

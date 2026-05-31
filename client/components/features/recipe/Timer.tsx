@@ -2,6 +2,7 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
 import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
 import { styles } from "@/styles/GlobalStyles";
+import { timedBuzz } from "@/components/universal/CustomBuzz";
 
 import { COLORS } from "@/constants/Theme";
 
@@ -16,6 +17,9 @@ type TimerProps = {
   color3?: any;
 };
 
+
+
+
 export default function Timer(props: TimerProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [timerKey, setTimerKey] = useState(0);
@@ -24,7 +28,6 @@ export default function Timer(props: TimerProps) {
 
   var hsl = require("hsl-to-hex");
 
-  // Generate stable random colors on mount using standard Math.random()
   const [stableColors] = useState(() => {
     const randomHue = () => Math.floor(Math.random() * 360);
     return [
@@ -57,7 +60,12 @@ export default function Timer(props: TimerProps) {
           ]}
           colorsTime={[props.time, (props.time / 3) * 2, props.time / 3, 0]}
           onComplete={() => {
+
+            timedBuzz(2);
+
             setTimerFinished(true);
+            setIsPlaying(false);
+
             return { shouldRepeat: false };
           }}
           onUpdate={(rt) => {
@@ -91,10 +99,11 @@ export default function Timer(props: TimerProps) {
         <Pressable
           style={styles.timerButton}
           onPress={() => {
-            (Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft),
-              timerFinished
-                ? [setTimerKey(timerKey + 1), setTimerFinished(false)]
-                : setTimerKey(timerKey + 1));
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
+            setTimerKey((k) => k + 1);
+            setTimerFinished(false);
+            setIsPlaying(false);
+            setRemainingTime(props.time);
           }}
         >
           <CustomIcon
@@ -108,10 +117,15 @@ export default function Timer(props: TimerProps) {
         <Pressable
           style={styles.timerButton}
           onPress={() => {
-            (Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft),
-              timerFinished
-                ? [setTimerKey(timerKey + 1), setTimerFinished(false)]
-                : setIsPlaying(!isPlaying));
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
+            if (timerFinished) {
+              setTimerKey((k) => k + 1);
+              setTimerFinished(false);
+              setIsPlaying(true);
+              setRemainingTime(props.time);
+            } else {
+              setIsPlaying((prev) => !prev);
+            }
           }}
         >
           {isPlaying && !timerFinished ? (
@@ -131,6 +145,6 @@ export default function Timer(props: TimerProps) {
           )}
         </Pressable>
       </View>
-    </View>
+    </View >
   );
 }
