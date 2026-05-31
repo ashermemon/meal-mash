@@ -9,6 +9,7 @@ import * as Haptics from "expo-haptics";
 import { saveRecipe, equal } from "@/components/features/recipe/SaveRecipe";
 import SavedRecipesContext from "@/contexts/SavedRecipesContext";
 import RecipeContext from "@/contexts/RecipeContext";
+import { NEWCOLORS } from "@/constants/NewTheme";
 
 type HeaderProps = {
   pageTitle: string;
@@ -72,7 +73,7 @@ const FollowRecipeHeader = (props: HeaderProps) => {
             <CustomIcon
               name="bookmark"
               filled={isSaved}
-              color={COLORS.fontColor}
+              color={isSaved ? NEWCOLORS.redAccent : NEWCOLORS.basicText}
               size={20}
             />
           </Pressable>

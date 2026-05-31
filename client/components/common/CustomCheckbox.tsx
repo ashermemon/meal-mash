@@ -10,6 +10,7 @@ interface CustomCheckboxProps {
   initialValue?: boolean;
   size?: number;
   borderRadius?: number;
+
 }
 
 export default function CustomCheckbox({
@@ -18,6 +19,7 @@ export default function CustomCheckbox({
   initialValue = false,
   size = 24,
   borderRadius = 7,
+
 }: CustomCheckboxProps) {
   const [internalChecked, setInternalChecked] = useState(initialValue);
   const isChecked = checked !== undefined ? checked : internalChecked;
@@ -60,6 +62,7 @@ export default function CustomCheckbox({
   return (
     <Pressable
       onPress={handlePress}
+      hitSlop={{ left: 5, right: 5, top: 5, bottom: 5 }}
       style={({ pressed }) => [
         styles.pressable,
         {

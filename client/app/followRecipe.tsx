@@ -13,7 +13,6 @@ import { NEWCOLORS } from "@/constants/NewTheme";
 import { COLORS } from "@/constants/Theme";
 import { useNavigation } from "@react-navigation/native";
 import * as Haptics from "expo-haptics";
-import { CustomIcon } from "@/icon-loader/icon-loader";
 import RecipeSection from "@/components/features/recipe/RecipeSection";
 import Svg, { Path } from "react-native-svg";
 import FollowRecipeHeader from "@/components/features/recipe/FollowRecipeHeader";
@@ -23,7 +22,7 @@ const followRecipe = () => {
   const navigation = useNavigation();
   const bulletMargin = 45; //33
 
-  // Default placeholder data when context is empty
+  // default placeholder
   const defaultRecipeData: RecipeData = {
     responseRecipe: "",
     title: "Recipe Title",
@@ -81,14 +80,6 @@ const followRecipe = () => {
 
   const [scrollProgress, setScrollProgress] = useState(0);
 
-  const totalCalories = useMemo(
-    () => nutrients[0] * 4 + nutrients[1] * 9 + nutrients[2] * 4,
-    [nutrients],
-  );
-
-  const hasTimers = recipeData.instructions.some(
-    (instruction) => !!instruction.timerMinutes,
-  );
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: NEWCOLORS.nestedBG }}>
@@ -191,55 +182,66 @@ const followRecipe = () => {
                   marginBottom: 33,
                 }}
               >
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    flex: 1,
-                  }}
-                >
-                  <View style={{ marginRight: 12 }}>
-                    <CustomCheckbox
-                      checked={checked[index]}
-                      onChange={() => {
-                        const next = [...checked];
-                        next[index] = !next[index];
-                        setChecked(next);
-                        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
-                      }}
-                      size={24}
-                    />
-                  </View>
-                  <Text
-                    numberOfLines={1}
-                    style={[
-                      styles.textLeftSemiBold,
-                      {
-                        marginLeft: 0,
-                        flex: 1,
-                        fontSize: 15,
-                        color: COLORS.fontColor,
-                      },
-                    ]}
-                  >
-                    {name}
-                  </Text>
+                <View style={{ marginRight: 12 }}>
+                  <CustomCheckbox
+                    checked={checked[index]}
+                    onChange={() => {
+                      const next = [...checked];
+                      next[index] = !next[index];
+                      setChecked(next);
+                      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
+
+                    }}
+                    size={24}
+
+                  />
                 </View>
-                {amount ? (
-                  <Text
-                    style={[
-                      styles.textRight,
-                      {
-                        fontSize: 15,
-                        color: COLORS.searchPlaceholder,
-                        marginLeft: 12,
-                      },
-                    ]}
+                <Pressable style={{ flex: 1, flexDirection: "row" }} onPress={() => {
+                  const next = [...checked];
+                  next[index] = !next[index];
+                  setChecked(next);
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
+                }}>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      flex: 1,
+                    }}
                   >
-                    {amount}
-                  </Text>
-                ) : null}
+
+                    <Text
+                      numberOfLines={1}
+                      style={[
+                        styles.textLeftSemiBold,
+                        {
+                          marginLeft: 0,
+                          flex: 1,
+                          fontSize: 15,
+                          color: COLORS.fontColor,
+                        },
+                      ]}
+                    >
+                      {name}
+                    </Text>
+                  </View>
+                  {amount ? (
+                    <Text
+                      style={[
+                        styles.textRight,
+                        {
+                          fontSize: 15,
+                          color: COLORS.searchPlaceholder,
+                          marginLeft: 12,
+                        },
+                      ]}
+                    >
+                      {amount}
+                    </Text>
+                  ) : null}
+                </Pressable>
               </View>
+
             );
           })}
         </RecipeSection>

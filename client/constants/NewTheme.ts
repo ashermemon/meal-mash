@@ -20,6 +20,7 @@ export const NEWCOLORS = {
   blueAccent: "#0088FF",
   orangeAccent: "#FFA600",
   redAccent: "#BF5E5E",
+  purpleAccent: "#7f4ba7ff",
   secondaryBoxGrey: "rgb(244, 244, 244)",
   nestedBG: "#FCFCFC",
   cardWhite: "#FFFFFF",
