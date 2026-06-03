@@ -1,5 +1,5 @@
-import { View, Text, Pressable, Dimensions } from "react-native";
-import React from "react";
+import { View, Text, Pressable, Dimensions, InteractionManager } from "react-native";
+import React, { useEffect } from "react";
 import NutrientCircle from "@/components/features/recipe/NutrientCircle";
 import { styles } from "@/styles/GlobalStyles";
 import { Image } from "expo-image";
@@ -27,9 +27,8 @@ type Props = {
   isLoading?: boolean;
 };
 
-
 const SkeletonSettings = {
-  colorMode: "dark",
+  colorMode: "light",
   transition: {
     type: "timing",
     duration: 2000,
@@ -37,52 +36,50 @@ const SkeletonSettings = {
 } as const;
 
 export const GenerationCardPreview = (props: Props) => {
-  return (
-    <Animated.View
-      entering={FadeIn.duration(400)}
-      exiting={FadeOut.duration(300)}
-      style={{
-        width: CARD_WIDTH,
-        alignSelf: "center",
-        flex: 1,
-        paddingHorizontal: 15,
-        paddingTop: 10,
-        paddingBottom: 8,
-        backgroundColor: NEWCOLORS.nestedBG,
-        borderRadius: 5,
-        overflow: "hidden",
-      }}
-    >
-      <Skeleton.Group show={props.isLoading ?? false}>
-        {/* Header Block (Title and Tags) */}
-        <View style={{ width: "100%", alignItems: "center", marginBottom: 6 }}>
-          {props.isLoading ? (
+
+  // useEffect(() => {
+
+  //   router.prefetch("/followRecipe");
+  // }, [])
+
+
+  if (props.isLoading) {
+    return (
+      <Animated.View
+        entering={FadeIn.duration(400)}
+        exiting={FadeOut.duration(300)}
+        style={{
+          width: CARD_WIDTH,
+          alignSelf: "center",
+          flex: 1,
+          paddingHorizontal: 15,
+          paddingTop: 10,
+          paddingBottom: 8,
+          backgroundColor: NEWCOLORS.nestedBG,
+          borderRadius: 5,
+          overflow: "hidden",
+        }}
+      >
+        <Skeleton.Group show={true}>
+          <View
+            style={{
+              width: "100%",
+              alignItems: "center",
+              marginBottom: 6,
+              gap: 10,
+            }}
+          >
+            {/* Title Skeleton */}
             <Skeleton
               width={200}
               height={32}
               radius={8}
               {...SkeletonSettings}
             />
-          ) : (
-            <Text
-              style={[
-                styles.textCentered,
-                { fontFamily: "Nunito-Bold", fontSize: 30 },
-              ]}
-              numberOfLines={1}
-            >
-              {props.title}
-            </Text>
-          )}
 
-          {props.isLoading ? (
+            {/* Recipe Info Tags Skeleton */}
             <View
-              style={{
-                flexDirection: "row",
-                gap: 8,
-                marginTop: 13,
-                justifyContent: "center",
-              }}
+              style={{ flexDirection: "row", gap: 8, justifyContent: "center" }}
             >
               <Skeleton
                 width={60}
@@ -103,64 +100,26 @@ export const GenerationCardPreview = (props: Props) => {
                 {...SkeletonSettings}
               />
             </View>
-          ) : (
-            <RecipeInfoTags
-              difficulty={props.difficulty}
-              time={props.time}
-              tags={props.tags}
-              justifyContent="center"
-            />
-          )}
-        </View>
+          </View>
 
-        {/* Body Block (Image, Description, Nutrients, Buttons) */}
-        <View
-          style={{
-            flex: 1,
-            width: "100%",
-            justifyContent: "space-evenly",
-            alignItems: "center",
-            paddingHorizontal: 10,
-          }}
-        >
-          {/* Image */}
-          {props.isLoading ? (
-            <View
-              style={{
-                width: "70%",
-                aspectRatio: 1,
-                minHeight: 190,
-                maxHeight: 260,
-                alignSelf: "center",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Skeleton
-                width={IMAGE_SIZE}
-                height={IMAGE_SIZE}
-                radius="round"
-                {...SkeletonSettings}
-              />
-            </View>
-          ) : (
-            <Image
-              source={require("../../../assets/images/mealExample.png")}
-              style={{
-                width: "70%",
-                aspectRatio: 1,
-                minHeight: 190,
-                maxHeight: 260,
-                alignSelf: "center",
-                borderRadius: 12,
-              }}
-              contentFit="cover"
-              transition={0}
+          <View
+            style={{
+              flex: 1,
+              width: "100%",
+              justifyContent: "space-evenly",
+              alignItems: "center",
+              paddingHorizontal: 10,
+            }}
+          >
+            {/* Image Skeleton */}
+            <Skeleton
+              width={IMAGE_SIZE * 0.95}
+              height={IMAGE_SIZE * 0.95}
+              radius="round"
+              {...SkeletonSettings}
             />
-          )}
 
-          {/* Description */}
-          {props.isLoading ? (
+            {/* Description Skeleton */}
             <View
               style={{
                 width: "100%",
@@ -182,23 +141,8 @@ export const GenerationCardPreview = (props: Props) => {
                 {...SkeletonSettings}
               />
             </View>
-          ) : (
-            <Text
-              style={[
-                styles.textCentered,
-                {
-                  fontFamily: "Nunito",
-                  fontSize: 15,
-                  lineHeight: 20,
-                },
-              ]}
-            >
-              {props.description}
-            </Text>
-          )}
 
-          {/* Nutrient Circle */}
-          {props.isLoading ? (
+            {/* NutrientCircle Skeleton */}
             <View
               style={{
                 flexDirection: "row",
@@ -209,96 +153,233 @@ export const GenerationCardPreview = (props: Props) => {
             >
               <Skeleton
                 width={"100%"}
-                height={140}
+                height={145}
                 radius={15}
                 {...SkeletonSettings}
               />
             </View>
-          ) : (
-            <NutrientCircle textInBox={false} />
-          )}
 
-          {/* Action Buttons */}
-          <View
-            style={{
-              width: "100%",
-              alignItems: "center",
-              marginTop: 10,
-              opacity: props.isLoading ? 0.4 : 1,
-            }}
-            pointerEvents={props.isLoading ? "none" : "auto"}
-          >
-            <Pressable
-              style={[
-                styles.basicBoxShadow,
-                {
-                  backgroundColor: NEWCOLORS.darkButton,
-                  paddingVertical: 14,
-                  borderRadius: 15,
-                  width: "100%",
-                },
-              ]}
-              onPress={() => router.push("/followRecipe")}
-              disabled={props.isLoading}
-            >
-              <Text
-                style={[
-                  styles.textCenterBold,
-                  { color: "white", fontSize: 18 },
-                ]}
-              >
-                Make Recipe
-              </Text>
-            </Pressable>
-
+            {/* Buttons (Disabled/Greyed out) */}
             <View
               style={{
                 width: "100%",
-                flexDirection: "row",
-                gap: "4%",
+                alignItems: "center",
                 marginTop: 10,
-                justifyContent: "center",
+                opacity: 0.4,
               }}
             >
               <Pressable
                 style={[
                   styles.basicBoxShadow,
                   {
-                    backgroundColor: NEWCOLORS.redBlock,
+                    backgroundColor: NEWCOLORS.darkButton,
                     paddingVertical: 14,
                     borderRadius: 15,
-                    width: "48%",
+                    width: "100%",
                   },
                 ]}
-                onPress={props.skipRecipe}
-                disabled={props.isLoading}
+                disabled={true}
               >
-                <Text style={[styles.textCenterBold, { fontSize: 17 }]}>
-                  ← Skip
+                <Text
+                  style={[
+                    styles.textCenterBold,
+                    { color: "white", fontSize: 18 },
+                  ]}
+                >
+                  Make Recipe
                 </Text>
               </Pressable>
 
-              <Pressable
-                style={[
-                  styles.basicBoxShadow,
-                  {
-                    backgroundColor: NEWCOLORS.greenBlock,
-                    paddingVertical: 14,
-                    borderRadius: 15,
-                    width: "48%",
-                  },
-                ]}
-                onPress={props.saveRecipe}
-                disabled={props.isLoading}
+              <View
+                style={{
+                  width: "100%",
+                  flexDirection: "row",
+                  gap: "4%",
+                  marginTop: 10,
+                  justifyContent: "center",
+                }}
               >
-                <Text style={[styles.textCenterBold, { fontSize: 17 }]}>
-                  Save →
-                </Text>
-              </Pressable>
+                <Pressable
+                  style={[
+                    styles.basicBoxShadow,
+                    {
+                      backgroundColor: NEWCOLORS.redBlock,
+                      paddingVertical: 14,
+                      borderRadius: 15,
+                      width: "48%",
+                    },
+                  ]}
+                  disabled={true}
+                >
+                  <Text style={[styles.textCenterBold, { fontSize: 17 }]}>
+                    ← Skip
+                  </Text>
+                </Pressable>
+
+                <Pressable
+                  style={[
+                    styles.basicBoxShadow,
+                    {
+                      backgroundColor: NEWCOLORS.greenBlock,
+                      paddingVertical: 14,
+                      borderRadius: 15,
+                      width: "48%",
+                    },
+                  ]}
+                  disabled={true}
+                >
+                  <Text style={[styles.textCenterBold, { fontSize: 17 }]}>
+                    Save →
+                  </Text>
+                </Pressable>
+              </View>
             </View>
           </View>
+        </Skeleton.Group>
+      </Animated.View>
+    );
+  }
+
+  return (
+    <Animated.View
+      entering={FadeIn.duration(400)}
+      exiting={FadeOut.duration(300)}
+      style={{
+        width: CARD_WIDTH,
+        alignSelf: "center",
+        flex: 1,
+        paddingHorizontal: 15,
+        paddingTop: 10,
+        paddingBottom: 8,
+        backgroundColor: NEWCOLORS.nestedBG,
+        borderRadius: 5,
+        overflow: "hidden",
+      }}
+    >
+      <View style={{ width: "100%", alignItems: "center", marginBottom: 6 }}>
+        <Text
+          style={[
+            styles.textCentered,
+            { fontFamily: "Nunito-Bold", fontSize: 30 },
+          ]}
+          numberOfLines={1}
+        >
+          {props.title}
+        </Text>
+
+        <RecipeInfoTags
+          difficulty={props.difficulty}
+          time={props.time}
+          tags={props.tags}
+          justifyContent="center"
+        />
+      </View>
+
+      <View
+        style={{
+          flex: 1,
+          width: "100%",
+          justifyContent: "space-evenly",
+          alignItems: "center",
+          paddingHorizontal: 10,
+        }}
+      >
+        <Image
+          source={require("../../../assets/images/mealExample.png")}
+          style={{
+            width: "70%",
+            aspectRatio: 1,
+            minHeight: 190,
+            maxHeight: 260,
+            alignSelf: "center",
+            borderRadius: 12,
+          }}
+          contentFit="cover"
+          transition={0}
+        />
+
+        <Text
+          style={[
+            styles.textCentered,
+            {
+              fontFamily: "Nunito",
+              fontSize: 15,
+              lineHeight: 20,
+            },
+          ]}
+        >
+          {props.description}
+        </Text>
+
+        <NutrientCircle textInBox={false} />
+
+        <View style={{ width: "100%", alignItems: "center", marginTop: 10 }}>
+          <Pressable
+            style={[
+              styles.basicBoxShadow,
+              {
+                backgroundColor: NEWCOLORS.darkButton,
+                paddingVertical: 14,
+                borderRadius: 15,
+                width: "100%",
+              },
+            ]}
+            onPress={() => router.push("/followRecipe")} //.push creates new screen instead (less lag, new screen)
+
+          //more laggy: InteractionManager.runAfterInteractions(() => { router.navigate("/followRecipe") })
+          >
+            <Text
+              style={[styles.textCenterBold, { color: "white", fontSize: 18 }]}
+            >
+              Make Recipe
+            </Text>
+          </Pressable>
+
+          <View
+            style={{
+              width: "100%",
+              flexDirection: "row",
+              gap: "4%",
+              marginTop: 10,
+              justifyContent: "center",
+            }}
+          >
+            <Pressable
+              style={[
+                styles.basicBoxShadow,
+                {
+                  backgroundColor: NEWCOLORS.redBlock,
+                  paddingVertical: 14,
+                  borderRadius: 15,
+                  width: "48%",
+                },
+              ]}
+              onPress={props.skipRecipe}
+            >
+              <Text style={[styles.textCenterBold, { fontSize: 17 }]}>
+                ← Skip
+              </Text>
+            </Pressable>
+
+            <Pressable
+              style={[
+                styles.basicBoxShadow,
+                {
+                  backgroundColor: NEWCOLORS.greenBlock,
+                  paddingVertical: 14,
+                  borderRadius: 15,
+                  width: "48%",
+                },
+              ]}
+              onPress={props.saveRecipe}
+            >
+              <Text style={[styles.textCenterBold, { fontSize: 17 }]}>
+                Save →
+              </Text>
+            </Pressable>
+          </View>
         </View>
-      </Skeleton.Group>
+      </View>
     </Animated.View>
   );
 };

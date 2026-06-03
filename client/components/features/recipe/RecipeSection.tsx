@@ -19,7 +19,7 @@ const RecipeSection = (props: Props) => {
           marginBottom: 20,
           paddingHorizontal: 10,
           paddingBottom: 15,
-          paddingTop: 25,
+          paddingTop: 30,
         },
       ]}
     >
@@ -28,7 +28,7 @@ const RecipeSection = (props: Props) => {
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center",
-          marginBottom: 25,
+          marginBottom: 40,
         }}
       >
         <Text style={[styles.textLeftBold, { fontSize: 18 }]}>
