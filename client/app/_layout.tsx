@@ -2,18 +2,18 @@ import { Stack } from "expo-router";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { Button, Platform, StatusBar, Text } from "react-native";
 import { View, ImageBackground } from "react-native";
-import { styles } from "@/styles/auth.styles";
+import { styles } from "@/styles/GlobalStyles";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { COLORS } from "@/constants/theme";
+import { COLORS } from "@/constants/Theme";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { storage } from "@/utils/storage";
-import FavoritesContext from "../contexts/FavoritesContext";
-import FavLeftoversContext from "../contexts/FavLeftoversContext";
-import SavedRecipesContext from "../contexts/SavedRecipesContext";
-import LeftoversContext from "../contexts/LeftoversContext";
-import IngredientsContext from "../contexts/IngredientsContext";
+import FavoritesContext from "@/contexts/FavoritesContext";
+import FavLeftoversContext from "@/contexts/FavLeftoversContext";
+import SavedRecipesContext from "@/contexts/SavedRecipesContext";
+import LeftoversContext from "@/contexts/LeftoversContext";
+import IngredientsContext from "@/contexts/IngredientsContext";
 import MealsLeftContext from "@/contexts/MealsLeftContext";
 import { NotificationProvider } from "@/contexts/NotificationContext";
 import * as Notifications from "expo-notifications";
@@ -22,16 +22,17 @@ import {
   BottomSheetModalProvider,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
+import { RecipeProvider, type RecipeData } from "@/contexts/RecipeContext";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [favorites, setFavorites] = useState<string[]>([]);
   const [favoritesL, setFavoritesL] = useState<string[]>([]);
-  const [savedRecipes, setSavedRecipes] = useState<string[]>([]);
+  const [savedRecipes, setSavedRecipes] = useState<RecipeData[]>([]);
   const [ingredients, setIngredients] = useState<string[]>([]);
   const [leftovers, setLeftovers] = useState<string[]>([]);
-  const [mealsLeft, setMealsLeft] = useState<number>(5);
+  const [mealsLeft, setMealsLeft] = useState<number>(500);
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
@@ -76,6 +77,18 @@ export default function RootLayout() {
       SplashScreen.hideAsync();
     }
   }, [loaded, error]);
+
+  useEffect(() => {
+    Notifications.setNotificationHandler({
+      handleNotification: async () => ({
+        shouldPlaySound: true,
+        shouldSetBadge: false,
+        shouldShowBanner: false,
+        shouldShowList: false,
+      }),
+    });
+  }, []);
+
   useEffect(() => {
     const storedFavoritesString = storage.getString("favorites");
     const storedFavoritesStringL = storage.getString("favoritesL");
@@ -101,7 +114,25 @@ export default function RootLayout() {
     if (storedSaved) {
       try {
         const storedSavedArray = JSON.parse(storedSaved);
-        setSavedRecipes(storedSavedArray);
+        const normalizedSaves = storedSavedArray.map((item: any) => {
+          if (typeof item === "string") {
+            return {
+              responseRecipe: "",
+              title: item,
+              description: "",
+              difficulty: "",
+              time: "",
+              servings: null,
+              nutrients: [0, 0, 0],
+              tags: [],
+              ingredients: [],
+              instructions: [],
+              tips: [],
+            };
+          }
+          return item;
+        });
+        setSavedRecipes(normalizedSaves);
       } catch (e) {
         console.error("Failed to parse favorites from storage:", e);
         setSavedRecipes([]);
@@ -111,15 +142,6 @@ export default function RootLayout() {
   if (!loaded && !error) {
     return null;
   }
-
-  Notifications.setNotificationHandler({
-    handleNotification: async () => ({
-      shouldPlaySound: true,
-      shouldSetBadge: false,
-      shouldShowBanner: false,
-      shouldShowList: false,
-    }),
-  });
 
   return (
     <BottomSheetModalProvider>
@@ -137,25 +159,27 @@ export default function RootLayout() {
                     <MealsLeftContext.Provider
                       value={[mealsLeft, setMealsLeft]}
                     >
-                      <StatusBar
-                        barStyle="dark-content"
-                        backgroundColor={COLORS.newHeader}
-                      />
+                      <RecipeProvider>
+                        <StatusBar
+                          barStyle="dark-content"
+                          backgroundColor={COLORS.newHeader}
+                        />
 
-                      <Stack
-                        screenOptions={{
-                          headerShown: false,
-                        }}
-                      ></Stack>
+                        <Stack
+                          screenOptions={{
+                            headerShown: false,
+                          }}
+                        ></Stack>
 
-                      <BottomSheetModal
-                        ref={bottomSheetModalRef}
-                        onChange={handleSheetChanges}
-                      >
-                        <BottomSheetView style={styles.contentContainer}>
-                          <Text>Wow</Text>
-                        </BottomSheetView>
-                      </BottomSheetModal>
+                        <BottomSheetModal
+                          ref={bottomSheetModalRef}
+                          onChange={handleSheetChanges}
+                        >
+                          <BottomSheetView style={styles.contentContainer}>
+                            <Text>Wow</Text>
+                          </BottomSheetView>
+                        </BottomSheetModal>
+                      </RecipeProvider>
                     </MealsLeftContext.Provider>
                   </SavedRecipesContext.Provider>
                 </FavLeftoversContext.Provider>

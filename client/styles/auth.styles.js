@@ -1,5 +1,5 @@
-import { NEWCOLORS } from "@/constants/newtheme";
-import { COLORS } from "@/constants/theme";
+import { NEWCOLORS } from "@/constants/NewTheme";
+import { COLORS } from "@/constants/Theme";
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
@@ -82,6 +82,12 @@ export const styles = StyleSheet.create({
     color: COLORS.fontColor,
     fontSize: 17,
   },
+  textCenterBold: {
+    fontFamily: "Nunito-Bold",
+    textAlign: "center",
+    color: COLORS.fontColor,
+    fontSize: 17,
+  },
   headerText: {
     fontFamily: "Nunito-Bold",
     textAlign: "center",
@@ -95,6 +101,7 @@ export const styles = StyleSheet.create({
     paddingTop: 8,
 
     margin: 0,
+    paddingHorizontal: 10,
     paddingBottom: 5,
     width: "100%",
   },
@@ -154,14 +161,12 @@ export const styles = StyleSheet.create({
   timer: {
     paddingVertical: 15,
     paddingHorizontal: 20,
-    marginVertical: 20,
+    marginBottom: 30,
     marginHorizontal: 25,
-    backgroundColor: "white",
-    outlineColor: COLORS.addButtonStroke,
+    backgroundColor: NEWCOLORS.secondaryBoxGrey,
     flex: 1,
     width: "100%",
-    outlineWidth: 3,
-    borderRadius: 10,
+    borderRadius: 15,
     alignItems: "center",
     justifyContent: "space-between",
     alignSelf: "center",
@@ -324,7 +329,7 @@ export const styles = StyleSheet.create({
   },
 
   spacer: {
-    height: 20,
+    height: 40,
   },
   searchText: {
     fontFamily: "Nunito-Bold",
@@ -433,10 +438,10 @@ export const styles = StyleSheet.create({
   },
   nutrientCircle: {
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     flexDirection: "row",
+    marginVertical: 10,
     marginHorizontal: 8,
-    marginVertical: 20,
   },
   legendBox: {
     height: 18,
@@ -448,10 +453,50 @@ export const styles = StyleSheet.create({
   textLegend: {
     fontFamily: "Nunito-SemiBold",
     color: COLORS.fontColor,
-
     fontSize: 16,
     alignItems: "center",
   },
+  textRight: {
+    fontFamily: "Nunito-Regular",
+    textAlign: "right",
+    color: COLORS.fontColor,
+  },
+  infoTagBox: {
+    backgroundColor: NEWCOLORS.nestedBG,
+    borderRadius: 14,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+  },
+  infoTagText: {
+    fontFamily: "Nunito-SemiBold",
+    color: COLORS.fontColor,
+    fontSize: 13,
+  },
+  legendRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  card: {
+    borderTopColor: NEWCOLORS.dividerGrey2,
+    borderTopWidth: 3,
+  },
+  checkboxOutline: {
+    width: 20,
+    height: 20,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: NEWCOLORS.checkboxOutline,
+  },
+  stepCircle: {
+    width: 32,
+    height: 32,
+    borderRadius: 18,
+    backgroundColor: NEWCOLORS.stepCircle,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
   customButton: {
     alignItems: "center",
     justifyContent: "center",
@@ -606,7 +651,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
   },
   basicBoxShadow: {
-    boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.15)",
+    boxShadow: "0px 2px 2px rgba(0, 0, 0, 0.10)",
   },
   basicTextCenter: {
     fontFamily: "Nunito-Regular",
@@ -665,5 +710,34 @@ export const styles = StyleSheet.create({
     borderRadius: 45,
     alignItems: "center",
     justifyContent: "center",
+  },
+  newShadow: {
+    shadowColor: "#000000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+  },
+  infoTag: {
+    backgroundColor: NEWCOLORS.greyBlock,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 7,
+  },
+
+  tipBadgeContainer: {
+    height: 37,
+    width: 32.7, //33
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  svgBackground: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
 });

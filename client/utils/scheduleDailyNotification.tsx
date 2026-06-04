@@ -3,25 +3,37 @@ import * as Notifications from "expo-notifications";
 export async function scheduleDailyNotification() {
   const scheduled = await Notifications.getAllScheduledNotificationsAsync();
 
+  const TARGET_HOUR = 18; //6pm
+  const TARGET_MINUTE = 0;
+
   const alreadyScheduled = scheduled.some((n) => {
-    const t = n.trigger as Notifications.DailyTriggerInput;
-    return t?.hour === 13 && t?.minute === 46;
+    const t = n.trigger as any;
+    return t?.hour === TARGET_HOUR && t?.minute === TARGET_MINUTE;
   });
 
   if (!alreadyScheduled) {
+    await Notifications.setNotificationChannelAsync("daily-reminders", {
+      name: "Daily Reminders",
+      importance: Notifications.AndroidImportance.MAX,
+    });
+
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: "📅 Daily Reminder",
-        body: "Time to check the app!",
+        title: "🍽️ Leftovers → Yummy Dinner!",
+        body: "Hungry? Tap here to generate some delicious dinner recipes 😋",
         sound: "default",
       },
       trigger: {
-        hour: 13,
-        minute: 46,
-      } as Notifications.DailyTriggerInput,
+        type: Notifications.SchedulableTriggerInputTypes.DAILY,
+        hour: TARGET_HOUR,
+        minute: TARGET_MINUTE,
+        channelId: "daily-reminders",
+      } as any,
     });
 
-    console.log("✅ Daily notification scheduled at 1:44 PM");
+    console.log(
+      `✅ Daily notification scheduled at ${TARGET_HOUR}:${String(TARGET_MINUTE).padStart(2, "0")} PM`,
+    );
   } else {
     console.log("ℹ️ Daily notification already scheduled.");
   }
