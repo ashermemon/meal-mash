@@ -26,6 +26,9 @@ export type RecipeData = {
   ingredients: [string, string][];
   instructions: RecipeInstruction[];
   tips: string[];
+  originalIngredients?: string[];
+  originalLeftovers?: string[];
+  isChecked?: boolean;
 };
 
 export type RecipeContextType = [

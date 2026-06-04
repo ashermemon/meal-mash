@@ -2,6 +2,9 @@ type PromptProps = {
   ingredients: string[];
   leftovers: string[];
   isChecked: boolean;
+  mealType: string;
+  mealTexture: string;
+  mealMethod: string;
 };
 export default function Prompt(props: PromptProps) {
   const hasLeftovers = props.leftovers.length !== 0;
@@ -12,6 +15,11 @@ USER INGREDIENTS:
 - Leftovers (MUST USE): [${props.leftovers.join(", ")}]
 - Regular Ingredients: [${props.ingredients.join(", ")}]
 - Grocery Flexibility: ${props.isChecked ? "Allowed to use outside ingredients if needed for taste" : "ONLY use listed ingredients and kitchen basics"}
+
+RECIPE CONSTRAINTS:
+- Meal type: ${props.mealType}
+- Meal texture: ${props.mealTexture}
+- Meal method: ${props.mealMethod}
 
 CULINARY GUIDELINES:
 1. ${hasLeftovers ? "CRITICAL: You must incorporate ALL/MOST of the listed leftovers into this recipe." : "Incorporate the provided ingredients naturally."}

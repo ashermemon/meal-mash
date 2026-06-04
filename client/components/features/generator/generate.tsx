@@ -24,6 +24,7 @@ import * as Haptics from "expo-haptics";
 import RecipeContext from "@/contexts/RecipeContext";
 import { router } from "expo-router";
 import { RecipeSchema } from "@/utils/RecipeSchema";
+import generateConstraints from "@/constants/constraints";
 
 export default function Generate() {
   const [isChecked, setChecked] = useState(false);
@@ -84,6 +85,9 @@ export default function Generate() {
           ingredients: parsedRecipe.ingredients,
           instructions: parsedRecipe.instructions,
           tips: parsedRecipe.tips,
+          originalIngredients: ingredients,
+          originalLeftovers: leftovers,
+          isChecked: isChecked,
         });
 
         router.push("/recipe");
@@ -100,15 +104,19 @@ export default function Generate() {
     }
   };
 
-  const handleGenerateRecipe = (inputRecipe: string) => {
-    fetchResponse(inputRecipe);
+  const handleGenerateRecipe = () => {
+    const constraints = generateConstraints();
+    const prompt = Prompt({
+      ingredients: ingredients,
+      leftovers: leftovers,
+      isChecked: isChecked,
+      mealType: constraints[0],
+      mealTexture: constraints[1],
+      mealMethod: constraints[2],
+    });
+    console.log(prompt);
+    fetchResponse(prompt);
   };
-
-  const recipePrompt = Prompt({
-    ingredients: ingredients,
-    leftovers: leftovers,
-    isChecked: isChecked,
-  });
 
   return (
     <>
@@ -249,19 +257,19 @@ export default function Generate() {
                     leftovers.length > 0 || ingredients.length > 0
                       ? mealsLeft > 0
                         ? () => [
-                            handleGenerateRecipe(recipePrompt),
-                            Haptics.impactAsync(
-                              Haptics.ImpactFeedbackStyle.Light,
-                            ),
-                          ]
+                          handleGenerateRecipe(),
+                          Haptics.impactAsync(
+                            Haptics.ImpactFeedbackStyle.Light,
+                          ),
+                        ]
                         : () =>
-                            alert(
-                              "You have run out of meal generations today. Come again tomorrow!",
-                            )
-                      : () =>
                           alert(
-                            "Add a leftover or ingredient to generate meal!",
+                            "You have run out of meal generations today. Come again tomorrow!",
                           )
+                      : () =>
+                        alert(
+                          "Add a leftover or ingredient to generate meal!",
+                        )
                   }
                 >
                   <Text

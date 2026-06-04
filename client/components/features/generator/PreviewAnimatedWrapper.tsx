@@ -19,6 +19,8 @@ import MealsLeftContext from "@/contexts/MealsLeftContext";
 import { GoogleGenAI } from "@google/genai";
 import { APIKEY } from "@/utils/apikey";
 import { RecipeSchema } from "@/utils/RecipeSchema";
+import Prompt from "@/constants/prompt";
+import generateConstraints from "@/constants/constraints";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
@@ -186,17 +188,29 @@ const PreviewAnimatedWrapper = (props: Props) => {
       return;
     }
     if (isPreFetching) return;
-    if (!recipeData.prompt) {
-      console.warn("No prompt found to generate background recipes.");
+    
+    const baseRecipe = recipeQueue[0] || recipeData;
+    if (!baseRecipe) {
+      console.warn("No base recipe found to generate background recipes.");
       return;
     }
 
     setIsPreFetching(true);
     try {
+      const nextConstraints = generateConstraints();
+      const nextPrompt = Prompt({
+        ingredients: baseRecipe.originalIngredients || [],
+        leftovers: baseRecipe.originalLeftovers || [],
+        isChecked: baseRecipe.isChecked || false,
+        mealType: nextConstraints[0],
+        mealTexture: nextConstraints[1],
+        mealMethod: nextConstraints[2],
+      });
+
       const ai = new GoogleGenAI({ apiKey: APIKEY });
       const response = await ai.models.generateContent({
         model: "gemini-3.1-flash-lite",
-        contents: recipeData.prompt,
+        contents: nextPrompt,
         config: {
           responseMimeType: "application/json",
           responseSchema: RecipeSchema,
@@ -207,7 +221,7 @@ const PreviewAnimatedWrapper = (props: Props) => {
         const parsedRecipe = JSON.parse(response.text);
         const newRecipe: RecipeData = {
           id: `recipe_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
-          prompt: recipeData.prompt,
+          prompt: nextPrompt,
           responseRecipe: response.text,
           title: parsedRecipe.title,
           description: parsedRecipe.description,
@@ -223,6 +237,9 @@ const PreviewAnimatedWrapper = (props: Props) => {
           ingredients: parsedRecipe.ingredients,
           instructions: parsedRecipe.instructions,
           tips: parsedRecipe.tips,
+          originalIngredients: baseRecipe.originalIngredients,
+          originalLeftovers: baseRecipe.originalLeftovers,
+          isChecked: baseRecipe.isChecked,
         };
 
         setRecipeQueue((prevQueue) => {
