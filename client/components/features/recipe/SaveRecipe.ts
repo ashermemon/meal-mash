@@ -32,6 +32,7 @@ export function saveRecipe(
     }
 
     storage.set("saves", JSON.stringify(updatedSaves));
+    storage.set("savesnumber", updatedSaves.length);
     return updatedSaves;
   });
 }

@@ -6,8 +6,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import emojiImages from "@/components/universal/EmojiImages";
 import ReanimatedSwipeable from "react-native-gesture-handler/ReanimatedSwipeable";
 
-import IngredientsContext from "@/contexts/IngredientsContext";
-import LeftoversContext from "@/contexts/LeftoversContext";
+import { GenerationDetailsContext } from "@/contexts/GenerationDetailsContext";
 import LeftoversEnabled from "@/contexts/LeftoversOn";
 import Animated, {
   Easing,
@@ -38,8 +37,7 @@ export default function IngredientCardAdded(props: CardProps) {
   const [hue] = useState(() => Math.random() * 359);
   const backgroundColor = hsl(hue, 88, 97);
   const strokeColor = hsl(hue, 45, 79);
-  const [ingredients, setIngredients] = useContext(IngredientsContext);
-  const [leftovers, setLeftovers] = useContext(LeftoversContext);
+  const [generationDetails, setGenerationDetails] = useContext(GenerationDetailsContext);
   const [leftoversEnabled, setLeftoversEnabled] = useContext(LeftoversEnabled);
 
   const [favorite, setFavorite] = useState(false);
@@ -56,13 +54,15 @@ export default function IngredientCardAdded(props: CardProps) {
   }, [favorites, favoritesL, props.ingredientName]);
   const removeCard = () => {
     if (props.leftover) {
-      setLeftovers((prevLeftovers) =>
-        prevLeftovers.filter((item) => item !== props.ingredientName),
-      );
+      setGenerationDetails((prev) => ({
+        ...prev,
+        leftovers: prev.leftovers.filter((item) => item !== props.ingredientName),
+      }));
     } else {
-      setIngredients((prevIngredients) =>
-        prevIngredients.filter((item) => item !== props.ingredientName),
-      );
+      setGenerationDetails((prev) => ({
+        ...prev,
+        ingredients: prev.ingredients.filter((item) => item !== props.ingredientName),
+      }));
     }
     swipeableRef.current?.close();
   };

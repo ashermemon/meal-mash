@@ -12,10 +12,9 @@ import { storage } from "@/utils/storage";
 import FavoritesContext from "@/contexts/FavoritesContext";
 import FavLeftoversContext from "@/contexts/FavLeftoversContext";
 import SavedRecipesContext from "@/contexts/SavedRecipesContext";
-import LeftoversContext from "@/contexts/LeftoversContext";
-import IngredientsContext from "@/contexts/IngredientsContext";
 import MealsLeftContext from "@/contexts/MealsLeftContext";
 import { NotificationProvider } from "@/contexts/NotificationContext";
+import { GenerationDetailsContext, type GenerationDetails } from "@/contexts/GenerationDetailsContext";
 import * as Notifications from "expo-notifications";
 import {
   BottomSheetModal,
@@ -30,8 +29,11 @@ export default function RootLayout() {
   const [favorites, setFavorites] = useState<string[]>([]);
   const [favoritesL, setFavoritesL] = useState<string[]>([]);
   const [savedRecipes, setSavedRecipes] = useState<RecipeData[]>([]);
-  const [ingredients, setIngredients] = useState<string[]>([]);
-  const [leftovers, setLeftovers] = useState<string[]>([]);
+  const [generationDetails, setGenerationDetails] = useState<GenerationDetails>({
+    ingredients: [],
+    leftovers: [],
+    isChecked: false,
+  });
   const [mealsLeft, setMealsLeft] = useState<number>(500);
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
@@ -147,45 +149,43 @@ export default function RootLayout() {
     <BottomSheetModalProvider>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <NotificationProvider>
-          <LeftoversContext.Provider value={[leftovers, setLeftovers]}>
-            <IngredientsContext.Provider value={[ingredients, setIngredients]}>
-              <FavoritesContext.Provider value={[favorites, setFavorites]}>
-                <FavLeftoversContext.Provider
-                  value={[favoritesL, setFavoritesL]}
+          <GenerationDetailsContext.Provider value={[generationDetails, setGenerationDetails]}>
+            <FavoritesContext.Provider value={[favorites, setFavorites]}>
+              <FavLeftoversContext.Provider
+                value={[favoritesL, setFavoritesL]}
+              >
+                <SavedRecipesContext.Provider
+                  value={[savedRecipes, setSavedRecipes]}
                 >
-                  <SavedRecipesContext.Provider
-                    value={[savedRecipes, setSavedRecipes]}
+                  <MealsLeftContext.Provider
+                    value={[mealsLeft, setMealsLeft]}
                   >
-                    <MealsLeftContext.Provider
-                      value={[mealsLeft, setMealsLeft]}
-                    >
-                      <RecipeProvider>
-                        <StatusBar
-                          barStyle="dark-content"
-                          backgroundColor={COLORS.newHeader}
-                        />
+                    <RecipeProvider>
+                      <StatusBar
+                        barStyle="dark-content"
+                        backgroundColor={COLORS.newHeader}
+                      />
 
-                        <Stack
-                          screenOptions={{
-                            headerShown: false,
-                          }}
-                        ></Stack>
+                      <Stack
+                        screenOptions={{
+                          headerShown: false,
+                        }}
+                      ></Stack>
 
-                        <BottomSheetModal
-                          ref={bottomSheetModalRef}
-                          onChange={handleSheetChanges}
-                        >
-                          <BottomSheetView style={styles.contentContainer}>
-                            <Text>Wow</Text>
-                          </BottomSheetView>
-                        </BottomSheetModal>
-                      </RecipeProvider>
-                    </MealsLeftContext.Provider>
-                  </SavedRecipesContext.Provider>
-                </FavLeftoversContext.Provider>
-              </FavoritesContext.Provider>
-            </IngredientsContext.Provider>
-          </LeftoversContext.Provider>
+                      <BottomSheetModal
+                        ref={bottomSheetModalRef}
+                        onChange={handleSheetChanges}
+                      >
+                        <BottomSheetView style={styles.contentContainer}>
+                          <Text>Wow</Text>
+                        </BottomSheetView>
+                      </BottomSheetModal>
+                    </RecipeProvider>
+                  </MealsLeftContext.Provider>
+                </SavedRecipesContext.Provider>
+              </FavLeftoversContext.Provider>
+            </FavoritesContext.Provider>
+          </GenerationDetailsContext.Provider>
         </NotificationProvider>
       </GestureHandlerRootView>
     </BottomSheetModalProvider>

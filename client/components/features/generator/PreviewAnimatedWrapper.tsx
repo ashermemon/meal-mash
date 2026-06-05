@@ -21,6 +21,8 @@ import { APIKEY } from "@/utils/apikey";
 import { RecipeSchema } from "@/utils/RecipeSchema";
 import Prompt from "@/constants/prompt";
 import generateConstraints from "@/constants/constraints";
+import { GenerationDetailsContext } from "@/contexts/GenerationDetailsContext";
+import { storage } from "@/utils/storage";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
@@ -159,49 +161,46 @@ const PreviewAnimatedWrapper = (props: Props) => {
 
   const [recipeQueue, setRecipeQueue] = useState<RecipeData[]>([]);
   const [isPreFetching, setIsPreFetching] = useState(false);
+  const [generationDetails, setGenerationDetails] = useContext(GenerationDetailsContext);
 
-  // Keep a ref of mealsLeft so the async prefetch always reads the latest value
+
+
   const mealsLeftRef = useRef(mealsLeft);
   useEffect(() => {
     mealsLeftRef.current = mealsLeft;
   }, [mealsLeft]);
 
-  // Initialize the queue with the first generated recipe
   useEffect(() => {
     if (recipeData && recipeData.title && recipeQueue.length === 0) {
       setRecipeQueue([recipeData]);
     }
   }, [recipeData]);
 
-  // Sync RecipeContext with the current top card whenever the queue changes
-  // (must NOT happen inside a state updater — useEffect runs after render)
+
   useEffect(() => {
     if (recipeQueue.length > 0) {
       setRecipeData(recipeQueue[0]);
     }
   }, [recipeQueue[0]?.id]);
 
-  // Background pre-fetch logic using Gemini API
+
   const prefetchNextRecipe = async () => {
     if (mealsLeftRef.current <= 0) {
       console.warn("Out of meals left. Skipping background generation.");
       return;
     }
     if (isPreFetching) return;
-    
-    const baseRecipe = recipeQueue[0] || recipeData;
-    if (!baseRecipe) {
-      console.warn("No base recipe found to generate background recipes.");
-      return;
-    }
+
+
+
 
     setIsPreFetching(true);
     try {
       const nextConstraints = generateConstraints();
       const nextPrompt = Prompt({
-        ingredients: baseRecipe.originalIngredients || [],
-        leftovers: baseRecipe.originalLeftovers || [],
-        isChecked: baseRecipe.isChecked || false,
+        ingredients: generationDetails.ingredients || [],
+        leftovers: generationDetails.leftovers || [],
+        isChecked: generationDetails.isChecked || false,
         mealType: nextConstraints[0],
         mealTexture: nextConstraints[1],
         mealMethod: nextConstraints[2],
@@ -237,10 +236,10 @@ const PreviewAnimatedWrapper = (props: Props) => {
           ingredients: parsedRecipe.ingredients,
           instructions: parsedRecipe.instructions,
           tips: parsedRecipe.tips,
-          originalIngredients: baseRecipe.originalIngredients,
-          originalLeftovers: baseRecipe.originalLeftovers,
-          isChecked: baseRecipe.isChecked,
         };
+
+        const totalMeals = storage.getNumber("mealsnumber") ?? 0;
+        storage.set("mealsnumber", totalMeals + 1);
 
         setRecipeQueue((prevQueue) => {
           if (prevQueue.some((r) => r.id === newRecipe.id || r.title === newRecipe.title)) {
@@ -256,7 +255,7 @@ const PreviewAnimatedWrapper = (props: Props) => {
     }
   };
 
-  // Pre-fetch triggered when queue length becomes < 2
+
   useEffect(() => {
     if (recipeQueue.length < 2 && !isPreFetching) {
       prefetchNextRecipe();
@@ -272,7 +271,7 @@ const PreviewAnimatedWrapper = (props: Props) => {
     persistRecipe(recipe, setSavedRecipes);
   };
 
-  // Prepare active card layers (max 2 rendered at any time for high performance)
+
   const cardsToRender: { recipe?: RecipeData; isTop: boolean; isLoading?: boolean; key: string }[] = [];
 
   if (recipeQueue.length === 0) {
@@ -303,7 +302,6 @@ const PreviewAnimatedWrapper = (props: Props) => {
     }
   }
 
-  // Reverse so that the top card is rendered last (placed on top of the layout)
   const stack = [...cardsToRender].reverse();
 
   return (

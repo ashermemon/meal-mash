@@ -26,9 +26,6 @@ export type RecipeData = {
   ingredients: [string, string][];
   instructions: RecipeInstruction[];
   tips: string[];
-  originalIngredients?: string[];
-  originalLeftovers?: string[];
-  isChecked?: boolean;
 };
 
 export type RecipeContextType = [
@@ -54,7 +51,7 @@ const initialRecipeData: RecipeData = {
 
 const RecipeContext = createContext<RecipeContextType>([
   initialRecipeData,
-  () => {},
+  () => { },
 ]);
 
 export const RecipeProvider = ({ children }: { children: ReactNode }) => {

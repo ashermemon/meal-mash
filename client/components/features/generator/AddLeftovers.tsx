@@ -3,20 +3,20 @@ import React, { useContext, useEffect, useState } from "react";
 import NewCard from "@/components/features/generator/NewCard";
 import { styles } from "@/styles/GlobalStyles";
 import { COLORS } from "@/constants/Theme";
-import LeftoversContext from "@/contexts/LeftoversContext";
 import IngredientCardAdded from "@/components/features/generator/IngredientCardAdded";
+import { GenerationDetailsContext } from "@/contexts/GenerationDetailsContext";
 
 export default function AddLeftovers() {
-  const [leftovers, setLeftovers] = useContext(LeftoversContext);
+  const [generationDetails, setGenerationDetails] = useContext(GenerationDetailsContext);
   const [addButtonActive, setAddButtonActive] = useState(true);
 
   useEffect(() => {
-    if (leftovers.length > 4) {
+    if (generationDetails.leftovers.length > 4) {
       setAddButtonActive(false);
     } else {
       setAddButtonActive(true);
     }
-  }, [leftovers]);
+  }, [generationDetails.leftovers]);
 
   return (
     <View
@@ -27,7 +27,7 @@ export default function AddLeftovers() {
     >
       <Text style={styles.addContainerHeader}>Leftover Meals:</Text>
 
-      {leftovers.map((leftover, index) => (
+      {generationDetails.leftovers.map((leftover, index) => (
         <IngredientCardAdded
           ingredientName={leftover}
           cardBColor={COLORS.blueHeader}
