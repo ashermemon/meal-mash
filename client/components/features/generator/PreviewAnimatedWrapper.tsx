@@ -143,15 +143,12 @@ const SwipableCard = ({
         saveRecipe={saveRecipe}
         skipRecipe={skipRecipe}
         isLoading={isLoading}
+        imageCategory={recipe?.imageCategory || "bowl"}
       />
     </Animated.View>
   );
 
-  if (isTop && !isLoading) {
-    return <GestureDetector gesture={pan}>{card}</GestureDetector>;
-  }
-
-  return card;
+  return <GestureDetector gesture={pan}>{card}</GestureDetector>;
 };
 
 const PreviewAnimatedWrapper = (props: Props) => {
@@ -218,6 +215,7 @@ const PreviewAnimatedWrapper = (props: Props) => {
 
       if (response.text) {
         const parsedRecipe = JSON.parse(response.text);
+        console.log(parsedRecipe.imageCategory);
         const newRecipe: RecipeData = {
           id: `recipe_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
           prompt: nextPrompt,
@@ -236,6 +234,7 @@ const PreviewAnimatedWrapper = (props: Props) => {
           ingredients: parsedRecipe.ingredients,
           instructions: parsedRecipe.instructions,
           tips: parsedRecipe.tips,
+          imageCategory: parsedRecipe.imageCategory,
         };
 
         const totalMeals = storage.getNumber("mealsnumber") ?? 0;

@@ -17,6 +17,23 @@ import RecipeSection from "@/components/features/recipe/RecipeSection";
 import Svg, { Path } from "react-native-svg";
 import FollowRecipeHeader from "@/components/features/recipe/FollowRecipeHeader";
 
+const MEAL_IMAGES: Record<string, any> = {
+  burger: require("@/assets/images/meal-images/burger.png"),
+  pizza: require("@/assets/images/meal-images/pizza.png"),
+  pasta: require("@/assets/images/meal-images/pasta.png"),
+  salad: require("@/assets/images/meal-images/salad.png"),
+  curry: require("@/assets/images/meal-images/curry.png"),
+  "fried-rice": require("@/assets/images/meal-images/fried-rice.png"),
+  sandwich: require("@/assets/images/meal-images/sandwich.png"),
+  taco: require("@/assets/images/meal-images/taco.png"),
+  soup: require("@/assets/images/meal-images/soup.png"),
+  dessert: require("@/assets/images/meal-images/dessert.png"),
+  breakfast: require("@/assets/images/meal-images/breakfast.png"),
+  seafood: require("@/assets/images/meal-images/seafood.png"),
+  steak: require("@/assets/images/meal-images/steak.png"),
+  bowl: require("@/assets/images/meal-images/bowl.png"),
+};
+
 const followRecipe = () => {
   const [contextRecipeData] = useContext(RecipeContext);
   const navigation = useNavigation();
@@ -65,6 +82,7 @@ const followRecipe = () => {
       "You can substitute olive oil with avocado oil.",
       "Add a pinch of salt to enhance the taste.",
     ],
+    imageCategory: "bowl"
   };
 
   const recipeData = contextRecipeData?.title
@@ -115,7 +133,7 @@ const followRecipe = () => {
             }}
           >
             <Image
-              source={require("@/assets/images/mealExample.png")}
+              source={MEAL_IMAGES[recipeData.imageCategory] || MEAL_IMAGES.bowl}
               style={{ width: 70, height: 70, borderRadius: 110 }}
               contentFit="cover"
             />

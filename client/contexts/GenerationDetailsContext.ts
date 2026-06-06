@@ -8,6 +8,7 @@ export type GenerationDetails = {
     ingredients: string[];
     leftovers: string[];
     isChecked: boolean;
+
 };
 
 export type GenerationDetailsType = [
@@ -19,6 +20,7 @@ const initialGenerationDetails: GenerationDetails = {
     ingredients: [],
     leftovers: [],
     isChecked: false,
+
 };
 
 export const GenerationDetailsContext = createContext<GenerationDetailsType>([

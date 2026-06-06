@@ -26,6 +26,7 @@ export type RecipeData = {
   ingredients: [string, string][];
   instructions: RecipeInstruction[];
   tips: string[];
+  imageCategory: string;
 };
 
 export type RecipeContextType = [
@@ -47,6 +48,7 @@ const initialRecipeData: RecipeData = {
   ingredients: [],
   instructions: [],
   tips: [],
+  imageCategory: "bowl",
 };
 
 const RecipeContext = createContext<RecipeContextType>([

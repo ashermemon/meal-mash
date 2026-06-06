@@ -7,14 +7,14 @@ type PromptProps = {
   mealMethod: string;
 };
 export default function Prompt(props: PromptProps) {
-  const hasLeftovers = props.leftovers.length !== 0;
+
 
   return `You are an expert chef assistant. Generate a delicious, realistic, high-quality recipe matching the structural parameters requested.
 
 USER INGREDIENTS:
-- Leftovers (MUST USE): [${props.leftovers.join(", ")}]
-- Regular Ingredients: [${props.ingredients.join(", ")}]
-- Grocery Flexibility: ${props.isChecked ? "Allowed to use outside ingredients if needed for taste" : "ONLY use listed ingredients and kitchen basics"}
+${props.leftovers.length > 0 ? `- Leftovers (MUST USE): [${props.leftovers.join(", ")}]` : ""}
+${props.ingredients.length > 0 ? `- Regular Ingredients: [${props.ingredients.join(", ")}]` : ''}
+${props.ingredients.length > 0 || props.leftovers.length > 0 ? `- Grocery Flexibility: ${props.isChecked ? "Allowed to use outside ingredients if needed for taste" : "ONLY use listed ingredients and kitchen basics"}` : "Use any ingredients to create the most delicious and realistic recipe that meets all requirements"}
 
 RECIPE CONSTRAINTS:
 - Meal type: ${props.mealType}
@@ -22,7 +22,7 @@ RECIPE CONSTRAINTS:
 - Meal method: ${props.mealMethod}
 
 CULINARY GUIDELINES:
-1. ${hasLeftovers ? "CRITICAL: You must incorporate ALL/MOST of the listed leftovers into this recipe." : "Incorporate the provided ingredients naturally."}
+1. ${props.leftovers.length > 0 ? "CRITICAL: You must incorporate ALL/MOST of the listed leftovers into this recipe." : "Incorporate the provided ingredients naturally."}
 2. Assume the user has basic kitchen staples like salt, pepper, cooking oil, and standard pots/pans.
 3. Prioritize genuine flavor. If the user provided an ingredient that tastes terrible with this combination, omit it safely.
 4. Title constraint: Must be under 23 characters (including spaces).

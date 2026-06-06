@@ -169,21 +169,21 @@ export default function Generate() {
                   },
                 ]}
                 onPress={
-                  generationDetails.leftovers.length > 0 || generationDetails.ingredients.length > 0
-                    ? mealsLeft > 0
-                      ? () => [
-                          setGenerationDetails((prev) => ({
-                            ...prev,
-                            isChecked,
-                          })),
-                          router.push("/recipe"),
-                          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light),
-                        ]
-                      : () =>
-                          alert(
-                            "You have run out of meal generations today. Come again tomorrow!",
-                          )
-                    : () => alert("Add a leftover or ingredient to generate meal!")
+
+                  mealsLeft > 0
+                    ? () => [
+                      setGenerationDetails((prev) => ({
+                        ...prev,
+                        isChecked,
+                      })),
+                      router.push("/recipe"),
+                      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light),
+                    ]
+                    : () =>
+                      alert(
+                        "You have run out of meal generations today. Come again tomorrow!",
+                      )
+
                 }
               >
                 <Text
