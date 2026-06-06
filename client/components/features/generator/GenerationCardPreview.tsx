@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import NutrientCircle from "@/components/features/recipe/NutrientCircle";
 import { styles } from "@/styles/GlobalStyles";
 import RecipeInfoTags from "../recipe/RecipeInfoTags";
+import NutrientsContext from "@/contexts/NutrientsContext";
 import { NEWCOLORS } from "@/constants/NewTheme";
 import { router } from "expo-router";
 import { Skeleton } from "moti/skeleton";
@@ -25,6 +26,8 @@ type Props = {
   skipRecipe: () => void;
   isLoading?: boolean;
   imageCategory: string;
+  nutrients?: number[];
+  makeRecipe: () => void;
 };
 
 const SkeletonSettings = {
@@ -327,7 +330,9 @@ export const GenerationCardPreview = (props: Props) => {
           {props.description}
         </Text>
 
-        <NutrientCircle textInBox={false} />
+        <NutrientsContext.Provider value={[props.nutrients || [0, 0, 0], () => { }]}>
+          <NutrientCircle textInBox={false} />
+        </NutrientsContext.Provider>
 
         <View style={{ width: "100%", alignItems: "center", marginTop: 10 }}>
           <Pressable
@@ -340,7 +345,7 @@ export const GenerationCardPreview = (props: Props) => {
                 width: "100%",
               },
             ]}
-            onPress={() => router.push("/followRecipe")} //.push creates new screen instead (less lag, new screen)
+            onPress={props.makeRecipe}
 
           //more laggy: InteractionManager.runAfterInteractions(() => { router.navigate("/followRecipe") })
           >

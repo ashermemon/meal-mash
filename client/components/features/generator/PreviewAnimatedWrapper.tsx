@@ -23,6 +23,7 @@ import Prompt from "@/constants/prompt";
 import generateConstraints from "@/constants/constraints";
 import { GenerationDetailsContext } from "@/contexts/GenerationDetailsContext";
 import { storage } from "@/utils/storage";
+import { router } from "expo-router";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
@@ -53,14 +54,26 @@ const SwipableCard = ({
   onSwipeLeft,
   onSwipeRightStart,
 }: SwipableCardProps) => {
+  const isSwipingRef = useRef(false);
   const translateX = useSharedValue(0);
   const ROTATION = 10;
+
+  const markSwiping = () => {
+    isSwipingRef.current = true;
+  };
+
+  const makeRecipe = () => {
+    if (!isSwipingRef.current) {
+      router.push("/followRecipe");
+    }
+  };
 
   const saveRecipe = () => {
     "worklet";
     if (onSwipeRightStart) {
       runOnJS(onSwipeRightStart)();
     }
+    runOnJS(markSwiping)();
     translateX.value = withTiming(
       SCREEN_WIDTH + 100,
       { duration: 400, easing: Easing.inOut(Easing.cubic) },
@@ -74,6 +87,7 @@ const SwipableCard = ({
 
   const skipRecipe = () => {
     "worklet";
+    runOnJS(markSwiping)();
     translateX.value = withTiming(
       -SCREEN_WIDTH - 100,
       { duration: 600, easing: Easing.inOut(Easing.cubic) },
@@ -144,6 +158,8 @@ const SwipableCard = ({
         skipRecipe={skipRecipe}
         isLoading={isLoading}
         imageCategory={recipe?.imageCategory || "bowl"}
+        nutrients={recipe?.nutrients || [0, 0, 0]}
+        makeRecipe={makeRecipe}
       />
     </Animated.View>
   );

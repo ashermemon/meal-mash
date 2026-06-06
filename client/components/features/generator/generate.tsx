@@ -183,7 +183,6 @@ export default function Generate() {
                       alert(
                         "You have run out of meal generations today. Come again tomorrow!",
                       )
-
                 }
               >
                 <Text
