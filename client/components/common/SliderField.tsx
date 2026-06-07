@@ -11,7 +11,7 @@ type Props = {
 
 const SliderField = (props: Props) => {
   return (
-    <View style={{ flex: 1, gap: 33, flexDirection: "column" }}>
+    <View style={{ gap: 33, flexDirection: "column" }}>
       <View
         style={[
           styles.sliderPill,

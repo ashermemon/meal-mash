@@ -13,6 +13,8 @@ export const NEWCOLORS = {
   basicText: "#39393A",
 
   lightGrey: "#e6e6e6",
+  unselectedGrey: "#F0F0F0",
+  unselectedShape: "#C9C9C9",
   dividerGrey: "#d1d1d6",
   dividerGrey2: "#ECECEC",
 

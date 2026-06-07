@@ -747,4 +747,10 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingVertical: 5,
   },
+  selectPill: {
+    flex: 1,
+    borderRadius: 1000,
+    backgroundColor: NEWCOLORS.unselectedGrey,
+    height: 35,
+  },
 });
