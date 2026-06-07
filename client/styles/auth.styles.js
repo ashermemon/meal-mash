@@ -153,7 +153,6 @@ export const styles = StyleSheet.create({
     color: "red",
   },
   generatorContainer: {
-    paddingVertical: 15,
     flex: 1,
     width: "100%",
     //backgroundColor: "white",
@@ -739,5 +738,13 @@ export const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
+  },
+  sliderPill: {
+    width: "100%",
+    borderRadius: 1000,
+    backgroundColor: NEWCOLORS.greyBlock,
+    height: 55,
+    paddingHorizontal: 15,
+    paddingVertical: 5,
   },
 });

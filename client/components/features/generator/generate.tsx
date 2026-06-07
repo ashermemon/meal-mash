@@ -25,6 +25,7 @@ import RecipeContext from "@/contexts/RecipeContext";
 import { router } from "expo-router";
 import { RecipeSchema } from "@/utils/RecipeSchema";
 import generateConstraints from "@/constants/constraints";
+import GeneratorDetails from "./GeneratorDetails";
 
 export default function Generate() {
   const [isChecked, setChecked] = useState(false);
@@ -50,7 +51,9 @@ export default function Generate() {
         value={[leftoversEnabled, setLeftoversEnabled]}
       >
         <SearchContext.Provider value={[searchActive, setSearchActive]}>
-          <ScrollView
+
+          <GeneratorDetails></GeneratorDetails>
+          {/* <ScrollView
             contentContainerStyle={{ flexGrow: 1 }}
             overScrollMode="never"
             alwaysBounceVertical={false}
@@ -198,7 +201,7 @@ export default function Generate() {
 
               <View style={styles.spacer}></View>
             </View>
-          </ScrollView>
+          </ScrollView> */}
         </SearchContext.Provider>
       </LeftoversEnabled.Provider >
     </>

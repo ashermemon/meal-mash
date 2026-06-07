@@ -54,7 +54,7 @@ export default function Welcome() {
       alwaysBounceVertical={false}
       style={{
         width: "100%",
-        paddingHorizontal: 20,
+        paddingHorizontal: 25,
         paddingVertical: 20,
       }}
     >
