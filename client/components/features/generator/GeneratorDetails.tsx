@@ -5,6 +5,7 @@ import { styles } from "@/styles/auth.styles";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import SliderField from "@/components/common/SliderField";
 import MultiSelectPills from "@/components/common/MultiSelectPills";
+import CountFieldPill from "@/components/common/CountFieldPill";
 
 type Props = {};
 
@@ -17,6 +18,8 @@ const GeneratorDetails = (props: Props) => {
   const [genMode, setGenMode] = useState<number>(0);
   const [diffculties, setDifficulties] = useState<number[]>([]);
   const [times, setTimes] = useState<number[]>([]);
+  const [num, setNum] = useState<number>(1);
+
   return (
     <ScrollView
       contentContainerStyle={{ flexGrow: 1 }}
@@ -38,7 +41,7 @@ const GeneratorDetails = (props: Props) => {
           Generate recipes
         </Text>
 
-        <View style={{ flexDirection: "column", gap: 33 }}>
+        <View style={{ flexDirection: "column", gap: 36 }}>
           <SliderField
             options={modes}
             selected={genMode}
@@ -57,6 +60,11 @@ const GeneratorDetails = (props: Props) => {
             setSelected={setTimes}
             labels={["<15m", "~30m", "1hr+"]}
           ></MultiSelectPills>
+          <CountFieldPill
+            num={num}
+            setNum={setNum}
+            title={"Number of Servings:"}
+          ></CountFieldPill>
         </View>
       </View>
     </ScrollView>

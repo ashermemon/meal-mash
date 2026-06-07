@@ -67,7 +67,7 @@ const MultiSelectPills = (props: Props) => {
             <Text
               style={[
                 styles.textCentered,
-                { fontSize: 12.5, flex: 1, textAlign: "center" },
+                { flexGrow: 1, fontSize: 12.5, textAlign: "center" },
                 props.selected.includes(index)
                   ? props.diff
                     ? { color: NEWCOLORS.basicText }
