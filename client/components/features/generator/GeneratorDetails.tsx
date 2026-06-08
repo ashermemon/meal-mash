@@ -6,6 +6,7 @@ import { CustomIcon } from "@/icon-loader/icon-loader";
 import SliderField from "@/components/common/SliderField";
 import MultiSelectPills from "@/components/common/MultiSelectPills";
 import CountFieldPill from "@/components/common/CountFieldPill";
+import DropDownPill from "@/components/common/DropDownPill";
 
 type Props = {};
 
@@ -19,6 +20,23 @@ const GeneratorDetails = (props: Props) => {
   const [diffculties, setDifficulties] = useState<number[]>([]);
   const [times, setTimes] = useState<number[]>([]);
   const [num, setNum] = useState<number>(1);
+  const [mealType, setMealType] = useState<string[]>(["Any"]);
+  const [cuisine, setCuisine] = useState<string[]>(["Any"]);
+  const [dietaryRestrictions, setDietaryRestrictions] = useState<string[]>([
+    "None",
+  ]);
+
+  const mealTypeOptions: string[] = [
+    "Breakfast",
+    "Lunch",
+    "Dinner",
+    "Snack",
+    "Side",
+    "Drink",
+    "Dessert",
+  ];
+  const cuisineOptions: string[] = [];
+  const dietaryRestrictionOptions: string[] = [];
 
   return (
     <ScrollView
@@ -65,6 +83,24 @@ const GeneratorDetails = (props: Props) => {
             setNum={setNum}
             title={"Number of Servings:"}
           ></CountFieldPill>
+          <DropDownPill
+            title={"Meal Type:"}
+            options={mealTypeOptions}
+            selections={mealType}
+            setSelection={setMealType}
+          ></DropDownPill>
+          <DropDownPill
+            title={"Cuisine:"}
+            options={cuisineOptions}
+            selections={cuisine}
+            setSelection={setCuisine}
+          ></DropDownPill>
+          <DropDownPill
+            title={"Dietary Preferences:"}
+            options={dietaryRestrictionOptions}
+            selections={dietaryRestrictions}
+            setSelection={setDietaryRestrictions}
+          ></DropDownPill>
         </View>
       </View>
     </ScrollView>
