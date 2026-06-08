@@ -42,7 +42,9 @@ const RecipeSection = (props: Props) => {
               { color: COLORS.searchPlaceholder, fontSize: 13, marginTop: 1 },
             ]}
           >
-            Makes {props.servings} servings
+            {props.servings === 1
+              ? `Makes ${props.servings} serving`
+              : `Makes ${props.servings} servings`}
           </Text>
         )}
       </View>

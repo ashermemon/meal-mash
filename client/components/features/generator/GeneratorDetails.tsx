@@ -21,9 +21,12 @@ const GeneratorDetails = (props: Props) => {
     "Pantry + ≤3 Extra Ingredients",
     "Any Ingredients",
   ];
+  const difficultyLabels = ["Easy", "Intermediate", "Expert"];
+  const timeLabels = ["<15m", "~30m", "1hr+"];
+
   const [genMode, setGenMode] = useState<number>(0);
-  const [diffculties, setDifficulties] = useState<number[]>([]);
-  const [times, setTimes] = useState<number[]>([]);
+  const [diffciulties, setDifficulties] = useState<number[]>([0, 1, 2]);
+  const [times, setTimes] = useState<number[]>([0, 1, 2]);
   const [num, setNum] = useState<number>(1);
   const [mealType, setMealType] = useState<string[]>(["Any"]);
   const [cuisine, setCuisine] = useState<string[]>(["Any"]);
@@ -146,16 +149,16 @@ const GeneratorDetails = (props: Props) => {
           </View>
           <MultiSelectPills
             title="Difficulty:"
-            selected={diffculties}
+            selected={diffciulties}
             setSelected={setDifficulties}
-            labels={["Easy", "Intermediate", "Expert"]}
+            labels={difficultyLabels}
             diff
           ></MultiSelectPills>
           <MultiSelectPills
             title="Recipe Time:"
             selected={times}
             setSelected={setTimes}
-            labels={["<15m", "~30m", "1hr+"]}
+            labels={timeLabels}
           ></MultiSelectPills>
           <CountFieldPill
             num={num}
@@ -195,6 +198,19 @@ const GeneratorDetails = (props: Props) => {
                 ? () => [
                     setGenerationDetails((prev) => ({
                       ...prev,
+                      generationType: modes[genMode],
+                      difficulties:
+                        diffciulties.length === 0
+                          ? difficultyLabels
+                          : diffciulties.map((idx) => difficultyLabels[idx]),
+                      recipeTime:
+                        times.length === 0
+                          ? timeLabels
+                          : times.map((idx) => timeLabels[idx]),
+                      numberOfServings: num,
+                      mealType: mealType,
+                      cuisine: cuisine,
+                      dietaryPreference: dietaryRestrictions,
                     })),
                     router.navigate("/recipe"),
                     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light),

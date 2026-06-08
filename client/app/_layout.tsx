@@ -31,7 +31,13 @@ export default function RootLayout() {
     {
       ingredients: [],
       leftovers: [],
-      isChecked: false,
+      generationType: "",
+      difficulties: [],
+      recipeTime: [],
+      numberOfServings: 1,
+      mealType: [],
+      cuisine: [],
+      dietaryPreference: [],
     },
   );
   const [mealsLeft, setMealsLeft] = useState<number>(500);

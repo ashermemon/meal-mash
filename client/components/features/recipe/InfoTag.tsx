@@ -6,7 +6,11 @@ interface Props {
   type: "difficulty" | "time" | "tags";
   data: string;
 }
-export const difficultyShape = (diff: string, colorState?: boolean, select?: boolean) => {
+export const difficultyShape = (
+  diff: string,
+  colorState?: boolean,
+  select?: boolean,
+) => {
   const difficulty = diff.toLowerCase();
 
   if (difficulty === "easy") {

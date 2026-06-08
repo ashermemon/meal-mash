@@ -174,9 +174,9 @@ const PreviewAnimatedWrapper = (props: Props) => {
 
   const [recipeQueue, setRecipeQueue] = useState<RecipeData[]>([]);
   const [isPreFetching, setIsPreFetching] = useState(false);
-  const [generationDetails, setGenerationDetails] = useContext(GenerationDetailsContext);
-
-
+  const [generationDetails, setGenerationDetails] = useContext(
+    GenerationDetailsContext,
+  );
 
   const mealsLeftRef = useRef(mealsLeft);
   useEffect(() => {
@@ -189,13 +189,11 @@ const PreviewAnimatedWrapper = (props: Props) => {
     }
   }, [recipeData]);
 
-
   useEffect(() => {
     if (recipeQueue.length > 0) {
       setRecipeData(recipeQueue[0]);
     }
   }, [recipeQueue[0]?.id]);
-
 
   const prefetchNextRecipe = async () => {
     if (mealsLeftRef.current <= 0) {
@@ -204,19 +202,24 @@ const PreviewAnimatedWrapper = (props: Props) => {
     }
     if (isPreFetching) return;
 
-
-
-
     setIsPreFetching(true);
     try {
       const nextConstraints = generateConstraints();
       const nextPrompt = Prompt({
         ingredients: generationDetails.ingredients || [],
         leftovers: generationDetails.leftovers || [],
-        isChecked: generationDetails.isChecked || false,
-        mealType: nextConstraints[0],
+
+        mealVibe: nextConstraints[0],
         mealTexture: nextConstraints[1],
         mealMethod: nextConstraints[2],
+
+        generationType: generationDetails.generationType,
+        difficulties: generationDetails.difficulties,
+        recipeTime: generationDetails.recipeTime,
+        numberOfServings: generationDetails.numberOfServings,
+        mealType: generationDetails.mealType,
+        cuisine: generationDetails.cuisine,
+        dietaryPreference: generationDetails.dietaryPreference,
       });
 
       const ai = new GoogleGenAI({ apiKey: APIKEY });
@@ -257,7 +260,11 @@ const PreviewAnimatedWrapper = (props: Props) => {
         storage.set("mealsnumber", totalMeals + 1);
 
         setRecipeQueue((prevQueue) => {
-          if (prevQueue.some((r) => r.id === newRecipe.id || r.title === newRecipe.title)) {
+          if (
+            prevQueue.some(
+              (r) => r.id === newRecipe.id || r.title === newRecipe.title,
+            )
+          ) {
             return prevQueue;
           }
           return [...prevQueue, newRecipe];
@@ -269,7 +276,6 @@ const PreviewAnimatedWrapper = (props: Props) => {
       setIsPreFetching(false);
     }
   };
-
 
   useEffect(() => {
     if (recipeQueue.length < 2 && !isPreFetching) {
@@ -286,8 +292,12 @@ const PreviewAnimatedWrapper = (props: Props) => {
     persistRecipe(recipe, setSavedRecipes);
   };
 
-
-  const cardsToRender: { recipe?: RecipeData; isTop: boolean; isLoading?: boolean; key: string }[] = [];
+  const cardsToRender: {
+    recipe?: RecipeData;
+    isTop: boolean;
+    isLoading?: boolean;
+    key: string;
+  }[] = [];
 
   if (recipeQueue.length === 0) {
     cardsToRender.push({
@@ -337,7 +347,9 @@ const PreviewAnimatedWrapper = (props: Props) => {
           isLoading={item.isLoading}
           onSwipeRight={() => item.recipe && handleSwipeFinished(item.recipe)}
           onSwipeLeft={() => item.recipe && handleSwipeFinished(item.recipe)}
-          onSwipeRightStart={() => item.recipe && handleSaveRecipeJS(item.recipe)}
+          onSwipeRightStart={() =>
+            item.recipe && handleSaveRecipeJS(item.recipe)
+          }
         />
       ))}
     </View>
