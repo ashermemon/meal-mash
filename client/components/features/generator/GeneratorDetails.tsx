@@ -1,5 +1,5 @@
 import { View, Text, Pressable } from "react-native";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { ScrollView } from "react-native-gesture-handler";
 import { styles } from "@/styles/auth.styles";
 import { CustomIcon } from "@/icon-loader/icon-loader";
@@ -8,6 +8,10 @@ import MultiSelectPills from "@/components/common/MultiSelectPills";
 import CountFieldPill from "@/components/common/CountFieldPill";
 import DropDownPill from "@/components/common/DropDownPill";
 import { NEWCOLORS } from "@/constants/NewTheme";
+import { GenerationDetailsContext } from "@/contexts/GenerationDetailsContext";
+import { router } from "expo-router";
+import * as Haptics from "expo-haptics";
+import MealsLeftContext from "@/contexts/MealsLeftContext";
 
 type Props = {};
 
@@ -26,6 +30,11 @@ const GeneratorDetails = (props: Props) => {
   const [dietaryRestrictions, setDietaryRestrictions] = useState<string[]>([
     "None",
   ]);
+
+  const [generationDetails, setGenerationDetails] = useContext(
+    GenerationDetailsContext,
+  );
+  const [mealsLeft, setMealsLeft] = useContext(MealsLeftContext);
 
   const mealTypeOptions: string[] = [
     "Breakfast",
@@ -171,6 +180,37 @@ const GeneratorDetails = (props: Props) => {
             selections={dietaryRestrictions}
             setSelection={setDietaryRestrictions}
           ></DropDownPill>
+          <Pressable
+            style={[
+              styles.basicBoxShadow,
+              {
+                backgroundColor: NEWCOLORS.darkButton,
+                paddingVertical: 14,
+                borderRadius: 15,
+                width: "100%",
+              },
+            ]}
+            onPress={
+              mealsLeft > 0
+                ? () => [
+                    setGenerationDetails((prev) => ({
+                      ...prev,
+                    })),
+                    router.navigate("/recipe"),
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light),
+                  ]
+                : () =>
+                    alert(
+                      "You have run out of meal generations today. Come again tomorrow!",
+                    )
+            }
+          >
+            <Text
+              style={[styles.textCenterBold, { color: "white", fontSize: 18 }]}
+            >
+              Generate Recipes →
+            </Text>
+          </Pressable>
         </View>
       </View>
     </ScrollView>

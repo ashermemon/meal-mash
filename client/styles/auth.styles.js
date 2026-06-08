@@ -31,6 +31,7 @@ export const styles = StyleSheet.create({
   image: {
     ...StyleSheet.absoluteFillObject,
     resizeMode: "cover",
+    opacity: 0.2,
   },
   text: {
     fontFamily: "Nunito-Regular",

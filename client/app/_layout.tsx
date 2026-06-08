@@ -1,7 +1,6 @@
 import { Stack } from "expo-router";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { Button, Platform, StatusBar, Text } from "react-native";
-import { View, ImageBackground } from "react-native";
 import { styles } from "@/styles/GlobalStyles";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
@@ -36,10 +35,6 @@ export default function RootLayout() {
     },
   );
   const [mealsLeft, setMealsLeft] = useState<number>(500);
-
-
-
-
 
   const getTodayDate = () => {
     return new Date().toISOString().split("T")[0];
@@ -143,7 +138,6 @@ export default function RootLayout() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-
       <NotificationProvider>
         <GenerationDetailsContext.Provider
           value={[generationDetails, setGenerationDetails]}
@@ -154,7 +148,6 @@ export default function RootLayout() {
                 value={[savedRecipes, setSavedRecipes]}
               >
                 <MealsLeftContext.Provider value={[mealsLeft, setMealsLeft]}>
-
                   <RecipeProvider>
                     <StatusBar
                       barStyle="dark-content"
@@ -164,19 +157,16 @@ export default function RootLayout() {
                     <Stack
                       screenOptions={{
                         headerShown: false,
+                        contentStyle: { backgroundColor: "#FCFCFC" },
                       }}
                     ></Stack>
-
-
                   </RecipeProvider>
-
                 </MealsLeftContext.Provider>
               </SavedRecipesContext.Provider>
             </FavLeftoversContext.Provider>
           </FavoritesContext.Provider>
         </GenerationDetailsContext.Provider>
       </NotificationProvider>
-
     </GestureHandlerRootView>
   );
 }
