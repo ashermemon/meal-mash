@@ -2,6 +2,7 @@ import { View, Text, Pressable } from "react-native";
 import React from "react";
 import { styles } from "@/styles/GlobalStyles";
 import { CustomIcon } from "@/icon-loader/icon-loader";
+import * as Haptics from "expo-haptics";
 
 type Props = {
   setSelected: React.Dispatch<React.SetStateAction<number>>;
@@ -25,9 +26,10 @@ const SliderField = (props: Props) => {
       >
         <Pressable
           onPress={() => {
+            [Haptics.selectionAsync(),
             props.setSelected((current) =>
               props.selected === 0 ? props.options.length - 1 : current - 1,
-            );
+            )]
           }}
         >
           <CustomIcon name="left-small" filled={true} color="grey" size={35} />
@@ -36,9 +38,10 @@ const SliderField = (props: Props) => {
         <Text style={styles.textCentered}>{props.options[props.selected]}</Text>
         <Pressable
           onPress={() => {
+            [Haptics.selectionAsync(),
             props.setSelected((current) =>
               current === props.options.length - 1 ? 0 : current + 1,
-            );
+            )]
           }}
         >
           <CustomIcon name="right-small" filled={true} color="grey" size={35} />

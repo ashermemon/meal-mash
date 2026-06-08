@@ -5,6 +5,7 @@ import { CustomIcon } from "@/icon-loader/icon-loader";
 import { NEWCOLORS } from "@/constants/NewTheme";
 import InfoTag, { difficultyShape } from "../features/recipe/InfoTag";
 import { TextInput } from "react-native-gesture-handler";
+import * as Haptics from "expo-haptics";
 
 type Props = {
   title: string;
@@ -76,9 +77,10 @@ const CountFieldPill = (props: Props) => {
             <Pressable
               hitSlop={{ top: 5, bottom: 0, left: 5, right: 5 }}
               onPress={() => {
+                [Haptics.selectionAsync(),
                 props.setNum((current) =>
                   current < 1 ? current * 2 : current + 1,
-                );
+                )]
               }}
             >
               <View style={{ marginVertical: -5 }}>
@@ -93,13 +95,14 @@ const CountFieldPill = (props: Props) => {
             <Pressable
               hitSlop={{ top: 0, bottom: 5, left: 5, right: 5 }}
               onPress={() => {
+                [Haptics.selectionAsync(),
                 props.setNum((current) =>
                   current >= 0.5
                     ? current <= 1
                       ? current / 2
                       : current - 1
                     : current,
-                );
+                )]
               }}
             >
               <View style={{ marginVertical: -5 }}>

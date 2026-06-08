@@ -19,13 +19,8 @@ import {
   type GenerationDetails,
 } from "@/contexts/GenerationDetailsContext";
 import * as Notifications from "expo-notifications";
-import {
-  BottomSheetModal,
-  BottomSheetModalProvider,
-  BottomSheetView,
-} from "@gorhom/bottom-sheet";
+
 import { RecipeProvider, type RecipeData } from "@/contexts/RecipeContext";
-import { BottomSheetProvider } from "@/contexts/BottomSheetContext";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -42,14 +37,9 @@ export default function RootLayout() {
   );
   const [mealsLeft, setMealsLeft] = useState<number>(500);
 
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
-  const handlePresentModalPress = useCallback(() => {
-    bottomSheetModalRef.current?.present();
-  }, []);
-  const handleSheetChanges = useCallback((index: number) => {
-    console.log("handleSheetChanges", index);
-  }, []);
+
+
 
   const getTodayDate = () => {
     return new Date().toISOString().split("T")[0];
@@ -153,50 +143,40 @@ export default function RootLayout() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <BottomSheetModalProvider>
-        <NotificationProvider>
-          <GenerationDetailsContext.Provider
-            value={[generationDetails, setGenerationDetails]}
-          >
-            <FavoritesContext.Provider value={[favorites, setFavorites]}>
-              <FavLeftoversContext.Provider value={[favoritesL, setFavoritesL]}>
-                <SavedRecipesContext.Provider
-                  value={[savedRecipes, setSavedRecipes]}
-                >
-                  <MealsLeftContext.Provider value={[mealsLeft, setMealsLeft]}>
-                    <BottomSheetProvider
-                      bottomSheetModalRef={bottomSheetModalRef}
-                      openBottomSheet={handlePresentModalPress}
-                    >
-                      <RecipeProvider>
-                        <StatusBar
-                          barStyle="dark-content"
-                          backgroundColor={COLORS.newHeader}
-                        />
 
-                        <Stack
-                          screenOptions={{
-                            headerShown: false,
-                          }}
-                        ></Stack>
+      <NotificationProvider>
+        <GenerationDetailsContext.Provider
+          value={[generationDetails, setGenerationDetails]}
+        >
+          <FavoritesContext.Provider value={[favorites, setFavorites]}>
+            <FavLeftoversContext.Provider value={[favoritesL, setFavoritesL]}>
+              <SavedRecipesContext.Provider
+                value={[savedRecipes, setSavedRecipes]}
+              >
+                <MealsLeftContext.Provider value={[mealsLeft, setMealsLeft]}>
 
-                        <BottomSheetModal
-                          ref={bottomSheetModalRef}
-                          onChange={handleSheetChanges}
-                        >
-                          <BottomSheetView style={styles.contentContainer}>
-                            <Text>Wow</Text>
-                          </BottomSheetView>
-                        </BottomSheetModal>
-                      </RecipeProvider>
-                    </BottomSheetProvider>
-                  </MealsLeftContext.Provider>
-                </SavedRecipesContext.Provider>
-              </FavLeftoversContext.Provider>
-            </FavoritesContext.Provider>
-          </GenerationDetailsContext.Provider>
-        </NotificationProvider>
-      </BottomSheetModalProvider>
+                  <RecipeProvider>
+                    <StatusBar
+                      barStyle="dark-content"
+                      backgroundColor={COLORS.newHeader}
+                    />
+
+                    <Stack
+                      screenOptions={{
+                        headerShown: false,
+                      }}
+                    ></Stack>
+
+
+                  </RecipeProvider>
+
+                </MealsLeftContext.Provider>
+              </SavedRecipesContext.Provider>
+            </FavLeftoversContext.Provider>
+          </FavoritesContext.Provider>
+        </GenerationDetailsContext.Provider>
+      </NotificationProvider>
+
     </GestureHandlerRootView>
   );
 }

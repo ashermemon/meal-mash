@@ -4,6 +4,7 @@ import { styles } from "@/styles/GlobalStyles";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import { NEWCOLORS } from "@/constants/NewTheme";
 import InfoTag, { difficultyShape } from "../features/recipe/InfoTag";
+import * as Haptics from "expo-haptics";
 
 type Props = {
   title: string;
@@ -29,13 +30,14 @@ const MultiSelectPills = (props: Props) => {
       <View style={{ flex: 1, flexDirection: "row", gap: 8 }}>
         {props.labels.map((label, index) => (
           <Pressable
-            onPress={() =>
+            onPress={() => [
+              Haptics.selectionAsync(),
               props.setSelected((prev) =>
                 prev.includes(index)
                   ? prev.filter((prev2) => prev2 !== index)
                   : [...prev, index],
-              )
-            }
+              ),
+            ]}
             style={[
               styles.selectPill,
               styles.basicBoxShadow,
@@ -45,7 +47,7 @@ const MultiSelectPills = (props: Props) => {
                 paddingHorizontal: 9,
                 ...(props.diff
                   ? { flex: undefined, flexGrow: 1, flexBasis: "auto" }
-                  : {}),
+                  : { flex: 1 }),
               },
               props.selected.includes(index)
                 ? props.diff

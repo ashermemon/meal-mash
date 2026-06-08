@@ -7,6 +7,7 @@ import SliderField from "@/components/common/SliderField";
 import MultiSelectPills from "@/components/common/MultiSelectPills";
 import CountFieldPill from "@/components/common/CountFieldPill";
 import DropDownPill from "@/components/common/DropDownPill";
+import { NEWCOLORS } from "@/constants/NewTheme";
 
 type Props = {};
 
@@ -60,11 +61,80 @@ const GeneratorDetails = (props: Props) => {
         </Text>
 
         <View style={{ flexDirection: "column", gap: 36 }}>
-          <SliderField
-            options={modes}
-            selected={genMode}
-            setSelected={setGenMode}
-          ></SliderField>
+          <View style={{ flexDirection: "column", gap: 20 }}>
+            <SliderField
+              options={modes}
+              selected={genMode}
+              setSelected={setGenMode}
+            ></SliderField>
+
+            <View style={{ justifyContent: "space-between" }}>
+              <View
+                style={[
+                  styles.sliderPill,
+                  styles.basicBoxShadow,
+                  {
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  },
+                ]}
+              >
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    gap: 12,
+                  }}
+                >
+                  <Pressable>
+                    <CustomIcon
+                      name={"emoji"}
+                      filled={false}
+                      size={23}
+                      color={NEWCOLORS.unselectedShape}
+                    ></CustomIcon>
+                  </Pressable>
+                  <Text
+                    style={[
+                      styles.textCentered,
+                      {
+                        fontSize: 18,
+                        color: NEWCOLORS.placeholderText,
+                        fontFamily: "Nunito-SemiBold",
+                      },
+                    ]}
+                  >
+                    Untitled Pantry
+                  </Text>
+                </View>
+                <Pressable
+                  style={[
+                    styles.selectPill,
+                    {
+                      flex: 0,
+                      width: 100,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    },
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.textCentered,
+                      {
+                        fontSize: 13,
+                        color: NEWCOLORS.placeholderText,
+                        fontFamily: "Nunito-SemiBold",
+                      },
+                    ]}
+                  >
+                    Edit Pantry
+                  </Text>
+                </Pressable>
+              </View>
+            </View>
+          </View>
           <MultiSelectPills
             title="Difficulty:"
             selected={diffculties}
