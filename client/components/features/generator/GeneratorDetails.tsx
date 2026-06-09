@@ -12,6 +12,8 @@ import { GenerationDetailsContext } from "@/contexts/GenerationDetailsContext";
 import { router } from "expo-router";
 import * as Haptics from "expo-haptics";
 import MealsLeftContext from "@/contexts/MealsLeftContext";
+import RecipeContext from "@/contexts/RecipeContext";
+import { initialRecipeData } from "@/contexts/RecipeContext";
 
 type Props = {};
 
@@ -23,6 +25,7 @@ const GeneratorDetails = (props: Props) => {
   ];
   const difficultyLabels = ["Easy", "Intermediate", "Expert"];
   const timeLabels = ["<15m", "~30m", "1hr+"];
+  const [recipeData, setRecipeData] = useContext(RecipeContext);
 
   const [genMode, setGenMode] = useState<number>(0);
   const [diffciulties, setDifficulties] = useState<number[]>([0, 1, 2]);
@@ -213,6 +216,7 @@ const GeneratorDetails = (props: Props) => {
                       dietaryPreference: dietaryRestrictions,
                     })),
                     router.navigate("/recipe"),
+                    setRecipeData(initialRecipeData),
                     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light),
                   ]
                 : () =>

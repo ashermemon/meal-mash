@@ -34,7 +34,7 @@ export type RecipeContextType = [
   Dispatch<SetStateAction<RecipeData>>,
 ];
 
-const initialRecipeData: RecipeData = {
+export const initialRecipeData: RecipeData = {
   id: undefined,
   prompt: undefined,
   responseRecipe: "",
@@ -53,7 +53,7 @@ const initialRecipeData: RecipeData = {
 
 const RecipeContext = createContext<RecipeContextType>([
   initialRecipeData,
-  () => { },
+  () => {},
 ]);
 
 export const RecipeProvider = ({ children }: { children: ReactNode }) => {
