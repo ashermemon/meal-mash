@@ -16,6 +16,7 @@ import * as Haptics from "expo-haptics";
 import RecipeSection from "@/components/features/recipe/RecipeSection";
 import Svg, { Path } from "react-native-svg";
 import FollowRecipeHeader from "@/components/features/recipe/FollowRecipeHeader";
+import { router } from "expo-router";
 
 const MEAL_IMAGES: Record<string, any> = {
   burger: require("@/assets/images/meal-images/burger.png"),
@@ -82,7 +83,7 @@ const followRecipe = () => {
       "You can substitute olive oil with avocado oil.",
       "Add a pinch of salt to enhance the taste.",
     ],
-    imageCategory: "bowl"
+    imageCategory: "bowl",
   };
 
   const recipeData = contextRecipeData?.title
@@ -97,7 +98,6 @@ const followRecipe = () => {
   );
 
   const [scrollProgress, setScrollProgress] = useState(0);
-
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: NEWCOLORS.nestedBG }}>
@@ -134,7 +134,14 @@ const followRecipe = () => {
           >
             <Image
               source={MEAL_IMAGES[recipeData.imageCategory] || MEAL_IMAGES.bowl}
-              style={{ width: 70, height: 70, borderRadius: 110 }}
+              style={{
+                width: 70,
+                height: 70,
+                borderRadius: 110,
+                shadowColor: "black",
+                shadowRadius: 50,
+                shadowOpacity: 1,
+              }}
               contentFit="cover"
             />
             <View style={{ flex: 1, paddingHorizontal: 18 }}>
@@ -208,18 +215,19 @@ const followRecipe = () => {
                       next[index] = !next[index];
                       setChecked(next);
                       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
-
                     }}
                     size={24}
-
                   />
                 </View>
-                <Pressable style={{ flex: 1, flexDirection: "row" }} onPress={() => {
-                  const next = [...checked];
-                  next[index] = !next[index];
-                  setChecked(next);
-                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
-                }}>
+                <Pressable
+                  style={{ flex: 1, flexDirection: "row" }}
+                  onPress={() => {
+                    const next = [...checked];
+                    next[index] = !next[index];
+                    setChecked(next);
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
+                  }}
+                >
                   <View
                     style={{
                       flexDirection: "row",
@@ -227,7 +235,6 @@ const followRecipe = () => {
                       flex: 1,
                     }}
                   >
-
                     <Text
                       numberOfLines={1}
                       style={[
@@ -259,7 +266,6 @@ const followRecipe = () => {
                   ) : null}
                 </Pressable>
               </View>
-
             );
           })}
         </RecipeSection>
@@ -367,6 +373,30 @@ const followRecipe = () => {
             ))}
           </RecipeSection>
         ) : null}
+        <RecipeSection titleOff>
+          <Pressable
+            style={[
+              styles.basicBoxShadow,
+              {
+                backgroundColor: NEWCOLORS.darkButton,
+                paddingVertical: 14,
+                borderRadius: 15,
+                width: "100%",
+              },
+            ]}
+            onPress={() =>
+              navigation.canGoBack()
+                ? [navigation.goBack(), Haptics.selectionAsync()]
+                : router.navigate("/recipe")
+            }
+          >
+            <Text
+              style={[styles.textCenterBold, { color: "white", fontSize: 18 }]}
+            >
+              ← Return to Swiping
+            </Text>
+          </Pressable>
+        </RecipeSection>
       </ScrollView>
     </SafeAreaView>
   );
