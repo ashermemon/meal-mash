@@ -5,12 +5,14 @@ interface TrueSheetContextType {
   sheetRef: React.RefObject<any> | null;
   openSheet: (
     options: string[],
-    onSelect: (option: string) => void,
+    onSelect: (options: string[]) => void,
     title: string,
+    selected?: string[],
   ) => void;
   currentOptions: string[];
-  currentOnSelect: ((option: string) => void) | null;
+  currentOnSelect: ((options: string[]) => void) | null;
   currentTitle: string;
+  currentSelected: string[];
 }
 
 const TrueSheetContext = createContext<TrueSheetContextType | undefined>(
@@ -30,12 +32,14 @@ interface TrueSheetProviderProps {
   sheetRef: React.RefObject<any>;
   openSheet: (
     options: string[],
-    onSelect: (option: string) => void,
+    onSelect: (options: string[]) => void,
     title: string,
+    selected?: string[],
   ) => void;
   currentOptions: string[];
-  currentOnSelect: ((option: string) => void) | null;
+  currentOnSelect: ((options: string[]) => void) | null;
   currentTitle: string;
+  currentSelected: string[];
 }
 
 export const TrueSheetProvider = ({
@@ -45,6 +49,7 @@ export const TrueSheetProvider = ({
   currentOptions,
   currentOnSelect,
   currentTitle,
+  currentSelected,
 }: TrueSheetProviderProps) => {
   return React.createElement(
     TrueSheetContext.Provider,
@@ -55,6 +60,7 @@ export const TrueSheetProvider = ({
         currentOptions,
         currentOnSelect,
         currentTitle,
+        currentSelected,
       },
     },
     children,

@@ -65,7 +65,15 @@ const GeneratorDetails = (props: Props) => {
     "🇱🇧  Lebanese",
     "🇺🇸  American",
   ];
-  const dietaryRestrictionOptions: string[] = [];
+  const dietaryRestrictionOptions: string[] = [
+    "Vegetarian",
+    "Vegan",
+    "Gluten-Free",
+    "Dairy-Free",
+    "Keto",
+    "Halal",
+    "Kosher",
+  ];
 
   return (
     <ScrollView

@@ -15,6 +15,7 @@ type Props = {
   setSelection: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
+const containsEmoji = (text: string) => /\p{Extended_Pictographic}/u.test(text);
 const DropDownPill = (props: Props) => {
   const { openSheet } = useTrueSheet();
 
@@ -23,13 +24,32 @@ const DropDownPill = (props: Props) => {
     openSheet(
       options,
       (selected) => {
-        props.setSelection([selected]);
+        if (selected.length === 0) {
+          const defaultVal = title.toLowerCase().includes("dietary")
+            ? "None"
+            : "Any";
+          props.setSelection([defaultVal]);
+        } else if (selected.length === options.length) {
+          if (!title.toLowerCase().includes("dietary")) {
+            const defaultVal = "Any";
+
+            props.setSelection([defaultVal]);
+          }
+        } else {
+          props.setSelection(selected);
+        }
       },
       title,
+      props.selections,
     );
   };
+
+  const displayText =
+    props.selections.length > 1 ? "Multiple" : props.selections[0];
+
   return (
-    <View
+    <Pressable
+      onPress={() => openDropDown(props.title, props.options)}
       style={{
         gap: 12,
         flexDirection: "row",
@@ -69,26 +89,31 @@ const DropDownPill = (props: Props) => {
               flex: 1,
             }}
           >
-            <Text style={[styles.textCentered, { fontSize: 12.5 }]}>
-              {props.selections[0]}
+            <Text
+              style={[styles.textCentered, { fontSize: 12.5 }]}
+              adjustsFontSizeToFit
+              numberOfLines={1}
+            >
+              {props.title.toLowerCase().includes("cuisine") &&
+              displayText.toLowerCase() != "multiple" &&
+              displayText.toLowerCase() != "any"
+                ? displayText.substring(0, 4)
+                : displayText}
             </Text>
           </View>
           <View style={{ alignItems: "center", justifyContent: "center" }}>
-            <Pressable
-              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-              onPress={() => openDropDown(props.title, props.options)}
-            >
+            <View>
               <CustomIcon
                 name="down-small"
                 filled={true}
                 color="grey"
                 size={25}
               />
-            </Pressable>
+            </View>
           </View>
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 };
 

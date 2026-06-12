@@ -49,14 +49,21 @@ export default function RootLayout() {
 
   const sheetRef = useRef<TrueSheet>(null);
   const [currentOptions, setCurrentOptions] = useState<string[]>([]);
+  const [currentSelected, setCurrentSelected] = useState<string[]>([]);
   const [currentOnSelect, setCurrentOnSelect] = useState<
-    ((option: string) => void) | null
+    ((options: string[]) => void) | null
   >(null);
   const [currentTitle, setCurrentTitle] = useState<string>("");
 
   const openSheet = useCallback(
-    (options: string[], onSelect: (option: string) => void, title: string) => {
+    (
+      options: string[],
+      onSelect: (options: string[]) => void,
+      title: string,
+      selected: string[] = [],
+    ) => {
       setCurrentOptions(options);
+      setCurrentSelected(selected);
       setCurrentOnSelect(() => onSelect);
       setCurrentTitle(title);
       sheetRef.current?.present();
@@ -171,6 +178,7 @@ export default function RootLayout() {
           sheetRef={sheetRef}
           openSheet={openSheet}
           currentOptions={currentOptions}
+          currentSelected={currentSelected}
           currentOnSelect={currentOnSelect}
           currentTitle={currentTitle}
         >
@@ -202,7 +210,7 @@ export default function RootLayout() {
                         header={
                           <Text
                             style={{
-                              fontSize: 18,
+                              fontSize: 22,
                               fontFamily: "Nunito-SemiBold",
                               marginTop: 21,
                               marginBottom: 8,
