@@ -51,7 +51,20 @@ const GeneratorDetails = (props: Props) => {
     "Drink",
     "Dessert",
   ];
-  const cuisineOptions: string[] = [];
+  const cuisineOptions: string[] = [
+    "🇮🇹  Italian",
+    "🇨🇳  Chinese",
+    "🇯🇵  Japanese",
+    "🇲🇽  Mexican",
+    "🇮🇳  Indian",
+    "🇹🇭  Thai",
+    "🇬🇷  Greek",
+    "🇫🇷  French",
+    "🇪🇸  Spanish",
+    "🇻🇳  Vietnamese",
+    "🇱🇧  Lebanese",
+    "🇺🇸  American",
+  ];
   const dietaryRestrictionOptions: string[] = [];
 
   return (

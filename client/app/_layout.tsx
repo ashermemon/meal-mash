@@ -1,3 +1,4 @@
+import { View, Pressable, ScrollView } from "react-native";
 import { Stack } from "expo-router";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { Button, Platform, StatusBar, Text } from "react-native";
@@ -20,6 +21,10 @@ import {
 import * as Notifications from "expo-notifications";
 
 import { RecipeProvider, type RecipeData } from "@/contexts/RecipeContext";
+import { TrueSheetProvider } from "@/contexts/TrueSheetContext";
+import { TrueSheet } from "@lodev09/react-native-true-sheet";
+import TrueSheetContent from "@/components/common/TrueSheetContent";
+import { NEWCOLORS } from "@/constants/NewTheme";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -41,6 +46,23 @@ export default function RootLayout() {
     },
   );
   const [mealsLeft, setMealsLeft] = useState<number>(500);
+
+  const sheetRef = useRef<TrueSheet>(null);
+  const [currentOptions, setCurrentOptions] = useState<string[]>([]);
+  const [currentOnSelect, setCurrentOnSelect] = useState<
+    ((option: string) => void) | null
+  >(null);
+  const [currentTitle, setCurrentTitle] = useState<string>("");
+
+  const openSheet = useCallback(
+    (options: string[], onSelect: (option: string) => void, title: string) => {
+      setCurrentOptions(options);
+      setCurrentOnSelect(() => onSelect);
+      setCurrentTitle(title);
+      sheetRef.current?.present();
+    },
+    [],
+  );
 
   const getTodayDate = () => {
     return new Date().toISOString().split("T")[0];
@@ -145,33 +167,70 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <NotificationProvider>
-        <GenerationDetailsContext.Provider
-          value={[generationDetails, setGenerationDetails]}
+        <TrueSheetProvider
+          sheetRef={sheetRef}
+          openSheet={openSheet}
+          currentOptions={currentOptions}
+          currentOnSelect={currentOnSelect}
+          currentTitle={currentTitle}
         >
-          <FavoritesContext.Provider value={[favorites, setFavorites]}>
-            <FavLeftoversContext.Provider value={[favoritesL, setFavoritesL]}>
-              <SavedRecipesContext.Provider
-                value={[savedRecipes, setSavedRecipes]}
-              >
-                <MealsLeftContext.Provider value={[mealsLeft, setMealsLeft]}>
-                  <RecipeProvider>
-                    <StatusBar
-                      barStyle="dark-content"
-                      backgroundColor={COLORS.newHeader}
-                    />
+          <GenerationDetailsContext.Provider
+            value={[generationDetails, setGenerationDetails]}
+          >
+            <FavoritesContext.Provider value={[favorites, setFavorites]}>
+              <FavLeftoversContext.Provider value={[favoritesL, setFavoritesL]}>
+                <SavedRecipesContext.Provider
+                  value={[savedRecipes, setSavedRecipes]}
+                >
+                  <MealsLeftContext.Provider value={[mealsLeft, setMealsLeft]}>
+                    <RecipeProvider>
+                      <StatusBar
+                        barStyle="dark-content"
+                        backgroundColor={COLORS.newHeader}
+                      />
 
-                    <Stack
-                      screenOptions={{
-                        headerShown: false,
-                        contentStyle: { backgroundColor: "#FCFCFC" },
-                      }}
-                    ></Stack>
-                  </RecipeProvider>
-                </MealsLeftContext.Provider>
-              </SavedRecipesContext.Provider>
-            </FavLeftoversContext.Provider>
-          </FavoritesContext.Provider>
-        </GenerationDetailsContext.Provider>
+                      <Stack
+                        screenOptions={{
+                          headerShown: false,
+                          contentStyle: { backgroundColor: "#FCFCFC" },
+                        }}
+                      ></Stack>
+
+                      <TrueSheet
+                        ref={sheetRef}
+                        scrollable
+                        header={
+                          <Text
+                            style={{
+                              fontSize: 18,
+                              fontFamily: "Nunito-SemiBold",
+                              marginTop: 21,
+                              marginBottom: 8,
+                              color: "white",
+                            }}
+                          >
+                            {currentTitle}
+                          </Text>
+                        }
+                        headerStyle={{
+                          paddingHorizontal: 20,
+                          paddingTop: 16,
+                        }}
+                        backgroundColor={NEWCOLORS.darkButton}
+                      >
+                        <TrueSheetContent
+                          currentOnSelect={currentOnSelect}
+                          sheetRef={sheetRef}
+                          currentOptions={currentOptions}
+                        ></TrueSheetContent>
+                      </TrueSheet>
+                    </RecipeProvider>
+                  </MealsLeftContext.Provider>
+                </SavedRecipesContext.Provider>
+              </FavLeftoversContext.Provider>
+            </FavoritesContext.Provider>
+          </GenerationDetailsContext.Provider>
+        </TrueSheetProvider>
       </NotificationProvider>
     </GestureHandlerRootView>
   );
