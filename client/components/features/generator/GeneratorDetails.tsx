@@ -43,13 +43,13 @@ const GeneratorDetails = (props: Props) => {
   const [mealsLeft, setMealsLeft] = useContext(MealsLeftContext);
 
   const mealTypeOptions: string[] = [
-    "Breakfast",
-    "Lunch",
-    "Dinner",
-    "Snack",
-    "Side",
-    "Drink",
-    "Dessert",
+    "🥞  Breakfast",
+    "🥪  Lunch",
+    "🍝  Dinner",
+    "🍪  Snack",
+    "🍟  Side",
+    "🍹  Drink",
+    "🍨  Dessert",
   ];
   const cuisineOptions: string[] = [
     "🇮🇹  Italian",
@@ -66,13 +66,13 @@ const GeneratorDetails = (props: Props) => {
     "🇺🇸  American",
   ];
   const dietaryRestrictionOptions: string[] = [
-    "Vegetarian",
-    "Vegan",
-    "Gluten-Free",
-    "Dairy-Free",
-    "Keto",
-    "Halal",
-    "Kosher",
+    "🥗  Vegetarian",
+    "🌱  Vegan",
+    "🌾  Gluten-Free",
+    "🥛  Dairy-Free",
+    "🥑  Keto",
+    "☪️  Halal",
+    "✡️  Kosher",
   ];
 
   return (

@@ -46,7 +46,7 @@ const CountFieldPill = (props: Props) => {
               alignItems: "center",
               justifyContent: "space-between",
               paddingHorizontal: 9,
-              width: 95,
+              width: 105,
               flex: 0,
             },
           ]}

@@ -17,7 +17,9 @@ import Animated, {
   runOnJS,
   withSequence,
   withSpring,
+  interpolateColor,
 } from "react-native-reanimated";
+import { NEWCOLORS } from "@/constants/NewTheme";
 type Props = {
   setSelected: React.Dispatch<React.SetStateAction<number>>;
   selected: number;
@@ -26,13 +28,25 @@ type Props = {
 
 const SliderField = (props: Props) => {
   const translateX = useSharedValue(0);
-  const position = useSharedValue(0);
+
+  const colorProgress = useSharedValue(props.selected);
 
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ translateX: translateX.value }],
   }));
 
+  const animatedColor = useAnimatedStyle(() => ({
+    backgroundColor: interpolateColor(
+      colorProgress.value,
+      [0, 1, 2],
+      [NEWCOLORS.orangeBlock, NEWCOLORS.greenBlock, NEWCOLORS.purpblueBlock],
+    ),
+  }));
+
   useEffect(() => {
+    colorProgress.value = withTiming(props.selected, {
+      duration: 300,
+    });
     translateX.value = 30;
 
     translateX.value = withSequence(withTiming(0, { duration: 250 }));
@@ -41,35 +55,44 @@ const SliderField = (props: Props) => {
   function ChangeOption(direction: -1 | 1) {
     Haptics.selectionAsync();
     props.setSelected((current) => {
+      let next = current;
+
       if (direction === -1) {
-        return current === 0 ? props.options.length - 1 : current - 1;
+        next = current === 0 ? props.options.length - 1 : current - 1;
+      } else {
+        next = current === props.options.length - 1 ? 0 : current + 1;
       }
 
-      return current === props.options.length - 1 ? 0 : current + 1;
+      return next;
     });
   }
 
   const swipe = Gesture.Pan()
-    .onUpdate((e) => {
-      position.value = e.translationX;
-    })
+
     .onEnd((e) => {
-      if (position.value > 80) {
+      if (e.translationX > 80) {
         runOnJS(ChangeOption)(1);
-      } else if (position.value < -80) {
+      } else if (e.translationX < -80) {
         runOnJS(ChangeOption)(-1);
-      } else {
-        position.value = withSpring(0);
       }
+      // position.value = withSpring(0);
     });
   return (
     <GestureDetector gesture={swipe}>
       <View style={{ gap: 33, flexDirection: "column" }}>
-        <View
+        <Animated.View
           style={[
             styles.sliderPill,
+
             styles.basicBoxShadow,
+            animatedColor,
             {
+              // backgroundColor:
+              //   props.selected === 0
+              //     ? NEWCOLORS.greenBlock
+              //     : props.selected === 1
+              //       ? NEWCOLORS.orangeBlock
+              //       : NEWCOLORS.purpblueBlock,
               flexDirection: "row",
               justifyContent: "space-between",
               alignItems: "center",
@@ -78,7 +101,7 @@ const SliderField = (props: Props) => {
         >
           <Pressable
             onPress={() => {
-              ChangeOption(1);
+              ChangeOption(-1);
             }}
           >
             <CustomIcon
@@ -89,12 +112,18 @@ const SliderField = (props: Props) => {
             />
           </Pressable>
 
-          <Animated.Text style={[styles.textCentered, animatedStyle]}>
+          <Animated.Text
+            style={[
+              styles.textCentered,
+              animatedStyle,
+              { fontFamily: "Nunito-SemiBold" },
+            ]}
+          >
             {props.options[props.selected]}
           </Animated.Text>
           <Pressable
             onPress={() => {
-              ChangeOption(-1);
+              ChangeOption(1);
             }}
           >
             <CustomIcon
@@ -104,7 +133,7 @@ const SliderField = (props: Props) => {
               size={35}
             />
           </Pressable>
-        </View>
+        </Animated.View>
       </View>
     </GestureDetector>
   );

@@ -208,17 +208,25 @@ export default function RootLayout() {
                         ref={sheetRef}
                         scrollable
                         header={
-                          <Text
-                            style={{
-                              fontSize: 22,
-                              fontFamily: "Nunito-SemiBold",
-                              marginTop: 21,
-                              marginBottom: 8,
-                              color: "white",
-                            }}
-                          >
-                            {currentTitle}
-                          </Text>
+                          <>
+                            <Text
+                              style={{
+                                fontSize: 22,
+                                fontFamily: "Nunito-SemiBold",
+                                marginTop: 21,
+                                marginBottom: 15,
+                                color: "white",
+                              }}
+                            >
+                              {currentTitle}
+                            </Text>
+                            <View
+                              style={{
+                                height: 3,
+                                backgroundColor: NEWCOLORS.placeholderText,
+                              }}
+                            ></View>
+                          </>
                         }
                         headerStyle={{
                           paddingHorizontal: 20,

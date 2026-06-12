@@ -221,6 +221,7 @@ const PreviewAnimatedWrapper = (props: Props) => {
         cuisine: generationDetails.cuisine,
         dietaryPreference: generationDetails.dietaryPreference,
       });
+      console.log(nextPrompt);
 
       const ai = new GoogleGenAI({ apiKey: APIKEY });
       const response = await ai.models.generateContent({
