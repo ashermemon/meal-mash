@@ -3,7 +3,7 @@ import React, { createContext, Dispatch, SetStateAction } from "react";
 export type GenerationDetails = {
   ingredients: string[];
   leftovers: string[];
-  generationType: string;
+  generationType: number;
   difficulties: string[];
   recipeTime: string[];
   numberOfServings: number;
@@ -20,7 +20,7 @@ export type GenerationDetailsType = [
 const initialGenerationDetails: GenerationDetails = {
   ingredients: [],
   leftovers: [],
-  generationType: "",
+  generationType: 0,
   difficulties: [],
   recipeTime: [],
   numberOfServings: 1,

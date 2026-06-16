@@ -20,14 +20,14 @@ type Props = {};
 const GeneratorDetails = (props: Props) => {
   const modes: string[] = [
     "Pantry Ingredients Only",
-    "Pantry + ≤3 Extra Ingredients",
+    "Select Specific Ingredients",
     "Any Ingredients",
   ];
   const difficultyLabels = ["Easy", "Intermediate", "Expert"];
   const timeLabels = ["<15m", "~30m", "1hr+"];
   const [recipeData, setRecipeData] = useContext(RecipeContext);
 
-  const [genMode, setGenMode] = useState<number>(0);
+  const [genMode, setGenMode] = useState<number>(0); // 0 is Pantry, 1 is Select, 2 is Any
   const [diffciulties, setDifficulties] = useState<number[]>([0, 1, 2]);
   const [times, setTimes] = useState<number[]>([0, 1, 2]);
   const [num, setNum] = useState<number>(1);
@@ -82,76 +82,114 @@ const GeneratorDetails = (props: Props) => {
       alwaysBounceVertical={false}
       style={styles.generatorContainer}
     >
-      <View style={{ paddingHorizontal: 25, paddingVertical: 20, flex: 1 }}>
-        <Text
-          style={[
-            styles.basicTextLeft,
-            styles.bold,
-            {
-              fontSize: 28,
-              marginBottom: 15,
-            },
-          ]}
-        >
-          Generate recipes
-        </Text>
+      <View
+        style={{
+          paddingHorizontal: 25,
+          paddingTop: 20,
+          paddingBottom: 100,
+          flex: 1,
 
-        <View style={{ flexDirection: "column", gap: 36 }}>
-          <View style={{ flexDirection: "column", gap: 20 }}>
-            <SliderField
-              options={modes}
-              selected={genMode}
-              setSelected={setGenMode}
-            ></SliderField>
+          justifyContent: "space-between",
+        }}
+      >
+        <View>
+          <Text
+            style={[
+              styles.basicTextLeft,
+              styles.bold,
+              {
+                fontSize: 28,
+                marginBottom: 15,
+              },
+            ]}
+          >
+            Generate recipes
+          </Text>
 
-            <View style={{ justifyContent: "space-between" }}>
-              <View
-                style={[
-                  styles.sliderPill,
-                  styles.basicBoxShadow,
-                  {
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  },
-                ]}
-              >
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    gap: 12,
-                  }}
-                >
-                  <Pressable>
-                    <CustomIcon
-                      name={"emoji"}
-                      filled={false}
-                      size={23}
-                      color={NEWCOLORS.unselectedShape}
-                    ></CustomIcon>
-                  </Pressable>
-                  <Text
+          <View style={{ flexDirection: "column", gap: 36 }}>
+            <View style={{ flexDirection: "column", gap: 20 }}>
+              <SliderField
+                options={modes}
+                selected={genMode}
+                setSelected={setGenMode}
+              ></SliderField>
+              {genMode === 0 ? (
+                <View style={{ justifyContent: "space-between" }}>
+                  <View
                     style={[
-                      styles.textCentered,
+                      styles.sliderPill,
+                      styles.basicBoxShadow,
                       {
-                        fontSize: 18,
-                        color: NEWCOLORS.placeholderText,
-                        fontFamily: "Nunito-SemiBold",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        alignItems: "center",
                       },
                     ]}
                   >
-                    Untitled Pantry
-                  </Text>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        gap: 12,
+                      }}
+                    >
+                      <Pressable>
+                        <CustomIcon
+                          name={"emoji"}
+                          filled={false}
+                          size={23}
+                          color={NEWCOLORS.unselectedShape}
+                        ></CustomIcon>
+                      </Pressable>
+                      <Text
+                        style={[
+                          styles.textCentered,
+                          {
+                            fontSize: 18,
+                            color: NEWCOLORS.placeholderText,
+                            fontFamily: "Nunito-SemiBold",
+                          },
+                        ]}
+                      >
+                        Untitled Pantry
+                      </Text>
+                    </View>
+                    <Pressable
+                      style={[
+                        styles.selectPill,
+                        {
+                          flex: 0,
+                          width: 100,
+                          justifyContent: "center",
+                          alignItems: "center",
+                        },
+                      ]}
+                    >
+                      <Text
+                        style={[
+                          styles.textCentered,
+                          {
+                            fontSize: 13,
+                            color: NEWCOLORS.placeholderText,
+                            fontFamily: "Nunito-SemiBold",
+                          },
+                        ]}
+                      >
+                        Edit Pantry
+                      </Text>
+                    </Pressable>
+                  </View>
                 </View>
-                <Pressable
+              ) : genMode === 1 ? (
+                <View
                   style={[
-                    styles.selectPill,
+                    styles.sliderPill,
+                    styles.basicBoxShadow,
                     {
-                      flex: 0,
-                      width: 100,
+                      flexDirection: "row",
                       justifyContent: "center",
                       alignItems: "center",
+                      backgroundColor: NEWCOLORS.unselectedGrey,
                     },
                   ]}
                 >
@@ -159,60 +197,68 @@ const GeneratorDetails = (props: Props) => {
                     style={[
                       styles.textCentered,
                       {
-                        fontSize: 13,
-                        color: NEWCOLORS.placeholderText,
+                        fontSize: 18,
+                        color: NEWCOLORS.basicText,
                         fontFamily: "Nunito-SemiBold",
                       },
                     ]}
                   >
-                    Edit Pantry
+                    Browse Ingredients
                   </Text>
-                </Pressable>
-              </View>
+                </View>
+              ) : (
+                <></>
+              )}
             </View>
+            <MultiSelectPills
+              title="Difficulty:"
+              selected={diffciulties}
+              setSelected={setDifficulties}
+              labels={difficultyLabels}
+              diff
+            ></MultiSelectPills>
+            <MultiSelectPills
+              title="Recipe Time:"
+              selected={times}
+              setSelected={setTimes}
+              labels={timeLabels}
+            ></MultiSelectPills>
+            <CountFieldPill
+              num={num}
+              setNum={setNum}
+              title={"Number of Servings:"}
+            ></CountFieldPill>
+            <DropDownPill
+              title={"Meal Type:"}
+              options={mealTypeOptions}
+              selections={mealType}
+              setSelection={setMealType}
+            ></DropDownPill>
+            <DropDownPill
+              title={"Cuisine:"}
+              options={cuisineOptions}
+              selections={cuisine}
+              setSelection={setCuisine}
+            ></DropDownPill>
+            {genMode === 0 || genMode === 1 ? (
+              <></>
+            ) : (
+              <DropDownPill
+                title={"Dietary Restrictions:"}
+                options={dietaryRestrictionOptions}
+                selections={dietaryRestrictions}
+                setSelection={setDietaryRestrictions}
+              ></DropDownPill>
+            )}
           </View>
-          <MultiSelectPills
-            title="Difficulty:"
-            selected={diffciulties}
-            setSelected={setDifficulties}
-            labels={difficultyLabels}
-            diff
-          ></MultiSelectPills>
-          <MultiSelectPills
-            title="Recipe Time:"
-            selected={times}
-            setSelected={setTimes}
-            labels={timeLabels}
-          ></MultiSelectPills>
-          <CountFieldPill
-            num={num}
-            setNum={setNum}
-            title={"Number of Servings:"}
-          ></CountFieldPill>
-          <DropDownPill
-            title={"Meal Type:"}
-            options={mealTypeOptions}
-            selections={mealType}
-            setSelection={setMealType}
-          ></DropDownPill>
-          <DropDownPill
-            title={"Cuisine:"}
-            options={cuisineOptions}
-            selections={cuisine}
-            setSelection={setCuisine}
-          ></DropDownPill>
-          <DropDownPill
-            title={"Dietary Preferences:"}
-            options={dietaryRestrictionOptions}
-            selections={dietaryRestrictions}
-            setSelection={setDietaryRestrictions}
-          ></DropDownPill>
+        </View>
+        <View>
           <Pressable
             style={[
               styles.basicBoxShadow,
               {
                 backgroundColor: NEWCOLORS.darkButton,
-                paddingVertical: 14,
+                paddingVertical: 20,
                 borderRadius: 15,
                 width: "100%",
               },
@@ -222,7 +268,7 @@ const GeneratorDetails = (props: Props) => {
                 ? () => [
                     setGenerationDetails((prev) => ({
                       ...prev,
-                      generationType: modes[genMode],
+                      generationType: genMode,
                       difficulties:
                         diffciulties.length === 0
                           ? difficultyLabels

@@ -36,7 +36,7 @@ export default function RootLayout() {
     {
       ingredients: [],
       leftovers: [],
-      generationType: "",
+      generationType: 0,
       difficulties: [],
       recipeTime: [],
       numberOfServings: 1,
