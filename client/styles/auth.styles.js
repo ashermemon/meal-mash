@@ -754,4 +754,10 @@ export const styles = StyleSheet.create({
     backgroundColor: NEWCOLORS.unselectedGrey,
     height: 35,
   },
+  verticalLine: {
+    width: 2,
+    marginLeft: 10,
+    alignSelf: "stretch",
+    backgroundColor: NEWCOLORS.unselectedShape,
+  },
 });

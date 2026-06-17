@@ -14,6 +14,7 @@ import * as Haptics from "expo-haptics";
 import MealsLeftContext from "@/contexts/MealsLeftContext";
 import RecipeContext from "@/contexts/RecipeContext";
 import { initialRecipeData } from "@/contexts/RecipeContext";
+import PantryPill from "./PantryPill";
 
 type Props = {};
 
@@ -114,72 +115,10 @@ const GeneratorDetails = (props: Props) => {
                 setSelected={setGenMode}
               ></SliderField>
               {genMode === 0 ? (
-                <View style={{ justifyContent: "space-between" }}>
-                  <View
-                    style={[
-                      styles.sliderPill,
-                      styles.basicBoxShadow,
-                      {
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                      },
-                    ]}
-                  >
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                        gap: 12,
-                      }}
-                    >
-                      <Pressable>
-                        <CustomIcon
-                          name={"emoji"}
-                          filled={false}
-                          size={23}
-                          color={NEWCOLORS.unselectedShape}
-                        ></CustomIcon>
-                      </Pressable>
-                      <Text
-                        style={[
-                          styles.textCentered,
-                          {
-                            fontSize: 18,
-                            color: NEWCOLORS.placeholderText,
-                            fontFamily: "Nunito-SemiBold",
-                          },
-                        ]}
-                      >
-                        Untitled Pantry
-                      </Text>
-                    </View>
-                    <Pressable
-                      style={[
-                        styles.selectPill,
-                        {
-                          flex: 0,
-                          width: 100,
-                          justifyContent: "center",
-                          alignItems: "center",
-                        },
-                      ]}
-                    >
-                      <Text
-                        style={[
-                          styles.textCentered,
-                          {
-                            fontSize: 13,
-                            color: NEWCOLORS.placeholderText,
-                            fontFamily: "Nunito-SemiBold",
-                          },
-                        ]}
-                      >
-                        Edit Pantry
-                      </Text>
-                    </Pressable>
-                  </View>
-                </View>
+                <PantryPill
+                  pantryName={"Untitled Pantry"}
+                  pantryPage={false}
+                ></PantryPill>
               ) : genMode === 1 ? (
                 <View
                   style={[
