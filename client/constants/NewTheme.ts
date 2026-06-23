@@ -29,4 +29,7 @@ export const NEWCOLORS = {
   stepCircle: "#D1F1D7",
   tipBadgeBg: "#FFE7AB",
   checkboxOutline: "#D9D9D9",
+
+  pillGreen: "#E1E9DC",
+  pillX: "#A8B5A4",
 } as const;

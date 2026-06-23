@@ -14,10 +14,11 @@ import { CustomIcon } from "@/icon-loader/icon-loader";
 import { useNavigation } from "@react-navigation/native";
 import PreviewAnimatedWrapper from "@/components/features/generator/PreviewAnimatedWrapper";
 import { SafeAreaView } from "react-native-safe-area-context";
-import PantryPill from "@/components/features/generator/PantryPill";
+import PantryPill from "@/components/features/pantry/PantryPill";
 import { ScrollView } from "react-native-gesture-handler";
-import SuggestedIngredients from "@/components/features/generator/SuggestedIngredients";
+import SuggestedIngredients from "@/components/features/pantry/SuggestedIngredients";
 import { useTrueSheet } from "@/contexts/TrueSheetContext";
+import IngredientHeaderSection from "@/components/features/pantry/IngredientHeaderSection";
 
 export default function PantryPage() {
   const navigation = useNavigation();
@@ -119,7 +120,7 @@ export default function PantryPage() {
                     placeholder="Search Ingredients"
                     autoCapitalize="words"
                     keyboardType="default"
-                    placeholderTextColor={NEWCOLORS.basicText}
+                    placeholderTextColor={NEWCOLORS.placeholderText}
                     autoCorrect={true}
                     maxLength={32}
                     style={[
@@ -164,6 +165,17 @@ export default function PantryPage() {
               <SuggestedIngredients
                 suggestedIngredients={["Eggs", "Milk", "Cheese"]}
               />
+              <IngredientHeaderSection
+                title="Leftovers"
+                ingredients={[
+                  "Butter",
+                  "Fruit",
+                  "Salt",
+                  "Potato",
+                  "Sour Cream",
+                  "Chips",
+                ]}
+              ></IngredientHeaderSection>
             </View>
           </View>
         </View>

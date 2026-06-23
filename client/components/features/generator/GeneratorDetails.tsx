@@ -14,7 +14,7 @@ import * as Haptics from "expo-haptics";
 import MealsLeftContext from "@/contexts/MealsLeftContext";
 import RecipeContext from "@/contexts/RecipeContext";
 import { initialRecipeData } from "@/contexts/RecipeContext";
-import PantryPill from "./PantryPill";
+import PantryPill from "../pantry/PantryPill";
 
 type Props = {};
 

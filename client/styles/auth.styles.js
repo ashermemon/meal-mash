@@ -760,4 +760,10 @@ export const styles = StyleSheet.create({
     alignSelf: "stretch",
     backgroundColor: NEWCOLORS.unselectedShape,
   },
+  ingredientPill: {
+    flex: 1,
+    borderRadius: 1000,
+    backgroundColor: NEWCOLORS.pillGreen,
+    height: 30,
+  },
 });
