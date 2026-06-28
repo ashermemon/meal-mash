@@ -766,4 +766,43 @@ export const styles = StyleSheet.create({
     backgroundColor: NEWCOLORS.pillGreen,
     height: 30,
   },
+
+  setupContainer: {
+    flex: 1,
+    justifyContent: "space-between",
+    // alignItems: "center",
+    padding: 25,
+    paddingBottom: 90,
+  },
+
+  setupTitle: { fontSize: 24, fontFamily: "Nunito-Bold", textAlign: "left" },
+  setupInput: {
+    fontSize: 22,
+    fontFamily: "Nunito-Medium",
+    textAlign: "center",
+    marginVertical: 0,
+    borderBottomWidth: 1,
+    borderColor: "#ccc",
+    paddingBottom: 8,
+  },
+  setupButton: {
+    backgroundColor: "#66bb6a",
+    height: 56,
+    borderRadius: 28,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  progressFragment: {
+    borderRadius: 10,
+    flex: 1,
+  },
+  emojiCircle: {
+    backgroundColor: NEWCOLORS.unselectedGrey,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 1000,
+    height: 220,
+    width: 220,
+  },
 });

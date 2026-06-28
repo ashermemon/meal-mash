@@ -13,7 +13,7 @@ export default function TabsLayout() {
 
   return (
     <>
-      <ImageBackground source={image} style={styles.image} />
+      {/* <ImageBackground source={image} style={styles.image} /> */}
       <SafeAreaProvider>
         <SafeAreaView style={{ flex: 1 }}>
           <Tabs

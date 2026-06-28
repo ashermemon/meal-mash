@@ -200,7 +200,9 @@ export default function RootLayout() {
                       <Stack
                         screenOptions={{
                           headerShown: false,
-                          contentStyle: { backgroundColor: "#FCFCFC" },
+                          contentStyle: {
+                            backgroundColor: NEWCOLORS.backgroundColor,
+                          },
                         }}
                       ></Stack>
 

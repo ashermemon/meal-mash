@@ -4,7 +4,7 @@ import { styles } from "@/styles/GlobalStyles";
 import { NEWCOLORS } from "@/constants/NewTheme";
 import RecipeContext from "@/contexts/RecipeContext";
 import NutrientsContext from "@/contexts/NutrientsContext";
-import { GenerationCardPreview } from "../../components/features/generator/GenerationCardPreview";
+import { GenerationCardPreview } from "../../../components/features/generator/GenerationCardPreview";
 import Timer from "@/components/features/recipe/Timer";
 import { Image } from "expo-image";
 import { COLORS } from "@/constants/Theme";
@@ -20,7 +20,7 @@ import SuggestedIngredients from "@/components/features/pantry/SuggestedIngredie
 import { useTrueSheet } from "@/contexts/TrueSheetContext";
 import IngredientHeaderSection from "@/components/features/pantry/IngredientHeaderSection";
 
-export default function PantryPage() {
+export default function Dashboard() {
   const navigation = useNavigation();
   const ingredientSections: string[] = [
     "Leftovers",

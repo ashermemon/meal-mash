@@ -1,4 +1,6 @@
 export const NEWCOLORS = {
+  backgroundColor: "#fcfcfc",
+
   blueBlock: "#E4F7FF",
   orangeBlock: "#FFF2D9",
   greenBlock: "#EBF6ED",
