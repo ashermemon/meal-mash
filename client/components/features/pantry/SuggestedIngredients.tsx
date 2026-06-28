@@ -15,6 +15,7 @@ const SuggestedIngredients = (props: Props) => {
         justifyContent: "space-between",
         alignItems: "center",
         gap: 10,
+        marginBottom: 10,
       }}
     >
       <Text style={styles.basicTextLeft}>Suggested:</Text>

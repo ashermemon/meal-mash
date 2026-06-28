@@ -1,5 +1,5 @@
 import { Pressable, Text, View } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import IngredientTag from "./IngredientTag";
 import AddIngredientTag from "./AddIngredientTag";
 import { styles } from "@/styles/auth.styles";
@@ -21,6 +21,8 @@ const IngredientHeaderSection = (props: Props) => {
   const allRows: string[][] = [];
   let currentRow: string[] = [];
   let currentSlots = 0;
+
+  const [headerCollapsed, setHeaderCollapsed] = useState(true);
 
   for (const ingredient of props.ingredients) {
     const slots = getSlots(ingredient);
@@ -60,68 +62,86 @@ const IngredientHeaderSection = (props: Props) => {
 
   return (
     <View>
-      <View
-        style={{ flexDirection: "row", marginBottom: 20, alignItems: "center" }}
+      <Pressable
+        style={{
+          flexDirection: "row",
+          marginBottom: headerCollapsed ? 8 : 20,
+          alignItems: "center",
+        }}
+        onPress={() => {
+          setHeaderCollapsed((prev) => !prev);
+        }}
       >
-        <Pressable style={{ marginRight: 5 }}>
+        <View style={{ marginRight: 5 }}>
           <CustomIcon
-            name="down-small"
+            name={headerCollapsed ? "right-small" : "down-small"}
             filled={true}
             color={NEWCOLORS.placeholderText}
             size={25}
           />
-        </Pressable>
+        </View>
         <Text
           style={[
             styles.basicTextLeft,
             { fontFamily: "Nunito-SemiBold", fontSize: 17 },
           ]}
         >
-          {props.title}:
+          {props.title}
         </Text>
-      </View>
-      <View style={{ gap: 15 }}>
-        {fullRows.map((row: string[], rowIndex: number) => (
+      </Pressable>
+      {!headerCollapsed ? (
+        <View style={{ gap: 15 }}>
+          {fullRows.map((row: string[], rowIndex: number) => (
+            <View
+              key={rowIndex}
+              style={{ flexDirection: "row", alignItems: "center", gap: 10 }}
+            >
+              {row.map((ingredientName: string, colIndex: number) => (
+                <IngredientTag
+                  key={colIndex}
+                  ingredientName={ingredientName}
+                  flex={getSlots(ingredientName)}
+                />
+              ))}
+            </View>
+          ))}
+
           <View
-            key={rowIndex}
-            style={{ flexDirection: "row", alignItems: "center", gap: 10 }}
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 10,
+              marginBottom: 8,
+            }}
           >
-            {row.map((ingredientName: string, colIndex: number) => (
+            {lastRowItems.map((ingredientName: string, colIndex: number) => (
               <IngredientTag
                 key={colIndex}
                 ingredientName={ingredientName}
                 flex={getSlots(ingredientName)}
               />
             ))}
+            <AddIngredientTag />
+            {Array.from({ length: fill }).map((_, i) => (
+              <View
+                key={`filler-${i}`}
+                style={[
+                  styles.ingredientPill,
+                  {
+                    height: 30,
+                    backgroundColor: "transparent",
+                    shadowOpacity: 0,
+                    elevation: 0,
+                    boxShadow: "none",
+                  },
+                ]}
+              />
+            ))}
           </View>
-        ))}
-
-        <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-          {lastRowItems.map((ingredientName: string, colIndex: number) => (
-            <IngredientTag
-              key={colIndex}
-              ingredientName={ingredientName}
-              flex={getSlots(ingredientName)}
-            />
-          ))}
-          <AddIngredientTag />
-          {Array.from({ length: fill }).map((_, i) => (
-            <View
-              key={`filler-${i}`}
-              style={[
-                styles.ingredientPill,
-                {
-                  height: 30,
-                  backgroundColor: "transparent",
-                  shadowOpacity: 0,
-                  elevation: 0,
-                  boxShadow: "none",
-                },
-              ]}
-            />
-          ))}
         </View>
-      </View>
+      ) : (
+        <></>
+      )}
     </View>
   );
 };
