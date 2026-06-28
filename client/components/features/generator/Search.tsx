@@ -19,14 +19,13 @@ import { styles } from "@/styles/GlobalStyles";
 import SearchContext from "@/contexts/SearchContext";
 import { COLORS } from "@/constants/Theme";
 import IngredientCard from "@/components/features/generator/IngredientCard";
-import IngredientsContext from "@/contexts/IngredientsContext";
+import { GenerationDetailsContext } from "@/contexts/GenerationDetailsContext";
 import LeftoversEnabled from "@/contexts/LeftoversOn";
 import ingredientsDB from "@/ingredientDatabase/ingredientsDB.json";
 import leftoversDB from "@/ingredientDatabase/leftoversDB.json";
 import { FlashList } from "@shopify/flash-list";
 import useDebounce from "@/hooks/debounceHook";
 import { Image } from "expo-image";
-import LeftoversContext from "@/contexts/LeftoversContext";
 import FavoritesContext from "@/contexts/FavoritesContext";
 import FavLeftoversContext from "@/contexts/FavLeftoversContext";
 import * as Haptics from "expo-haptics";
@@ -52,8 +51,9 @@ export default function Search() {
 
   const [customModal, setCustomModal] = useState(false);
 
-  const [ingredients, setIngredients] = useContext(IngredientsContext);
-  const [leftovers, setLeftovers] = useContext(LeftoversContext);
+  const [generationDetails, setGenerationDetails] = useContext(GenerationDetailsContext);
+  const ingredients = generationDetails.ingredients;
+  const leftovers = generationDetails.leftovers;
 
   const [savedSearchQuery, setSavedSearchQuery] = useState("");
 
@@ -136,18 +136,17 @@ export default function Search() {
         )
       ) {
         setSearchActive(false);
+        const itemToAdd = customQuery !== undefined ? customQuery : savedSearchQuery;
         if (leftoversEnabled) {
-          if (customQuery) {
-            setLeftovers((prev) => [...prev, customQuery]);
-          } else if (customQuery == undefined) {
-            setLeftovers((prev) => [...prev, savedSearchQuery]);
-          }
-        } else if (!leftoversEnabled) {
-          if (customQuery) {
-            setIngredients((prev) => [...prev, customQuery]);
-          } else if (customQuery == undefined) {
-            setIngredients((prev) => [...prev, savedSearchQuery]);
-          }
+          setGenerationDetails((prev) => ({
+            ...prev,
+            leftovers: [...prev.leftovers, itemToAdd],
+          }));
+        } else {
+          setGenerationDetails((prev) => ({
+            ...prev,
+            ingredients: [...prev.ingredients, itemToAdd],
+          }));
         }
       }
     }
@@ -157,10 +156,10 @@ export default function Search() {
     customQuery,
     searchActive,
     leftoversEnabled,
-    setIngredients,
-    setLeftovers,
+    setGenerationDetails,
     savedSearchQuery,
-    searchQuery,
+    ingredients,
+    leftovers,
   ]);
 
   const renderListItem = useCallback(({ item }: { item: DBItem }) => {

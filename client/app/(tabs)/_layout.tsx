@@ -87,6 +87,34 @@ export default function TabsLayout() {
             />
 
             <Tabs.Screen
+              name="pantry"
+              options={{
+                tabBarLabel: "Pantry",
+                tabBarIcon: ({ color, focused }) => (
+                  <View
+                    style={{
+                      width: 48,
+                      height: 48,
+                      borderRadius: 100,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      backgroundColor: focused
+                        ? NEWCOLORS.darkButton
+                        : "transparent",
+                    }}
+                  >
+                    <CustomIcon
+                      name="fridge"
+                      filled={focused}
+                      color={color}
+                      size={iconSizeMobile}
+                    />
+                  </View>
+                ),
+              }}
+            />
+
+            <Tabs.Screen
               name="generationpage"
               options={{
                 tabBarLabel: "Generator",

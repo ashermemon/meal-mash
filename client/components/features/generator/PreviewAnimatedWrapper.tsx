@@ -19,6 +19,11 @@ import MealsLeftContext from "@/contexts/MealsLeftContext";
 import { GoogleGenAI } from "@google/genai";
 import { APIKEY } from "@/utils/apikey";
 import { RecipeSchema } from "@/utils/RecipeSchema";
+import Prompt from "@/constants/prompt";
+import generateConstraints from "@/constants/constraints";
+import { GenerationDetailsContext } from "@/contexts/GenerationDetailsContext";
+import { storage } from "@/utils/storage";
+import { router } from "expo-router";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
@@ -49,14 +54,26 @@ const SwipableCard = ({
   onSwipeLeft,
   onSwipeRightStart,
 }: SwipableCardProps) => {
+  const isSwipingRef = useRef(false);
   const translateX = useSharedValue(0);
   const ROTATION = 10;
+
+  const markSwiping = () => {
+    isSwipingRef.current = true;
+  };
+
+  const makeRecipe = () => {
+    if (!isSwipingRef.current) {
+      router.push("/followRecipe");
+    }
+  };
 
   const saveRecipe = () => {
     "worklet";
     if (onSwipeRightStart) {
       runOnJS(onSwipeRightStart)();
     }
+    runOnJS(markSwiping)();
     translateX.value = withTiming(
       SCREEN_WIDTH + 100,
       { duration: 400, easing: Easing.inOut(Easing.cubic) },
@@ -70,6 +87,7 @@ const SwipableCard = ({
 
   const skipRecipe = () => {
     "worklet";
+    runOnJS(markSwiping)();
     translateX.value = withTiming(
       -SCREEN_WIDTH - 100,
       { duration: 600, easing: Easing.inOut(Easing.cubic) },
@@ -139,15 +157,14 @@ const SwipableCard = ({
         saveRecipe={saveRecipe}
         skipRecipe={skipRecipe}
         isLoading={isLoading}
+        imageCategory={recipe?.imageCategory || "bowl"}
+        nutrients={recipe?.nutrients || [0, 0, 0]}
+        makeRecipe={makeRecipe}
       />
     </Animated.View>
   );
 
-  if (isTop && !isLoading) {
-    return <GestureDetector gesture={pan}>{card}</GestureDetector>;
-  }
-
-  return card;
+  return <GestureDetector gesture={pan}>{card}</GestureDetector>;
 };
 
 const PreviewAnimatedWrapper = (props: Props) => {
@@ -157,46 +174,59 @@ const PreviewAnimatedWrapper = (props: Props) => {
 
   const [recipeQueue, setRecipeQueue] = useState<RecipeData[]>([]);
   const [isPreFetching, setIsPreFetching] = useState(false);
+  const [generationDetails, setGenerationDetails] = useContext(
+    GenerationDetailsContext,
+  );
 
-  // Keep a ref of mealsLeft so the async prefetch always reads the latest value
   const mealsLeftRef = useRef(mealsLeft);
   useEffect(() => {
     mealsLeftRef.current = mealsLeft;
   }, [mealsLeft]);
 
-  // Initialize the queue with the first generated recipe
   useEffect(() => {
     if (recipeData && recipeData.title && recipeQueue.length === 0) {
       setRecipeQueue([recipeData]);
     }
   }, [recipeData]);
 
-  // Sync RecipeContext with the current top card whenever the queue changes
-  // (must NOT happen inside a state updater — useEffect runs after render)
   useEffect(() => {
     if (recipeQueue.length > 0) {
       setRecipeData(recipeQueue[0]);
     }
   }, [recipeQueue[0]?.id]);
 
-  // Background pre-fetch logic using Gemini API
   const prefetchNextRecipe = async () => {
     if (mealsLeftRef.current <= 0) {
       console.warn("Out of meals left. Skipping background generation.");
       return;
     }
     if (isPreFetching) return;
-    if (!recipeData.prompt) {
-      console.warn("No prompt found to generate background recipes.");
-      return;
-    }
 
     setIsPreFetching(true);
     try {
+      const nextConstraints = generateConstraints();
+      const nextPrompt = Prompt({
+        ingredients: generationDetails.ingredients || [],
+        leftovers: generationDetails.leftovers || [],
+
+        mealVibe: nextConstraints[0],
+        mealTexture: nextConstraints[1],
+        mealMethod: nextConstraints[2],
+
+        generationType: generationDetails.generationType,
+        difficulties: generationDetails.difficulties,
+        recipeTime: generationDetails.recipeTime,
+        numberOfServings: generationDetails.numberOfServings,
+        mealType: generationDetails.mealType,
+        cuisine: generationDetails.cuisine,
+        dietaryPreference: generationDetails.dietaryPreference,
+      });
+      console.log(nextPrompt);
+
       const ai = new GoogleGenAI({ apiKey: APIKEY });
       const response = await ai.models.generateContent({
         model: "gemini-3.1-flash-lite",
-        contents: recipeData.prompt,
+        contents: nextPrompt,
         config: {
           responseMimeType: "application/json",
           responseSchema: RecipeSchema,
@@ -205,9 +235,10 @@ const PreviewAnimatedWrapper = (props: Props) => {
 
       if (response.text) {
         const parsedRecipe = JSON.parse(response.text);
+        console.log(parsedRecipe.imageCategory);
         const newRecipe: RecipeData = {
           id: `recipe_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
-          prompt: recipeData.prompt,
+          prompt: nextPrompt,
           responseRecipe: response.text,
           title: parsedRecipe.title,
           description: parsedRecipe.description,
@@ -223,10 +254,18 @@ const PreviewAnimatedWrapper = (props: Props) => {
           ingredients: parsedRecipe.ingredients,
           instructions: parsedRecipe.instructions,
           tips: parsedRecipe.tips,
+          imageCategory: parsedRecipe.imageCategory,
         };
 
+        const totalMeals = storage.getNumber("mealsnumber") ?? 0;
+        storage.set("mealsnumber", totalMeals + 1);
+
         setRecipeQueue((prevQueue) => {
-          if (prevQueue.some((r) => r.id === newRecipe.id || r.title === newRecipe.title)) {
+          if (
+            prevQueue.some(
+              (r) => r.id === newRecipe.id || r.title === newRecipe.title,
+            )
+          ) {
             return prevQueue;
           }
           return [...prevQueue, newRecipe];
@@ -239,7 +278,6 @@ const PreviewAnimatedWrapper = (props: Props) => {
     }
   };
 
-  // Pre-fetch triggered when queue length becomes < 2
   useEffect(() => {
     if (recipeQueue.length < 2 && !isPreFetching) {
       prefetchNextRecipe();
@@ -255,8 +293,12 @@ const PreviewAnimatedWrapper = (props: Props) => {
     persistRecipe(recipe, setSavedRecipes);
   };
 
-  // Prepare active card layers (max 2 rendered at any time for high performance)
-  const cardsToRender: { recipe?: RecipeData; isTop: boolean; isLoading?: boolean; key: string }[] = [];
+  const cardsToRender: {
+    recipe?: RecipeData;
+    isTop: boolean;
+    isLoading?: boolean;
+    key: string;
+  }[] = [];
 
   if (recipeQueue.length === 0) {
     cardsToRender.push({
@@ -286,7 +328,6 @@ const PreviewAnimatedWrapper = (props: Props) => {
     }
   }
 
-  // Reverse so that the top card is rendered last (placed on top of the layout)
   const stack = [...cardsToRender].reverse();
 
   return (
@@ -307,7 +348,9 @@ const PreviewAnimatedWrapper = (props: Props) => {
           isLoading={item.isLoading}
           onSwipeRight={() => item.recipe && handleSwipeFinished(item.recipe)}
           onSwipeLeft={() => item.recipe && handleSwipeFinished(item.recipe)}
-          onSwipeRightStart={() => item.recipe && handleSaveRecipeJS(item.recipe)}
+          onSwipeRightStart={() =>
+            item.recipe && handleSaveRecipeJS(item.recipe)
+          }
         />
       ))}
     </View>

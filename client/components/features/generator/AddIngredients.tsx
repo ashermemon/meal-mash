@@ -4,19 +4,19 @@ import NewCard from "@/components/features/generator/NewCard";
 import { styles } from "@/styles/GlobalStyles";
 import { COLORS } from "@/constants/Theme";
 import IngredientCardAdded from "@/components/features/generator/IngredientCardAdded";
-import IngredientsContext from "@/contexts/IngredientsContext";
+import { GenerationDetailsContext } from "@/contexts/GenerationDetailsContext";
 
 export default function AddIngredients() {
-  const [ingredients, setIngredients] = useContext(IngredientsContext);
+  const [generationDetails, setGenerationDetails] = useContext(GenerationDetailsContext);
   const [addButtonActive, setAddButtonActive] = useState(true);
 
   useEffect(() => {
-    if (ingredients.length > 6) {
+    if (generationDetails.ingredients.length > 6) {
       setAddButtonActive(false);
     } else {
       setAddButtonActive(true);
     }
-  }, [ingredients]);
+  }, [generationDetails.ingredients]);
   return (
     <View
       style={[
@@ -26,7 +26,7 @@ export default function AddIngredients() {
     >
       <Text style={styles.addContainerHeader}>Ingredients:</Text>
 
-      {ingredients.map((ingredient) => (
+      {generationDetails.ingredients.map((ingredient) => (
         <IngredientCardAdded
           ingredientName={ingredient}
           cardBColor={COLORS.greenButtonColor}

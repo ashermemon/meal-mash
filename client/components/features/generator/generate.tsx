@@ -10,9 +10,9 @@ import AddLeftovers from "@/components/features/generator/AddLeftovers";
 import SearchContext from "@/contexts/SearchContext";
 import Search from "@/components/features/generator/Search";
 
-import IngredientsContext from "@/contexts/IngredientsContext";
+import { GenerationDetailsContext } from "@/contexts/GenerationDetailsContext";
 import LeftoversEnabled from "@/contexts/LeftoversOn";
-import LeftoversContext from "@/contexts/LeftoversContext";
+
 import { APIKEY } from "@/utils/apikey";
 import SavedRecipesContext from "@/contexts/SavedRecipesContext";
 import { storage } from "@/utils/storage";
@@ -24,6 +24,8 @@ import * as Haptics from "expo-haptics";
 import RecipeContext from "@/contexts/RecipeContext";
 import { router } from "expo-router";
 import { RecipeSchema } from "@/utils/RecipeSchema";
+import generateConstraints from "@/constants/constraints";
+import GeneratorDetails from "./GeneratorDetails";
 
 export default function Generate() {
   const [isChecked, setChecked] = useState(false);
@@ -31,84 +33,17 @@ export default function Generate() {
   const ai = new GoogleGenAI({ apiKey: APIKEY });
 
   const [searchActive, setSearchActive] = useState(false);
-  const [loading, setLoading] = useState(false);
+
 
   const [error, setError] = useState<Error | null>(null);
 
-  const [ingredients, setIngredients] = useContext(IngredientsContext);
-  const [leftovers, setLeftovers] = useContext(LeftoversContext);
+  const [generationDetails, setGenerationDetails] = useContext(GenerationDetailsContext);
+
   const [leftoversEnabled, setLeftoversEnabled] = useState(false);
 
   const [recipeData, setRecipeData] = useContext(RecipeContext);
 
   const [saves, setSaves] = useContext(SavedRecipesContext);
-
-  useEffect(() => {
-    storage.set("savesnumber", saves.length);
-  }, [saves.length]);
-
-  const fetchResponse = async (prompt: string) => {
-    setLoading(true);
-    try {
-      const response = await ai.models.generateContent({
-        model: "gemini-3.1-flash-lite",
-        contents: prompt,
-
-        config: {
-          responseMimeType: "application/json",
-          responseSchema: RecipeSchema,
-        },
-      });
-
-      if (response.text) {
-        console.log("Raw response text:", response.text);
-        const parsedRecipe = JSON.parse(response.text);
-
-        setRecipeData({
-          id: `recipe_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
-          prompt: prompt,
-          responseRecipe: response.text,
-          title: parsedRecipe.title,
-          description: parsedRecipe.description,
-          difficulty: parsedRecipe.difficulty,
-          time: parsedRecipe.time,
-          servings: parsedRecipe.servings,
-
-          nutrients: [
-            Number(parsedRecipe.nutrients?.protein) || 0,
-            Number(parsedRecipe.nutrients?.fat) || 0,
-            Number(parsedRecipe.nutrients?.carbs) || 0,
-          ],
-
-          tags: parsedRecipe.tags,
-          ingredients: parsedRecipe.ingredients,
-          instructions: parsedRecipe.instructions,
-          tips: parsedRecipe.tips,
-        });
-
-        router.push("/recipe");
-      }
-    } catch (error: any) {
-      setError(error);
-    } finally {
-      setLoading(false);
-      const totalMeals = storage.getNumber("mealsnumber") ?? 0;
-      setMealsLeft(mealsLeft); //mealsLeft - 1
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-      storage.set("savesnumber", saves.length); // Update total save count in storage
-      storage.set("mealsnumber", totalMeals + 1);
-    }
-  };
-
-  const handleGenerateRecipe = (inputRecipe: string) => {
-    fetchResponse(inputRecipe);
-  };
-
-  const recipePrompt = Prompt({
-    ingredients: ingredients,
-    leftovers: leftovers,
-    isChecked: isChecked,
-  });
 
   return (
     <>
@@ -116,7 +51,9 @@ export default function Generate() {
         value={[leftoversEnabled, setLeftoversEnabled]}
       >
         <SearchContext.Provider value={[searchActive, setSearchActive]}>
-          <ScrollView
+
+          <GeneratorDetails></GeneratorDetails>
+          {/* <ScrollView
             contentContainerStyle={{ flexGrow: 1 }}
             overScrollMode="never"
             alwaysBounceVertical={false}
@@ -162,23 +99,14 @@ export default function Generate() {
                     </Modal>
                   </View>
 
-                  {loading ? (
-                    <Text style={[styles.textCentered, { marginBottom: 25 }]}>
-                      Loading...
-                    </Text>
-                  ) : (
-                    <Text style={[styles.textCentered, { marginBottom: 25 }]}>
-                      Generate a meal by adding your leftovers and ingredients
-                      below!
-                    </Text>
-                  )}
+
+                  <Text style={[styles.textCentered, { marginBottom: 25 }]}>
+                    Generate a meal by adding your leftovers and ingredients
+                    below!
+                  </Text>
+
                   <View>
-                    {loading && (
-                      <ActivityIndicator
-                        color={COLORS.blueLink}
-                        size={"large"}
-                      ></ActivityIndicator>
-                    )}
+
                     {error && (
                       <Text style={styles.errorText}>
                         {error.message || error.toString()}
@@ -186,101 +114,96 @@ export default function Generate() {
                     )}
                   </View>
                 </View>
-                {!loading && (
-                  <>
-                    <AddLeftovers></AddLeftovers>
-                    <AddIngredients></AddIngredients>
-                    <View
+
+                <>
+                  <AddLeftovers></AddLeftovers>
+                  <AddIngredients></AddIngredients>
+                  <View
+                    style={{
+                      width: "100%",
+                      alignItems: "center",
+                    }}
+                  >
+                    <BouncyCheckbox
                       style={{
-                        width: "100%",
-                        alignItems: "center",
+                        marginBottom: 15,
+                        alignSelf: "center",
                       }}
-                    >
-                      <BouncyCheckbox
-                        style={{
-                          marginBottom: 15,
-                          alignSelf: "center",
-                        }}
-                        size={25}
-                        fillColor={COLORS.greenProgressBar}
-                        unFillColor={COLORS.greenButtonColor}
-                        text="Allow Additional Ingredients"
-                        iconStyle={{
-                          borderColor: COLORS.fontColor,
-                        }}
-                        innerIconStyle={{ borderWidth: 2 }}
-                        textStyle={[
-                          styles.textLeftSemiBold,
-                          { textDecorationLine: "none" },
-                        ]}
-                        textContainerStyle={{
-                          flex: 0,
-                          alignItems: "center",
-                          justifyContent: "center",
-                        }}
-                        useBuiltInState={false}
-                        isChecked={isChecked}
-                        onPress={() => [
-                          setChecked(!isChecked),
-                          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft),
-                        ]}
-                      />
-                    </View>
-                  </>
-                )}
+                      size={25}
+                      fillColor={COLORS.greenProgressBar}
+                      unFillColor={COLORS.greenButtonColor}
+                      text="Allow Additional Ingredients"
+                      iconStyle={{
+                        borderColor: COLORS.fontColor,
+                      }}
+                      innerIconStyle={{ borderWidth: 2 }}
+                      textStyle={[
+                        styles.textLeftSemiBold,
+                        { textDecorationLine: "none" },
+                      ]}
+                      textContainerStyle={{
+                        flex: 0,
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                      useBuiltInState={false}
+                      isChecked={isChecked}
+                      onPress={() => [
+                        setChecked(!isChecked),
+                        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft),
+                      ]}
+                    />
+                  </View>
+                </>
               </View>
 
-              {!loading && (
-                <Pressable
+              <Pressable
+                style={[
+                  styles.generateButton,
+                  {
+                    backgroundColor:
+                      generationDetails.leftovers.length > 0 || generationDetails.ingredients.length > 0
+                        ? COLORS.blueHeader
+                        : COLORS.searchGreyBG,
+                    borderColor:
+                      generationDetails.leftovers.length > 0 || generationDetails.ingredients.length > 0
+                        ? COLORS.blueHeaderBorder
+                        : COLORS.searchGreyBorder,
+                  },
+                ]}
+                onPress={
+
+                  mealsLeft > 0
+                    ? () => [
+                      setGenerationDetails((prev) => ({
+                        ...prev,
+                        isChecked,
+                      })),
+                      router.push("/recipe"),
+                      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light),
+                    ]
+                    : () =>
+                      alert(
+                        "You have run out of meal generations today. Come again tomorrow!",
+                      )
+                }
+              >
+                <Text
                   style={[
-                    styles.generateButton,
-                    {
-                      backgroundColor:
-                        leftovers.length > 0 || ingredients.length > 0
-                          ? COLORS.blueHeader
-                          : COLORS.searchGreyBG,
-                      borderColor:
-                        leftovers.length > 0 || ingredients.length > 0
-                          ? COLORS.blueHeaderBorder
-                          : COLORS.searchGreyBorder,
-                    },
+                    styles.textCentered,
+                    { fontFamily: "Nunito-SemiBold" },
                   ]}
-                  onPress={
-                    leftovers.length > 0 || ingredients.length > 0
-                      ? mealsLeft > 0
-                        ? () => [
-                            handleGenerateRecipe(recipePrompt),
-                            Haptics.impactAsync(
-                              Haptics.ImpactFeedbackStyle.Light,
-                            ),
-                          ]
-                        : () =>
-                            alert(
-                              "You have run out of meal generations today. Come again tomorrow!",
-                            )
-                      : () =>
-                          alert(
-                            "Add a leftover or ingredient to generate meal!",
-                          )
-                  }
+                  adjustsFontSizeToFit={true}
                 >
-                  <Text
-                    style={[
-                      styles.textCentered,
-                      { fontFamily: "Nunito-SemiBold" },
-                    ]}
-                    adjustsFontSizeToFit={true}
-                  >
-                    Create Meal
-                  </Text>
-                </Pressable>
-              )}
+                  Create Meal
+                </Text>
+              </Pressable>
 
               <View style={styles.spacer}></View>
             </View>
-          </ScrollView>
+          </ScrollView> */}
         </SearchContext.Provider>
-      </LeftoversEnabled.Provider>
+      </LeftoversEnabled.Provider >
     </>
   );
 }

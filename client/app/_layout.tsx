@@ -1,7 +1,7 @@
+import { View, Pressable, ScrollView } from "react-native";
 import { Stack } from "expo-router";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { Button, Platform, StatusBar, Text } from "react-native";
-import { View, ImageBackground } from "react-native";
 import { styles } from "@/styles/GlobalStyles";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
@@ -12,17 +12,19 @@ import { storage } from "@/utils/storage";
 import FavoritesContext from "@/contexts/FavoritesContext";
 import FavLeftoversContext from "@/contexts/FavLeftoversContext";
 import SavedRecipesContext from "@/contexts/SavedRecipesContext";
-import LeftoversContext from "@/contexts/LeftoversContext";
-import IngredientsContext from "@/contexts/IngredientsContext";
 import MealsLeftContext from "@/contexts/MealsLeftContext";
 import { NotificationProvider } from "@/contexts/NotificationContext";
-import * as Notifications from "expo-notifications";
 import {
-  BottomSheetModal,
-  BottomSheetModalProvider,
-  BottomSheetView,
-} from "@gorhom/bottom-sheet";
+  GenerationDetailsContext,
+  type GenerationDetails,
+} from "@/contexts/GenerationDetailsContext";
+import * as Notifications from "expo-notifications";
+
 import { RecipeProvider, type RecipeData } from "@/contexts/RecipeContext";
+import { TrueSheetProvider } from "@/contexts/TrueSheetContext";
+import { TrueSheet } from "@lodev09/react-native-true-sheet";
+import TrueSheetContent from "@/components/common/TrueSheetContent";
+import { NEWCOLORS } from "@/constants/NewTheme";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -30,18 +32,44 @@ export default function RootLayout() {
   const [favorites, setFavorites] = useState<string[]>([]);
   const [favoritesL, setFavoritesL] = useState<string[]>([]);
   const [savedRecipes, setSavedRecipes] = useState<RecipeData[]>([]);
-  const [ingredients, setIngredients] = useState<string[]>([]);
-  const [leftovers, setLeftovers] = useState<string[]>([]);
+  const [generationDetails, setGenerationDetails] = useState<GenerationDetails>(
+    {
+      ingredients: [],
+      leftovers: [],
+      generationType: 0,
+      difficulties: [],
+      recipeTime: [],
+      numberOfServings: 1,
+      mealType: [],
+      cuisine: [],
+      dietaryPreference: [],
+    },
+  );
   const [mealsLeft, setMealsLeft] = useState<number>(500);
 
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const sheetRef = useRef<TrueSheet>(null);
+  const [currentOptions, setCurrentOptions] = useState<string[]>([]);
+  const [currentSelected, setCurrentSelected] = useState<string[]>([]);
+  const [currentOnSelect, setCurrentOnSelect] = useState<
+    ((options: string[]) => void) | null
+  >(null);
+  const [currentTitle, setCurrentTitle] = useState<string>("");
 
-  const handlePresentModalPress = useCallback(() => {
-    bottomSheetModalRef.current?.present();
-  }, []);
-  const handleSheetChanges = useCallback((index: number) => {
-    console.log("handleSheetChanges", index);
-  }, []);
+  const openSheet = useCallback(
+    (
+      options: string[],
+      onSelect: (options: string[]) => void,
+      title: string,
+      selected: string[] = [],
+    ) => {
+      setCurrentOptions(options);
+      setCurrentSelected(selected);
+      setCurrentOnSelect(() => onSelect);
+      setCurrentTitle(title);
+      sheetRef.current?.present();
+    },
+    [],
+  );
 
   const getTodayDate = () => {
     return new Date().toISOString().split("T")[0];
@@ -144,50 +172,82 @@ export default function RootLayout() {
   }
 
   return (
-    <BottomSheetModalProvider>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <NotificationProvider>
-          <LeftoversContext.Provider value={[leftovers, setLeftovers]}>
-            <IngredientsContext.Provider value={[ingredients, setIngredients]}>
-              <FavoritesContext.Provider value={[favorites, setFavorites]}>
-                <FavLeftoversContext.Provider
-                  value={[favoritesL, setFavoritesL]}
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <NotificationProvider>
+        <TrueSheetProvider
+          sheetRef={sheetRef}
+          openSheet={openSheet}
+          currentOptions={currentOptions}
+          currentSelected={currentSelected}
+          currentOnSelect={currentOnSelect}
+          currentTitle={currentTitle}
+        >
+          <GenerationDetailsContext.Provider
+            value={[generationDetails, setGenerationDetails]}
+          >
+            <FavoritesContext.Provider value={[favorites, setFavorites]}>
+              <FavLeftoversContext.Provider value={[favoritesL, setFavoritesL]}>
+                <SavedRecipesContext.Provider
+                  value={[savedRecipes, setSavedRecipes]}
                 >
-                  <SavedRecipesContext.Provider
-                    value={[savedRecipes, setSavedRecipes]}
-                  >
-                    <MealsLeftContext.Provider
-                      value={[mealsLeft, setMealsLeft]}
-                    >
-                      <RecipeProvider>
-                        <StatusBar
-                          barStyle="dark-content"
-                          backgroundColor={COLORS.newHeader}
-                        />
+                  <MealsLeftContext.Provider value={[mealsLeft, setMealsLeft]}>
+                    <RecipeProvider>
+                      <StatusBar
+                        barStyle="dark-content"
+                        backgroundColor={COLORS.newHeader}
+                      />
 
-                        <Stack
-                          screenOptions={{
-                            headerShown: false,
-                          }}
-                        ></Stack>
+                      <Stack
+                        screenOptions={{
+                          headerShown: false,
+                          contentStyle: { backgroundColor: "#FCFCFC" },
+                        }}
+                      ></Stack>
 
-                        <BottomSheetModal
-                          ref={bottomSheetModalRef}
-                          onChange={handleSheetChanges}
-                        >
-                          <BottomSheetView style={styles.contentContainer}>
-                            <Text>Wow</Text>
-                          </BottomSheetView>
-                        </BottomSheetModal>
-                      </RecipeProvider>
-                    </MealsLeftContext.Provider>
-                  </SavedRecipesContext.Provider>
-                </FavLeftoversContext.Provider>
-              </FavoritesContext.Provider>
-            </IngredientsContext.Provider>
-          </LeftoversContext.Provider>
-        </NotificationProvider>
-      </GestureHandlerRootView>
-    </BottomSheetModalProvider>
+                      <TrueSheet
+                        ref={sheetRef}
+                        scrollable
+                        header={
+                          <>
+                            <Text
+                              style={{
+                                fontSize: 22,
+                                fontFamily: "Nunito-SemiBold",
+                                marginTop: 21,
+                                marginBottom: 15,
+                                color: "white",
+                              }}
+                            >
+                              {currentTitle}
+                            </Text>
+                            <View
+                              style={{
+                                height: 3,
+                                backgroundColor: NEWCOLORS.placeholderText,
+                              }}
+                            ></View>
+                          </>
+                        }
+                        headerStyle={{
+                          paddingHorizontal: 20,
+                          paddingTop: 16,
+                        }}
+                        backgroundColor={NEWCOLORS.darkButton}
+                      >
+                        <TrueSheetContent
+                          currentOnSelect={currentOnSelect}
+                          sheetRef={sheetRef}
+                          currentOptions={currentOptions}
+                        ></TrueSheetContent>
+                      </TrueSheet>
+                    </RecipeProvider>
+                  </MealsLeftContext.Provider>
+                </SavedRecipesContext.Provider>
+              </FavLeftoversContext.Provider>
+            </FavoritesContext.Provider>
+          </GenerationDetailsContext.Provider>
+        </TrueSheetProvider>
+      </NotificationProvider>
+    </GestureHandlerRootView>
   );
 }

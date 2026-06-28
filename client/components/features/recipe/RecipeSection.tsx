@@ -1,13 +1,13 @@
 import { View, Text } from "react-native";
 import React from "react";
 import { styles } from "@/styles/auth.styles";
-import { NEWCOLORS } from "@/constants/NewTheme";
 import { COLORS } from "@/constants/Theme";
 
 type Props = {
-  sectionTitle: string;
+  sectionTitle?: string;
   children: React.ReactNode;
   servings?: number | null;
+  titleOff?: boolean;
 };
 
 const RecipeSection = (props: Props) => {
@@ -16,10 +16,10 @@ const RecipeSection = (props: Props) => {
       style={[
         styles.card,
         {
-          marginBottom: 20,
+          marginBottom: props.titleOff ? 0 : 20,
           paddingHorizontal: 10,
-          paddingBottom: 15,
-          paddingTop: 30,
+          paddingBottom: props.titleOff ? 0 : 15,
+          paddingTop: props.titleOff ? 5 : 30,
         },
       ]}
     >
@@ -31,9 +31,13 @@ const RecipeSection = (props: Props) => {
           marginBottom: 40,
         }}
       >
-        <Text style={[styles.textLeftBold, { fontSize: 18 }]}>
-          {props.sectionTitle}
-        </Text>
+        {props.titleOff ? (
+          <></>
+        ) : (
+          <Text style={[styles.textLeftBold, { fontSize: 18 }]}>
+            {props.sectionTitle}
+          </Text>
+        )}
 
         {props.servings && (
           <Text
@@ -42,7 +46,9 @@ const RecipeSection = (props: Props) => {
               { color: COLORS.searchPlaceholder, fontSize: 13, marginTop: 1 },
             ]}
           >
-            Makes {props.servings} servings
+            {props.servings === 1
+              ? `Makes ${props.servings} serving`
+              : `Makes ${props.servings} servings`}
           </Text>
         )}
       </View>

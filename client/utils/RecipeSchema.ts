@@ -1,4 +1,20 @@
 import { Type } from "@google/genai";
+const IMAGE_CATEGORIES = [
+  "burger",
+  "pizza",
+  "pasta",
+  "salad",
+  "curry",
+  "fried-rice",
+  "sandwich",
+  "taco",
+  "soup",
+  "dessert",
+  "breakfast",
+  "seafood",
+  "steak",
+  //"bowl"
+] as const;
 
 export const RecipeSchema = {
   type: Type.OBJECT,
@@ -50,6 +66,11 @@ export const RecipeSchema = {
       },
     },
     tips: { type: Type.ARRAY, items: { type: Type.STRING } },
+    imageCategory: {
+      type: Type.STRING,
+      enum: [...IMAGE_CATEGORIES],
+      description: "Select the single best matching image category to represent the final dish. Must be one of the provided enum values."
+    }
   },
   required: [
     "title",
@@ -62,5 +83,6 @@ export const RecipeSchema = {
     "ingredients",
     "instructions",
     "tips",
+    "imageCategory",
   ],
 };

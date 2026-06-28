@@ -54,7 +54,7 @@ export default function Welcome() {
       alwaysBounceVertical={false}
       style={{
         width: "100%",
-        paddingHorizontal: 20,
+        paddingHorizontal: 25,
         paddingVertical: 20,
       }}
     >
@@ -105,6 +105,7 @@ export default function Welcome() {
                 flex: 1,
                 fontSize: 18,
                 color: NEWCOLORS.basicText,
+                fontFamily: "Nunito-Regular",
                 marginLeft: 10,
                 marginRight: 10,
                 height: 46,

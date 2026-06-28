@@ -31,6 +31,7 @@ export const styles = StyleSheet.create({
   image: {
     ...StyleSheet.absoluteFillObject,
     resizeMode: "cover",
+    opacity: 0.2,
   },
   text: {
     fontFamily: "Nunito-Regular",
@@ -153,7 +154,6 @@ export const styles = StyleSheet.create({
     color: "red",
   },
   generatorContainer: {
-    paddingVertical: 15,
     flex: 1,
     width: "100%",
     //backgroundColor: "white",
@@ -739,5 +739,31 @@ export const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
+  },
+  sliderPill: {
+    width: "100%",
+    borderRadius: 1000,
+    backgroundColor: NEWCOLORS.greyBlock,
+    height: 55,
+    paddingHorizontal: 15,
+    paddingVertical: 5,
+  },
+  selectPill: {
+    flex: 1,
+    borderRadius: 1000,
+    backgroundColor: NEWCOLORS.unselectedGrey,
+    height: 35,
+  },
+  verticalLine: {
+    width: 2,
+    marginLeft: 10,
+    alignSelf: "stretch",
+    backgroundColor: NEWCOLORS.unselectedShape,
+  },
+  ingredientPill: {
+    flex: 1,
+    borderRadius: 1000,
+    backgroundColor: NEWCOLORS.pillGreen,
+    height: 30,
   },
 });

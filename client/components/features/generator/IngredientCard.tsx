@@ -5,9 +5,9 @@ import { styles } from "@/styles/GlobalStyles";
 import AddIngredients from "@/components/features/generator/AddIngredients";
 import emojiImages from "@/components/universal/EmojiImages";
 import SearchContext from "@/contexts/SearchContext";
-import IngredientsContext from "@/contexts/IngredientsContext";
+import { GenerationDetailsContext } from "@/contexts/GenerationDetailsContext";
 import LeftoversEnabled from "@/contexts/LeftoversOn";
-import LeftoversContext from "@/contexts/LeftoversContext";
+
 import {
   Gesture,
   GestureDetector,
@@ -28,8 +28,7 @@ interface IngredientProps {
 }
 
 export default function IngredientCard(props: IngredientProps) {
-  const [ingredients, setIngredients] = useContext(IngredientsContext);
-  const [leftovers, setLeftovers] = useContext(LeftoversContext);
+  const [generationDetails, setGenerationDetails] = useContext(GenerationDetailsContext);
   const [leftoversEnabled, setLeftoversEnabled] = useContext(LeftoversEnabled);
 
   var hsl = require("hsl-to-hex");
@@ -48,8 +47,8 @@ export default function IngredientCard(props: IngredientProps) {
       transform: [{ scale: scale.value }],
     };
   });
-  upperCaseArrayL = leftovers.map((str) => str.toUpperCase());
-  upperCaseArrayI = ingredients.map((str) => str.toUpperCase());
+  upperCaseArrayL = generationDetails.leftovers.map((str: string) => str.toUpperCase());
+  upperCaseArrayI = generationDetails.ingredients.map((str: string) => str.toUpperCase());
 
   return upperCaseArrayI.includes(props.ingredientName.toUpperCase()) ||
     upperCaseArrayL.includes(props.ingredientName.toUpperCase()) ? null : (
@@ -65,9 +64,15 @@ export default function IngredientCard(props: IngredientProps) {
         if (searchActive) {
           Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
           if (leftoversEnabled) {
-            setLeftovers((prev) => [...prev, props.ingredientName]);
+            setGenerationDetails((prev) => ({
+              ...prev,
+              leftovers: [...prev.leftovers, props.ingredientName],
+            }));
           } else {
-            setIngredients((prev) => [...prev, props.ingredientName]);
+            setGenerationDetails((prev) => ({
+              ...prev,
+              ingredients: [...prev.ingredients, props.ingredientName],
+            }));
           }
         }
         setSearchActive(false);

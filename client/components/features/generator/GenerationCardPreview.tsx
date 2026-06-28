@@ -1,9 +1,9 @@
-import { View, Text, Pressable, Dimensions, InteractionManager } from "react-native";
+import { View, Text, Pressable, Dimensions, InteractionManager, Image } from "react-native";
 import React, { useEffect } from "react";
 import NutrientCircle from "@/components/features/recipe/NutrientCircle";
 import { styles } from "@/styles/GlobalStyles";
-import { Image } from "expo-image";
 import RecipeInfoTags from "../recipe/RecipeInfoTags";
+import NutrientsContext from "@/contexts/NutrientsContext";
 import { NEWCOLORS } from "@/constants/NewTheme";
 import { router } from "expo-router";
 import { Skeleton } from "moti/skeleton";
@@ -25,6 +25,9 @@ type Props = {
   saveRecipe: () => void;
   skipRecipe: () => void;
   isLoading?: boolean;
+  imageCategory: string;
+  nutrients?: number[];
+  makeRecipe: () => void;
 };
 
 const SkeletonSettings = {
@@ -34,6 +37,23 @@ const SkeletonSettings = {
     duration: 2000,
   },
 } as const;
+
+const MEAL_IMAGES: Record<string, any> = {
+  burger: require("@/assets/images/meal-images/burger.png"),
+  pizza: require("@/assets/images/meal-images/pizza.png"),
+  pasta: require("@/assets/images/meal-images/pasta.png"),
+  salad: require("@/assets/images/meal-images/salad.png"),
+  curry: require("@/assets/images/meal-images/curry.png"),
+  "fried-rice": require("@/assets/images/meal-images/fried-rice.png"),
+  sandwich: require("@/assets/images/meal-images/sandwich.png"),
+  taco: require("@/assets/images/meal-images/taco.png"),
+  soup: require("@/assets/images/meal-images/soup.png"),
+  dessert: require("@/assets/images/meal-images/dessert.png"),
+  breakfast: require("@/assets/images/meal-images/breakfast.png"),
+  seafood: require("@/assets/images/meal-images/seafood.png"),
+  steak: require("@/assets/images/meal-images/steak.png"),
+  bowl: require("@/assets/images/meal-images/bowl.png"),
+};
 
 export const GenerationCardPreview = (props: Props) => {
 
@@ -285,7 +305,7 @@ export const GenerationCardPreview = (props: Props) => {
         }}
       >
         <Image
-          source={require("../../../assets/images/mealExample.png")}
+          source={MEAL_IMAGES[props.imageCategory] || MEAL_IMAGES.bowl}
           style={{
             width: "70%",
             aspectRatio: 1,
@@ -294,8 +314,7 @@ export const GenerationCardPreview = (props: Props) => {
             alignSelf: "center",
             borderRadius: 12,
           }}
-          contentFit="cover"
-          transition={0}
+          resizeMode="cover"
         />
 
         <Text
@@ -311,7 +330,9 @@ export const GenerationCardPreview = (props: Props) => {
           {props.description}
         </Text>
 
-        <NutrientCircle textInBox={false} />
+        <NutrientsContext.Provider value={[props.nutrients || [0, 0, 0], () => { }]}>
+          <NutrientCircle textInBox={false} />
+        </NutrientsContext.Provider>
 
         <View style={{ width: "100%", alignItems: "center", marginTop: 10 }}>
           <Pressable
@@ -324,7 +345,7 @@ export const GenerationCardPreview = (props: Props) => {
                 width: "100%",
               },
             ]}
-            onPress={() => router.push("/followRecipe")} //.push creates new screen instead (less lag, new screen)
+            onPress={props.makeRecipe}
 
           //more laggy: InteractionManager.runAfterInteractions(() => { router.navigate("/followRecipe") })
           >

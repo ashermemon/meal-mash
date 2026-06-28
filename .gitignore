@@ -47,3 +47,9 @@ google-services.json
 #venv
 venv/
 .venv/
+client/.agents/skills/truesheet-usage/references/api.md
+client/.agents/skills/truesheet-usage/references/configuration.md
+client/.agents/skills/truesheet-usage/references/troubleshooting.md
+client/.agents/skills/truesheet-usage/SKILL.md
+client/skills-lock.json
+client/.agents/skills/truesheet-usage/references/advanced-patterns.md

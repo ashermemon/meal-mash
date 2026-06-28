@@ -5,8 +5,7 @@ import { styles } from "@/styles/GlobalStyles";
 import { Image } from "expo-image";
 import FavoritesContext from "@/contexts/FavoritesContext";
 import FavLeftoversContext from "@/contexts/FavLeftoversContext";
-import LeftoversContext from "@/contexts/LeftoversContext";
-import IngredientsContext from "@/contexts/IngredientsContext";
+import { GenerationDetailsContext } from "@/contexts/GenerationDetailsContext";
 import { COLORS } from "@/constants/Theme";
 import emojiImages from "@/components/universal/EmojiImages";
 import Animated, {
@@ -28,8 +27,9 @@ export default function FavIngredient(props: CardProps) {
 
   const [favorites, setFavorites] = useContext(FavoritesContext);
   const [favoritesL, setFavoritesL] = useContext(FavLeftoversContext);
-  const [ingredients, setIngredients] = useContext(IngredientsContext);
-  const [leftovers, setLeftovers] = useContext(LeftoversContext);
+  const [generationDetails, setGenerationDetails] = useContext(GenerationDetailsContext);
+  const ingredients = generationDetails.ingredients;
+  const leftovers = generationDetails.leftovers;
 
   const pressed = useSharedValue(false);
   const router = useRouter();
@@ -89,12 +89,18 @@ export default function FavIngredient(props: CardProps) {
       upperCaseArrayL.includes(props.ingredientName.toUpperCase()) == false
     ) {
       router.push("/(tabs)/generationpage" as any);
-      setLeftovers((prev: string[]) => [...prev, props.ingredientName]);
+      setGenerationDetails((prev) => ({
+        ...prev,
+        leftovers: [...prev.leftovers, props.ingredientName],
+      }));
     } else if (
       !props.leftover &&
       upperCaseArrayI.includes(props.ingredientName.toUpperCase()) == false
     ) {
-      setIngredients((prev: string[]) => [...prev, props.ingredientName]);
+      setGenerationDetails((prev) => ({
+        ...prev,
+        ingredients: [...prev.ingredients, props.ingredientName],
+      }));
       router.push("/(tabs)/generationpage" as any);
     } else {
       alert("Ingredient already added!");
