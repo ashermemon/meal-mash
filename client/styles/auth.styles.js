@@ -769,21 +769,21 @@ export const styles = StyleSheet.create({
 
   setupContainer: {
     flex: 1,
-    justifyContent: "space-between",
+
     // alignItems: "center",
     padding: 25,
-    paddingBottom: 90,
   },
 
-  setupTitle: { fontSize: 24, fontFamily: "Nunito-Bold", textAlign: "left" },
+  setupTitle: { fontSize: 30, fontFamily: "Nunito-Bold", textAlign: "center" },
   setupInput: {
-    fontSize: 22,
+    fontSize: 27,
+    height: 50,
+    color: NEWCOLORS.placeholderText,
     fontFamily: "Nunito-Medium",
     textAlign: "center",
-    marginVertical: 0,
+
     borderBottomWidth: 1,
     borderColor: "#ccc",
-    paddingBottom: 8,
   },
   setupButton: {
     backgroundColor: "#66bb6a",

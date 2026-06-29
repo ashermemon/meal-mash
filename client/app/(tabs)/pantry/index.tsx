@@ -16,15 +16,19 @@ const PantryIndex = (props: Props) => {
         // const isSetupComplete = await AsyncStorage.getItem("IS_PANTRY_SETUP");
         const isSetupComplete: string = "false"; // temp toggle
 
-        if (isSetupComplete === "true") {
-          router.replace("/(tabs)/pantry/dashboard");
-        } else {
-          router.replace("/(tabs)/pantry/setup");
-        }
+        setTimeout(() => {
+          if (isSetupComplete === "true") {
+            router.replace("/(tabs)/pantry/dashboard");
+          } else {
+            router.replace("/setup");
+          }
+          setCheckingSetup(false);
+        }, 0);
       } catch (error) {
-        router.replace("/(tabs)/pantry/setup");
-      } finally {
-        setCheckingSetup(false);
+        setTimeout(() => {
+          router.replace("/setup");
+          setCheckingSetup(false);
+        }, 0);
       }
     };
 

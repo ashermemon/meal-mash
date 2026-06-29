@@ -12,7 +12,9 @@ export type OnboardingContextType = {
   goToPrevStep: () => void;
 };
 
-export const OnboardingContext = createContext<OnboardingContextType | null>(null);
+export const OnboardingContext = createContext<OnboardingContextType | null>(
+  null,
+);
 
 type Props = {
   setupTitle: string;
@@ -54,7 +56,7 @@ const OnboardingSequence = (props: Props) => {
           {props.setupTitle}
         </Text>
         {/* prog bar*/}
-        <View style={{ flex: 1 }}>
+        <View>
           <View style={{ marginVertical: 20 }}>
             <ProgressBar
               progress={0}
@@ -64,7 +66,8 @@ const OnboardingSequence = (props: Props) => {
               steps={props.stepsContent.length}
             ></ProgressBar>
           </View>
-
+        </View>
+        <View style={{ justifyContent: "space-between", flex: 1 }}>
           {CurrentStepComponent}
         </View>
       </View>

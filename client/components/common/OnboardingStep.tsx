@@ -13,23 +13,34 @@ const OnboardingStep = (props: Props) => {
   const onboarding = useContext(OnboardingContext);
 
   return (
-    <View style={{ marginVertical: 5 }}>
-      <Text style={styles.setupTitle}>{props.stepTitle}</Text>
-      {props.children}
-
-      <Pressable
-        style={[styles.setupButton, styles.basicBoxShadow]}
-        onPress={() => onboarding?.goToPrevStep()}
-      >
-        <CustomIcon name="arrow-left" size={33} color="white"></CustomIcon>
-      </Pressable>
-      <Pressable
-        style={[styles.setupButton, styles.basicBoxShadow]}
-        onPress={() => onboarding?.goToNextStep()}
-      >
-        <CustomIcon name="arrow-right" size={33} color="white"></CustomIcon>
-      </Pressable>
-    </View>
+    <>
+      <View style={{ paddingBottom: 100, flex: 1, justifyContent: "center" }}>
+        <Text style={styles.setupTitle}>{props.stepTitle}</Text>
+        <>{props.children}</>
+      </View>
+      <View>
+        <View style={{ flexDirection: "row", gap: 20 }}>
+          <Pressable
+            style={[
+              styles.setupButton,
+              styles.basicBoxShadow,
+              { height: 56, width: 56 },
+            ]}
+            onPress={() => onboarding?.goToPrevStep()}
+          >
+            <CustomIcon name="arrow-left" size={33} color="white"></CustomIcon>
+          </Pressable>
+          <Pressable
+            style={[styles.setupButton, styles.basicBoxShadow, { flex: 1 }]}
+            onPress={() => onboarding?.goToNextStep()}
+          >
+            <Text style={[styles.textCenterBold, { color: "white" }]}>
+              Continue
+            </Text>
+          </Pressable>
+        </View>
+      </View>
+    </>
   );
 };
 
