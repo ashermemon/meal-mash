@@ -3,10 +3,11 @@ import React, { useContext } from "react";
 import { styles } from "@/styles/auth.styles";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import { OnboardingContext } from "./OnboardingSequence";
+import { NEWCOLORS } from "@/constants/NewTheme";
 
 type Props = {
   children: React.ReactNode;
-  stepTitle: string;
+  stepTitle?: string;
 };
 
 const OnboardingStep = (props: Props) => {
@@ -14,17 +15,25 @@ const OnboardingStep = (props: Props) => {
 
   return (
     <>
-      <View style={{ paddingBottom: 100, flex: 1, justifyContent: "center" }}>
-        <Text style={styles.setupTitle}>{props.stepTitle}</Text>
+      <View style={{ flex: 1, justifyContent: "center" }}>
+        {props.stepTitle != null ? (
+          <Text style={styles.setupTitle}>{props.stepTitle}</Text>
+        ) : (
+          <></>
+        )}
         <>{props.children}</>
       </View>
       <View>
-        <View style={{ flexDirection: "row", gap: 20 }}>
+        <View style={{ flexDirection: "row", gap: 20, paddingTop: 40 }}>
           <Pressable
             style={[
               styles.setupButton,
               styles.basicBoxShadow,
-              { height: 56, width: 56 },
+              {
+                height: 56,
+                width: 56,
+                backgroundColor: NEWCOLORS.placeholderText,
+              },
             ]}
             onPress={() => onboarding?.goToPrevStep()}
           >

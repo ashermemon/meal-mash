@@ -774,10 +774,15 @@ export const styles = StyleSheet.create({
     padding: 25,
   },
 
-  setupTitle: { fontSize: 30, fontFamily: "Nunito-Bold", textAlign: "center" },
+  setupTitle: {
+    fontSize: 30,
+    fontFamily: "Nunito-Bold",
+    textAlign: "center",
+    marginBottom: 20,
+  },
   setupInput: {
     fontSize: 27,
-    height: 50,
+
     color: NEWCOLORS.placeholderText,
     fontFamily: "Nunito-Medium",
     textAlign: "center",
@@ -786,7 +791,7 @@ export const styles = StyleSheet.create({
     borderColor: "#ccc",
   },
   setupButton: {
-    backgroundColor: "#66bb6a",
+    backgroundColor: NEWCOLORS.greenAccent,
     height: 56,
     borderRadius: 28,
     justifyContent: "center",
@@ -804,5 +809,21 @@ export const styles = StyleSheet.create({
     borderRadius: 1000,
     height: 220,
     width: 220,
+  },
+  selectButton: {
+    backgroundColor: NEWCOLORS.unselectedGrey,
+    height: 84,
+    borderRadius: 15,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  ingredientPickerCard: {
+    backgroundColor: NEWCOLORS.unselectedGrey,
+    borderRadius: 15,
+    flex: 1,
+    // marginHorizontal: 9,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: 10,
   },
 });
