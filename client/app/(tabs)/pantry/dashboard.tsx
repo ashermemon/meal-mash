@@ -95,14 +95,14 @@ export default function Dashboard() {
                 <CustomIcon
                   name="search-2"
                   filled={false}
-                  color={NEWCOLORS.unselectedShape}
+                  color={NEWCOLORS.placeholderText}
                   size={25}
                 />
                 <TextInput
                   placeholder="Search Ingredients"
                   autoCapitalize="words"
                   keyboardType="default"
-                  placeholderTextColor={NEWCOLORS.placeholderText}
+                  placeholderTextColor={NEWCOLORS.unselectedShape}
                   autoCorrect={true}
                   maxLength={32}
                   style={[
@@ -144,9 +144,31 @@ export default function Dashboard() {
                 </Pressable>
               </View>
             </View>
-            <SuggestedIngredients
+            {/* <SuggestedIngredients
               suggestedIngredients={["Eggs", "Milk", "Cheese"]}
-            />
+            /> */}
+            <View style={styles.pantryTip}>
+              <Text
+                style={styles.textLeft}
+                numberOfLines={2}
+                adjustsFontSizeToFit
+              >
+                <Text style={{ fontFamily: "Nunito-SemiBold" }}>Tip: </Text>
+                Be sure to add any leftover dishes you have at home and want to
+                use in recipes!
+              </Text>
+              <Image
+                source={require("@/assets/images/leftover.png")}
+                style={{
+                  width: 50,
+                  height: 50,
+                  borderRadius: 110,
+                  shadowColor: "black",
+                  shadowRadius: 50,
+                  shadowOpacity: 1,
+                }}
+              />
+            </View>
 
             {ingredientSections.map((title: string, index: number) => (
               <IngredientHeaderSection

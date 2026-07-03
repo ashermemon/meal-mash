@@ -3,6 +3,7 @@ export const NEWCOLORS = {
 
   blueBlock: "#E4F7FF",
   orangeBlock: "#FFF2D9",
+  yellowBlock: "#FEF6E3",
   greenBlock: "#EBF6ED",
   purpleBlock: "#FBE8FF",
   purpblueBlock: "#E3E4FF",

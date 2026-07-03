@@ -71,6 +71,7 @@ export const styles = StyleSheet.create({
     fontFamily: "Nunito-Regular",
     textAlign: "left",
     color: COLORS.fontColor,
+    flex: 1,
   },
   textLeftSemiBold: {
     fontFamily: "Nunito-SemiBold",
@@ -825,5 +826,17 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingVertical: 10,
+  },
+  pantryTip: {
+    flex: 1,
+    gap: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    backgroundColor: "red",
+    borderRadius: 15,
+    backgroundColor: NEWCOLORS.yellowBlock,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 });
