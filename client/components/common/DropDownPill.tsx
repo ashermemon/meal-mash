@@ -78,12 +78,13 @@ export function openDropDown(
     options,
     (selected) => {
       if (selected.length === 0) {
-        const defaultVal = title.toLowerCase().includes("dietary")
-          ? "None"
-          : ingredientPickerCard
-            ? ""
-            : "Any";
-        setSelection([defaultVal]);
+        if (title.toLowerCase().includes("dietary")) {
+          setSelection(["None"]);
+        } else if (ingredientPickerCard) {
+          setSelection([]);
+        } else {
+          setSelection(["Any"]);
+        }
       } else if (
         selected.length === options.length &&
         !title.toLowerCase().includes("dietary") &&

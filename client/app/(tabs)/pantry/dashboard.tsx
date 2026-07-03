@@ -19,9 +19,11 @@ import { ScrollView } from "react-native-gesture-handler";
 import SuggestedIngredients from "@/components/features/pantry/SuggestedIngredients";
 import { useTrueSheet } from "@/contexts/TrueSheetContext";
 import IngredientHeaderSection from "@/components/features/pantry/IngredientHeaderSection";
+import { PantryDetailsContext } from "@/contexts/PantryDetails";
 
 export default function Dashboard() {
   const navigation = useNavigation();
+  const [pantryDetails, setPantryDetails] = useContext(PantryDetailsContext);
   const ingredientSections: string[] = [
     "Leftovers",
     "Meat/Protein",
@@ -65,7 +67,7 @@ export default function Dashboard() {
 
         <View style={{ gap: 25 }}>
           <PantryPill
-            pantryName={"Untitled Pantry"}
+            pantryName={pantryDetails.name}
             pantryPage={true}
           ></PantryPill>
           <View style={{ gap: 20 }}>
@@ -150,14 +152,7 @@ export default function Dashboard() {
               <IngredientHeaderSection
                 key={index}
                 title={title}
-                ingredients={[
-                  "Butter",
-                  "Fruit",
-                  "Salt",
-                  "Potato",
-                  "Sour Cream",
-                  "Chips",
-                ]}
+                ingredients={pantryDetails.ingredients}
               ></IngredientHeaderSection>
             ))}
           </View>

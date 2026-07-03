@@ -8,7 +8,7 @@ import {
   Text,
   Dimensions,
 } from "react-native";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
 import { useFocusEffect, useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { styles } from "@/styles/auth.styles";
@@ -23,12 +23,16 @@ import Camera from "@/components/universal/Camera";
 import { useCameraPermissions } from "expo-camera";
 import IngredientPickerCard from "@/components/features/pantry/IngredientPickerCard";
 import { FlatList } from "react-native-gesture-handler";
+import { PantryDetailsContext } from "@/contexts/PantryDetails";
 
 type Props = {};
 
 const SetupScreen = (props: Props) => {
   const router = useRouter();
-  const [pantryName, setPantryName] = useState("");
+  const [pantryDetails, setPantryDetails] = useContext(PantryDetailsContext);
+  const [pantryName, setPantryName] = useState(
+    pantryDetails.name === "Your Pantry" ? "" : pantryDetails.name,
+  );
   const [keyboardOpen, setKeyboardOpen] = useState(false);
   const [selected, setSelected] = useState(-1);
   const [cameraNext, setCameraNext] = useState(false);
@@ -199,7 +203,16 @@ const SetupScreen = (props: Props) => {
           setupTitle="Pantry Setup"
           handleFinishSteps={handleFinishSteps}
           stepsContent={[
-            <OnboardingStep stepTitle="Let's Name Your Pantry">
+            <OnboardingStep
+              stepTitle="Let's Name Your Pantry"
+              onPress={() =>
+                setPantryDetails((prev) => ({
+                  ...prev,
+                  name: pantryName.length > 0 ? pantryName : "Your Pantry",
+                  icon: "Smiley",
+                }))
+              }
+            >
               <View
                 style={{
                   justifyContent: "center",
@@ -230,7 +243,7 @@ const SetupScreen = (props: Props) => {
                 style={[styles.setupInput]}
                 value={pantryName}
                 onChangeText={setPantryName}
-                placeholder="Name's Pantry"
+                placeholder="Your Pantry"
                 placeholderTextColor={NEWCOLORS.placeholderText}
               />
             </OnboardingStep>,

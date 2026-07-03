@@ -1,11 +1,12 @@
 import { View, Text, ViewStyle, Pressable } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { styles } from "@/styles/auth.styles";
 import { Image } from "expo-image";
 import { NEWCOLORS } from "@/constants/NewTheme";
 import { IosAllowsPreviews } from "expo-notifications";
 import { useTrueSheet } from "@/contexts/TrueSheetContext";
 import { openDropDown } from "@/components/common/DropDownPill";
+import { PantryDetailsContext } from "@/contexts/PantryDetails";
 
 type Props = {
   ingredientName: string;
@@ -15,15 +16,57 @@ type Props = {
 
 const IngredientPickerCard = (props: Props) => {
   const { openSheet } = useTrueSheet();
+  const [pantryDetails, setPantryDetails] = useContext(PantryDetailsContext);
   const [selected, setSelected] = useState(false);
-  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+  const getInitialSelectedOptions = () => {
+    if (props.selectionMenuOptions.length === 0) {
+      return pantryDetails.ingredients.includes(props.ingredientName)
+        ? [props.ingredientName]
+        : [];
+    }
+
+    return pantryDetails.ingredients.filter((item) =>
+      props.selectionMenuOptions.includes(item),
+    );
+  };
+
+  const [selectedOptions, setSelectedOptions] = useState<string[]>(
+    getInitialSelectedOptions,
+  );
 
   useEffect(() => {
-    const hasValidSelection = selectedOptions.some(
+    const cleanSelectedOptions = selectedOptions.filter(
       (opt) => opt && opt.trim().length > 0,
     );
+    const hasValidSelection = cleanSelectedOptions.length > 0;
     setSelected(hasValidSelection);
+
+    setPantryDetails((prev) => {
+      const filteredIngredients = (prev.ingredients || []).filter(
+        (item) =>
+          item &&
+          item.trim().length > 0 &&
+          !props.selectionMenuOptions.includes(item) &&
+          item !== props.ingredientName,
+      );
+
+      return {
+        ...prev,
+        ingredients: [...filteredIngredients, ...cleanSelectedOptions],
+      };
+    });
+    console.log(pantryDetails.ingredients);
   }, [selectedOptions]);
+
+  useEffect(() => {
+    if (
+      selected &&
+      props.selectionMenuOptions.length === 0 &&
+      selectedOptions.length === 0
+    ) {
+      setSelectedOptions([props.ingredientName]);
+    }
+  }, [selected]);
 
   return (
     <Pressable
@@ -37,16 +80,23 @@ const IngredientPickerCard = (props: Props) => {
         },
       ]}
       onPress={() => {
-        props.selectionMenuOptions.length == 0
-          ? setSelected((prev) => !prev)
-          : openDropDown(
-              openSheet,
-              props.ingredientName,
-              props.selectionMenuOptions,
-              selectedOptions,
-              setSelectedOptions,
-              true,
-            );
+        if (props.selectionMenuOptions.length === 0) {
+          if (selected) {
+            setSelectedOptions([]);
+            setSelected(false);
+          } else {
+            setSelected(true);
+          }
+        } else {
+          openDropDown(
+            openSheet,
+            props.ingredientName,
+            props.selectionMenuOptions,
+            selectedOptions,
+            setSelectedOptions,
+            true,
+          );
+        }
       }}
     >
       <Image

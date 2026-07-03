@@ -15,6 +15,7 @@ import MealsLeftContext from "@/contexts/MealsLeftContext";
 import RecipeContext from "@/contexts/RecipeContext";
 import { initialRecipeData } from "@/contexts/RecipeContext";
 import PantryPill from "../pantry/PantryPill";
+import { PantryDetailsContext } from "@/contexts/PantryDetails";
 
 type Props = {};
 
@@ -38,6 +39,7 @@ const GeneratorDetails = (props: Props) => {
     "None",
   ]);
 
+  const [pantryDetails, setPantryDetails] = useContext(PantryDetailsContext);
   const [generationDetails, setGenerationDetails] = useContext(
     GenerationDetailsContext,
   );
@@ -116,7 +118,7 @@ const GeneratorDetails = (props: Props) => {
               ></SliderField>
               {genMode === 0 ? (
                 <PantryPill
-                  pantryName={"Untitled Pantry"}
+                  pantryName={pantryDetails.name}
                   pantryPage={false}
                 ></PantryPill>
               ) : genMode === 1 ? (

@@ -8,6 +8,7 @@ import { NEWCOLORS } from "@/constants/NewTheme";
 type Props = {
   children: React.ReactNode;
   stepTitle?: string;
+  onPress?: () => void;
 };
 
 const OnboardingStep = (props: Props) => {
@@ -41,7 +42,14 @@ const OnboardingStep = (props: Props) => {
           </Pressable>
           <Pressable
             style={[styles.setupButton, styles.basicBoxShadow, { flex: 1 }]}
-            onPress={() => onboarding?.goToNextStep()}
+            onPress={() => {
+              if (props.onPress) {
+                try {
+                  props.onPress();
+                } catch (e) {}
+              }
+              onboarding?.goToNextStep();
+            }}
           >
             <Text style={[styles.textCenterBold, { color: "white" }]}>
               Continue
