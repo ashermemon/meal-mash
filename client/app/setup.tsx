@@ -247,11 +247,15 @@ const SetupScreen = (props: Props) => {
                 placeholderTextColor={NEWCOLORS.placeholderText}
               />
             </OnboardingStep>,
-            <OnboardingStep stepTitle="How would you like to add your ingredients?">
+            <OnboardingStep
+              stepTitle="How would you like to add your ingredients?"
+              disableNext={selected === -1}
+            >
               <View style={{ marginVertical: 10 }}></View>
               <ListButtonSelect
                 options={["Snap a photo", "Add manually"]}
                 icons={["camera-2", "add"]}
+                selected={selected}
                 setSelected={setSelected}
               />
             </OnboardingStep>,

@@ -9,10 +9,22 @@ type Props = {
   children: React.ReactNode;
   stepTitle?: string;
   onPress?: () => void;
+  disableNext?: boolean;
 };
 
 const OnboardingStep = (props: Props) => {
   const onboarding = useContext(OnboardingContext);
+
+  const isDisabled = props.disableNext === true;
+
+  const handleContinue = () => {
+    if (props.onPress) {
+      try {
+        props.onPress();
+      } catch (e) {}
+    }
+    onboarding?.goToNextStep();
+  };
 
   return (
     <>
@@ -41,15 +53,19 @@ const OnboardingStep = (props: Props) => {
             <CustomIcon name="arrow-left" size={33} color="white"></CustomIcon>
           </Pressable>
           <Pressable
-            style={[styles.setupButton, styles.basicBoxShadow, { flex: 1 }]}
-            onPress={() => {
-              if (props.onPress) {
-                try {
-                  props.onPress();
-                } catch (e) {}
-              }
-              onboarding?.goToNextStep();
-            }}
+            disabled={isDisabled}
+            pointerEvents={isDisabled ? "none" : "auto"}
+            style={({ pressed }) => [
+              styles.setupButton,
+              styles.basicBoxShadow,
+              {
+                flex: 1,
+                backgroundColor: isDisabled
+                  ? NEWCOLORS.dividerGrey
+                  : NEWCOLORS.greenAccent,
+              },
+            ]}
+            onPress={isDisabled ? undefined : handleContinue}
           >
             <Text style={[styles.textCenterBold, { color: "white" }]}>
               Continue

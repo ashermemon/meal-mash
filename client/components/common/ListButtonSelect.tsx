@@ -7,11 +7,11 @@ import { CustomIcon } from "@/icon-loader/icon-loader";
 type Props = {
   options: string[];
   icons: string[];
+  selected: number;
   setSelected: React.Dispatch<React.SetStateAction<number>>;
 };
 
 const ListButtonSelect = (props: Props) => {
-  const [selected, setSelected] = useState(-1);
   return (
     <View style={{ gap: 25 }}>
       {props.options.map((option: string, index: number) => (
@@ -21,7 +21,7 @@ const ListButtonSelect = (props: Props) => {
             styles.basicBoxShadow,
             {
               backgroundColor:
-                index === selected
+                index === props.selected
                   ? NEWCOLORS.greenBlock
                   : NEWCOLORS.unselectedGrey,
               paddingHorizontal: 30,
@@ -31,10 +31,10 @@ const ListButtonSelect = (props: Props) => {
               alignItems: "center",
             },
           ]}
-          onPress={() => [setSelected(index), props.setSelected(index)]}
+          onPress={() => props.setSelected(index)}
           key={index}
         >
-          {index === selected && (
+          {index === props.selected && (
             <View
               style={{
                 position: "absolute",
