@@ -1,19 +1,30 @@
 import { View, Text, ViewStyle, Pressable } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { styles } from "@/styles/auth.styles";
 import { Image } from "expo-image";
 import { NEWCOLORS } from "@/constants/NewTheme";
 import { IosAllowsPreviews } from "expo-notifications";
+import { useTrueSheet } from "@/contexts/TrueSheetContext";
+import { openDropDown } from "@/components/common/DropDownPill";
 
 type Props = {
   ingredientName: string;
   multiSelect?: boolean;
-  selectionMenu?: boolean;
-  selectionMenuOptions?: string[];
+  selectionMenuOptions: string[];
 };
 
 const IngredientPickerCard = (props: Props) => {
+  const { openSheet } = useTrueSheet();
   const [selected, setSelected] = useState(false);
+  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+
+  useEffect(() => {
+    const hasValidSelection = selectedOptions.some(
+      (opt) => opt && opt.trim().length > 0,
+    );
+    setSelected(hasValidSelection);
+  }, [selectedOptions]);
+
   return (
     <Pressable
       style={[
@@ -25,7 +36,18 @@ const IngredientPickerCard = (props: Props) => {
             : NEWCOLORS.unselectedGrey,
         },
       ]}
-      onPress={() => setSelected((prev) => !prev)}
+      onPress={() => {
+        props.selectionMenuOptions.length == 0
+          ? setSelected((prev) => !prev)
+          : openDropDown(
+              openSheet,
+              props.ingredientName,
+              props.selectionMenuOptions,
+              selectedOptions,
+              setSelectedOptions,
+              true,
+            );
+      }}
     >
       <Image
         source={require("@/assets/images/meal-images/burger.png")}

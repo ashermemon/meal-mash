@@ -36,23 +36,107 @@ const SetupScreen = (props: Props) => {
   const [showCamera, setShowCamera] = useState(false);
   const [permission, requestPermission] = useCameraPermissions();
 
-  const ingredients: string[] = [
-    "Eggs",
-    "Milk",
-    "Yogurt",
-    "Rice",
-    "Pasta",
-    "Bread",
-    "Vegetables",
-    "Fruits",
-    "Beans",
-    "Chicken",
-    "Beef",
-    "Fish",
-    "Butter",
-    "Cheese",
-    "Oil",
-  ];
+  const ingredientCardAndOptions: Record<string, string[]> = {
+    Eggs: [],
+    Milk: [
+      "Whole Milk",
+      "Low-fat Milk",
+      "Skim Milk",
+      "Almond Milk",
+      "Oat Milk",
+    ],
+    Yogurt: ["Greek", "Regular", "Skyr", "Kefir", "Plant-Based"],
+    Rice: ["White Rice", "Brown Rice", "Jasmine", "Basmati"],
+    Pasta: [
+      "Spaghetti",
+      "Fettuccine",
+      "Linguine",
+      "Rigatoni",
+      "Macaroni",
+      "Penne",
+      "Fusilli",
+      "Ravioli",
+      "Tortellini",
+      "Lasagna",
+      "Whole Wheat",
+      "Gluten-Free",
+    ],
+    Bread: [
+      "White Bread",
+      "Whole Grain Bread",
+      "Baguette",
+      "Sourdough",
+      "Rye",
+      "Brioche",
+      "Naan",
+      "Pita",
+      "Tortilla",
+    ],
+    Vegetables: [
+      "Tomatoes",
+      "Onions",
+      "Potatoes",
+      "Cabbage",
+      "Lettuce",
+      "Bell Peppers",
+      "Carrots",
+      "Broccoli",
+      "Cucumbers",
+      "Eggplant",
+      "Corn",
+      "Zucchini",
+      "Mushroom",
+      "Cauliflower",
+      "Celery",
+      "Radish",
+      "Asparagus",
+    ],
+    Fruits: [
+      "Bananas",
+      "Watermelons",
+      "Apples",
+      "Oranges",
+      "Grapes",
+      "Mangoes",
+      "Pineapples",
+      "Strawberries",
+      "Blueberries",
+      "Kiwi",
+      "Lemon",
+      "Lime",
+      "Pomegranate",
+      "Cherries",
+      "Avocado",
+    ],
+    Beans: [
+      "Black Beans",
+      "Chickpeas",
+      "Kidney Beans",
+      "Pinto Beans",
+      "White Beans",
+      "Soybeans",
+    ],
+    Chicken: ["Breast", "Thighs", "Wings", "Whole Chicken", "Ground Chicken"],
+    Beef: ["Ground Beef", "Steak", "Stew Meat", "Ribs"],
+    Fish: ["Salmon", "Tuna", "Cod", "Haddock", "Pollock"],
+    Butter: ["Salted", "Unsalted", "Margarine", "Ghee"],
+    Cheese: [
+      "Cheddar",
+      "Mozzarella",
+      "Parmeasan",
+      "Feta",
+      "Cream Cheese",
+      "Cottage Cheese",
+    ],
+    Oil: [
+      "Olive Oil",
+      "Vegetable Oil",
+      "Canola Oil",
+      "Coconut Oil",
+      "Sesame Oil",
+      "Avocado Oil",
+    ],
+  };
 
   useFocusEffect(
     useCallback(() => {
@@ -197,7 +281,7 @@ const SetupScreen = (props: Props) => {
 
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <FlatList
-                      data={ingredients}
+                      data={Object.keys(ingredientCardAndOptions)}
                       numColumns={3}
                       columnWrapperStyle={{
                         justifyContent: "space-between",
@@ -205,8 +289,12 @@ const SetupScreen = (props: Props) => {
                         marginBottom: 9,
                         gap: 18,
                       }}
+                      keyExtractor={(item) => item}
                       renderItem={({ item }) => (
-                        <IngredientPickerCard ingredientName={item} />
+                        <IngredientPickerCard
+                          ingredientName={item}
+                          selectionMenuOptions={ingredientCardAndOptions[item]}
+                        />
                       )}
                     />
                   </View>
