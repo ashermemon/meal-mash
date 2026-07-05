@@ -16,14 +16,16 @@ import PreviewAnimatedWrapper from "@/components/features/generator/PreviewAnima
 import { SafeAreaView } from "react-native-safe-area-context";
 import PantryPill from "@/components/features/pantry/PantryPill";
 import { ScrollView } from "react-native-gesture-handler";
-import SuggestedIngredients from "@/components/features/pantry/SuggestedIngredients";
+
 import { useTrueSheet } from "@/contexts/TrueSheetContext";
 import IngredientHeaderSection from "@/components/features/pantry/IngredientHeaderSection";
 import { PantryDetailsContext } from "@/contexts/PantryDetails";
+import FilterIngredients from "@/components/features/pantry/FilterIngredients";
 
 export default function Dashboard() {
   const navigation = useNavigation();
   const [pantryDetails, setPantryDetails] = useContext(PantryDetailsContext);
+  const [selectedFilter, setSelectedFilter] = useState("All");
   const ingredientSections: string[] = [
     "Leftovers",
     "Meat/Protein",
@@ -144,9 +146,7 @@ export default function Dashboard() {
                 </Pressable>
               </View>
             </View>
-            {/* <SuggestedIngredients
-              suggestedIngredients={["Eggs", "Milk", "Cheese"]}
-            /> */}
+
             <View style={styles.pantryTip}>
               <Text
                 style={styles.textLeft}
@@ -169,6 +169,20 @@ export default function Dashboard() {
                 }}
               />
             </View>
+            <FilterIngredients
+              setCurrentSelected={setSelectedFilter}
+              currentSelected={selectedFilter}
+              categories={[
+                "All",
+                "Leftovers",
+                "Dairy & Eggs",
+                "Produce",
+                "Carbs",
+                "Meat/Protein",
+                "Fish & Seafood",
+                "Other",
+              ]}
+            />
 
             {ingredientSections.map((title: string, index: number) => (
               <IngredientHeaderSection
