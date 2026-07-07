@@ -763,9 +763,9 @@ export const styles = StyleSheet.create({
   },
   ingredientPill: {
     flex: 1,
-    borderRadius: 1000,
-    backgroundColor: NEWCOLORS.pillGreen,
-    height: 30,
+    borderRadius: 15,
+    backgroundColor: NEWCOLORS.greyBlock,
+    height: 70,
   },
 
   setupContainer: {

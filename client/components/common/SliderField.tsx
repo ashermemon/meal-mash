@@ -39,7 +39,7 @@ const SliderField = (props: Props) => {
     backgroundColor: interpolateColor(
       colorProgress.value,
       [0, 1, 2],
-      [NEWCOLORS.orangeBlock, NEWCOLORS.greenBlock, NEWCOLORS.purpblueBlock],
+      [NEWCOLORS.yellowBlock, NEWCOLORS.greenBlock, NEWCOLORS.blueBlock],
     ),
   }));
 

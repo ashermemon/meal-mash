@@ -18,15 +18,17 @@ import PantryPill from "@/components/features/pantry/PantryPill";
 import { ScrollView } from "react-native-gesture-handler";
 
 import { useTrueSheet } from "@/contexts/TrueSheetContext";
-import IngredientHeaderSection from "@/components/features/pantry/IngredientHeaderSection";
+
 import { PantryDetailsContext } from "@/contexts/PantryDetails";
 import FilterIngredients from "@/components/features/pantry/FilterIngredients";
+import IngredientTag from "@/components/features/pantry/IngredientTag";
 
 export default function Dashboard() {
   const navigation = useNavigation();
   const [pantryDetails, setPantryDetails] = useContext(PantryDetailsContext);
   const [selectedFilter, setSelectedFilter] = useState("All");
-  const ingredientSections: string[] = [
+  const ingredientCategories: string[] = [
+    "All",
     "Leftovers",
     "Meat/Protein",
     "Dairy & Eggs",
@@ -149,7 +151,7 @@ export default function Dashboard() {
 
             <View style={styles.pantryTip}>
               <Text
-                style={styles.textLeft}
+                style={[styles.textLeft]}
                 numberOfLines={2}
                 adjustsFontSizeToFit
               >
@@ -172,25 +174,33 @@ export default function Dashboard() {
             <FilterIngredients
               setCurrentSelected={setSelectedFilter}
               currentSelected={selectedFilter}
-              categories={[
-                "All",
-                "Leftovers",
-                "Dairy & Eggs",
-                "Produce",
-                "Carbs",
-                "Meat/Protein",
-                "Fish & Seafood",
-                "Other",
-              ]}
+              categories={ingredientCategories}
             />
-
-            {ingredientSections.map((title: string, index: number) => (
-              <IngredientHeaderSection
-                key={index}
-                title={title}
-                ingredients={pantryDetails.ingredients}
-              ></IngredientHeaderSection>
-            ))}
+            {pantryDetails.ingredients.map(
+              (ingredientName: string, index: number) => (
+                <IngredientTag
+                  key={index}
+                  ingredientName={ingredientName}
+                  category="Beans"
+                ></IngredientTag>
+              ),
+            )}
+            {pantryDetails.ingredients.length < 1 ? (
+              <Text
+                style={[
+                  styles.textCenterBold,
+                  {
+                    fontFamily: "Nunito-SemiBold",
+                    fontSize: 25,
+                    paddingTop: 20,
+                  },
+                ]}
+              >
+                Add the ingredients you have at home to get started!
+              </Text>
+            ) : (
+              <></>
+            )}
           </View>
         </View>
       </View>

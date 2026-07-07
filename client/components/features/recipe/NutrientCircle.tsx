@@ -15,14 +15,13 @@ const NUTRIENT_COLORS = [
   NEWCOLORS.orangeAccent,
 ];
 
-
 const getSlicePath = (
   startAngle: number,
   endAngle: number,
   rIn: number,
   rOut: number,
   cx: number,
-  cy: number
+  cy: number,
 ) => {
   const startRad = (startAngle * Math.PI) / 180;
   const endRad = (endAngle * Math.PI) / 180;
@@ -72,14 +71,12 @@ export default function NutrientCircle({ textInBox }: Props) {
     );
   };
 
-
   const cx = 68;
   const cy = 68;
   const rOuter = 60;
   const rOuterInvis = 75;
   const rInner = 43;
   const rInnerInvis = 20;
-
 
   const renderChart = () => {
     if (total === 0) {
@@ -142,7 +139,7 @@ export default function NutrientCircle({ textInBox }: Props) {
             rInner,
             currentOuterRadius,
             cx,
-            cy
+            cy,
           );
 
           const invisPath = getSlicePath(
@@ -151,23 +148,21 @@ export default function NutrientCircle({ textInBox }: Props) {
             rInnerInvis,
             invisOuterRadius,
             cx,
-            cy
-          )
+            cy,
+          );
 
           return (
-            <G
-              key={slice.index}
-
-            >
-              <Path
-                d={pathD}
-                fill={slice.color}
-
-              />
+            <G key={slice.index}>
+              <Path d={pathD} fill={slice.color} />
               <Path
                 d={invisPath}
                 fill="transparent"
-                onPressIn={() => [console.log("pressed", slice.index), setFocusedIndex((prev) => (prev === slice.index ? null : slice.index))]}
+                onPressIn={() => [
+                  console.log("pressed", slice.index),
+                  setFocusedIndex((prev) =>
+                    prev === slice.index ? null : slice.index,
+                  ),
+                ]}
               />
             </G>
           );
@@ -176,7 +171,8 @@ export default function NutrientCircle({ textInBox }: Props) {
     );
   };
 
-  const focusedNutrient = focusedIndex !== null ? slicesData[focusedIndex] : null;
+  const focusedNutrient =
+    focusedIndex !== null ? slicesData[focusedIndex] : null;
   const caloriesToShow = focusedNutrient ? focusedNutrient.value : total;
   const textColor = focusedNutrient ? focusedNutrient.color : "#616060";
 
@@ -228,7 +224,13 @@ export default function NutrientCircle({ textInBox }: Props) {
               >
                 {Math.round(caloriesToShow)}
               </Text>
-              <Text style={{ color: "#616060", fontSize: 11, fontFamily: "Nunito-Medium", }}>
+              <Text
+                style={{
+                  color: "#616060",
+                  fontSize: 11,
+                  fontFamily: "Nunito-Medium",
+                }}
+              >
                 cal / serving
               </Text>
             </View>

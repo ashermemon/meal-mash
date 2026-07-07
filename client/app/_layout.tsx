@@ -224,20 +224,32 @@ export default function RootLayout() {
                           scrollable
                           header={
                             <>
+                              <View
+                                style={{
+                                  alignSelf: "center",
+                                  width: 44,
+                                  height: 4,
+                                  borderRadius: 999,
+                                  backgroundColor: NEWCOLORS.unselectedShape,
+                                  marginTop: 6,
+                                  marginBottom: 15,
+                                }}
+                              />
                               <Text
                                 style={{
                                   fontSize: 22,
                                   fontFamily: "Nunito-SemiBold",
-                                  marginTop: 21,
+                                  marginTop: 4,
                                   marginBottom: 15,
-                                  color: "white",
+                                  color: NEWCOLORS.basicText,
                                 }}
                               >
                                 {currentTitle}
                               </Text>
                               <View
                                 style={{
-                                  height: 3,
+                                  height: 2.5,
+                                  borderRadius: 1000,
                                   backgroundColor: NEWCOLORS.placeholderText,
                                 }}
                               ></View>
@@ -247,7 +259,7 @@ export default function RootLayout() {
                             paddingHorizontal: 20,
                             paddingTop: 16,
                           }}
-                          backgroundColor={NEWCOLORS.darkButton}
+                          backgroundColor={NEWCOLORS.sheetBackgroundColor}
                         >
                           <TrueSheetContent
                             currentOnSelect={currentOnSelect}
