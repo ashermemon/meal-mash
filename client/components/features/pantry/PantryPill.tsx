@@ -1,10 +1,11 @@
 import { View, Text, Pressable } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import { styles } from "@/styles/auth.styles";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import { NEWCOLORS } from "@/constants/NewTheme";
 import { router } from "expo-router";
 import * as Haptics from "expo-haptics";
+import { PantryDetailsContext } from "@/contexts/PantryDetails";
 
 type Props = {
   pantryName: string;
@@ -12,6 +13,7 @@ type Props = {
 };
 
 const PantryPill = (props: Props) => {
+  const [pantryDetails, setPantryDetails] = useContext(PantryDetailsContext);
   return (
     <View style={{ justifyContent: "space-between" }}>
       <View
@@ -32,14 +34,16 @@ const PantryPill = (props: Props) => {
             gap: 12,
           }}
         >
-          <Pressable>
+          {pantryDetails.icon === "" ? (
             <CustomIcon
+              size={22}
               name={"emoji"}
               filled={false}
-              size={23}
               color={NEWCOLORS.unselectedShape}
             ></CustomIcon>
-          </Pressable>
+          ) : (
+            <Text style={{ fontSize: 18 }}>{pantryDetails.icon}</Text>
+          )}
           <Text
             style={[
               styles.textCentered,

@@ -747,6 +747,7 @@ export const styles = StyleSheet.create({
     backgroundColor: NEWCOLORS.greyBlock,
     height: 55,
     paddingHorizontal: 15,
+
     paddingVertical: 5,
   },
   selectPill: {

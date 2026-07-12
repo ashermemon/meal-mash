@@ -49,7 +49,7 @@ export default function RootLayout() {
   const [mealsLeft, setMealsLeft] = useState<number>(500);
   const [pantryDetails, setPantryDetails] = useState<PantryDetails>({
     name: "Your Pantry",
-    icon: "Smiley",
+    icon: "",
     ingredients: [],
   });
 

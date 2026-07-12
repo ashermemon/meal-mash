@@ -7,6 +7,7 @@ import {
   BackHandler,
   Text,
   Dimensions,
+  Pressable,
 } from "react-native";
 import React, { useState, useEffect, useCallback, useContext } from "react";
 import { useFocusEffect, useRouter } from "expo-router";
@@ -22,8 +23,18 @@ import ListButtonSelect from "@/components/common/ListButtonSelect";
 import Camera from "@/components/universal/Camera";
 import { useCameraPermissions } from "expo-camera";
 import IngredientPickerCard from "@/components/features/pantry/IngredientPickerCard";
-import { FlatList } from "react-native-gesture-handler";
+import * as Haptics from "expo-haptics";
+import {
+  FlatList,
+  Gesture,
+  GestureDetector,
+} from "react-native-gesture-handler";
 import { PantryDetailsContext } from "@/contexts/PantryDetails";
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
 
 type Props = {};
 
@@ -39,6 +50,90 @@ const SetupScreen = (props: Props) => {
 
   const [showCamera, setShowCamera] = useState(false);
   const [permission, requestPermission] = useCameraPermissions();
+  const emojis = [
+    "🍄",
+    "🥑",
+    "🥔",
+    "🥕",
+    "🌽",
+    "🌶️",
+    "🫑",
+    "🥒",
+    "🥬",
+    "🥦",
+    "🧄",
+    "🧅",
+    "🥜",
+    "🫛",
+    "🍄‍🟫",
+    "🫜",
+    "🍞",
+    "🥐",
+    "🥖",
+    "🥨",
+    "🥯",
+    "🧇",
+    "🧀",
+    "🍔",
+    "🍟",
+    "🍕",
+    "🌭",
+    "🥪",
+    "🌮",
+    "🌯",
+    "🥙",
+    "🍳",
+    "🥣",
+    "🥗",
+    "🍿",
+    "🍱",
+    "🍛",
+    "🍜",
+    "🍝",
+    "🥟",
+    "🦀",
+    "🦞",
+    "🦐",
+    "🦑",
+    "🍦",
+    "🍧",
+    "🍨",
+    "🍩",
+    "🍪",
+    "🎂",
+    "🍰",
+    "🧁",
+    "🥧",
+    "🍫",
+    "🍬",
+    "🍭",
+    "🍽️",
+    "🍴",
+    "🥄",
+  ];
+
+  const pressed = useSharedValue<boolean>(false);
+  const [currentEmojiText, setCurrentEmojiText] = useState("");
+
+  const tap = Gesture.Tap()
+    .onBegin(() => {
+      pressed.value = true;
+    })
+    .onFinalize(() => {
+      pressed.value = false;
+    });
+
+  const animatedStyles = useAnimatedStyle(() => {
+    return {
+      transform: [{ scale: withTiming(pressed.value ? 1.15 : 1) }],
+    };
+  });
+
+  function switchEmoji() {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
+    const randomIndex = Math.floor(Math.random() * emojis.length);
+    setCurrentEmojiText(emojis[randomIndex]);
+  }
 
   const ingredientCardAndOptions: Record<string, string[]> = {
     Eggs: [],
@@ -209,7 +304,7 @@ const SetupScreen = (props: Props) => {
                 setPantryDetails((prev) => ({
                   ...prev,
                   name: pantryName.length > 0 ? pantryName : "Your Pantry",
-                  icon: "Smiley",
+                  icon: currentEmojiText,
                 }))
               }
             >
@@ -221,23 +316,33 @@ const SetupScreen = (props: Props) => {
                   marginBottom: 40,
                 }}
               >
-                <View
-                  style={[
-                    styles.emojiCircle,
-                    styles.basicBoxShadow,
-                    {
-                      height: keyboardOpen ? 110 : 220,
-                      width: keyboardOpen ? 110 : 220,
-                    },
-                  ]}
-                >
-                  <CustomIcon
-                    size={keyboardOpen ? 70 : 140}
-                    name={"emoji"}
-                    filled={false}
-                    color={NEWCOLORS.unselectedShape}
-                  ></CustomIcon>
-                </View>
+                <GestureDetector gesture={tap}>
+                  <Animated.View
+                    onTouchStart={switchEmoji}
+                    style={[
+                      styles.emojiCircle,
+                      styles.basicBoxShadow,
+                      animatedStyles,
+                      {
+                        height: keyboardOpen ? 110 : 220,
+                        width: keyboardOpen ? 110 : 220,
+                      },
+                    ]}
+                  >
+                    {currentEmojiText === "" ? (
+                      <CustomIcon
+                        size={keyboardOpen ? 70 : 140}
+                        name={"emoji"}
+                        filled={false}
+                        color={NEWCOLORS.unselectedShape}
+                      ></CustomIcon>
+                    ) : (
+                      <Text style={{ fontSize: keyboardOpen ? 40 : 100 }}>
+                        {currentEmojiText}
+                      </Text>
+                    )}
+                  </Animated.View>
+                </GestureDetector>
               </View>
               <TextInput
                 style={[styles.setupInput]}

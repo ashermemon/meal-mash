@@ -15,7 +15,7 @@ export type PantryDetailsType = [
 
 const initialPantryDetails: PantryDetails = {
   name: "Your Pantry",
-  icon: "Smiley",
+  icon: "",
   ingredients: [],
 };
 
