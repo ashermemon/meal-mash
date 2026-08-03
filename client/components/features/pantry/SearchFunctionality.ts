@@ -6,7 +6,8 @@ export async function searchIngredients(query: string) {
   const { data, error } = await supabase
     .from("foods")
     .select("id, name, category")
-    .or(`name.ilike.%${query}%,alternate_names.ilike.%${query}%`)
+    .ilike("name", `%${query}%`)
+    // .or(`name.ilike.%${query}%,alternate_names.ilike.%${query}%`)
     .limit(20);
 
   if (error) {
@@ -14,5 +15,5 @@ export async function searchIngredients(query: string) {
     return [];
   }
 
-  return data;
+  return data ?? [];
 }

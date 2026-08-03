@@ -22,6 +22,7 @@ import { useTrueSheet } from "@/contexts/TrueSheetContext";
 import { PantryDetailsContext } from "@/contexts/PantryDetails";
 import FilterIngredients from "@/components/features/pantry/FilterIngredients";
 import IngredientTag from "@/components/features/pantry/IngredientTag";
+import Search from "@/components/features/pantry/Search";
 
 export default function Dashboard() {
   const navigation = useNavigation();
@@ -75,79 +76,7 @@ export default function Dashboard() {
             pantryPage={true}
           ></PantryPill>
           <View style={{ gap: 20 }}>
-            <View
-              style={[
-                styles.sliderPill,
-                styles.basicBoxShadow,
-                {
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  paddingVertical: 0,
-                  backgroundColor: NEWCOLORS.greyBlock,
-                },
-              ]}
-            >
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: "flex-start",
-                  alignItems: "center",
-                  flexDirection: "row",
-                }}
-              >
-                <CustomIcon
-                  name="search-2"
-                  filled={false}
-                  color={NEWCOLORS.placeholderText}
-                  size={25}
-                />
-                <TextInput
-                  placeholder="Search Ingredients"
-                  autoCapitalize="words"
-                  keyboardType="default"
-                  placeholderTextColor={NEWCOLORS.unselectedShape}
-                  autoCorrect={true}
-                  maxLength={32}
-                  style={[
-                    {
-                      flex: 1,
-                      fontSize: 19.5,
-                      marginLeft: 12,
-                      color: NEWCOLORS.basicText,
-                      fontFamily: "Nunito-Medium",
-                    },
-                  ]}
-                />
-
-                {/* value={nameQ}
-                  onChangeText={setNameQ} */}
-              </View>
-              <View
-                style={{
-                  justifyContent: "flex-end",
-                  alignItems: "center",
-                  flexDirection: "row",
-                  gap: 12,
-                }}
-              >
-                <View style={styles.verticalLine}></View>
-                <Pressable
-                  style={{ paddingRight: 15, paddingLeft: 10 }}
-                  onPress={() =>
-                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
-                  }
-                  hitSlop={{ top: 10, bottom: 10, left: 15, right: 15 }}
-                >
-                  <CustomIcon
-                    name="camera-2"
-                    filled={true}
-                    color={NEWCOLORS.placeholderText}
-                    size={25}
-                  />
-                </Pressable>
-              </View>
-            </View>
+            <Search />
 
             <View style={styles.pantryTip}>
               <Text
