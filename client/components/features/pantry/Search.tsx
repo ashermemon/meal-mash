@@ -10,10 +10,12 @@ import * as Haptics from "expo-haptics";
 
 type Props = {};
 
-type Food = {
+export type Food = {
   id: number;
   name: string;
   category: string;
+  alternate_names?: string;
+  displayName: string;
 };
 
 const Search = (props: Props) => {
@@ -113,7 +115,7 @@ const Search = (props: Props) => {
       <FlashList
         data={results}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <Text>{item.name}</Text>}
+        renderItem={({ item }) => <Text>{item.displayName}</Text>}
       />
     </>
   );
