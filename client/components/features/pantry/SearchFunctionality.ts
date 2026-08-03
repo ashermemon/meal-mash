@@ -8,36 +8,23 @@ function titleCase(text: string) {
     .join(" ");
 }
 
-function scoreFood(food: Food, query: string) {
-  const tokens = query.toLowerCase().trim().split(/\s+/);
-
-  let score = 0;
-
-  const name = food.name.toLowerCase();
-
-  for (const token of tokens) {
-    if (name.includes(token)) score += 10;
+function parseAlternates(value: unknown): string[] {
+  if (Array.isArray(value)) {
+    return value.filter((item): item is string => typeof item === "string");
   }
 
-  let alternates: string[] = [];
-
-  if (food.alternate_names) {
+  if (typeof value === "string") {
     try {
-      alternates = JSON.parse(food.alternate_names);
+      const parsed = JSON.parse(value);
+      if (Array.isArray(parsed)) {
+        return parsed.filter(
+          (item): item is string => typeof item === "string",
+        );
+      }
     } catch {}
   }
 
-  for (const alt of alternates) {
-    const altLower = alt.toLowerCase();
-
-    for (const token of tokens) {
-      if (altLower.includes(token)) {
-        score += 5;
-      }
-    }
-  }
-
-  return score;
+  return [];
 }
 
 export async function searchIngredients(query: string): Promise<Food[]> {
@@ -45,11 +32,37 @@ export async function searchIngredients(query: string): Promise<Food[]> {
 
   if (!cleanQuery) return [];
 
-  const { data, error } = await supabase
+  const baseQuery = supabase
     .from("foods")
-    .select("id, name, category, alternate_names")
-    .ilike("name", `%${cleanQuery}%`)
+    .select("id, name, category, alternate_names, popularity")
+    .order("popularity", { ascending: false })
     .limit(50);
+
+  let { data, error } = await baseQuery.ilike("name", `%${cleanQuery}%`);
+
+  if (error) {
+    console.error(error);
+    return [];
+  }
+
+  if (!data || data.length === 0) {
+    const fallbackResponse = await supabase
+      .from("foods")
+      .select("id, name, category, alternate_names, popularity")
+      .order("popularity", { ascending: false })
+      .limit(200);
+
+    if (fallbackResponse.error) {
+      console.error(fallbackResponse.error);
+      return [];
+    }
+
+    const lowerQuery = cleanQuery.toLowerCase();
+    data = (fallbackResponse.data ?? []).filter((food) => {
+      const alternates = parseAlternates(food.alternate_names);
+      return alternates.some((alt) => alt.toLowerCase().includes(lowerQuery));
+    });
+  }
 
   if (error) {
     console.error(error);
@@ -59,13 +72,7 @@ export async function searchIngredients(query: string): Promise<Food[]> {
   const formatted = (data ?? []).map((food) => {
     let displayName = food.name;
 
-    let alternates: string[] = [];
-
-    if (food.alternate_names) {
-      try {
-        alternates = JSON.parse(food.alternate_names);
-      } catch {}
-    }
+    const alternates = parseAlternates(food.alternate_names);
 
     if (food.name.includes(",") && alternates.length > 0) {
       const betterName = alternates.find((a) => !a.includes(","));
@@ -81,7 +88,5 @@ export async function searchIngredients(query: string): Promise<Food[]> {
     };
   });
 
-  return formatted.sort(
-    (a, b) => scoreFood(b, cleanQuery) - scoreFood(a, cleanQuery),
-  );
+  return formatted;
 }

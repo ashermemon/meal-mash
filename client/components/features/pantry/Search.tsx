@@ -4,7 +4,6 @@ import { CustomIcon } from "@/icon-loader/icon-loader";
 import { NEWCOLORS } from "@/constants/NewTheme";
 import { searchIngredients } from "./SearchFunctionality";
 import { FlashList } from "@shopify/flash-list";
-import { supabase } from "@/utils/supabase";
 import { styles } from "@/styles/auth.styles";
 import * as Haptics from "expo-haptics";
 
@@ -15,6 +14,7 @@ export type Food = {
   name: string;
   category: string;
   alternate_names?: string;
+  popularity?: number | null;
   displayName: string;
 };
 
