@@ -28,6 +28,7 @@ export default {
         backgroundImage: "./assets/images/adaptiveb.png",
       },
       edgeToEdgeEnabled: true,
+      softwareKeyboardLayoutMode: "resize",
       package: "com.sdsecureapp.neverleftovernew",
       googleServicesFile: "./google-services.json",
     },

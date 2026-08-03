@@ -60,36 +60,60 @@ export function getDisplayLabel(selections: string[], title: string): string {
     .join("  ");
 }
 
+export function openDropDown(
+  openSheet: (
+    options: string[],
+    onSelect: (options: string[]) => void,
+    title: string,
+    selected?: string[],
+  ) => void,
+  title: string,
+  options: string[],
+  selections: string[],
+  setSelection: React.Dispatch<React.SetStateAction<string[]>>,
+  ingredientPickerCard?: boolean,
+) {
+  Haptics.selectionAsync();
+  openSheet(
+    options,
+    (selected) => {
+      if (selected.length === 0) {
+        if (title.toLowerCase().includes("dietary")) {
+          setSelection(["None"]);
+        } else if (ingredientPickerCard) {
+          setSelection([]);
+        } else {
+          setSelection(["Any"]);
+        }
+      } else if (
+        selected.length === options.length &&
+        !title.toLowerCase().includes("dietary") &&
+        !ingredientPickerCard
+      ) {
+        setSelection(["Any"]);
+      } else {
+        setSelection(selected);
+      }
+    },
+    title,
+    selections,
+  );
+}
+
 const DropDownPill = (props: Props) => {
   const { openSheet } = useTrueSheet();
 
-  const openDropDown = (title: string, options: string[]) => {
-    Haptics.selectionAsync();
-    openSheet(
-      options,
-      (selected) => {
-        if (selected.length === 0) {
-          const defaultVal = title.toLowerCase().includes("dietary")
-            ? "None"
-            : "Any";
-          props.setSelection([defaultVal]);
-        } else if (
-          selected.length === options.length &&
-          !title.toLowerCase().includes("dietary")
-        ) {
-          props.setSelection(["Any"]);
-        } else {
-          props.setSelection(selected);
-        }
-      },
-      title,
-      props.selections,
-    );
-  };
-
   return (
     <Pressable
-      onPress={() => openDropDown(props.title, props.options)}
+      onPress={() =>
+        openDropDown(
+          openSheet,
+          props.title,
+          props.options,
+          props.selections,
+          props.setSelection,
+        )
+      }
       style={{
         gap: 12,
         flexDirection: "row",

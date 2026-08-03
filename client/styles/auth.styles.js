@@ -71,6 +71,7 @@ export const styles = StyleSheet.create({
     fontFamily: "Nunito-Regular",
     textAlign: "left",
     color: COLORS.fontColor,
+    flex: 1,
   },
   textLeftSemiBold: {
     fontFamily: "Nunito-SemiBold",
@@ -746,6 +747,7 @@ export const styles = StyleSheet.create({
     backgroundColor: NEWCOLORS.greyBlock,
     height: 55,
     paddingHorizontal: 15,
+
     paddingVertical: 5,
   },
   selectPill: {
@@ -762,8 +764,80 @@ export const styles = StyleSheet.create({
   },
   ingredientPill: {
     flex: 1,
+    borderRadius: 15,
+    backgroundColor: NEWCOLORS.greyBlock,
+    height: 70,
+  },
+
+  setupContainer: {
+    flex: 1,
+
+    // alignItems: "center",
+    padding: 25,
+  },
+
+  setupTitle: {
+    fontSize: 30,
+    fontFamily: "Nunito-Bold",
+    textAlign: "center",
+    marginBottom: 20,
+  },
+  setupInput: {
+    fontSize: 27,
+
+    color: NEWCOLORS.placeholderText,
+    fontFamily: "Nunito-Medium",
+    textAlign: "center",
+
+    borderBottomWidth: 1,
+    borderColor: "#ccc",
+  },
+  setupButton: {
+    backgroundColor: NEWCOLORS.greenAccent,
+    height: 56,
+    borderRadius: 28,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  progressFragment: {
+    borderRadius: 10,
+    flex: 1,
+  },
+  emojiCircle: {
+    backgroundColor: NEWCOLORS.unselectedGrey,
+    alignItems: "center",
+    justifyContent: "center",
     borderRadius: 1000,
-    backgroundColor: NEWCOLORS.pillGreen,
-    height: 30,
+    height: 220,
+    width: 220,
+  },
+  selectButton: {
+    backgroundColor: NEWCOLORS.unselectedGrey,
+    height: 84,
+    borderRadius: 15,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  ingredientPickerCard: {
+    backgroundColor: NEWCOLORS.unselectedGrey,
+    borderRadius: 15,
+    flex: 1,
+    // marginHorizontal: 9,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: 10,
+  },
+  pantryTip: {
+    flex: 1,
+    gap: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    backgroundColor: "red",
+    borderRadius: 15,
+    backgroundColor: NEWCOLORS.yellowBlock,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 });

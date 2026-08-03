@@ -4,7 +4,7 @@ import { styles } from "@/styles/GlobalStyles";
 import { NEWCOLORS } from "@/constants/NewTheme";
 import RecipeContext from "@/contexts/RecipeContext";
 import NutrientsContext from "@/contexts/NutrientsContext";
-import { GenerationCardPreview } from "../../components/features/generator/GenerationCardPreview";
+import { GenerationCardPreview } from "../../../components/features/generator/GenerationCardPreview";
 import Timer from "@/components/features/recipe/Timer";
 import { Image } from "expo-image";
 import { COLORS } from "@/constants/Theme";
@@ -16,13 +16,19 @@ import PreviewAnimatedWrapper from "@/components/features/generator/PreviewAnima
 import { SafeAreaView } from "react-native-safe-area-context";
 import PantryPill from "@/components/features/pantry/PantryPill";
 import { ScrollView } from "react-native-gesture-handler";
-import SuggestedIngredients from "@/components/features/pantry/SuggestedIngredients";
-import { useTrueSheet } from "@/contexts/TrueSheetContext";
-import IngredientHeaderSection from "@/components/features/pantry/IngredientHeaderSection";
 
-export default function PantryPage() {
+import { useTrueSheet } from "@/contexts/TrueSheetContext";
+
+import { PantryDetailsContext } from "@/contexts/PantryDetails";
+import FilterIngredients from "@/components/features/pantry/FilterIngredients";
+import IngredientTag from "@/components/features/pantry/IngredientTag";
+
+export default function Dashboard() {
   const navigation = useNavigation();
-  const ingredientSections: string[] = [
+  const [pantryDetails, setPantryDetails] = useContext(PantryDetailsContext);
+  const [selectedFilter, setSelectedFilter] = useState("All");
+  const ingredientCategories: string[] = [
+    "All",
     "Leftovers",
     "Meat/Protein",
     "Dairy & Eggs",
@@ -65,7 +71,7 @@ export default function PantryPage() {
 
         <View style={{ gap: 25 }}>
           <PantryPill
-            pantryName={"Untitled Pantry"}
+            pantryName={pantryDetails.name}
             pantryPage={true}
           ></PantryPill>
           <View style={{ gap: 20 }}>
@@ -93,14 +99,14 @@ export default function PantryPage() {
                 <CustomIcon
                   name="search-2"
                   filled={false}
-                  color={NEWCOLORS.unselectedShape}
+                  color={NEWCOLORS.placeholderText}
                   size={25}
                 />
                 <TextInput
                   placeholder="Search Ingredients"
                   autoCapitalize="words"
                   keyboardType="default"
-                  placeholderTextColor={NEWCOLORS.placeholderText}
+                  placeholderTextColor={NEWCOLORS.unselectedShape}
                   autoCorrect={true}
                   maxLength={32}
                   style={[
@@ -142,24 +148,62 @@ export default function PantryPage() {
                 </Pressable>
               </View>
             </View>
-            <SuggestedIngredients
-              suggestedIngredients={["Eggs", "Milk", "Cheese"]}
-            />
 
-            {ingredientSections.map((title: string, index: number) => (
-              <IngredientHeaderSection
-                key={index}
-                title={title}
-                ingredients={[
-                  "Butter",
-                  "Fruit",
-                  "Salt",
-                  "Potato",
-                  "Sour Cream",
-                  "Chips",
+            <View style={styles.pantryTip}>
+              <Text
+                style={[styles.textLeft]}
+                numberOfLines={2}
+                adjustsFontSizeToFit
+              >
+                <Text style={{ fontFamily: "Nunito-SemiBold" }}>Tip: </Text>
+                Be sure to add any leftover dishes you have at home and want to
+                use in recipes!
+              </Text>
+              <Image
+                source={require("@/assets/images/leftover.png")}
+                style={{
+                  width: 50,
+                  height: 50,
+                  borderRadius: 110,
+                  shadowColor: "black",
+                  shadowRadius: 50,
+                  shadowOpacity: 1,
+                }}
+              />
+            </View>
+            <FilterIngredients
+              setCurrentSelected={setSelectedFilter}
+              currentSelected={selectedFilter}
+              categories={ingredientCategories}
+            />
+            {pantryDetails.ingredients.map(
+              (ingredientName: string, index: number) =>
+                selectedFilter === "All" ? (
+                  <IngredientTag
+                    key={index}
+                    ingredientName={ingredientName}
+                    category="Category"
+                  ></IngredientTag>
+                ) : (
+                  <View key={index}></View>
+                ),
+            )}
+            {pantryDetails.ingredients.length < 1 ? (
+              <Text
+                style={[
+                  styles.textCenterBold,
+                  {
+                    fontFamily: "Nunito-SemiBold",
+                    fontSize: 25,
+                    paddingTop: 20,
+                  },
                 ]}
-              ></IngredientHeaderSection>
-            ))}
+              >
+                Add the ingredients you have at home to get started!
+              </Text>
+            ) : (
+              <></>
+            )}
           </View>
         </View>
       </View>

@@ -1,11 +1,15 @@
 export const NEWCOLORS = {
-  blueBlock: "#E4F7FF",
-  orangeBlock: "#FFF2D9",
-  greenBlock: "#EBF6ED",
+  backgroundColor: "#F8F6F0", //#fffefa //f9f9f9 //fdfffa //f8f8f0
+  sheetBackgroundColor: "#FCFAF5",
+
+  blueBlock: "rgb(210, 238, 255)",
+  orangeBlock: "rgb(255, 194, 145)",
+  yellowBlock: "#rgb(255, 223, 150)", //rgb(255, 223, 150)
+  greenBlock: "rgb(197, 244, 187)",
   purpleBlock: "#FBE8FF",
   purpblueBlock: "#E3E4FF",
   greyBlock: "#FEFEFE",
-  redBlock: "#F1D1D1",
+  redBlock: "#facdcd",
 
   darkButton: "#39393A",
 

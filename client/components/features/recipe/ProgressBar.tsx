@@ -5,15 +5,21 @@ import { COLORS } from "@/constants/Theme";
 
 import { Dimensions } from "react-native";
 import { NEWCOLORS } from "@/constants/NewTheme";
+import { styles } from "@/styles/auth.styles";
 
 interface ProgressProps {
   progress: number;
   height?: number;
+  fragmented?: boolean;
+  steps?: number;
+  currentStep?: number;
 }
 
 export default function ProgressBar(props: ProgressProps) {
   const windowWidth = Dimensions.get("window").width;
   const [containerWidth, setContainerWidth] = useState(0);
+  const segments = Array.from({ length: props.steps || 1 });
+  let currentStep = props.currentStep || 1;
   const onLayout = (e: LayoutChangeEvent) => {
     const w = e.nativeEvent.layout.width;
     if (w !== containerWidth) {
@@ -26,21 +32,42 @@ export default function ProgressBar(props: ProgressProps) {
       style={{
         width: "100%",
         alignItems: "center",
-        justifyContent: "center",
+        justifyContent: props.fragmented ? "space-between" : "center",
+        flexDirection: "row",
+        gap: 10,
       }}
       onLayout={onLayout}
     >
-      {containerWidth > 0 && (
-        <Progress.Bar
-          progress={props.progress}
-          width={containerWidth}
-          color={NEWCOLORS.greenAccent}
-          height={props.height ?? 4}
-          borderRadius={0}
-          unfilledColor="#ECECEC"
-          borderWidth={0}
-        />
-      )}
+      {props.fragmented
+        ? segments.map((_, index) => {
+            const isFilled = index < currentStep;
+
+            return (
+              <View
+                key={index}
+                style={[
+                  styles.progressFragment,
+                  {
+                    height: props.height,
+                    backgroundColor: isFilled
+                      ? NEWCOLORS.greenAccent
+                      : NEWCOLORS.dividerGrey2,
+                  },
+                ]}
+              />
+            );
+          })
+        : containerWidth > 0 && (
+            <Progress.Bar
+              progress={props.progress}
+              width={containerWidth}
+              color={NEWCOLORS.greenAccent}
+              height={props.height ?? 4}
+              borderRadius={0}
+              unfilledColor="#ECECEC"
+              borderWidth={0}
+            />
+          )}
     </View>
   );
 }
