@@ -27,6 +27,21 @@ function parseAlternates(value: unknown): string[] {
   return [];
 }
 
+function normalizeText(value: string): string {
+  return value.toLowerCase().replace(/\s+/g, "");
+}
+
+function getMatchPriority(food: Food, query: string): number {
+  const normalizedQuery = normalizeText(query);
+  const candidates = [food.name, ...parseAlternates(food.alternate_names)];
+
+  return candidates.some(
+    (candidate) => normalizeText(candidate) === normalizedQuery,
+  )
+    ? 0
+    : 1;
+}
+
 export async function searchIngredients(query: string): Promise<Food[]> {
   const cleanQuery = query.trim();
 
@@ -69,24 +84,30 @@ export async function searchIngredients(query: string): Promise<Food[]> {
     return [];
   }
 
-  const formatted = (data ?? []).map((food) => {
-    let displayName = food.name;
+  const formatted = (data ?? [])
+    .map((food) => {
+      let displayName = food.name;
 
-    const alternates = parseAlternates(food.alternate_names);
+      const alternates = parseAlternates(food.alternate_names);
 
-    if (food.name.includes(",") && alternates.length > 0) {
-      const betterName = alternates.find((a) => !a.includes(","));
+      if (food.name.includes(",") && alternates.length > 0) {
+        const betterName = alternates.find((a) => !a.includes(","));
 
-      if (betterName) {
-        displayName = titleCase(betterName);
+        if (betterName) {
+          displayName = titleCase(betterName);
+        }
       }
-    }
 
-    return {
-      ...food,
-      displayName,
-    };
-  });
+      return {
+        ...food,
+        displayName,
+      } as Food;
+    })
+    .sort((a, b) => {
+      const aPriority = getMatchPriority(a, cleanQuery);
+      const bPriority = getMatchPriority(b, cleanQuery);
+      return aPriority - bPriority;
+    });
 
   return formatted;
 }
