@@ -423,9 +423,6 @@ const SetupScreen = (props: Props) => {
                 </View>
               )}
             </OnboardingStep>,
-            <OnboardingStep stepTitle="Review pantry & add additional ingredients and leftover dishes">
-              <></>
-            </OnboardingStep>,
           ]}
         ></OnboardingSequence>
       </KeyboardAvoidingView>

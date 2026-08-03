@@ -177,13 +177,16 @@ export default function Dashboard() {
               categories={ingredientCategories}
             />
             {pantryDetails.ingredients.map(
-              (ingredientName: string, index: number) => (
-                <IngredientTag
-                  key={index}
-                  ingredientName={ingredientName}
-                  category="Beans"
-                ></IngredientTag>
-              ),
+              (ingredientName: string, index: number) =>
+                selectedFilter === "All" ? (
+                  <IngredientTag
+                    key={index}
+                    ingredientName={ingredientName}
+                    category="Category"
+                  ></IngredientTag>
+                ) : (
+                  <View key={index}></View>
+                ),
             )}
             {pantryDetails.ingredients.length < 1 ? (
               <Text
