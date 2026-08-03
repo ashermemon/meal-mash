@@ -1,9 +1,9 @@
-import { View, Text, TextInput, Pressable } from "react-native";
+import { View, Text, TextInput, Pressable, StyleSheet } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import React, { useEffect, useState } from "react";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import { NEWCOLORS } from "@/constants/NewTheme";
 import { searchIngredients } from "./SearchFunctionality";
-import { FlashList } from "@shopify/flash-list";
 import { styles } from "@/styles/auth.styles";
 import * as Haptics from "expo-haptics";
 
@@ -38,16 +38,17 @@ const Search = (props: Props) => {
     setQuery(text);
   }
   return (
-    <>
+    <View style={{ zIndex: 9999 }}>
       <View
         style={[
           styles.sliderPill,
           styles.basicBoxShadow,
+
           {
+            zIndex: 9999,
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
-            paddingVertical: 0,
             backgroundColor: NEWCOLORS.greyBlock,
           },
         ]}
@@ -55,9 +56,9 @@ const Search = (props: Props) => {
         <View
           style={{
             flex: 1,
-            justifyContent: "flex-start",
-            alignItems: "center",
             flexDirection: "row",
+            alignItems: "center",
+            zIndex: 9999,
           }}
         >
           <CustomIcon
@@ -78,7 +79,8 @@ const Search = (props: Props) => {
             style={[
               {
                 flex: 1,
-                fontSize: 19.5,
+                zIndex: 9999,
+                fontSize: 18,
                 marginLeft: 12,
                 color: NEWCOLORS.basicText,
                 fontFamily: "Nunito-Medium",
@@ -86,17 +88,10 @@ const Search = (props: Props) => {
             ]}
           />
         </View>
-        <View
-          style={{
-            justifyContent: "flex-end",
-            alignItems: "center",
-            flexDirection: "row",
-            gap: 12,
-          }}
-        >
+        <View style={localStyles.searchInputAction}>
           <View style={styles.verticalLine}></View>
           <Pressable
-            style={{ paddingRight: 15, paddingLeft: 10 }}
+            style={{ paddingRight: 15, paddingLeft: 10, zIndex: 9999 }}
             onPress={() =>
               Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
             }
@@ -112,13 +107,100 @@ const Search = (props: Props) => {
         </View>
       </View>
 
-      <FlashList
-        data={results}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <Text>{item.displayName}</Text>}
-      />
-    </>
+      {results.length > 0 && (
+        <View style={[localStyles.resultsOverlay, styles.basicBoxShadow]}>
+          <ScrollView
+            style={{ maxHeight: 240 }}
+            showsVerticalScrollIndicator={true}
+            nestedScrollEnabled={true}
+            keyboardShouldPersistTaps="handled"
+          >
+            {results.map((item, index) => (
+              <Pressable key={item.id} style={localStyles.resultItem}>
+                <View
+                  style={{
+                    width: "100%",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    borderBottomWidth: index === results.length - 1 ? 0 : 1,
+                    borderColor: NEWCOLORS.unselectedGrey,
+                    paddingVertical: 18,
+                    paddingHorizontal: 12,
+                    zIndex: 9999,
+                  }}
+                >
+                  <View style={{ paddingRight: 10, flex: 1 }}>
+                    <Text
+                      adjustsFontSizeToFit
+                      numberOfLines={1}
+                      style={[
+                        styles.basicTextLeft,
+                        {
+                          fontSize: 15,
+                          fontFamily: "Nunito-SemiBold",
+                          zIndex: 9999,
+                        },
+                      ]}
+                    >
+                      {item.displayName}
+                    </Text>
+                  </View>
+                  <View>
+                    <Text
+                      style={[
+                        styles.basicTextLeft,
+                        {
+                          fontSize: 13,
+                          flex: 1,
+                          zIndex: 9999,
+                          fontFamily: "Nunito-Regular",
+                          color: NEWCOLORS.unselectedShape,
+                        },
+                      ]}
+                    >
+                      {item.category}
+                    </Text>
+                  </View>
+                </View>
+              </Pressable>
+            ))}
+          </ScrollView>
+        </View>
+      )}
+    </View>
   );
 };
+
+const localStyles = StyleSheet.create({
+  searchInputAction: {
+    justifyContent: "flex-end",
+    alignItems: "center",
+    flexDirection: "row",
+    gap: 12,
+  },
+
+  resultsOverlay: {
+    position: "absolute",
+    width: "100%",
+    top: 65,
+    maxHeight: 240,
+    backgroundColor: NEWCOLORS.cardWhite,
+    borderRadius: 30,
+    paddingVertical: 4,
+    paddingHorizontal: 12,
+    borderWidth: 0,
+
+    overflow: "hidden",
+  },
+
+  resultItem: {
+    borderRadius: 22,
+    backgroundColor: NEWCOLORS.greyBlock,
+
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
 
 export default Search;

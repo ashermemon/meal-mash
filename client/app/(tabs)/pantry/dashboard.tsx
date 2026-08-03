@@ -1,5 +1,12 @@
-import { View, Text, Platform, Pressable, TextInput } from "react-native";
-import React, { useContext, useEffect, useState } from "react";
+import {
+  Animated,
+  Text,
+  View,
+  StyleSheet,
+  Button,
+  useAnimatedValue,
+} from "react-native";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { styles } from "@/styles/GlobalStyles";
 import { NEWCOLORS } from "@/constants/NewTheme";
 import RecipeContext from "@/contexts/RecipeContext";
@@ -25,6 +32,16 @@ import IngredientTag from "@/components/features/pantry/IngredientTag";
 import Search from "@/components/features/pantry/Search";
 
 export default function Dashboard() {
+  const searchOverlayOpacity = useRef(new Animated.Value(0)).current;
+  const [searchActive, setSearchActive] = useState(false);
+
+  useEffect(() => {
+    Animated.timing(searchOverlayOpacity, {
+      toValue: searchActive ? 0.75 : 0,
+      duration: 250,
+      useNativeDriver: true,
+    }).start();
+  }, [searchActive, searchOverlayOpacity]);
   const navigation = useNavigation();
   const [pantryDetails, setPantryDetails] = useContext(PantryDetailsContext);
   const [selectedFilter, setSelectedFilter] = useState("All");
