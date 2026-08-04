@@ -1,4 +1,11 @@
-import { View, Text, TextInput, Pressable, StyleSheet, Keyboard } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  Pressable,
+  StyleSheet,
+  Keyboard,
+} from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import React, { useContext, useEffect, useState } from "react";
 import { CustomIcon } from "@/icon-loader/icon-loader";
@@ -54,10 +61,10 @@ const Search = (props: Props) => {
 
   function selectIngredient(item: Food) {
     setPantryDetails((prev) => {
-      const alreadyAdded = prev.ingredients.includes(item.name);
+      const alreadyAdded = prev.ingredients.includes(item);
       const nextIngredients = alreadyAdded
         ? prev.ingredients
-        : [...prev.ingredients, item.name];
+        : [...prev.ingredients, item];
 
       return {
         ...prev,

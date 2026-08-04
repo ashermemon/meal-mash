@@ -4,10 +4,10 @@ import { styles } from "@/styles/auth.styles";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import { NEWCOLORS } from "@/constants/NewTheme";
 import { PantryDetailsContext } from "@/contexts/PantryDetails";
+import { Food } from "./Search";
 
 type Props = {
-  ingredientName: string;
-  category: string;
+  ingredient: Food;
 };
 
 const IngredientTag = (props: Props) => {
@@ -17,7 +17,7 @@ const IngredientTag = (props: Props) => {
     setPantryDetails((prev) => ({
       ...prev,
       ingredients: prev.ingredients.filter(
-        (ingredient) => ingredient !== props.ingredientName,
+        (ingredient) => ingredient.name !== props.ingredient.name,
       ),
     }));
   };
@@ -52,7 +52,7 @@ const IngredientTag = (props: Props) => {
               { paddingHorizontal: 3, fontSize: 17, marginLeft: 5 },
             ]}
           >
-            {props.ingredientName}
+            {props.ingredient.name}
           </Text>
         </View>
 
@@ -65,6 +65,7 @@ const IngredientTag = (props: Props) => {
               borderRadius: 100,
               marginLeft: 10,
               marginTop: 2,
+              flex: 0,
               paddingVertical: 3,
             },
           ]}
@@ -80,7 +81,7 @@ const IngredientTag = (props: Props) => {
               },
             ]}
           >
-            {props.category}
+            {props.ingredient.category}
           </Text>
         </View>
       </View>

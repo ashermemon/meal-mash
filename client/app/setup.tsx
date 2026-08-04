@@ -35,6 +35,10 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
+import { Food } from "@/components/features/pantry/Search";
+import {
+  searchHouseholdEssentials,
+} from "@/components/features/pantry/SearchFunctionality";
 
 type Props = {};
 
@@ -135,7 +139,7 @@ const SetupScreen = (props: Props) => {
     setCurrentEmojiText(emojis[randomIndex]);
   }
 
-  const ingredientCardAndOptions: Record<string, string[]> = {
+  const initialIngredientGroups: Record<string, string[]> = {
     Eggs: [],
     Milk: [
       "Whole Milk",
@@ -236,6 +240,47 @@ const SetupScreen = (props: Props) => {
       "Avocado Oil",
     ],
   };
+
+  type IngredientGroup = {
+    key: string;
+    ingredient: Food;
+    options: Food[];
+  };
+
+  const ingredientGroups: IngredientGroup[] = Object.entries(initialIngredientGroups).map(
+    ([baseName, optionNames]) => {
+      const baseIngredient =
+        searchHouseholdEssentials(baseName).find(
+          (item) => item.name.toLowerCase() === baseName.toLowerCase(),
+        ) ??
+        ({
+          id: 0,
+          name: baseName,
+          category: "Other",
+          displayName: baseName,
+        } as Food);
+
+      const options = optionNames.map((optionName) => {
+        return (
+          searchHouseholdEssentials(optionName).find(
+            (item) => item.name.toLowerCase() === optionName.toLowerCase(),
+          ) ??
+          ({
+            id: 0,
+            name: optionName,
+            category: "Other",
+            displayName: optionName,
+          } as Food)
+        );
+      });
+
+      return {
+        key: baseName,
+        ingredient: baseIngredient,
+        options,
+      };
+    },
+  );
 
   useFocusEffect(
     useCallback(() => {
@@ -403,7 +448,7 @@ const SetupScreen = (props: Props) => {
 
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <FlatList
-                      data={Object.keys(ingredientCardAndOptions)}
+                      data={ingredientGroups}
                       numColumns={3}
                       columnWrapperStyle={{
                         justifyContent: "space-between",
@@ -411,11 +456,12 @@ const SetupScreen = (props: Props) => {
                         marginBottom: 9,
                         gap: 18,
                       }}
-                      keyExtractor={(item) => item}
+                      keyExtractor={(item) => item.key}
                       renderItem={({ item }) => (
                         <IngredientPickerCard
-                          ingredientName={item}
-                          selectionMenuOptions={ingredientCardAndOptions[item]}
+                          ingredient={item.ingredient}
+                          ingredientName={item.ingredient.displayName ?? item.ingredient.name}
+                          selectionMenuOptions={item.options}
                         />
                       )}
                     />

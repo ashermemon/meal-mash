@@ -29,7 +29,7 @@ import { useTrueSheet } from "@/contexts/TrueSheetContext";
 import { PantryDetailsContext } from "@/contexts/PantryDetails";
 import FilterIngredients from "@/components/features/pantry/FilterIngredients";
 import IngredientTag from "@/components/features/pantry/IngredientTag";
-import Search from "@/components/features/pantry/Search";
+import Search, { Food } from "@/components/features/pantry/Search";
 
 export default function Dashboard() {
   const searchOverlayOpacity = useRef(new Animated.Value(0)).current;
@@ -122,17 +122,15 @@ export default function Dashboard() {
               currentSelected={selectedFilter}
               categories={ingredientCategories}
             />
-            {pantryDetails.ingredients.map(
-              (ingredientName: string, index: number) =>
-                selectedFilter === "All" ? (
-                  <IngredientTag
-                    key={index}
-                    ingredientName={ingredientName}
-                    category="Category"
-                  ></IngredientTag>
-                ) : (
-                  <View key={index}></View>
-                ),
+            {pantryDetails.ingredients.map((ingredient: Food, index: number) =>
+              selectedFilter === "All" ? (
+                <IngredientTag
+                  key={index}
+                  ingredient={ingredient}
+                ></IngredientTag>
+              ) : (
+                <View key={index}></View>
+              ),
             )}
             {pantryDetails.ingredients.length < 1 ? (
               <Text

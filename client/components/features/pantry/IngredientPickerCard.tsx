@@ -7,36 +7,50 @@ import { IosAllowsPreviews } from "expo-notifications";
 import { useTrueSheet } from "@/contexts/TrueSheetContext";
 import { openDropDown } from "@/components/common/DropDownPill";
 import { PantryDetailsContext } from "@/contexts/PantryDetails";
+import { Food } from "./Search";
 
 type Props = {
-  ingredientName: string;
+  ingredient?: Food;
+  ingredientName?: string;
   multiSelect?: boolean;
-  selectionMenuOptions: string[];
+  selectionMenuOptions: Array<string | Food>;
 };
 
 const IngredientPickerCard = (props: Props) => {
   const { openSheet } = useTrueSheet();
   const [pantryDetails, setPantryDetails] = useContext(PantryDetailsContext);
   const [selected, setSelected] = useState(false);
+
+  const ingredientValue: Food = props.ingredient ?? {
+    id: 0,
+    name: props.ingredientName ?? "",
+    category: "",
+    displayName: props.ingredientName ?? "",
+  };
+
   const getInitialSelectedOptions = () => {
     if (props.selectionMenuOptions.length === 0) {
-      return pantryDetails.ingredients.includes(props.ingredientName)
-        ? [props.ingredientName]
-        : [];
+      const selected = pantryDetails.ingredients.some(
+        (item) => item.name === ingredientValue.name,
+      );
+      return selected ? [ingredientValue] : [];
     }
 
     return pantryDetails.ingredients.filter((item) =>
-      props.selectionMenuOptions.includes(item),
+      props.selectionMenuOptions.some((option) => {
+        const optionName = typeof option === "string" ? option : option.name;
+        return optionName === item.name;
+      }),
     );
   };
 
-  const [selectedOptions, setSelectedOptions] = useState<string[]>(
+  const [selectedOptions, setSelectedOptions] = useState<Food[]>(
     getInitialSelectedOptions,
   );
 
   useEffect(() => {
     const cleanSelectedOptions = selectedOptions.filter(
-      (opt) => opt && opt.trim().length > 0,
+      (opt) => opt && opt.name.trim().length > 0,
     );
     const hasValidSelection = cleanSelectedOptions.length > 0;
     setSelected(hasValidSelection);
@@ -45,9 +59,12 @@ const IngredientPickerCard = (props: Props) => {
       const filteredIngredients = (prev.ingredients || []).filter(
         (item) =>
           item &&
-          item.trim().length > 0 &&
-          !props.selectionMenuOptions.includes(item) &&
-          item !== props.ingredientName,
+          item.name.trim().length > 0 &&
+          !props.selectionMenuOptions.some((option) => {
+            const optionName = typeof option === "string" ? option : option.name;
+            return optionName === item.name;
+          }) &&
+          item.name !== ingredientValue.name,
       );
 
       return {
@@ -55,8 +72,7 @@ const IngredientPickerCard = (props: Props) => {
         ingredients: [...filteredIngredients, ...cleanSelectedOptions],
       };
     });
-    console.log(pantryDetails.ingredients);
-  }, [selectedOptions]);
+  }, [selectedOptions, ingredientValue.name, props.selectionMenuOptions, setPantryDetails]);
 
   useEffect(() => {
     if (
@@ -64,7 +80,7 @@ const IngredientPickerCard = (props: Props) => {
       props.selectionMenuOptions.length === 0 &&
       selectedOptions.length === 0
     ) {
-      setSelectedOptions([props.ingredientName]);
+      setSelectedOptions([ingredientValue]);
     }
   }, [selected]);
 
@@ -86,14 +102,27 @@ const IngredientPickerCard = (props: Props) => {
             setSelected(false);
           } else {
             setSelected(true);
+            setSelectedOptions([ingredientValue]);
           }
         } else {
           openDropDown(
             openSheet,
-            props.ingredientName,
-            props.selectionMenuOptions,
-            selectedOptions,
-            setSelectedOptions,
+            ingredientValue.name,
+            props.selectionMenuOptions.map((option) =>
+              typeof option === "string" ? option : option.name,
+            ),
+            selectedOptions.map((option) => option.name),
+            ((nextValue: React.SetStateAction<string[]>) => {
+              const resolvedOptions =
+                typeof nextValue === "function"
+                  ? nextValue(selectedOptions.map((option) => option.name))
+                  : nextValue;
+              const nextFoods = resolvedOptions.map((name: string) => ({
+                ...ingredientValue,
+                name,
+              }));
+              setSelectedOptions(nextFoods);
+            }) as React.Dispatch<React.SetStateAction<string[]>>,
             true,
           );
         }
@@ -123,7 +152,7 @@ const IngredientPickerCard = (props: Props) => {
           },
         ]}
       >
-        {props.ingredientName}
+        {props.ingredientName ?? ingredientValue.name}
       </Text>
     </Pressable>
   );
