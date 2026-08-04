@@ -1,11 +1,12 @@
 import { View, Text, TextInput, Pressable, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import { NEWCOLORS } from "@/constants/NewTheme";
 import { searchIngredients } from "./SearchFunctionality";
 import { styles } from "@/styles/auth.styles";
 import * as Haptics from "expo-haptics";
+import { PantryDetailsContext } from "@/contexts/PantryDetails";
 
 type Props = {};
 
@@ -21,6 +22,7 @@ export type Food = {
 const Search = (props: Props) => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Food[]>([]);
+  const [pantryDetails, setPantryDetails] = useContext(PantryDetailsContext);
   useEffect(() => {
     const timeout = setTimeout(async () => {
       if (!query.trim()) {
@@ -116,7 +118,21 @@ const Search = (props: Props) => {
             keyboardShouldPersistTaps="handled"
           >
             {results.map((item, index) => (
-              <Pressable key={item.id} style={localStyles.resultItem}>
+              <Pressable
+                key={item.id}
+                style={localStyles.resultItem}
+                onPress={() =>
+                  setPantryDetails((prev) => {
+                    const alreadyAdded = prev.ingredients.includes(item.name);
+                    return {
+                      ...prev,
+                      ingredients: alreadyAdded
+                        ? prev.ingredients
+                        : [...prev.ingredients, item.name],
+                    };
+                  })
+                }
+              >
                 <View
                   style={{
                     width: "100%",

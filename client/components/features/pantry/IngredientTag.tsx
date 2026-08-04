@@ -43,14 +43,19 @@ const IngredientTag = (props: Props) => {
           flexDirection: "row",
         }}
       >
-        <Text
-          style={[
-            styles.textLeftSemiBold,
-            { paddingHorizontal: 3, fontSize: 17, marginLeft: 5 },
-          ]}
-        >
-          {props.ingredientName}
-        </Text>
+        <View style={{ flex: 1 }}>
+          <Text
+            adjustsFontSizeToFit
+            numberOfLines={1}
+            style={[
+              styles.textLeftSemiBold,
+              { paddingHorizontal: 3, fontSize: 17, marginLeft: 5 },
+            ]}
+          >
+            {props.ingredientName}
+          </Text>
+        </View>
+        1
         <View
           style={[
             styles.infoTag,
