@@ -47,16 +47,15 @@ export default function Dashboard() {
   const [selectedFilter, setSelectedFilter] = useState("All");
   const ingredientCategories: string[] = [
     "All",
-    "Leftovers",
-    "Meat/Protein",
-    "Dairy & Eggs",
     "Produce",
-    "Seafood & Fish",
-    "Spices & Sauces",
-    "Grains",
-    "Legumes",
-    "Sweets",
-    "Miscellaneous",
+    "Meat & Poultry",
+    "Seafood",
+    "Dairy & Eggs",
+    "Grains & Carbs",
+    "Legumes, Nuts & Seeds",
+    "Pantry & Seasonings",
+    "Prepared",
+    "Other",
   ];
 
   return (
@@ -128,8 +127,13 @@ export default function Dashboard() {
                   key={index}
                   ingredient={ingredient}
                 ></IngredientTag>
+              ) : selectedFilter === ingredient.category ? (
+                <IngredientTag
+                  key={index}
+                  ingredient={ingredient}
+                ></IngredientTag>
               ) : (
-                <View key={index}></View>
+                <React.Fragment key={index}></React.Fragment>
               ),
             )}
             {pantryDetails.ingredients.length < 1 ? (
