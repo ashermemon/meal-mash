@@ -1,5 +1,12 @@
-import { View, Text, Platform, Pressable, TextInput } from "react-native";
-import React, { useContext, useEffect, useState } from "react";
+import {
+  Animated,
+  Text,
+  View,
+  StyleSheet,
+  Button,
+  useAnimatedValue,
+} from "react-native";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { styles } from "@/styles/GlobalStyles";
 import { NEWCOLORS } from "@/constants/NewTheme";
 import RecipeContext from "@/contexts/RecipeContext";
@@ -22,23 +29,33 @@ import { useTrueSheet } from "@/contexts/TrueSheetContext";
 import { PantryDetailsContext } from "@/contexts/PantryDetails";
 import FilterIngredients from "@/components/features/pantry/FilterIngredients";
 import IngredientTag from "@/components/features/pantry/IngredientTag";
+import Search, { Food } from "@/components/features/pantry/Search";
 
 export default function Dashboard() {
+  const searchOverlayOpacity = useRef(new Animated.Value(0)).current;
+  const [searchActive, setSearchActive] = useState(false);
+
+  useEffect(() => {
+    Animated.timing(searchOverlayOpacity, {
+      toValue: searchActive ? 0.75 : 0,
+      duration: 250,
+      useNativeDriver: true,
+    }).start();
+  }, [searchActive, searchOverlayOpacity]);
   const navigation = useNavigation();
   const [pantryDetails, setPantryDetails] = useContext(PantryDetailsContext);
   const [selectedFilter, setSelectedFilter] = useState("All");
   const ingredientCategories: string[] = [
     "All",
-    "Leftovers",
-    "Meat/Protein",
-    "Dairy & Eggs",
     "Produce",
-    "Seafood & Fish",
-    "Spices & Sauces",
-    "Grains",
-    "Legumes",
-    "Sweets",
-    "Miscellaneous",
+    "Meat & Poultry",
+    "Seafood",
+    "Dairy & Eggs",
+    "Grains & Carbs",
+    "Legumes, Nuts & Seeds",
+    "Pantry & Seasonings",
+    "Prepared",
+    "Other",
   ];
 
   return (
@@ -75,79 +92,7 @@ export default function Dashboard() {
             pantryPage={true}
           ></PantryPill>
           <View style={{ gap: 20 }}>
-            <View
-              style={[
-                styles.sliderPill,
-                styles.basicBoxShadow,
-                {
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  paddingVertical: 0,
-                  backgroundColor: NEWCOLORS.greyBlock,
-                },
-              ]}
-            >
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: "flex-start",
-                  alignItems: "center",
-                  flexDirection: "row",
-                }}
-              >
-                <CustomIcon
-                  name="search-2"
-                  filled={false}
-                  color={NEWCOLORS.placeholderText}
-                  size={25}
-                />
-                <TextInput
-                  placeholder="Search Ingredients"
-                  autoCapitalize="words"
-                  keyboardType="default"
-                  placeholderTextColor={NEWCOLORS.unselectedShape}
-                  autoCorrect={true}
-                  maxLength={32}
-                  style={[
-                    {
-                      flex: 1,
-                      fontSize: 19.5,
-                      marginLeft: 12,
-                      color: NEWCOLORS.basicText,
-                      fontFamily: "Nunito-Medium",
-                    },
-                  ]}
-                />
-
-                {/* value={nameQ}
-                  onChangeText={setNameQ} */}
-              </View>
-              <View
-                style={{
-                  justifyContent: "flex-end",
-                  alignItems: "center",
-                  flexDirection: "row",
-                  gap: 12,
-                }}
-              >
-                <View style={styles.verticalLine}></View>
-                <Pressable
-                  style={{ paddingRight: 15, paddingLeft: 10 }}
-                  onPress={() =>
-                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
-                  }
-                  hitSlop={{ top: 10, bottom: 10, left: 15, right: 15 }}
-                >
-                  <CustomIcon
-                    name="camera-2"
-                    filled={true}
-                    color={NEWCOLORS.placeholderText}
-                    size={25}
-                  />
-                </Pressable>
-              </View>
-            </View>
+            <Search />
 
             <View style={styles.pantryTip}>
               <Text
@@ -176,18 +121,23 @@ export default function Dashboard() {
               currentSelected={selectedFilter}
               categories={ingredientCategories}
             />
-            {pantryDetails.ingredients.map(
-              (ingredientName: string, index: number) =>
+            {pantryDetails.ingredients
+              .toReversed()
+              .map((ingredient: Food, index: number) =>
                 selectedFilter === "All" ? (
                   <IngredientTag
                     key={index}
-                    ingredientName={ingredientName}
-                    category="Category"
+                    ingredient={ingredient}
+                  ></IngredientTag>
+                ) : selectedFilter === ingredient.category ? (
+                  <IngredientTag
+                    key={index}
+                    ingredient={ingredient}
                   ></IngredientTag>
                 ) : (
-                  <View key={index}></View>
+                  <React.Fragment key={index}></React.Fragment>
                 ),
-            )}
+              )}
             {pantryDetails.ingredients.length < 1 ? (
               <Text
                 style={[

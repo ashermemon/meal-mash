@@ -24,6 +24,7 @@ import generateConstraints from "@/constants/constraints";
 import { GenerationDetailsContext } from "@/contexts/GenerationDetailsContext";
 import { storage } from "@/utils/storage";
 import { router } from "expo-router";
+import { PantryDetailsContext } from "@/contexts/PantryDetails";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
@@ -174,6 +175,7 @@ const PreviewAnimatedWrapper = (props: Props) => {
 
   const [recipeQueue, setRecipeQueue] = useState<RecipeData[]>([]);
   const [isPreFetching, setIsPreFetching] = useState(false);
+  const [pantryDetails, setPantryDetails] = useContext(PantryDetailsContext);
   const [generationDetails, setGenerationDetails] = useContext(
     GenerationDetailsContext,
   );
@@ -206,8 +208,7 @@ const PreviewAnimatedWrapper = (props: Props) => {
     try {
       const nextConstraints = generateConstraints();
       const nextPrompt = Prompt({
-        ingredients: generationDetails.ingredients || [],
-        leftovers: generationDetails.leftovers || [],
+        pantryDetails: pantryDetails,
 
         mealVibe: nextConstraints[0],
         mealTexture: nextConstraints[1],

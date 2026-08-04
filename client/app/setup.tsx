@@ -35,6 +35,8 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
+import { Food } from "@/components/features/pantry/Search";
+import { searchHouseholdEssentials } from "@/components/features/pantry/SearchFunctionality";
 
 type Props = {};
 
@@ -135,7 +137,7 @@ const SetupScreen = (props: Props) => {
     setCurrentEmojiText(emojis[randomIndex]);
   }
 
-  const ingredientCardAndOptions: Record<string, string[]> = {
+  const initialIngredientGroups: Record<string, string[]> = {
     Eggs: [],
     Milk: [
       "Whole Milk",
@@ -144,8 +146,14 @@ const SetupScreen = (props: Props) => {
       "Almond Milk",
       "Oat Milk",
     ],
-    Yogurt: ["Greek", "Regular", "Skyr", "Kefir", "Plant-Based"],
-    Rice: ["White Rice", "Brown Rice", "Jasmine", "Basmati"],
+    Yogurt: [
+      "Greek Yogurt",
+      "Regular Yogurt",
+      "Skyr",
+      "Kefir",
+      "Plant-Based Yogurt",
+    ],
+    Rice: ["White Rice", "Brown Rice", "Jasmine Rice", "Basmati Rice"],
     Pasta: [
       "Spaghetti",
       "Fettuccine",
@@ -157,8 +165,8 @@ const SetupScreen = (props: Props) => {
       "Ravioli",
       "Tortellini",
       "Lasagna",
-      "Whole Wheat",
-      "Gluten-Free",
+      "Whole Wheat Pasta",
+      "Gluten-Free Pasta",
     ],
     Bread: [
       "White Bread",
@@ -215,15 +223,21 @@ const SetupScreen = (props: Props) => {
       "White Beans",
       "Soybeans",
     ],
-    Chicken: ["Breast", "Thighs", "Wings", "Whole Chicken", "Ground Chicken"],
+    Chicken: [
+      "Chicken Breast",
+      "Chicken Thighs",
+      "Chicken Wings",
+      "Whole Chicken",
+      "Ground Chicken",
+    ],
     Beef: ["Ground Beef", "Steak", "Stew Meat", "Ribs"],
     Fish: ["Salmon", "Tuna", "Cod", "Haddock", "Pollock"],
-    Butter: ["Salted", "Unsalted", "Margarine", "Ghee"],
+    Butter: ["Salted Butter", "Unsalted Butter", "Margarine", "Ghee"],
     Cheese: [
-      "Cheddar",
-      "Mozzarella",
-      "Parmeasan",
-      "Feta",
+      "Cheddar Cheese",
+      "Mozzarella Cheese",
+      "Parmesan Cheese",
+      "Feta Cheese",
       "Cream Cheese",
       "Cottage Cheese",
     ],
@@ -236,6 +250,47 @@ const SetupScreen = (props: Props) => {
       "Avocado Oil",
     ],
   };
+
+  type IngredientGroup = {
+    key: string;
+    ingredient: Food;
+    options: Food[];
+  };
+
+  const ingredientGroups: IngredientGroup[] = Object.entries(
+    initialIngredientGroups,
+  ).map(([baseName, optionNames]) => {
+    const baseIngredient =
+      searchHouseholdEssentials(baseName).find(
+        (item) => item.name.toLowerCase() === baseName.toLowerCase(),
+      ) ??
+      ({
+        id: 0,
+        name: baseName,
+        category: "Other",
+        displayName: baseName,
+      } as Food);
+
+    const options = optionNames.map((optionName) => {
+      return (
+        searchHouseholdEssentials(optionName).find(
+          (item) => item.name.toLowerCase() === optionName.toLowerCase(),
+        ) ??
+        ({
+          id: 0,
+          name: optionName,
+          category: "Other",
+          displayName: optionName,
+        } as Food)
+      );
+    });
+
+    return {
+      key: baseName,
+      ingredient: baseIngredient,
+      options,
+    };
+  });
 
   useFocusEffect(
     useCallback(() => {
@@ -403,7 +458,7 @@ const SetupScreen = (props: Props) => {
 
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <FlatList
-                      data={Object.keys(ingredientCardAndOptions)}
+                      data={ingredientGroups}
                       numColumns={3}
                       columnWrapperStyle={{
                         justifyContent: "space-between",
@@ -411,11 +466,14 @@ const SetupScreen = (props: Props) => {
                         marginBottom: 9,
                         gap: 18,
                       }}
-                      keyExtractor={(item) => item}
+                      keyExtractor={(item) => item.key}
                       renderItem={({ item }) => (
                         <IngredientPickerCard
-                          ingredientName={item}
-                          selectionMenuOptions={ingredientCardAndOptions[item]}
+                          ingredient={item.ingredient}
+                          ingredientName={
+                            item.ingredient.displayName ?? item.ingredient.name
+                          }
+                          selectionMenuOptions={item.options}
                         />
                       )}
                     />
