@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import React, { useState, useEffect, useCallback, useContext } from "react";
 import { useFocusEffect, useRouter } from "expo-router";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { storage } from "@/utils/storage";
 import { styles } from "@/styles/auth.styles";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import { NEWCOLORS } from "@/constants/NewTheme";
@@ -338,8 +338,8 @@ const SetupScreen = (props: Props) => {
     };
   }, []);
 
-  const handleFinishSteps = async () => {
-    // await AsyncStorage.setItem("IS_PANTRY_SETUP", "true");
+  const handleFinishSteps = () => {
+    storage.set("IS_PANTRY_SETUP", true);
     router.replace("/(tabs)/pantry/dashboard");
   };
 
@@ -352,6 +352,7 @@ const SetupScreen = (props: Props) => {
         <OnboardingSequence
           setupTitle="Pantry Setup"
           handleFinishSteps={handleFinishSteps}
+          onBack={() => router.back()}
           stepsContent={[
             <OnboardingStep
               stepTitle="Let's Name Your Pantry"

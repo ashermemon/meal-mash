@@ -1,49 +1,42 @@
-import React, { useEffect, useState } from "react";
+import React, { useRef } from "react";
 import { View, ActivityIndicator } from "react-native";
 import { useRouter } from "expo-router";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useFocusEffect } from "@react-navigation/native";
+import { storage } from "@/utils/storage";
 import { NEWCOLORS } from "@/constants/NewTheme";
 
 type Props = {};
 
 const PantryIndex = (props: Props) => {
   const router = useRouter();
-  const [checkingSetup, setCheckingSetup] = useState(true);
+  const didPushSetup = useRef(false);
 
-  useEffect(() => {
-    const checkPantryStatus = async () => {
-      try {
-        // const isSetupComplete = await AsyncStorage.getItem("IS_PANTRY_SETUP");
-        const isSetupComplete: string = "false"; // temp toggle
-
-        setTimeout(() => {
-          if (isSetupComplete === "true") {
-            router.replace("/(tabs)/pantry/dashboard");
-          } else {
-            router.replace("/setup");
-          }
-          setCheckingSetup(false);
-        }, 0);
-      } catch (error) {
-        setTimeout(() => {
-          router.replace("/setup");
-          setCheckingSetup(false);
-        }, 0);
+  useFocusEffect(
+    React.useCallback(() => {
+      // If we already pushed setup and regained focus, the user pressed back
+      // from setup — skip past this blank screen too.
+      if (didPushSetup.current) {
+        didPushSetup.current = false;
+        router.back();
+        return;
       }
-    };
 
-    checkPantryStatus();
-  }, []);
+      // Synchronous MMKV read — instant, no async delay or spinner
+      const isSetupComplete = storage.getBoolean("IS_PANTRY_SETUP") === true;
 
-  if (checkingSetup) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" color={NEWCOLORS.greenAccent} />
-      </View>
-    );
-  }
+      if (isSetupComplete) {
+        router.replace("/(tabs)/pantry/dashboard");
+      } else {
+        didPushSetup.current = true;
+        router.push("/setup");
+      }
+    }, [router])
+  );
 
-  return null;
+  // Renders for at most one frame before the sync check kicks in
+  return (
+    <View style={{ flex: 1, backgroundColor: NEWCOLORS.backgroundColor }} />
+  );
 };
 
 export default PantryIndex;

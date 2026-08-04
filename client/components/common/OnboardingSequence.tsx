@@ -20,6 +20,7 @@ type Props = {
   setupTitle: string;
   handleFinishSteps: Function;
   stepsContent: React.ReactNode[];
+  onBack?: () => void;
 };
 
 const OnboardingSequence = (props: Props) => {
@@ -37,6 +38,8 @@ const OnboardingSequence = (props: Props) => {
   const goToPrevStep = () => {
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1);
+    } else if (props.onBack) {
+      props.onBack();
     }
   };
 
