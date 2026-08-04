@@ -15,6 +15,7 @@ import { storage } from "@/utils/storage";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import { NEWCOLORS } from "@/constants/NewTheme";
 import LoginPage from "@/components/features/auth/Login";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function Profile() {
   const [editMode, setEditMode] = useState(false);
@@ -142,42 +143,62 @@ export default function Profile() {
           <></>
         )}
       </View>
-      <ScrollView
-        contentContainerStyle={{ flexGrow: 1 }}
-        style={[styles.generatorContainer, { paddingTop: 0, width: "100%" }]}
-      >
-        <View style={[styles.container, { width: "100%", flex: 1 }]}>
-          <Text
-            style={[
-              styles.textCentered,
-              {
-                fontSize: 20,
-                fontFamily: "Nunito-Bold",
-                textDecorationColor: COLORS.fontColor,
-                textDecorationStyle: "solid",
-                textDecorationLine: "underline",
-                marginBottom: 20,
-                marginTop: 5,
-              },
-            ]}
-          >
-            Your Statistics
-          </Text>
+      <View style={{ flex: 1, position: "relative" }}>
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1, paddingBottom: 130 }}
+          style={[styles.generatorContainer, { paddingTop: 0, width: "100%" }]}
+        >
+          <View style={[styles.container, { width: "100%", flex: 1 }]}>
+            <Text
+              style={[
+                styles.textCentered,
+                {
+                  fontSize: 20,
+                  fontFamily: "Nunito-Bold",
+                  textDecorationColor: COLORS.fontColor,
+                  textDecorationStyle: "solid",
+                  textDecorationLine: "underline",
+                  marginBottom: 20,
+                  marginTop: 5,
+                },
+              ]}
+            >
+              Your Statistics
+            </Text>
 
-          <Counter
-            variable="mealsnumber"
-            text="Lifetime Meals Generated"
-          ></Counter>
-          <Counter
-            variable="savesnumber"
-            text="Recipes in RecipeBook"
-          ></Counter>
-          <Counter
-            variable="favsnumber"
-            text="Favorited Ingredients & Leftovers"
-          ></Counter>
-        </View>
-      </ScrollView>
+            <Counter
+              variable="mealsnumber"
+              text="Lifetime Meals Generated"
+            ></Counter>
+            <Counter
+              variable="savesnumber"
+              text="Recipes in RecipeBook"
+            ></Counter>
+            <Counter
+              variable="favsnumber"
+              text="Favorited Ingredients & Leftovers"
+            ></Counter>
+          </View>
+        </ScrollView>
+        <LinearGradient
+          colors={[
+            "rgba(248, 246, 240, 0)",
+            "rgba(248, 246, 240, 0.75)",
+            "rgba(248, 246, 240, 0.98)",
+            NEWCOLORS.backgroundColor,
+          ]}
+          locations={[0, 0.4, 0.75, 1]}
+          style={{
+            position: "absolute",
+            bottom: -40,
+            left: 0,
+            right: 0,
+            height: 160,
+            zIndex: 10,
+          }}
+          pointerEvents="none"
+        />
+      </View>
     </>
   );
 }
