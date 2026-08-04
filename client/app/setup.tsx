@@ -236,7 +236,7 @@ const SetupScreen = (props: Props) => {
     Cheese: [
       "Cheddar Cheese",
       "Mozzarella Cheese",
-      "Parmeasan Cheese",
+      "Parmesan Cheese",
       "Feta Cheese",
       "Cream Cheese",
       "Cottage Cheese",

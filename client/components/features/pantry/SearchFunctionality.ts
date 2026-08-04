@@ -123,7 +123,7 @@ const householdEssentialCatalog: Food[] = [
   createFood(105, "Cheese", "Dairy & Eggs"),
   createFood(106, "Cheddar Cheese", "Dairy & Eggs"),
   createFood(107, "Mozzarella Cheese", "Dairy & Eggs"),
-  createFood(108, "Parmeasan Cheese", "Dairy & Eggs"),
+  createFood(108, "Parmesan Cheese", "Dairy & Eggs"),
   createFood(109, "Feta Cheese", "Dairy & Eggs"),
   createFood(110, "Cream Cheese", "Dairy & Eggs"),
   createFood(111, "Cottage Cheese", "Dairy & Eggs"),

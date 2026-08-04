@@ -1,6 +1,8 @@
+import { Food } from "@/components/features/pantry/Search";
+import { PantryDetails, PantryDetailsType } from "@/contexts/PantryDetails";
+
 type PromptProps = {
-  ingredients: string[];
-  leftovers: string[];
+  pantryDetails: PantryDetails;
 
   mealVibe: string;
   mealTexture: string;
@@ -24,25 +26,18 @@ ${
   props.generationType === 0
     ? `
 Select ingredients from the user's pantry below that acheive the recipe constraints and create a realistic, tasty recipe.
-Special note on leftovers: If leftover dishes are provided, assumed they are already cooked. DO NOT recook already made leftovers.
+Special note on leftovers: If leftover/prepared dishes are provided, assumed they are already cooked. DO NOT recook already made prepared dishes/leftovers.
 
 Pantry:
-Leftover Fried Rice
-Asparagus
-Thyme
-Flour
-Eggs
-Butter
-Bread
-Ice cream
-Whipped cream
-Ghost peppers
-Chocolate chip cookies
+${props.pantryDetails.ingredients
+  .map((ingredient) => ingredient.name)
+  .join("\n")}
+
 `
     : props.generationType === 1
       ? `
 Select ingredients from the list of ingredients below that acheive the recipe constraints and create a realistic, tasty recipe. You are not required to use all ingredients listed, instead, just choose the best ones for a tasty recipe. Constraints are recommendations and not strictly enforced. A tasty and realistic recipe is more important.
-Special note on leftovers: If leftover dishes are provided, assumed they are already cooked. DO NOT recook already made leftovers.
+Special note on leftovers: If leftover/prepared dishes are provided, assumed they are already cooked. DO NOT recook already made prepared dishes/leftovers.
 
 
 Ingredients Available for Use:
@@ -60,7 +55,7 @@ Chocolate chip cookies
 `
       : `Use any ingredients to create the best tasting recipe that meets the given constraints. Ensure the recipe is realistic, tasty and satisfies the user's requests`
 }
-${props.ingredients.length > 0 || props.leftovers.length > 0 ? "" : ""}
+
 RECIPE CONSTRAINTS:
 - Meal vibe: ${props.mealVibe}
 - Meal texture: ${props.mealTexture}
