@@ -23,6 +23,8 @@ const Search = (props: Props) => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Food[]>([]);
   const [pantryDetails, setPantryDetails] = useContext(PantryDetailsContext);
+  const [showResults, setShowResults] = useState(false);
+
   useEffect(() => {
     const timeout = setTimeout(async () => {
       if (!query.trim()) {
@@ -34,13 +36,26 @@ const Search = (props: Props) => {
       setResults(foods);
     }, 300);
 
-    return () => clearTimeout(timeout);
+    return () => {
+      clearTimeout(timeout);
+    };
   }, [query]);
+
   function handleSearch(text: string) {
     setQuery(text);
+    setShowResults(Boolean(text.trim()));
   }
   return (
-    <View style={{ zIndex: 9999 }}>
+    <Pressable
+      style={{ zIndex: 9999 }}
+      onPress={() => {
+        if (showResults) {
+          setShowResults(false);
+          setQuery("");
+        }
+      }}
+      accessible={false}
+    >
       <View
         style={[
           styles.sliderPill,
@@ -70,6 +85,8 @@ const Search = (props: Props) => {
             size={25}
           />
           <TextInput
+            onFocus={() => setShowResults(Boolean(query.trim()))}
+            onBlur={() => {}}
             placeholder="Search Ingredients"
             autoCapitalize="words"
             keyboardType="default"
@@ -109,7 +126,7 @@ const Search = (props: Props) => {
         </View>
       </View>
 
-      {results.length > 0 && (
+      {results.length > 0 && showResults && (
         <View style={[localStyles.resultsOverlay, styles.basicBoxShadow]}>
           <ScrollView
             style={{ maxHeight: 240 }}
@@ -121,7 +138,10 @@ const Search = (props: Props) => {
               <Pressable
                 key={item.id}
                 style={localStyles.resultItem}
-                onPress={() =>
+                onPress={() => {
+                  setShowResults(false);
+                  setQuery("");
+
                   setPantryDetails((prev) => {
                     const alreadyAdded = prev.ingredients.includes(item.name);
                     return {
@@ -130,8 +150,8 @@ const Search = (props: Props) => {
                         ? prev.ingredients
                         : [...prev.ingredients, item.name],
                     };
-                  })
-                }
+                  });
+                }}
               >
                 <View
                   style={{
@@ -184,7 +204,7 @@ const Search = (props: Props) => {
           </ScrollView>
         </View>
       )}
-    </View>
+    </Pressable>
   );
 };
 

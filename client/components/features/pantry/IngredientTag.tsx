@@ -55,7 +55,7 @@ const IngredientTag = (props: Props) => {
             {props.ingredientName}
           </Text>
         </View>
-        1
+
         <View
           style={[
             styles.infoTag,
