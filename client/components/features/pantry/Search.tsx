@@ -1,4 +1,4 @@
-import { View, Text, TextInput, Pressable, StyleSheet } from "react-native";
+import { View, Text, TextInput, Pressable, StyleSheet, Keyboard } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import React, { useContext, useEffect, useState } from "react";
 import { CustomIcon } from "@/icon-loader/icon-loader";
@@ -45,22 +45,43 @@ const Search = (props: Props) => {
     setQuery(text);
     setShowResults(Boolean(text.trim()));
   }
+
+  function dismissResults() {
+    if (showResults) {
+      setShowResults(false);
+    }
+  }
+
+  function selectIngredient(item: Food) {
+    setPantryDetails((prev) => {
+      const alreadyAdded = prev.ingredients.includes(item.name);
+      const nextIngredients = alreadyAdded
+        ? prev.ingredients
+        : [...prev.ingredients, item.name];
+
+      return {
+        ...prev,
+        ingredients: nextIngredients,
+      };
+    });
+
+    Keyboard.dismiss();
+    setQuery("");
+    dismissResults();
+  }
+
   return (
-    <Pressable
-      style={{ zIndex: 9999 }}
-      onPress={() => {
-        if (showResults) {
-          setShowResults(false);
-          setQuery("");
-        }
-      }}
-      accessible={false}
-    >
+    <View style={[{ zIndex: 9999 }, localStyles.container]}>
+      <Pressable
+        style={localStyles.backdrop}
+        onPress={dismissResults}
+        pointerEvents={showResults && results.length > 0 ? "auto" : "none"}
+        accessible={false}
+      />
       <View
         style={[
           styles.sliderPill,
           styles.basicBoxShadow,
-
           {
             zIndex: 9999,
             flexDirection: "row",
@@ -111,9 +132,10 @@ const Search = (props: Props) => {
           <View style={styles.verticalLine}></View>
           <Pressable
             style={{ paddingRight: 15, paddingLeft: 10, zIndex: 9999 }}
-            onPress={() =>
-              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
-            }
+            onPress={(event) => {
+              event.stopPropagation();
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+            }}
             hitSlop={{ top: 10, bottom: 10, left: 15, right: 15 }}
           >
             <CustomIcon
@@ -132,25 +154,17 @@ const Search = (props: Props) => {
             style={{ maxHeight: 240 }}
             showsVerticalScrollIndicator={true}
             nestedScrollEnabled={true}
-            keyboardShouldPersistTaps="handled"
+            keyboardShouldPersistTaps="always"
+            contentContainerStyle={{ paddingBottom: 8 }}
+            bounces={false}
           >
             {results.map((item, index) => (
               <Pressable
                 key={item.id}
                 style={localStyles.resultItem}
-                onPress={() => {
-                  setShowResults(false);
-                  setQuery("");
-
-                  setPantryDetails((prev) => {
-                    const alreadyAdded = prev.ingredients.includes(item.name);
-                    return {
-                      ...prev,
-                      ingredients: alreadyAdded
-                        ? prev.ingredients
-                        : [...prev.ingredients, item.name],
-                    };
-                  });
+                onPress={(event) => {
+                  event.stopPropagation();
+                  selectIngredient(item);
                 }}
               >
                 <View
@@ -204,11 +218,25 @@ const Search = (props: Props) => {
           </ScrollView>
         </View>
       )}
-    </Pressable>
+    </View>
   );
 };
 
 const localStyles = StyleSheet.create({
+  container: {
+    position: "relative",
+  },
+
+  backdrop: {
+    position: "absolute",
+    top: -1000,
+    bottom: -1000,
+    left: -1000,
+    right: -1000,
+    backgroundColor: "transparent",
+    zIndex: 0,
+  },
+
   searchInputAction: {
     justifyContent: "flex-end",
     alignItems: "center",
