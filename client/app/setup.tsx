@@ -36,9 +36,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { Food } from "@/components/features/pantry/Search";
-import {
-  searchHouseholdEssentials,
-} from "@/components/features/pantry/SearchFunctionality";
+import { searchHouseholdEssentials } from "@/components/features/pantry/SearchFunctionality";
 
 type Props = {};
 
@@ -247,40 +245,40 @@ const SetupScreen = (props: Props) => {
     options: Food[];
   };
 
-  const ingredientGroups: IngredientGroup[] = Object.entries(initialIngredientGroups).map(
-    ([baseName, optionNames]) => {
-      const baseIngredient =
-        searchHouseholdEssentials(baseName).find(
-          (item) => item.name.toLowerCase() === baseName.toLowerCase(),
+  const ingredientGroups: IngredientGroup[] = Object.entries(
+    initialIngredientGroups,
+  ).map(([baseName, optionNames]) => {
+    const baseIngredient =
+      searchHouseholdEssentials(baseName).find(
+        (item) => item.name.toLowerCase() === baseName.toLowerCase(),
+      ) ??
+      ({
+        id: 0,
+        name: baseName,
+        category: "Other",
+        displayName: baseName,
+      } as Food);
+
+    const options = optionNames.map((optionName) => {
+      return (
+        searchHouseholdEssentials(optionName).find(
+          (item) => item.name.toLowerCase() === optionName.toLowerCase(),
         ) ??
         ({
           id: 0,
-          name: baseName,
+          name: optionName,
           category: "Other",
-          displayName: baseName,
-        } as Food);
+          displayName: optionName,
+        } as Food)
+      );
+    });
 
-      const options = optionNames.map((optionName) => {
-        return (
-          searchHouseholdEssentials(optionName).find(
-            (item) => item.name.toLowerCase() === optionName.toLowerCase(),
-          ) ??
-          ({
-            id: 0,
-            name: optionName,
-            category: "Other",
-            displayName: optionName,
-          } as Food)
-        );
-      });
-
-      return {
-        key: baseName,
-        ingredient: baseIngredient,
-        options,
-      };
-    },
-  );
+    return {
+      key: baseName,
+      ingredient: baseIngredient,
+      options,
+    };
+  });
 
   useFocusEffect(
     useCallback(() => {
@@ -460,7 +458,9 @@ const SetupScreen = (props: Props) => {
                       renderItem={({ item }) => (
                         <IngredientPickerCard
                           ingredient={item.ingredient}
-                          ingredientName={item.ingredient.displayName ?? item.ingredient.name}
+                          ingredientName={
+                            item.ingredient.displayName ?? item.ingredient.name
+                          }
                           selectionMenuOptions={item.options}
                         />
                       )}

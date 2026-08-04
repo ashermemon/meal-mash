@@ -121,21 +121,23 @@ export default function Dashboard() {
               currentSelected={selectedFilter}
               categories={ingredientCategories}
             />
-            {pantryDetails.ingredients.map((ingredient: Food, index: number) =>
-              selectedFilter === "All" ? (
-                <IngredientTag
-                  key={index}
-                  ingredient={ingredient}
-                ></IngredientTag>
-              ) : selectedFilter === ingredient.category ? (
-                <IngredientTag
-                  key={index}
-                  ingredient={ingredient}
-                ></IngredientTag>
-              ) : (
-                <React.Fragment key={index}></React.Fragment>
-              ),
-            )}
+            {pantryDetails.ingredients
+              .toReversed()
+              .map((ingredient: Food, index: number) =>
+                selectedFilter === "All" ? (
+                  <IngredientTag
+                    key={index}
+                    ingredient={ingredient}
+                  ></IngredientTag>
+                ) : selectedFilter === ingredient.category ? (
+                  <IngredientTag
+                    key={index}
+                    ingredient={ingredient}
+                  ></IngredientTag>
+                ) : (
+                  <React.Fragment key={index}></React.Fragment>
+                ),
+              )}
             {pantryDetails.ingredients.length < 1 ? (
               <Text
                 style={[

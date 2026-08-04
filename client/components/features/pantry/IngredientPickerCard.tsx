@@ -61,7 +61,8 @@ const IngredientPickerCard = (props: Props) => {
           item &&
           item.name.trim().length > 0 &&
           !props.selectionMenuOptions.some((option) => {
-            const optionName = typeof option === "string" ? option : option.name;
+            const optionName =
+              typeof option === "string" ? option : option.name;
             return optionName === item.name;
           }) &&
           item.name !== ingredientValue.name,
@@ -72,7 +73,12 @@ const IngredientPickerCard = (props: Props) => {
         ingredients: [...filteredIngredients, ...cleanSelectedOptions],
       };
     });
-  }, [selectedOptions, ingredientValue.name, props.selectionMenuOptions, setPantryDetails]);
+  }, [
+    selectedOptions,
+    ingredientValue.name,
+    props.selectionMenuOptions.length,
+    // setPantryDetails,
+  ]);
 
   useEffect(() => {
     if (
