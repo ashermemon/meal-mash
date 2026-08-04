@@ -367,8 +367,8 @@ const SetupScreen = (props: Props) => {
                 style={{
                   justifyContent: "center",
                   alignItems: "center",
-                  marginTop: 20,
-                  marginBottom: 40,
+                  marginTop: keyboardOpen ? 10 : 20,
+                  marginBottom: keyboardOpen ? 30 : 40,
                 }}
               >
                 <GestureDetector gesture={tap}>
@@ -379,20 +379,24 @@ const SetupScreen = (props: Props) => {
                       styles.basicBoxShadow,
                       animatedStyles,
                       {
-                        height: keyboardOpen ? 110 : 220,
-                        width: keyboardOpen ? 110 : 220,
+                        height: keyboardOpen ? 150 : 220,
+                        width: keyboardOpen ? 150 : 220,
                       },
                     ]}
                   >
                     {currentEmojiText === "" ? (
                       <CustomIcon
-                        size={keyboardOpen ? 70 : 140}
+                        size={keyboardOpen ? 100 : 140}
                         name={"emoji"}
                         filled={false}
                         color={NEWCOLORS.unselectedShape}
                       ></CustomIcon>
                     ) : (
-                      <Text style={{ fontSize: keyboardOpen ? 40 : 100 }}>
+                      <Text
+                        style={{
+                          fontSize: keyboardOpen ? 70 : 100,
+                        }}
+                      >
                         {currentEmojiText}
                       </Text>
                     )}
@@ -400,7 +404,10 @@ const SetupScreen = (props: Props) => {
                 </GestureDetector>
               </View>
               <TextInput
-                style={[styles.setupInput]}
+                style={[
+                  styles.setupInput,
+                  { marginBottom: keyboardOpen ? 120 : 0 },
+                ]}
                 value={pantryName}
                 onChangeText={setPantryName}
                 placeholder="Your Pantry"

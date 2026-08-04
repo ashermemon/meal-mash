@@ -60,7 +60,11 @@ export default function Dashboard() {
 
   return (
     <ScrollView
-      style={{ paddingHorizontal: 25, flex: 1, paddingVertical: 20 }}
+      style={{
+        paddingHorizontal: 25,
+        flex: 1,
+        paddingVertical: 20,
+      }}
       contentContainerStyle={{ flexGrow: 1 }}
       overScrollMode="never"
       alwaysBounceVertical={false}
