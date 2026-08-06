@@ -5,7 +5,6 @@ import {
   Pressable,
   StyleSheet,
   Keyboard,
-  ScrollView,
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { CustomIcon } from "@/icon-loader/icon-loader";
@@ -14,6 +13,7 @@ import { searchIngredients } from "./SearchFunctionality";
 import { styles } from "@/styles/auth.styles";
 import * as Haptics from "expo-haptics";
 import { PantryDetailsContext } from "@/contexts/PantryDetails";
+import { ScrollView } from "react-native-gesture-handler";
 
 type Props = {
   onSelectIngredient?: (item: Food) => void;
@@ -174,10 +174,6 @@ const Search = (props: Props) => {
               <Pressable
                 key={item.id}
                 style={localStyles.resultItem}
-                onPressIn={(event) => {
-                  event.stopPropagation();
-                  selectIngredient(item);
-                }}
                 onPress={(event) => {
                   event.stopPropagation();
                   selectIngredient(item);
@@ -277,7 +273,7 @@ const localStyles = StyleSheet.create({
   resultItem: {
     borderRadius: 22,
     backgroundColor: NEWCOLORS.greyBlock,
-
+    zIndex: 9999,
     justifyContent: "center",
     alignItems: "center",
   },

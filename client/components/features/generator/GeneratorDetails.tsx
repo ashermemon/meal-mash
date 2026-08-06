@@ -316,6 +316,22 @@ const GeneratorDetails = (props: Props) => {
                 </Text>
               </Pressable>
             </View>
+            <Search
+              onSelectIngredient={(item: Food) =>
+                setBrowseIngredients((prev) => {
+                  const alreadyAdded = prev.some((i) => i.id === item.id);
+                  if (alreadyAdded) return prev;
+                  return [...prev, item];
+                })
+              }
+            />
+            <View
+              style={{
+                marginTop: 20,
+                borderBottomWidth: 1.5,
+                borderColor: NEWCOLORS.dividerGrey,
+              }}
+            ></View>
           </>
         }
         headerStyle={{
@@ -334,15 +350,6 @@ const GeneratorDetails = (props: Props) => {
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
         >
-          <Search
-            onSelectIngredient={(item: Food) =>
-              setBrowseIngredients((prev) => {
-                const alreadyAdded = prev.some((i) => i.id === item.id);
-                if (alreadyAdded) return prev;
-                return [...prev, item];
-              })
-            }
-          />
           <View />
 
           {browseIngredients
