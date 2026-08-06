@@ -227,30 +227,30 @@ const GeneratorDetails = (props: Props) => {
               onPress={
                 mealsLeft > 0
                   ? () => [
-                    setGenerationDetails((prev) => ({
-                      ...prev,
-                      generationType: genMode,
-                      difficulties:
-                        diffciulties.length === 0
-                          ? difficultyLabels
-                          : diffciulties.map((idx) => difficultyLabels[idx]),
-                      recipeTime:
-                        times.length === 0
-                          ? timeLabels
-                          : times.map((idx) => timeLabels[idx]),
-                      numberOfServings: num,
-                      mealType: mealType,
-                      cuisine: cuisine,
-                      dietaryPreference: dietaryRestrictions,
-                    })),
-                    router.navigate("/recipe"),
-                    setRecipeData(initialRecipeData),
-                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light),
-                  ]
+                      setGenerationDetails((prev) => ({
+                        ...prev,
+                        generationType: genMode,
+                        difficulties:
+                          diffciulties.length === 0
+                            ? difficultyLabels
+                            : diffciulties.map((idx) => difficultyLabels[idx]),
+                        recipeTime:
+                          times.length === 0
+                            ? timeLabels
+                            : times.map((idx) => timeLabels[idx]),
+                        numberOfServings: num,
+                        mealType: mealType,
+                        cuisine: cuisine,
+                        dietaryPreference: dietaryRestrictions,
+                      })),
+                      router.navigate("/recipe"),
+                      setRecipeData(initialRecipeData),
+                      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light),
+                    ]
                   : () =>
-                    alert(
-                      "You have run out of meal generations today. Come again tomorrow!",
-                    )
+                      alert(
+                        "You have run out of meal generations today. Come again tomorrow!",
+                      )
               }
             >
               <Text
@@ -283,17 +283,39 @@ const GeneratorDetails = (props: Props) => {
                 marginBottom: 15,
               }}
             />
-            <Text
+            <View
               style={{
-                fontSize: 22,
-                fontFamily: "Nunito-SemiBold",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                paddingHorizontal: 10,
                 marginTop: 4,
                 marginBottom: 15,
-                color: NEWCOLORS.basicText,
               }}
             >
-              Add Ingredients
-            </Text>
+              <Text
+                style={{
+                  fontSize: 22,
+                  fontFamily: "Nunito-SemiBold",
+
+                  color: NEWCOLORS.basicText,
+                }}
+              >
+                Add Ingredients
+              </Text>
+              <Pressable onPress={() => setBrowseIngredients([])}>
+                <Text
+                  style={{
+                    fontSize: 14,
+                    fontFamily: "Nunito-SemiBold",
+
+                    color: NEWCOLORS.redAccent,
+                  }}
+                >
+                  Remove All
+                </Text>
+              </Pressable>
+            </View>
           </>
         }
         headerStyle={{

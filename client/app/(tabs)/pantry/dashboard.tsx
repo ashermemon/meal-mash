@@ -175,8 +175,10 @@ export default function Dashboard() {
                     styles.textCenterBold,
                     {
                       fontFamily: "Nunito-SemiBold",
-                      fontSize: 25,
-                      paddingTop: 20,
+                      fontSize: 22,
+                      paddingTop: 5,
+                      paddingHorizontal: 15,
+                      color: NEWCOLORS.placeholderText,
                     },
                   ]}
                 >
