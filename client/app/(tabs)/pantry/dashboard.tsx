@@ -80,6 +80,7 @@ export default function Dashboard() {
         }}
         overScrollMode="never"
         alwaysBounceVertical={false}
+        keyboardShouldPersistTaps="always"
       >
         <View
           style={{
@@ -108,7 +109,21 @@ export default function Dashboard() {
               pantryPage={true}
             ></PantryPill>
             <View style={{ gap: 20 }}>
-              <Search />
+              <Search
+                onSelectIngredient={(item: Food) =>
+                  setPantryDetails((prev) => {
+                    const alreadyAdded = prev.ingredients.includes(item);
+                    const nextIngredients = alreadyAdded
+                      ? prev.ingredients
+                      : [...prev.ingredients, item];
+
+                    return {
+                      ...prev,
+                      ingredients: nextIngredients,
+                    };
+                  })
+                }
+              />
 
               <View style={styles.pantryTip}>
                 <Text
@@ -117,8 +132,8 @@ export default function Dashboard() {
                   adjustsFontSizeToFit
                 >
                   <Text style={{ fontFamily: "Nunito-SemiBold" }}>Tip: </Text>
-                  Be sure to add any leftover dishes you have at home and want to
-                  use in recipes!
+                  Be sure to add any leftover dishes you have at home and want
+                  to use in recipes!
                 </Text>
                 <Image
                   source={require("@/assets/images/leftover.png")}

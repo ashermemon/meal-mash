@@ -13,15 +13,12 @@ const PantryIndex = (props: Props) => {
 
   useFocusEffect(
     React.useCallback(() => {
-      // If we already pushed setup and regained focus, the user pressed back
-      // from setup — skip past this blank screen too.
       if (didPushSetup.current) {
         didPushSetup.current = false;
         router.back();
         return;
       }
 
-      // Synchronous MMKV read — instant, no async delay or spinner
       const isSetupComplete = storage.getBoolean("IS_PANTRY_SETUP") === true;
 
       if (isSetupComplete) {
@@ -33,7 +30,6 @@ const PantryIndex = (props: Props) => {
     }, [router])
   );
 
-  // Renders for at most one frame before the sync check kicks in
   return (
     <View style={{ flex: 1, backgroundColor: NEWCOLORS.backgroundColor }} />
   );

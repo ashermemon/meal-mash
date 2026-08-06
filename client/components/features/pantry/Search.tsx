@@ -5,8 +5,8 @@ import {
   Pressable,
   StyleSheet,
   Keyboard,
+  ScrollView,
 } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
 import React, { useContext, useEffect, useState } from "react";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import { NEWCOLORS } from "@/constants/NewTheme";
@@ -15,7 +15,9 @@ import { styles } from "@/styles/auth.styles";
 import * as Haptics from "expo-haptics";
 import { PantryDetailsContext } from "@/contexts/PantryDetails";
 
-type Props = {};
+type Props = {
+  onSelectIngredient?: (item: Food) => void;
+};
 
 export type Food = {
   id: number;
@@ -29,7 +31,7 @@ export type Food = {
 const Search = (props: Props) => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Food[]>([]);
-  const [pantryDetails, setPantryDetails] = useContext(PantryDetailsContext);
+
   const [showResults, setShowResults] = useState(false);
 
   useEffect(() => {
@@ -59,22 +61,23 @@ const Search = (props: Props) => {
     }
   }
 
-  function selectIngredient(item: Food) {
-    setPantryDetails((prev) => {
-      const alreadyAdded = prev.ingredients.includes(item);
-      const nextIngredients = alreadyAdded
-        ? prev.ingredients
-        : [...prev.ingredients, item];
+  const selectingRef = React.useRef(false);
 
-      return {
-        ...prev,
-        ingredients: nextIngredients,
-      };
-    });
+  function selectIngredient(item: Food) {
+    if (selectingRef.current) return;
+    selectingRef.current = true;
+
+    if (props.onSelectIngredient) {
+      props.onSelectIngredient(item);
+    }
 
     Keyboard.dismiss();
     setQuery("");
     dismissResults();
+
+    setTimeout(() => {
+      selectingRef.current = false;
+    }, 300);
   }
 
   return (
@@ -131,6 +134,8 @@ const Search = (props: Props) => {
                 marginLeft: 12,
                 color: NEWCOLORS.basicText,
                 fontFamily: "Nunito-Medium",
+                height: 48,
+                minHeight: 48,
               },
             ]}
           />
@@ -169,6 +174,10 @@ const Search = (props: Props) => {
               <Pressable
                 key={item.id}
                 style={localStyles.resultItem}
+                onPressIn={(event) => {
+                  event.stopPropagation();
+                  selectIngredient(item);
+                }}
                 onPress={(event) => {
                   event.stopPropagation();
                   selectIngredient(item);
@@ -261,7 +270,7 @@ const localStyles = StyleSheet.create({
     paddingVertical: 4,
     paddingHorizontal: 12,
     borderWidth: 0,
-
+    zIndex: 9999,
     overflow: "hidden",
   },
 
