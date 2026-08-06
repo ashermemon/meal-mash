@@ -16,8 +16,10 @@ import RecipeContext from "@/contexts/RecipeContext";
 import { initialRecipeData } from "@/contexts/RecipeContext";
 import PantryPill from "../pantry/PantryPill";
 import { PantryDetailsContext } from "@/contexts/PantryDetails";
+import { BrowseIngredientsContext } from "@/contexts/BrowseIngredientsContext";
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
-import Search from "../pantry/Search";
+import Search, { Food } from "../pantry/Search";
+import IngredientTag from "../pantry/IngredientTag";
 
 type Props = {};
 
@@ -51,6 +53,9 @@ const GeneratorDetails = (props: Props) => {
     GenerationDetailsContext,
   );
   const [mealsLeft, setMealsLeft] = useContext(MealsLeftContext);
+  const [browseIngredients, setBrowseIngredients] = useContext(
+    BrowseIngredientsContext,
+  );
 
   const mealTypeOptions: string[] = [
     "🥞  Breakfast",
@@ -131,32 +136,37 @@ const GeneratorDetails = (props: Props) => {
                     pantryPage={false}
                   ></PantryPill>
                 ) : genMode === 1 ? (
-                  <Pressable
-                    onPress={openBrowseIngredients}
-                    style={[
-                      styles.sliderPill,
-                      styles.basicBoxShadow,
-                      {
-                        flexDirection: "row",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        backgroundColor: NEWCOLORS.unselectedGrey,
-                      },
-                    ]}
-                  >
-                    <Text
+                  <View style={{ gap: 12 }}>
+                    <Pressable
+                      onPress={openBrowseIngredients}
                       style={[
-                        styles.textCentered,
+                        styles.sliderPill,
+                        styles.basicBoxShadow,
                         {
-                          fontSize: 18,
-                          color: NEWCOLORS.basicText,
-                          fontFamily: "Nunito-SemiBold",
+                          flexDirection: "row",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          backgroundColor: NEWCOLORS.unselectedGrey,
                         },
                       ]}
                     >
-                      Browse Ingredients
-                    </Text>
-                  </Pressable>
+                      <Text
+                        style={[
+                          styles.textCentered,
+                          {
+                            fontSize: 18,
+                            color: NEWCOLORS.basicText,
+                            fontFamily: "Nunito-SemiBold",
+                          },
+                        ]}
+                      >
+                        Browse Ingredients
+                        {browseIngredients.length > 0
+                          ? ` (${browseIngredients.length})`
+                          : ""}
+                      </Text>
+                    </Pressable>
+                  </View>
                 ) : (
                   <></>
                 )}
@@ -217,30 +227,30 @@ const GeneratorDetails = (props: Props) => {
               onPress={
                 mealsLeft > 0
                   ? () => [
-                      setGenerationDetails((prev) => ({
-                        ...prev,
-                        generationType: genMode,
-                        difficulties:
-                          diffciulties.length === 0
-                            ? difficultyLabels
-                            : diffciulties.map((idx) => difficultyLabels[idx]),
-                        recipeTime:
-                          times.length === 0
-                            ? timeLabels
-                            : times.map((idx) => timeLabels[idx]),
-                        numberOfServings: num,
-                        mealType: mealType,
-                        cuisine: cuisine,
-                        dietaryPreference: dietaryRestrictions,
-                      })),
-                      router.navigate("/recipe"),
-                      setRecipeData(initialRecipeData),
-                      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light),
-                    ]
+                    setGenerationDetails((prev) => ({
+                      ...prev,
+                      generationType: genMode,
+                      difficulties:
+                        diffciulties.length === 0
+                          ? difficultyLabels
+                          : diffciulties.map((idx) => difficultyLabels[idx]),
+                      recipeTime:
+                        times.length === 0
+                          ? timeLabels
+                          : times.map((idx) => timeLabels[idx]),
+                      numberOfServings: num,
+                      mealType: mealType,
+                      cuisine: cuisine,
+                      dietaryPreference: dietaryRestrictions,
+                    })),
+                    router.navigate("/recipe"),
+                    setRecipeData(initialRecipeData),
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light),
+                  ]
                   : () =>
-                      alert(
-                        "You have run out of meal generations today. Come again tomorrow!",
-                      )
+                    alert(
+                      "You have run out of meal generations today. Come again tomorrow!",
+                    )
               }
             >
               <Text
@@ -292,16 +302,56 @@ const GeneratorDetails = (props: Props) => {
         }}
         backgroundColor={NEWCOLORS.sheetBackgroundColor}
       >
-        <View
-          style={{
-            paddingHorizontal: 20,
+        <ScrollView
+          style={{ paddingHorizontal: 20 }}
+          contentContainerStyle={{
             paddingTop: 10,
             paddingBottom: 20,
-            minHeight: 400,
+            gap: 10,
           }}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
         >
-          <Search onSelectIngredient={() => {}} />
-        </View>
+          <Search
+            onSelectIngredient={(item: Food) =>
+              setBrowseIngredients((prev) => {
+                const alreadyAdded = prev.some((i) => i.id === item.id);
+                if (alreadyAdded) return prev;
+                return [...prev, item];
+              })
+            }
+          />
+          <View />
+
+          {browseIngredients
+            .toReversed()
+            .map((ingredient: Food, index: number) => (
+              <IngredientTag
+                key={ingredient.id || index}
+                ingredient={ingredient}
+                onRemove={() =>
+                  setBrowseIngredients((prev) =>
+                    prev.filter((i) => i.id !== ingredient.id),
+                  )
+                }
+              />
+            ))}
+          {browseIngredients.length < 1 && (
+            <Text
+              style={[
+                styles.textCenterBold,
+                {
+                  fontFamily: "Nunito-SemiBold",
+                  fontSize: 18,
+
+                  color: NEWCOLORS.unselectedShape,
+                },
+              ]}
+            >
+              Search and select ingredients to add!
+            </Text>
+          )}
+        </ScrollView>
       </TrueSheet>
     </>
   );

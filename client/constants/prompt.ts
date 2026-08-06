@@ -3,6 +3,7 @@ import { PantryDetails, PantryDetailsType } from "@/contexts/PantryDetails";
 
 type PromptProps = {
   pantryDetails: PantryDetails;
+  browseIngredients: Food[];
 
   mealVibe: string;
   mealTexture: string;
@@ -41,17 +42,7 @@ Special note on leftovers: If leftover/prepared dishes are provided, assumed the
 
 
 Ingredients Available for Use:
-Leftover Fried Rice
-Asparagus
-Thyme
-Flour
-Eggs
-Butter
-Bread
-Ice cream
-Whipped cream
-Ghost peppers
-Chocolate chip cookies
+${props.browseIngredients.map((ingredient) => ingredient.name).join("\n")}
 `
       : `Use any ingredients to create the best tasting recipe that meets the given constraints. Ensure the recipe is realistic, tasty and satisfies the user's requests`
 }

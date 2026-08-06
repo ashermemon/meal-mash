@@ -19,6 +19,8 @@ import {
   GenerationDetailsContext,
   type GenerationDetails,
 } from "@/contexts/GenerationDetailsContext";
+import { BrowseIngredientsContext } from "@/contexts/BrowseIngredientsContext";
+import { Food } from "@/components/features/pantry/Search";
 import * as Notifications from "expo-notifications";
 
 import { RecipeProvider, type RecipeData } from "@/contexts/RecipeContext";
@@ -52,6 +54,7 @@ export default function RootLayout() {
     icon: "",
     ingredients: [],
   });
+  const [browseIngredients, setBrowseIngredients] = useState<Food[]>([]);
 
   const sheetRef = useRef<TrueSheet>(null);
   const [currentOptions, setCurrentOptions] = useState<string[]>([]);
@@ -179,103 +182,107 @@ export default function RootLayout() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <NotificationProvider>
-        <TrueSheetProvider
-          sheetRef={sheetRef}
-          openSheet={openSheet}
-          currentOptions={currentOptions}
-          currentSelected={currentSelected}
-          currentOnSelect={currentOnSelect}
-          currentTitle={currentTitle}
-        >
-          <GenerationDetailsContext.Provider
-            value={[generationDetails, setGenerationDetails]}
+      <BrowseIngredientsContext.Provider
+        value={[browseIngredients, setBrowseIngredients]}
+      >
+        <NotificationProvider>
+          <TrueSheetProvider
+            sheetRef={sheetRef}
+            openSheet={openSheet}
+            currentOptions={currentOptions}
+            currentSelected={currentSelected}
+            currentOnSelect={currentOnSelect}
+            currentTitle={currentTitle}
           >
-            <PantryDetailsContext.Provider
-              value={[pantryDetails, setPantryDetails]}
+            <GenerationDetailsContext.Provider
+              value={[generationDetails, setGenerationDetails]}
             >
-              <FavoritesContext.Provider value={[favorites, setFavorites]}>
-                <FavLeftoversContext.Provider
-                  value={[favoritesL, setFavoritesL]}
-                >
-                  <SavedRecipesContext.Provider
-                    value={[savedRecipes, setSavedRecipes]}
+              <PantryDetailsContext.Provider
+                value={[pantryDetails, setPantryDetails]}
+              >
+                <FavoritesContext.Provider value={[favorites, setFavorites]}>
+                  <FavLeftoversContext.Provider
+                    value={[favoritesL, setFavoritesL]}
                   >
-                    <MealsLeftContext.Provider
-                      value={[mealsLeft, setMealsLeft]}
+                    <SavedRecipesContext.Provider
+                      value={[savedRecipes, setSavedRecipes]}
                     >
-                      <RecipeProvider>
-                        <StatusBar
-                          barStyle="dark-content"
-                          backgroundColor={COLORS.newHeader}
-                        />
+                      <MealsLeftContext.Provider
+                        value={[mealsLeft, setMealsLeft]}
+                      >
+                        <RecipeProvider>
+                          <StatusBar
+                            barStyle="dark-content"
+                            backgroundColor={COLORS.newHeader}
+                          />
 
-                        <Stack
-                          screenOptions={{
-                            headerShown: false,
-                            contentStyle: {
-                              backgroundColor: NEWCOLORS.backgroundColor,
-                            },
-                          }}
-                        ></Stack>
-
-                        <TrueSheet
-                          ref={sheetRef}
-                          scrollable
-                          header={
-                            <>
-                              <View
-                                style={{
-                                  alignSelf: "center",
-                                  width: 44,
-                                  height: 4,
-                                  borderRadius: 999,
-                                  backgroundColor: NEWCOLORS.unselectedShape,
-                                  marginTop: 6,
-                                  marginBottom: 15,
-                                }}
-                              />
-                              <Text
-                                style={{
-                                  fontSize: 22,
-                                  fontFamily: "Nunito-SemiBold",
-                                  marginTop: 4,
-                                  marginBottom: 15,
-                                  color: NEWCOLORS.basicText,
-                                }}
-                              >
-                                {currentTitle}
-                              </Text>
-                              <View
-                                style={{
-                                  height: 2.5,
-                                  borderRadius: 1000,
-                                  backgroundColor: NEWCOLORS.placeholderText,
-                                }}
-                              ></View>
-                            </>
-                          }
-                          headerStyle={{
-                            paddingHorizontal: 20,
-                            paddingTop: 16,
-                          }}
-                          backgroundColor={NEWCOLORS.sheetBackgroundColor}
-                        >
-                          <TrueSheetContent
-                            currentOnSelect={currentOnSelect}
-                            sheetRef={sheetRef}
-                            currentOptions={currentOptions}
-                          ></TrueSheetContent>
-                        </TrueSheet>
-                      </RecipeProvider>
-                    </MealsLeftContext.Provider>
-                  </SavedRecipesContext.Provider>
-                </FavLeftoversContext.Provider>
-              </FavoritesContext.Provider>
-            </PantryDetailsContext.Provider>
-          </GenerationDetailsContext.Provider>
-        </TrueSheetProvider>
-      </NotificationProvider>
+                          <Stack
+                            screenOptions={{
+                              headerShown: false,
+                              contentStyle: {
+                                backgroundColor: NEWCOLORS.backgroundColor,
+                              },
+                            }}
+                          />
+                          <TrueSheet
+                            detents={[0.6, 1]}
+                            ref={sheetRef}
+                            scrollable
+                            header={
+                              <>
+                                <View
+                                  style={{
+                                    alignSelf: "center",
+                                    width: 44,
+                                    height: 4,
+                                    borderRadius: 999,
+                                    backgroundColor: NEWCOLORS.unselectedShape,
+                                    marginTop: 6,
+                                    marginBottom: 15,
+                                  }}
+                                />
+                                <Text
+                                  style={{
+                                    fontSize: 22,
+                                    fontFamily: "Nunito-SemiBold",
+                                    marginTop: 4,
+                                    marginBottom: 15,
+                                    color: NEWCOLORS.basicText,
+                                  }}
+                                >
+                                  {currentTitle}
+                                </Text>
+                                <View
+                                  style={{
+                                    height: 2.5,
+                                    borderRadius: 1000,
+                                    backgroundColor: NEWCOLORS.placeholderText,
+                                  }}
+                                ></View>
+                              </>
+                            }
+                            headerStyle={{
+                              paddingHorizontal: 20,
+                              paddingTop: 16,
+                            }}
+                            backgroundColor={NEWCOLORS.sheetBackgroundColor}
+                          >
+                            <TrueSheetContent
+                              currentOnSelect={currentOnSelect}
+                              sheetRef={sheetRef}
+                              currentOptions={currentOptions}
+                            ></TrueSheetContent>
+                          </TrueSheet>
+                        </RecipeProvider>
+                      </MealsLeftContext.Provider>
+                    </SavedRecipesContext.Provider>
+                  </FavLeftoversContext.Provider>
+                </FavoritesContext.Provider>
+              </PantryDetailsContext.Provider>
+            </GenerationDetailsContext.Provider>
+          </TrueSheetProvider>
+        </NotificationProvider>
+      </BrowseIngredientsContext.Provider>
     </GestureHandlerRootView>
   );
 }
