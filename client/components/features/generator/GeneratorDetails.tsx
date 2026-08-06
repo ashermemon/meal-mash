@@ -1,5 +1,5 @@
 import { View, Text, Pressable } from "react-native";
-import React, { useContext, useState } from "react";
+import React, { useCallback, useContext, useRef, useState } from "react";
 import { ScrollView } from "react-native-gesture-handler";
 import { styles } from "@/styles/auth.styles";
 import { CustomIcon } from "@/icon-loader/icon-loader";
@@ -16,10 +16,19 @@ import RecipeContext from "@/contexts/RecipeContext";
 import { initialRecipeData } from "@/contexts/RecipeContext";
 import PantryPill from "../pantry/PantryPill";
 import { PantryDetailsContext } from "@/contexts/PantryDetails";
+import { BrowseIngredientsContext } from "@/contexts/BrowseIngredientsContext";
+import { TrueSheet } from "@lodev09/react-native-true-sheet";
+import Search, { Food } from "../pantry/Search";
+import IngredientTag from "../pantry/IngredientTag";
 
 type Props = {};
 
 const GeneratorDetails = (props: Props) => {
+  const browseIngredientsSheetRef = useRef<TrueSheet>(null);
+
+  const openBrowseIngredients = useCallback(() => {
+    browseIngredientsSheetRef.current?.present();
+  }, []);
   const modes: string[] = [
     "Pantry Ingredients Only",
     "Select Specific Ingredients",
@@ -44,6 +53,9 @@ const GeneratorDetails = (props: Props) => {
     GenerationDetailsContext,
   );
   const [mealsLeft, setMealsLeft] = useContext(MealsLeftContext);
+  const [browseIngredients, setBrowseIngredients] = useContext(
+    BrowseIngredientsContext,
+  );
 
   const mealTypeOptions: string[] = [
     "🥞  Breakfast",
@@ -79,169 +91,291 @@ const GeneratorDetails = (props: Props) => {
   ];
 
   return (
-    <ScrollView
-      contentContainerStyle={{ flexGrow: 1 }}
-      overScrollMode="never"
-      alwaysBounceVertical={false}
-      style={styles.generatorContainer}
-    >
-      <View
-        style={{
-          paddingHorizontal: 25,
-          paddingTop: 20,
-          paddingBottom: 100,
-          flex: 1,
-
-          justifyContent: "space-between",
-        }}
+    <>
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1 }}
+        overScrollMode="never"
+        alwaysBounceVertical={false}
+        keyboardShouldPersistTaps="handled"
+        style={styles.generatorContainer}
       >
-        <View>
-          <Text
-            style={[
-              styles.basicTextLeft,
-              styles.bold,
-              {
-                fontSize: 28,
-                marginBottom: 15,
-              },
-            ]}
-          >
-            Generate recipes
-          </Text>
+        <View
+          style={{
+            paddingHorizontal: 25,
+            paddingTop: 20,
+            paddingBottom: 100,
+            flex: 1,
 
-          <View style={{ flexDirection: "column", gap: 36 }}>
-            <View style={{ flexDirection: "column", gap: 20 }}>
-              <SliderField
-                options={modes}
-                selected={genMode}
-                setSelected={setGenMode}
-              ></SliderField>
-              {genMode === 0 ? (
-                <PantryPill
-                  pantryName={pantryDetails.name}
-                  pantryPage={false}
-                ></PantryPill>
-              ) : genMode === 1 ? (
-                <View
-                  style={[
-                    styles.sliderPill,
-                    styles.basicBoxShadow,
-                    {
-                      flexDirection: "row",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      backgroundColor: NEWCOLORS.unselectedGrey,
-                    },
-                  ]}
-                >
-                  <Text
-                    style={[
-                      styles.textCentered,
-                      {
-                        fontSize: 18,
-                        color: NEWCOLORS.basicText,
-                        fontFamily: "Nunito-SemiBold",
-                      },
-                    ]}
-                  >
-                    Browse Ingredients
-                  </Text>
-                </View>
-              ) : (
+            justifyContent: "space-between",
+          }}
+        >
+          <View>
+            <Text
+              style={[
+                styles.basicTextLeft,
+                styles.bold,
+                {
+                  fontSize: 28,
+                  marginBottom: 15,
+                },
+              ]}
+            >
+              Generate recipes
+            </Text>
+
+            <View style={{ flexDirection: "column", gap: 36 }}>
+              <View style={{ flexDirection: "column", gap: 20 }}>
+                <SliderField
+                  options={modes}
+                  selected={genMode}
+                  setSelected={setGenMode}
+                ></SliderField>
+                {genMode === 0 ? (
+                  <PantryPill
+                    pantryName={pantryDetails.name}
+                    pantryPage={false}
+                  ></PantryPill>
+                ) : genMode === 1 ? (
+                  <View style={{ gap: 12 }}>
+                    <Pressable
+                      onPress={openBrowseIngredients}
+                      style={[
+                        styles.sliderPill,
+                        styles.basicBoxShadow,
+                        {
+                          flexDirection: "row",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          backgroundColor: NEWCOLORS.unselectedGrey,
+                        },
+                      ]}
+                    >
+                      <Text
+                        style={[
+                          styles.textCentered,
+                          {
+                            fontSize: 18,
+                            color: NEWCOLORS.basicText,
+                            fontFamily: "Nunito-SemiBold",
+                          },
+                        ]}
+                      >
+                        Browse Ingredients
+                        {browseIngredients.length > 0
+                          ? ` (${browseIngredients.length})`
+                          : ""}
+                      </Text>
+                    </Pressable>
+                  </View>
+                ) : (
+                  <></>
+                )}
+              </View>
+              <MultiSelectPills
+                title="Difficulty:"
+                selected={diffciulties}
+                setSelected={setDifficulties}
+                labels={difficultyLabels}
+                diff
+              ></MultiSelectPills>
+              <MultiSelectPills
+                title="Recipe Time:"
+                selected={times}
+                setSelected={setTimes}
+                labels={timeLabels}
+              ></MultiSelectPills>
+              <CountFieldPill
+                num={num}
+                setNum={setNum}
+                title={"Number of Servings:"}
+              ></CountFieldPill>
+              <DropDownPill
+                title={"Meal Type:"}
+                options={mealTypeOptions}
+                selections={mealType}
+                setSelection={setMealType}
+              ></DropDownPill>
+              <DropDownPill
+                title={"Cuisine:"}
+                options={cuisineOptions}
+                selections={cuisine}
+                setSelection={setCuisine}
+              ></DropDownPill>
+              {genMode === 0 || genMode === 1 ? (
                 <></>
+              ) : (
+                <DropDownPill
+                  title={"Dietary Restrictions:"}
+                  options={dietaryRestrictionOptions}
+                  selections={dietaryRestrictions}
+                  setSelection={setDietaryRestrictions}
+                ></DropDownPill>
               )}
             </View>
-            <MultiSelectPills
-              title="Difficulty:"
-              selected={diffciulties}
-              setSelected={setDifficulties}
-              labels={difficultyLabels}
-              diff
-            ></MultiSelectPills>
-            <MultiSelectPills
-              title="Recipe Time:"
-              selected={times}
-              setSelected={setTimes}
-              labels={timeLabels}
-            ></MultiSelectPills>
-            <CountFieldPill
-              num={num}
-              setNum={setNum}
-              title={"Number of Servings:"}
-            ></CountFieldPill>
-            <DropDownPill
-              title={"Meal Type:"}
-              options={mealTypeOptions}
-              selections={mealType}
-              setSelection={setMealType}
-            ></DropDownPill>
-            <DropDownPill
-              title={"Cuisine:"}
-              options={cuisineOptions}
-              selections={cuisine}
-              setSelection={setCuisine}
-            ></DropDownPill>
-            {genMode === 0 || genMode === 1 ? (
-              <></>
-            ) : (
-              <DropDownPill
-                title={"Dietary Restrictions:"}
-                options={dietaryRestrictionOptions}
-                selections={dietaryRestrictions}
-                setSelection={setDietaryRestrictions}
-              ></DropDownPill>
-            )}
+          </View>
+          <View>
+            <Pressable
+              style={[
+                styles.basicBoxShadow,
+                {
+                  backgroundColor: NEWCOLORS.darkButton,
+                  paddingVertical: 20,
+                  borderRadius: 15,
+                  width: "100%",
+                },
+              ]}
+              onPress={
+                mealsLeft > 0
+                  ? () => [
+                      setGenerationDetails((prev) => ({
+                        ...prev,
+                        generationType: genMode,
+                        difficulties:
+                          diffciulties.length === 0
+                            ? difficultyLabels
+                            : diffciulties.map((idx) => difficultyLabels[idx]),
+                        recipeTime:
+                          times.length === 0
+                            ? timeLabels
+                            : times.map((idx) => timeLabels[idx]),
+                        numberOfServings: num,
+                        mealType: mealType,
+                        cuisine: cuisine,
+                        dietaryPreference: dietaryRestrictions,
+                      })),
+                      router.navigate("/recipe"),
+                      setRecipeData(initialRecipeData),
+                      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light),
+                    ]
+                  : () =>
+                      alert(
+                        "You have run out of meal generations today. Come again tomorrow!",
+                      )
+              }
+            >
+              <Text
+                style={[
+                  styles.textCenterBold,
+                  { color: "white", fontSize: 18 },
+                ]}
+              >
+                Generate Recipes →
+              </Text>
+            </Pressable>
           </View>
         </View>
-        <View>
-          <Pressable
-            style={[
-              styles.basicBoxShadow,
-              {
-                backgroundColor: NEWCOLORS.darkButton,
-                paddingVertical: 20,
-                borderRadius: 15,
-                width: "100%",
-              },
-            ]}
-            onPress={
-              mealsLeft > 0
-                ? () => [
-                    setGenerationDetails((prev) => ({
-                      ...prev,
-                      generationType: genMode,
-                      difficulties:
-                        diffciulties.length === 0
-                          ? difficultyLabels
-                          : diffciulties.map((idx) => difficultyLabels[idx]),
-                      recipeTime:
-                        times.length === 0
-                          ? timeLabels
-                          : times.map((idx) => timeLabels[idx]),
-                      numberOfServings: num,
-                      mealType: mealType,
-                      cuisine: cuisine,
-                      dietaryPreference: dietaryRestrictions,
-                    })),
-                    router.navigate("/recipe"),
-                    setRecipeData(initialRecipeData),
-                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light),
-                  ]
-                : () =>
-                    alert(
-                      "You have run out of meal generations today. Come again tomorrow!",
-                    )
-            }
-          >
-            <Text
-              style={[styles.textCenterBold, { color: "white", fontSize: 18 }]}
+      </ScrollView>
+
+      <TrueSheet
+        detents={[0.6, 1]}
+        ref={browseIngredientsSheetRef}
+        scrollable
+        header={
+          <>
+            <View
+              style={{
+                alignSelf: "center",
+                width: 44,
+                height: 4,
+                borderRadius: 999,
+                backgroundColor: NEWCOLORS.unselectedShape,
+                marginTop: 6,
+                marginBottom: 15,
+              }}
+            />
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                paddingHorizontal: 10,
+                marginTop: 4,
+                marginBottom: 15,
+              }}
             >
-              Generate Recipes →
+              <Text
+                style={{
+                  fontSize: 22,
+                  fontFamily: "Nunito-SemiBold",
+
+                  color: NEWCOLORS.basicText,
+                }}
+              >
+                Add Ingredients
+              </Text>
+              <Pressable onPress={() => setBrowseIngredients([])}>
+                <Text
+                  style={{
+                    fontSize: 14,
+                    fontFamily: "Nunito-SemiBold",
+
+                    color: NEWCOLORS.redAccent,
+                  }}
+                >
+                  Remove All
+                </Text>
+              </Pressable>
+            </View>
+          </>
+        }
+        headerStyle={{
+          paddingHorizontal: 20,
+          paddingTop: 16,
+        }}
+        backgroundColor={NEWCOLORS.sheetBackgroundColor}
+      >
+        <ScrollView
+          style={{ paddingHorizontal: 20 }}
+          contentContainerStyle={{
+            paddingTop: 10,
+            paddingBottom: 20,
+            gap: 10,
+          }}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+        >
+          <Search
+            onSelectIngredient={(item: Food) =>
+              setBrowseIngredients((prev) => {
+                const alreadyAdded = prev.some((i) => i.id === item.id);
+                if (alreadyAdded) return prev;
+                return [...prev, item];
+              })
+            }
+          />
+          <View />
+
+          {browseIngredients
+            .toReversed()
+            .map((ingredient: Food, index: number) => (
+              <IngredientTag
+                key={ingredient.id || index}
+                ingredient={ingredient}
+                onRemove={() =>
+                  setBrowseIngredients((prev) =>
+                    prev.filter((i) => i.id !== ingredient.id),
+                  )
+                }
+              />
+            ))}
+          {browseIngredients.length < 1 && (
+            <Text
+              style={[
+                styles.textCenterBold,
+                {
+                  fontFamily: "Nunito-SemiBold",
+                  fontSize: 18,
+
+                  color: NEWCOLORS.unselectedShape,
+                },
+              ]}
+            >
+              Search and select ingredients to add!
             </Text>
-          </Pressable>
-        </View>
-      </View>
-    </ScrollView>
+          )}
+        </ScrollView>
+      </TrueSheet>
+    </>
   );
 };
 

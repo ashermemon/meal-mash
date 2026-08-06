@@ -8,18 +8,23 @@ import { Food } from "./Search";
 
 type Props = {
   ingredient: Food;
+  onRemove?: () => void;
 };
 
 const IngredientTag = (props: Props) => {
   const [pantryDetails, setPantryDetails] = useContext(PantryDetailsContext);
 
   const handleRemoveIngredient = () => {
-    setPantryDetails((prev) => ({
-      ...prev,
-      ingredients: prev.ingredients.filter(
-        (ingredient) => ingredient.name !== props.ingredient.name,
-      ),
-    }));
+    if (props.onRemove) {
+      props.onRemove();
+    } else {
+      setPantryDetails((prev) => ({
+        ...prev,
+        ingredients: prev.ingredients.filter(
+          (ingredient) => ingredient.name !== props.ingredient.name,
+        ),
+      }));
+    }
   };
 
   return (

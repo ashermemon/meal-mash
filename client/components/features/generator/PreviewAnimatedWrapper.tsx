@@ -25,6 +25,7 @@ import { GenerationDetailsContext } from "@/contexts/GenerationDetailsContext";
 import { storage } from "@/utils/storage";
 import { router } from "expo-router";
 import { PantryDetailsContext } from "@/contexts/PantryDetails";
+import { BrowseIngredientsContext } from "@/contexts/BrowseIngredientsContext";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
@@ -180,6 +181,9 @@ const PreviewAnimatedWrapper = (props: Props) => {
     GenerationDetailsContext,
   );
 
+  const [browseIngredients, setBrowseIngredients] = useContext(
+    BrowseIngredientsContext,
+  );
   const mealsLeftRef = useRef(mealsLeft);
   useEffect(() => {
     mealsLeftRef.current = mealsLeft;
@@ -209,6 +213,7 @@ const PreviewAnimatedWrapper = (props: Props) => {
       const nextConstraints = generateConstraints();
       const nextPrompt = Prompt({
         pantryDetails: pantryDetails,
+        browseIngredients: browseIngredients,
 
         mealVibe: nextConstraints[0],
         mealTexture: nextConstraints[1],
