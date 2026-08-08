@@ -168,13 +168,17 @@ function normalizeText(value: string): string {
 
 function getMatchPriority(food: Food, query: string): number {
   const normalizedQuery = normalizeText(query);
-  const candidates = [food.name, ...parseAlternates(food.alternate_names)];
+  const normalizedDisplay = normalizeText(food.displayName ?? food.name);
+  const allCandidates = [food.name, ...parseAlternates(food.alternate_names)].map(
+    normalizeText,
+  );
 
-  return candidates.some(
-    (candidate) => normalizeText(candidate) === normalizedQuery,
-  )
-    ? 0
-    : 1;
+  if (allCandidates.some((candidate) => candidate === normalizedQuery))
+    return 0;
+
+  if (normalizedDisplay.startsWith(normalizedQuery)) return 1;
+
+  return 2;
 }
 
 export async function searchIngredients(query: string): Promise<Food[]> {
@@ -186,7 +190,7 @@ export async function searchIngredients(query: string): Promise<Food[]> {
     .from("foods")
     .select("id, name, category, alternate_names, popularity")
     .order("popularity", { ascending: false })
-    .limit(50);
+    .limit(500);
 
   let { data, error } = await baseQuery.ilike("name", `%${cleanQuery}%`);
 
@@ -241,8 +245,10 @@ export async function searchIngredients(query: string): Promise<Food[]> {
     .sort((a, b) => {
       const aPriority = getMatchPriority(a, cleanQuery);
       const bPriority = getMatchPriority(b, cleanQuery);
-      return aPriority - bPriority;
-    });
+      if (aPriority !== bPriority) return aPriority - bPriority;
+      return (b.popularity ?? 0) - (a.popularity ?? 0);
+    })
+    .slice(0, 50);
 
   return formatted;
 }
