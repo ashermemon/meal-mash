@@ -18,13 +18,16 @@ import PantryPill from "../pantry/PantryPill";
 import { PantryDetailsContext } from "@/contexts/PantryDetails";
 import { BrowseIngredientsContext } from "@/contexts/BrowseIngredientsContext";
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
-import Search, { Food } from "../pantry/Search";
+import Search, { Food, SearchHandle, SearchResultItem } from "../pantry/Search";
 import IngredientTag from "../pantry/IngredientTag";
 
 type Props = {};
 
+const MAX_VISIBLE_SEARCH_RESULTS = 5;
+
 const GeneratorDetails = (props: Props) => {
   const browseIngredientsSheetRef = useRef<TrueSheet>(null);
+  const searchRef = useRef<SearchHandle>(null);
 
   const openBrowseIngredients = useCallback(() => {
     browseIngredientsSheetRef.current?.present();
@@ -89,6 +92,9 @@ const GeneratorDetails = (props: Props) => {
     "☪️  Halal",
     "✡️  Kosher",
   ];
+
+  const [searchResults, setSearchResults] = useState<Food[]>([]);
+  const [searchResultsVisible, setSearchResultsVisible] = useState(false);
 
   return (
     <>
@@ -317,6 +323,8 @@ const GeneratorDetails = (props: Props) => {
               </Pressable>
             </View>
             <Search
+              ref={searchRef}
+              showDropdown={false}
               onSelectIngredient={(item: Food) =>
                 setBrowseIngredients((prev) => {
                   const alreadyAdded = prev.some((i) => i.id === item.id);
@@ -324,6 +332,10 @@ const GeneratorDetails = (props: Props) => {
                   return [...prev, item];
                 })
               }
+              onResultsChange={(results, visible) => {
+                setSearchResults(results);
+                setSearchResultsVisible(visible);
+              }}
             />
             <View
               style={{
@@ -340,47 +352,82 @@ const GeneratorDetails = (props: Props) => {
         }}
         backgroundColor={NEWCOLORS.sheetBackgroundColor}
       >
-        <ScrollView
-          style={{ paddingHorizontal: 20 }}
-          contentContainerStyle={{
-            paddingTop: 10,
-            paddingBottom: 20,
-            gap: 10,
-          }}
-          showsVerticalScrollIndicator={false}
-          keyboardShouldPersistTaps="handled"
-        >
-          <View />
+        <View style={{ flex: 1, position: "relative" }}>
+          <ScrollView
+            style={{ paddingHorizontal: 20 }}
+            contentContainerStyle={{
+              paddingTop: 10,
+              paddingBottom: 20,
+              gap: 10,
+            }}
+            showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps="handled"
+          >
+            <View />
 
-          {browseIngredients
-            .toReversed()
-            .map((ingredient: Food, index: number) => (
-              <IngredientTag
-                key={ingredient.id || index}
-                ingredient={ingredient}
-                onRemove={() =>
-                  setBrowseIngredients((prev) =>
-                    prev.filter((i) => i.id !== ingredient.id),
-                  )
-                }
-              />
-            ))}
-          {browseIngredients.length < 1 && (
-            <Text
+            {browseIngredients
+              .toReversed()
+              .map((ingredient: Food, index: number) => (
+                <IngredientTag
+                  key={ingredient.id || index}
+                  ingredient={ingredient}
+                  onRemove={() =>
+                    setBrowseIngredients((prev) =>
+                      prev.filter((i) => i.id !== ingredient.id),
+                    )
+                  }
+                />
+              ))}
+            {browseIngredients.length < 1 && (
+              <Text
+                style={[
+                  styles.textCenterBold,
+                  {
+                    fontFamily: "Nunito-SemiBold",
+                    fontSize: 18,
+
+                    color: NEWCOLORS.unselectedShape,
+                  },
+                ]}
+              >
+                Search and select ingredients to add!
+              </Text>
+            )}
+          </ScrollView>
+
+          {searchResultsVisible && (
+            <View
               style={[
-                styles.textCenterBold,
+                styles.basicBoxShadow,
                 {
-                  fontFamily: "Nunito-SemiBold",
-                  fontSize: 18,
-
-                  color: NEWCOLORS.unselectedShape,
+                  position: "absolute",
+                  top: 0,
+                  left: 20,
+                  right: 20,
+                  borderRadius: 30,
+                  overflow: "hidden",
+                  backgroundColor: NEWCOLORS.cardWhite,
+                  paddingHorizontal: 12,
+                  paddingVertical: 4,
                 },
               ]}
             >
-              Search and select ingredients to add!
-            </Text>
+              {searchResults
+                .slice(0, MAX_VISIBLE_SEARCH_RESULTS)
+                .map((item: Food, index: number, arr) => (
+                  <SearchResultItem
+                    key={item.id}
+                    item={item}
+                    isLast={index === arr.length - 1}
+                    rounded={false}
+                    onPress={(item) =>
+                      searchRef.current?.selectIngredient(item)
+                    }
+                  />
+                ))}
+            </View>
           )}
-        </ScrollView>
+        </View>
       </TrueSheet>
     </>
   );

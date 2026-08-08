@@ -6,7 +6,13 @@ import {
   StyleSheet,
   Keyboard,
 } from "react-native";
-import React, { useContext, useEffect, useState } from "react";
+import React, {
+  forwardRef,
+  useContext,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from "react";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import { NEWCOLORS } from "@/constants/NewTheme";
 import { searchIngredients } from "./SearchFunctionality";
@@ -17,6 +23,13 @@ import { ScrollView } from "react-native-gesture-handler";
 
 type Props = {
   onSelectIngredient?: (item: Food) => void;
+
+  showDropdown?: boolean;
+  onResultsChange?: (results: Food[], visible: boolean) => void;
+};
+
+export type SearchHandle = {
+  selectIngredient: (item: Food) => void;
 };
 
 export type Food = {
@@ -28,7 +41,71 @@ export type Food = {
   displayName: string;
 };
 
-const Search = (props: Props) => {
+type SearchResultItemProps = {
+  item: Food;
+  isLast: boolean;
+  onPress: (item: Food) => void;
+  rounded?: boolean;
+};
+
+export const SearchResultItem = ({
+  item,
+  isLast,
+  onPress,
+  rounded = true,
+}: SearchResultItemProps) => (
+  <Pressable
+    style={[localStyles.resultItem, { borderRadius: rounded ? 22 : 0 }]}
+    onPress={(event) => {
+      event.stopPropagation();
+      onPress(item);
+    }}
+  >
+    <View
+      style={{
+        width: "100%",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        borderBottomWidth: isLast ? 0 : 1,
+        borderColor: NEWCOLORS.unselectedGrey,
+        paddingVertical: 18,
+        paddingHorizontal: 12,
+      }}
+    >
+      <View style={{ paddingRight: 10, flex: 1 }}>
+        <Text
+          adjustsFontSizeToFit
+          numberOfLines={1}
+          style={[
+            styles.basicTextLeft,
+            { fontSize: 15, fontFamily: "Nunito-SemiBold" },
+          ]}
+        >
+          {item.displayName}
+        </Text>
+      </View>
+      <View>
+        <Text
+          style={[
+            styles.basicTextLeft,
+            {
+              fontSize: 13,
+              flex: 1,
+              fontFamily: "Nunito-Regular",
+              color: NEWCOLORS.unselectedShape,
+            },
+          ]}
+        >
+          {item.category}
+        </Text>
+      </View>
+    </View>
+  </Pressable>
+);
+
+const Search = forwardRef<SearchHandle, Props>((props, ref) => {
+  const { showDropdown = true } = props;
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Food[]>([]);
 
@@ -61,6 +138,10 @@ const Search = (props: Props) => {
     }
   }
 
+  useEffect(() => {
+    props.onResultsChange?.(results, showResults && results.length > 0);
+  }, [showResults, results]);
+
   const selectingRef = React.useRef(false);
 
   function selectIngredient(item: Food) {
@@ -79,6 +160,10 @@ const Search = (props: Props) => {
       selectingRef.current = false;
     }, 300);
   }
+
+  useImperativeHandle(ref, () => ({
+    selectIngredient,
+  }));
 
   return (
     <View style={[{ zIndex: 9999 }, localStyles.container]}>
@@ -160,7 +245,7 @@ const Search = (props: Props) => {
         </View>
       </View>
 
-      {results.length > 0 && showResults && (
+      {showDropdown && results.length > 0 && showResults && (
         <View style={[localStyles.resultsOverlay, styles.basicBoxShadow]}>
           <ScrollView
             style={{ maxHeight: 240 }}
@@ -171,68 +256,19 @@ const Search = (props: Props) => {
             bounces={false}
           >
             {results.map((item, index) => (
-              <Pressable
+              <SearchResultItem
                 key={item.id}
-                style={localStyles.resultItem}
-                onPress={(event) => {
-                  event.stopPropagation();
-                  selectIngredient(item);
-                }}
-              >
-                <View
-                  style={{
-                    width: "100%",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    borderBottomWidth: index === results.length - 1 ? 0 : 1,
-                    borderColor: NEWCOLORS.unselectedGrey,
-                    paddingVertical: 18,
-                    paddingHorizontal: 12,
-                    zIndex: 9999,
-                  }}
-                >
-                  <View style={{ paddingRight: 10, flex: 1 }}>
-                    <Text
-                      adjustsFontSizeToFit
-                      numberOfLines={1}
-                      style={[
-                        styles.basicTextLeft,
-                        {
-                          fontSize: 15,
-                          fontFamily: "Nunito-SemiBold",
-                          zIndex: 9999,
-                        },
-                      ]}
-                    >
-                      {item.displayName}
-                    </Text>
-                  </View>
-                  <View>
-                    <Text
-                      style={[
-                        styles.basicTextLeft,
-                        {
-                          fontSize: 13,
-                          flex: 1,
-                          zIndex: 9999,
-                          fontFamily: "Nunito-Regular",
-                          color: NEWCOLORS.unselectedShape,
-                        },
-                      ]}
-                    >
-                      {item.category}
-                    </Text>
-                  </View>
-                </View>
-              </Pressable>
+                item={item}
+                isLast={index === results.length - 1}
+                onPress={selectIngredient}
+              />
             ))}
           </ScrollView>
         </View>
       )}
     </View>
   );
-};
+});
 
 const localStyles = StyleSheet.create({
   container: {

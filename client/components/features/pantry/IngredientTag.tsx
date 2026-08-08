@@ -52,9 +52,15 @@ const IngredientTag = (props: Props) => {
           <Text
             adjustsFontSizeToFit
             numberOfLines={1}
+            minimumFontScale={0.5}
             style={[
               styles.textLeftSemiBold,
-              { paddingHorizontal: 3, fontSize: 17, marginLeft: 5 },
+              {
+                width: "100%",
+                paddingHorizontal: 3,
+                fontSize: 17,
+                marginLeft: 5,
+              },
             ]}
           >
             {props.ingredient.name}
