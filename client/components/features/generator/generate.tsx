@@ -24,7 +24,7 @@ import * as Haptics from "expo-haptics";
 import RecipeContext from "@/contexts/RecipeContext";
 import { router } from "expo-router";
 import { RecipeSchema } from "@/utils/RecipeSchema";
-import generateConstraints from "@/constants/constraints";
+
 import GeneratorDetails from "./GeneratorDetails";
 
 export default function Generate() {
@@ -34,10 +34,11 @@ export default function Generate() {
 
   const [searchActive, setSearchActive] = useState(false);
 
-
   const [error, setError] = useState<Error | null>(null);
 
-  const [generationDetails, setGenerationDetails] = useContext(GenerationDetailsContext);
+  const [generationDetails, setGenerationDetails] = useContext(
+    GenerationDetailsContext,
+  );
 
   const [leftoversEnabled, setLeftoversEnabled] = useState(false);
 
@@ -51,7 +52,6 @@ export default function Generate() {
         value={[leftoversEnabled, setLeftoversEnabled]}
       >
         <SearchContext.Provider value={[searchActive, setSearchActive]}>
-
           <GeneratorDetails></GeneratorDetails>
           {/* <ScrollView
             contentContainerStyle={{ flexGrow: 1 }}
@@ -203,7 +203,7 @@ export default function Generate() {
             </View>
           </ScrollView> */}
         </SearchContext.Provider>
-      </LeftoversEnabled.Provider >
+      </LeftoversEnabled.Provider>
     </>
   );
 }

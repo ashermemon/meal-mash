@@ -218,6 +218,7 @@ const PreviewAnimatedWrapper = (props: Props) => {
         mealVibe: nextConstraints[0],
         mealTexture: nextConstraints[1],
         mealMethod: nextConstraints[2],
+        mealTwist: nextConstraints[3],
 
         generationType: generationDetails.generationType,
         difficulties: generationDetails.difficulties,
@@ -226,6 +227,7 @@ const PreviewAnimatedWrapper = (props: Props) => {
         mealType: generationDetails.mealType,
         cuisine: generationDetails.cuisine,
         dietaryPreference: generationDetails.dietaryPreference,
+        portalCategory: generationDetails.portalCategory || undefined,
       });
       console.log(nextPrompt);
 

@@ -248,6 +248,7 @@ const GeneratorDetails = (props: Props) => {
                         mealType: mealType,
                         cuisine: cuisine,
                         dietaryPreference: dietaryRestrictions,
+                        portalCategory: undefined,
                       })),
                       router.navigate("/recipe"),
                       setRecipeData(initialRecipeData),
