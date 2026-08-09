@@ -18,6 +18,7 @@ const emojiImages: { [key: string]: any } = {
   Watermelon: require(`@/assets/emojis/watermelon.png`),
   Yam: require(`@/assets/emojis/yam.png`),
   Book: require(`@/assets/emojis/book.png`),
+  Fridge: require(`@/assets/emojis/fridge.webp`),
   Default: require(`@/assets/emojis/placeholder.png`),
 };
 export default emojiImages;

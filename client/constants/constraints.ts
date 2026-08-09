@@ -1,16 +1,30 @@
 export default function generateConstraints() {
   const mealType: string[] = [
-    "High-protein gym meal",
-    "Comfort food",
-    "Restaurant-quality",
-    "Late-night craving",
-    "Meal-prep friendly",
-    "Budget-friendly",
-    "Fancy date meal",
-    "Healthy and light",
-    "Quick weekday meal",
-    "Street-food inspired",
-    "Small snack",
+    "Cozy",
+    "Fresh",
+    "Indulgent",
+    "Wholesome",
+    "Comforting",
+    "Fun",
+    "Playful",
+    "Rustic",
+    "Elegant",
+    "Casual",
+    "Nostalgic",
+    "Vibrant",
+    "Relaxed",
+    "Invigorating",
+    "Satisfying",
+    "Refreshing",
+    "Hearty",
+    "Light",
+    "Festive",
+    "Adventurous",
+    "Familiar",
+    "Creative",
+    "Simple",
+    "Luxurious",
+    "Soul-warming",
   ];
 
   const textures: string[] = [
@@ -39,9 +53,23 @@ export default function generateConstraints() {
     "Smoked",
   ];
 
+  const twists: string[] = [
+    "Serve it as a bowl",
+    "Make it handheld",
+    "Make it shareable",
+    "Layer it",
+    "Stack it",
+    "Serve it family-style",
+    "Make it bite-sized",
+    "Create a loaded version",
+    "Create a wrap-style version",
+    "Make it visually colorful",
+  ];
+
   return [
     mealType[Math.floor(Math.random() * mealType.length)],
     textures[Math.floor(Math.random() * textures.length)],
     methods[Math.floor(Math.random() * methods.length)],
+    twists[Math.floor(Math.random() * twists.length)],
   ];
 }

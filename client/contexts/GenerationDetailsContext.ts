@@ -10,6 +10,7 @@ export type GenerationDetails = {
   mealType: string[];
   cuisine: string[];
   dietaryPreference: string[];
+  portalCategory?: string;
 };
 
 export type GenerationDetailsType = [
@@ -27,6 +28,7 @@ const initialGenerationDetails: GenerationDetails = {
   mealType: [],
   cuisine: [],
   dietaryPreference: [],
+  portalCategory: undefined,
 };
 
 export const GenerationDetailsContext = createContext<GenerationDetailsType>([

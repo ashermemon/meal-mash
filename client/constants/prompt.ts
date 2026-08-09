@@ -8,6 +8,7 @@ type PromptProps = {
   mealVibe: string;
   mealTexture: string;
   mealMethod: string;
+  mealTwist: string;
 
   generationType: number;
   difficulties: string[];
@@ -16,6 +17,8 @@ type PromptProps = {
   mealType: string[];
   cuisine: string[];
   dietaryPreference: string[];
+
+  portalCategory?: string;
 };
 export default function Prompt(props: PromptProps) {
   return `You are an expert chef assistant. Generate a delicious, realistic, high-quality recipe matching the structural parameters requested.
@@ -23,9 +26,12 @@ export default function Prompt(props: PromptProps) {
 
 USER INGREDIENTS:
 
+
 ${
-  props.generationType === 0
-    ? `
+  props.portalCategory
+    ? `Use any ingredients to create the best tasting recipe that meets the given constraints and is under the recipe category "${props.portalCategory}". Ensure the recipe is realistic, tasty and satisfies the category. Do not force constraints if they don't fit. The priority is creating a delicious, category-fitting recipe.`
+    : props.generationType === 0
+      ? `
 Select ingredients from the user's pantry below that acheive the recipe constraints and create a realistic, tasty recipe.
 Special note on leftovers: If leftover/prepared dishes are provided, assumed they are already cooked. DO NOT recook already made prepared dishes/leftovers.
 
@@ -35,8 +41,8 @@ ${props.pantryDetails.ingredients
   .join("\n")}
 
 `
-    : props.generationType === 1
-      ? `
+      : props.generationType === 1
+        ? `
 Select ingredients from the list of ingredients below that acheive the recipe constraints and create a realistic, tasty recipe. You are not required to use all ingredients listed, instead, just choose the best ones for a tasty recipe. Constraints are recommendations and not strictly enforced. A tasty and realistic recipe is more important.
 Special note on leftovers: If leftover/prepared dishes are provided, assumed they are already cooked. DO NOT recook already made prepared dishes/leftovers.
 
@@ -44,22 +50,29 @@ Special note on leftovers: If leftover/prepared dishes are provided, assumed the
 Ingredients Available for Use:
 ${props.browseIngredients.map((ingredient) => ingredient.name).join("\n")}
 `
-      : `Use any ingredients to create the best tasting recipe that meets the given constraints. Ensure the recipe is realistic, tasty and satisfies the user's requests`
+        : `Use any ingredients to create the best tasting recipe that meets the given constraints. Ensure the recipe is realistic, tasty and satisfies the user's requests`
 }
 
-RECIPE CONSTRAINTS:
+RECIPE CONSTRAINTS: (OPTIONAL, ONLY USE IF THE ONES THAT FIT THE RECIPE AND INGREDIENTS)
 - Meal vibe: ${props.mealVibe}
 - Meal texture: ${props.mealTexture}
 - Meal method: ${props.mealMethod}
+- Meal twist: ${props.mealTwist}
 
 - IMPORTANT NOTE ON CONSTRAINTS: if a recipe is not compatible with the given constraints, do not force it into a recipe (if the meal texture is charred, and the user inputs ingredients for a cake, the constraint can be ignored. It is simply a guideline to encourage unique generation)
 
+
+${
+  props.portalCategory
+    ? ``
+    : `
 - Meal type: ${props.mealType[Math.floor(Math.random() * props.mealType.length)]}
 - Recipe difficulty/complexity level: ${props.difficulties[Math.floor(Math.random() * props.difficulties.length)]}
 - Recipe time range: ${props.recipeTime.length >= 3 || props.recipeTime.length === 0 ? `Any` : props.recipeTime[Math.floor(Math.random() * props.recipeTime.length)]}
 - Number of servings: ${props.numberOfServings}
 - Cusine: ${props.cuisine[Math.floor(Math.random() * props.cuisine.length)]}
-${props.generationType === 2 ? `Dietary Restrictions: ${props.dietaryPreference}` : ``} 
+${props.generationType === 2 ? `Dietary Restrictions: ${props.dietaryPreference}` : ``} `
+}
 
 CULINARY GUIDELINES:
 1. Incorporate the provided ingredients naturally.

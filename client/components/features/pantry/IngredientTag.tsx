@@ -48,13 +48,25 @@ const IngredientTag = (props: Props) => {
           flexDirection: "row",
         }}
       >
-        <View style={{ flex: 1 }}>
+        <View
+          style={{
+            flex: 1,
+            width: "100%",
+          }}
+        >
           <Text
-            adjustsFontSizeToFit
             numberOfLines={1}
+            minimumFontScale={0.5}
+            adjustsFontSizeToFit
             style={[
               styles.textLeftSemiBold,
-              { paddingHorizontal: 3, fontSize: 17, marginLeft: 5 },
+              {
+                paddingHorizontal: 3,
+                fontSize: 17,
+                width: "100%",
+
+                marginLeft: 5,
+              },
             ]}
           >
             {props.ingredient.name}
@@ -79,7 +91,7 @@ const IngredientTag = (props: Props) => {
             style={[
               styles.textLeftSemiBold,
               {
-                paddingHorizontal: 10,
+                paddingHorizontal: 3,
                 fontSize: 12,
 
                 fontFamily: "Nunito-Medium",

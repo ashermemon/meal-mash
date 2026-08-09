@@ -251,13 +251,13 @@ export default function ExploreSection() {
 
         <View style={{ flex: 1, flexDirection: "column", gap: 10 }}>
           <Block
-            title="Profile & Stats"
+            title="Your Pantry"
             color={NEWCOLORS.orangeBlock}
-            link="profile"
-            icon="Banana"
+            link="pantry"
+            icon="Fridge"
           />
           <Block
-            title="Cookbook"
+            title="Saved Recipes"
             color={NEWCOLORS.greenBlock}
             link="saves"
             icon="Book"

@@ -37,6 +37,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { Food } from "@/components/features/pantry/Search";
 import { searchHouseholdEssentials } from "@/components/features/pantry/SearchFunctionality";
+import EmojiButton from "@/components/universal/EmojiButton";
 
 type Props = {};
 
@@ -52,90 +53,7 @@ const SetupScreen = (props: Props) => {
 
   const [showCamera, setShowCamera] = useState(false);
   const [permission, requestPermission] = useCameraPermissions();
-  const emojis = [
-    "🍄",
-    "🥑",
-    "🥔",
-    "🥕",
-    "🌽",
-    "🌶️",
-    "🫑",
-    "🥒",
-    "🥬",
-    "🥦",
-    "🧄",
-    "🧅",
-    "🥜",
-    "🫛",
-    "🍄‍🟫",
-    "🫜",
-    "🍞",
-    "🥐",
-    "🥖",
-    "🥨",
-    "🥯",
-    "🧇",
-    "🧀",
-    "🍔",
-    "🍟",
-    "🍕",
-    "🌭",
-    "🥪",
-    "🌮",
-    "🌯",
-    "🥙",
-    "🍳",
-    "🥣",
-    "🥗",
-    "🍿",
-    "🍱",
-    "🍛",
-    "🍜",
-    "🍝",
-    "🥟",
-    "🦀",
-    "🦞",
-    "🦐",
-    "🦑",
-    "🍦",
-    "🍧",
-    "🍨",
-    "🍩",
-    "🍪",
-    "🎂",
-    "🍰",
-    "🧁",
-    "🥧",
-    "🍫",
-    "🍬",
-    "🍭",
-    "🍽️",
-    "🍴",
-    "🥄",
-  ];
-
-  const pressed = useSharedValue<boolean>(false);
   const [currentEmojiText, setCurrentEmojiText] = useState("");
-
-  const tap = Gesture.Tap()
-    .onBegin(() => {
-      pressed.value = true;
-    })
-    .onFinalize(() => {
-      pressed.value = false;
-    });
-
-  const animatedStyles = useAnimatedStyle(() => {
-    return {
-      transform: [{ scale: withTiming(pressed.value ? 1.15 : 1) }],
-    };
-  });
-
-  function switchEmoji() {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
-    const randomIndex = Math.floor(Math.random() * emojis.length);
-    setCurrentEmojiText(emojis[randomIndex]);
-  }
 
   const initialIngredientGroups: Record<string, string[]> = {
     Eggs: [],
@@ -372,37 +290,20 @@ const SetupScreen = (props: Props) => {
                   marginBottom: keyboardOpen ? 30 : 40,
                 }}
               >
-                <GestureDetector gesture={tap}>
-                  <Animated.View
-                    onTouchStart={switchEmoji}
-                    style={[
-                      styles.emojiCircle,
-                      styles.basicBoxShadow,
-                      animatedStyles,
-                      {
-                        height: keyboardOpen ? 150 : 220,
-                        width: keyboardOpen ? 150 : 220,
-                      },
-                    ]}
-                  >
-                    {currentEmojiText === "" ? (
-                      <CustomIcon
-                        size={keyboardOpen ? 100 : 140}
-                        name={"emoji"}
-                        filled={false}
-                        color={NEWCOLORS.unselectedShape}
-                      ></CustomIcon>
-                    ) : (
-                      <Text
-                        style={{
-                          fontSize: keyboardOpen ? 70 : 100,
-                        }}
-                      >
-                        {currentEmojiText}
-                      </Text>
-                    )}
-                  </Animated.View>
-                </GestureDetector>
+                <EmojiButton
+                  emoji={currentEmojiText}
+                  onEmojiChange={setCurrentEmojiText}
+                  fontSize={keyboardOpen ? 70 : 100}
+                  iconSize={keyboardOpen ? 100 : 140}
+                  style={[
+                    styles.emojiCircle,
+                    styles.basicBoxShadow,
+                    {
+                      height: keyboardOpen ? 150 : 220,
+                      width: keyboardOpen ? 150 : 220,
+                    },
+                  ]}
+                />
               </View>
               <TextInput
                 style={[

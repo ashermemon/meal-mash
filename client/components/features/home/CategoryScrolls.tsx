@@ -1,11 +1,15 @@
 import { View, Text, Pressable } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import { styles } from "@/styles/GlobalStyles";
 import { NEWCOLORS } from "@/constants/NewTheme";
 import { FlashList } from "@shopify/flash-list";
 import { Image } from "expo-image";
 import emojiImages from "@/components/universal/EmojiImages";
 import { router } from "expo-router";
+import RecipeContext from "@/contexts/RecipeContext";
+import * as Haptics from "expo-haptics";
+import { initialRecipeData } from "@/contexts/RecipeContext";
+import { GenerationDetailsContext } from "@/contexts/GenerationDetailsContext";
 
 const data = [
   { id: "1", name: "Leftovers", color: "grey", icon: "Avocado" },
@@ -25,6 +29,10 @@ const data = [
 ];
 
 const FeaturedRecipeButton = () => {
+  const [recipeData, setRecipeData] = useContext(RecipeContext);
+  const [generationDetails, setGenerationDetails] = useContext(
+    GenerationDetailsContext,
+  );
   return (
     <View style={styles.categoriesSlider}>
       <FlashList
@@ -55,7 +63,15 @@ const FeaturedRecipeButton = () => {
                 },
                 styles.basicBoxShadow,
               ]}
-              //onPress={() => router.push("/pages/test")} fix this
+              onPress={() => [
+                setGenerationDetails((prev) => ({
+                  ...prev,
+                  portalCategory: item.name,
+                })),
+                router.navigate("/recipe"),
+                setRecipeData(initialRecipeData),
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light),
+              ]}
             >
               <Text
                 style={[styles.textCentered, { fontFamily: "Nunito-SemiBold" }]}

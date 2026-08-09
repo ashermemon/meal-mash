@@ -14,7 +14,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { useFocusEffect, useRouter } from "expo-router";
 import { NEWCOLORS } from "@/constants/NewTheme";
 import { CustomIcon } from "@/icon-loader/icon-loader";
-import FeaturedRecipes from "@/components/features/home/FeaturedRecipes";
+import FeaturedRecipes from "@/components/features/home/CategoryScrolls";
 import ExploreSection from "@/components/features/home/ExploreSection";
 import Camera from "@/components/universal/Camera";
 import { useCameraPermissions } from "expo-camera";
