@@ -3,6 +3,7 @@ import React, { useContext } from "react";
 import { styles } from "@/styles/auth.styles";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import { NEWCOLORS } from "@/constants/NewTheme";
+import { getCategoryDisplayLabel } from "@/constants/categoryLabels";
 import { PantryDetailsContext } from "@/contexts/PantryDetails";
 import { Food } from "./Search";
 
@@ -98,7 +99,7 @@ const IngredientTag = (props: Props) => {
               },
             ]}
           >
-            {props.ingredient.category}
+            {getCategoryDisplayLabel(props.ingredient.category)}
           </Text>
         </View>
       </View>

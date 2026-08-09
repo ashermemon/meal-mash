@@ -2,6 +2,7 @@ import { View, Text, Pressable } from "react-native";
 import React, { Dispatch, SetStateAction } from "react";
 import { styles } from "@/styles/auth.styles";
 import { NEWCOLORS } from "@/constants/NewTheme";
+import { getCategoryDisplayLabel } from "@/constants/categoryLabels";
 import { ScrollView } from "react-native-gesture-handler";
 
 type Props = {
@@ -26,44 +27,48 @@ const FilterIngredients = (props: Props) => {
         marginBottom: 5,
       }}
     >
-      {props.categories.map((string, index: number) => (
-        <Pressable
-          key={index}
-          onPress={() => props.setCurrentSelected(string)}
-          style={[
-            styles.selectPill,
-            styles.basicBoxShadow,
-            {
-              justifyContent: "center",
-              alignItems: "center",
-
-              width: string.length >= 12 ? 140 : 90,
-              height: 30,
-              backgroundColor:
-                props.currentSelected.toLowerCase() === string.toLowerCase()
-                  ? NEWCOLORS.greenAccent
-                  : NEWCOLORS.unselectedGrey,
-            },
-          ]}
-        >
-          <Text
+      {props.categories.map((string, index: number) => {
+        const label = getCategoryDisplayLabel(string);
+        return (
+          <Pressable
+            key={index}
+            onPress={() => props.setCurrentSelected(string)}
             style={[
-              styles.basicTextCenter,
+              styles.selectPill,
+              styles.basicBoxShadow,
               {
-                paddingHorizontal: 7,
-                color:
+                justifyContent: "center",
+                alignItems: "center",
+
+                width: label.length >= 12 ? 140 : 90,
+                height: 30,
+                backgroundColor:
                   props.currentSelected.toLowerCase() === string.toLowerCase()
-                    ? "white"
-                    : NEWCOLORS.basicText,
+                    ? NEWCOLORS.greenAccent
+                    : NEWCOLORS.unselectedGrey,
               },
             ]}
-            numberOfLines={1}
-            adjustsFontSizeToFit
           >
-            {string}
-          </Text>
-        </Pressable>
-      ))}
+            <Text
+              style={[
+                styles.basicTextCenter,
+                {
+                  paddingHorizontal: 7,
+                  color:
+                    props.currentSelected.toLowerCase() ===
+                    string.toLowerCase()
+                      ? "white"
+                      : NEWCOLORS.basicText,
+                },
+              ]}
+              numberOfLines={1}
+              adjustsFontSizeToFit
+            >
+              {label}
+            </Text>
+          </Pressable>
+        );
+      })}
     </ScrollView>
   );
 };

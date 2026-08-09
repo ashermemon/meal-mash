@@ -16,6 +16,7 @@ import React, {
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import { NEWCOLORS } from "@/constants/NewTheme";
 import { searchIngredients } from "./SearchFunctionality";
+import { getCategoryDisplayLabel } from "@/constants/categoryLabels";
 import { styles } from "@/styles/auth.styles";
 import * as Haptics from "expo-haptics";
 import { PantryDetailsContext } from "@/contexts/PantryDetails";
@@ -97,7 +98,7 @@ export const SearchResultItem = ({
             },
           ]}
         >
-          {item.category}
+          {getCategoryDisplayLabel(item.category)}
         </Text>
       </View>
     </View>
