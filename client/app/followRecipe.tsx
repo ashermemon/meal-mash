@@ -378,7 +378,7 @@ const followRecipe = () => {
             style={[
               styles.basicBoxShadow,
               {
-                backgroundColor: NEWCOLORS.darkButton,
+                backgroundColor: NEWCOLORS.primary,
                 paddingVertical: 14,
                 borderRadius: 15,
                 width: "100%",

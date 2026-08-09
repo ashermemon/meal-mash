@@ -127,7 +127,7 @@ export default function Dashboard() {
 
               <View style={styles.pantryTip}>
                 <Text
-                  style={[styles.textLeft]}
+                  style={[styles.textLeft, { color: "white" }]}
                   numberOfLines={2}
                   adjustsFontSizeToFit
                 >
@@ -196,9 +196,9 @@ export default function Dashboard() {
       </ScrollView>
       <LinearGradient
         colors={[
-          "rgba(248, 246, 240, 0)",
-          "rgba(248, 246, 240, 0.75)",
-          "rgba(248, 246, 240, 0.98)",
+          "rgba(255, 248, 237, 0)",
+          "rgba(255, 248, 237, 0.75)",
+          "rgba(255, 248, 237, 0.98)",
           NEWCOLORS.backgroundColor,
         ]}
         locations={[0, 0.4, 0.75, 1]}

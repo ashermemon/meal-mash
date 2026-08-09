@@ -192,7 +192,7 @@ export const GenerationCardPreview = (props: Props) => {
                 style={[
                   styles.basicBoxShadow,
                   {
-                    backgroundColor: NEWCOLORS.darkButton,
+                    backgroundColor: NEWCOLORS.primary,
                     paddingVertical: 14,
                     borderRadius: 15,
                     width: "100%",
@@ -231,7 +231,12 @@ export const GenerationCardPreview = (props: Props) => {
                   ]}
                   disabled={true}
                 >
-                  <Text style={[styles.textCenterBold, { fontSize: 17 }]}>
+                  <Text
+                    style={[
+                      styles.textCenterBold,
+                      { fontSize: 17, color: "white" },
+                    ]}
+                  >
                     ← Skip
                   </Text>
                 </Pressable>
@@ -248,7 +253,12 @@ export const GenerationCardPreview = (props: Props) => {
                   ]}
                   disabled={true}
                 >
-                  <Text style={[styles.textCenterBold, { fontSize: 17 }]}>
+                  <Text
+                    style={[
+                      styles.textCenterBold,
+                      { fontSize: 17, color: "white" },
+                    ]}
+                  >
                     Save →
                   </Text>
                 </Pressable>
@@ -339,7 +349,7 @@ export const GenerationCardPreview = (props: Props) => {
             style={[
               styles.basicBoxShadow,
               {
-                backgroundColor: NEWCOLORS.darkButton,
+                backgroundColor: NEWCOLORS.primary,
                 paddingVertical: 14,
                 borderRadius: 15,
                 width: "100%",

@@ -61,7 +61,7 @@ export default function Camera() {
               marginTop: 10,
               paddingVertical: 10,
               width: 200,
-              backgroundColor: "green",
+              backgroundColor: NEWCOLORS.greenAccent,
             },
           ]}
         >

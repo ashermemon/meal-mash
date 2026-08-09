@@ -87,6 +87,7 @@ export default function ExploreSection() {
             fontFamily: "Nunito-SemiBold",
             fontSize: 20,
             textAlign: "center",
+            color: "white",
           },
         ]}
         adjustsFontSizeToFit
@@ -234,14 +235,14 @@ export default function ExploreSection() {
         <Block
           height={200}
           title="Meal Generator"
-          color={NEWCOLORS.blueBlock}
+          color={NEWCOLORS.blueAccent}
           link="generationpage"
           icon="Burrito"
         >
           <Text
             style={[
               styles.basicTextCenter,
-              { fontSize: 10, marginVertical: 5 },
+              { fontSize: 10, marginVertical: 5, color: "white" },
             ]}
           >
             Make a new dish from your leftovers and ingredients you already have
@@ -252,13 +253,13 @@ export default function ExploreSection() {
         <View style={{ flex: 1, flexDirection: "column", gap: 10 }}>
           <Block
             title="Your Pantry"
-            color={NEWCOLORS.orangeBlock}
+            color={NEWCOLORS.orangeAccent}
             link="pantry"
             icon="Fridge"
           />
           <Block
             title="Saved Recipes"
-            color={NEWCOLORS.greenBlock}
+            color={NEWCOLORS.greenAccent}
             link="saves"
             icon="Book"
           />

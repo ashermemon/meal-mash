@@ -131,7 +131,7 @@ export default function TabsLayout() {
                           justifyContent: "center",
                           alignItems: "center",
                           backgroundColor: focused
-                            ? NEWCOLORS.darkButton
+                            ? NEWCOLORS.primary
                             : "transparent",
                         }}
                       >
@@ -159,7 +159,7 @@ export default function TabsLayout() {
                           justifyContent: "center",
                           alignItems: "center",
                           backgroundColor: focused
-                            ? NEWCOLORS.darkButton
+                            ? NEWCOLORS.primary
                             : "transparent",
                         }}
                       >
@@ -187,7 +187,7 @@ export default function TabsLayout() {
                           justifyContent: "center",
                           alignItems: "center",
                           backgroundColor: focused
-                            ? NEWCOLORS.darkButton
+                            ? NEWCOLORS.primary
                             : "transparent",
                         }}
                       >
@@ -215,7 +215,7 @@ export default function TabsLayout() {
                           justifyContent: "center",
                           alignItems: "center",
                           backgroundColor: focused
-                            ? NEWCOLORS.darkButton
+                            ? NEWCOLORS.primary
                             : "transparent",
                         }}
                       >
@@ -243,7 +243,7 @@ export default function TabsLayout() {
                           justifyContent: "center",
                           alignItems: "center",
                           backgroundColor: focused
-                            ? NEWCOLORS.darkButton
+                            ? NEWCOLORS.primary
                             : "transparent",
                         }}
                       >

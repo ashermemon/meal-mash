@@ -1,39 +1,48 @@
 export const NEWCOLORS = {
-  backgroundColor: "#F8F6F0", //#fffefa //f9f9f9 //fdfffa //f8f8f0
-  sheetBackgroundColor: "#FCFAF5",
+  backgroundColor: "#FFF8ED", // warm cream canvas
+  sheetBackgroundColor: "#FFFDF7",
+
+  // Brand primary — used for main CTAs, active tab state, key actions
+  primary: "#3A3532", // dark button
+  primaryDark: "#242019", // pressed / border state
+  primarySoft: "#FFE1D2", // tinted background for primary highlights
 
   blueBlock: "rgb(210, 238, 255)",
   orangeBlock: "rgb(255, 194, 145)",
-  yellowBlock: "#rgb(255, 223, 150)", //rgb(255, 223, 150)
+  yellowBlock: "rgb(255, 223, 150)",
   greenBlock: "rgb(197, 244, 187)",
   purpleBlock: "#FBE8FF",
   purpblueBlock: "#E3E4FF",
   greyBlock: "#FEFEFE",
   redBlock: "#facdcd",
 
-  darkButton: "#39393A",
+  darkButton: "#3A3532",
 
-  placeholderText: "#696969",
-  basicText: "#39393A",
+  placeholderText: "#79746C",
+  basicText: "#3A3532",
 
-  lightGrey: "#e6e6e6",
-  unselectedGrey: "#F0F0F0",
-  unselectedShape: "#C9C9C9",
+  lightGrey: "#E9E4DA",
+  unselectedGrey: "#F3EEE4",
+  unselectedShape: "#D6CFC0",
   dividerGrey: "#d1d1d6",
-  dividerGrey2: "#ECECEC",
+  dividerGrey2: "#EFE9DD",
 
-  greenAccent: "#4BA75C",
-  blueAccent: "#0088FF",
-  orangeAccent: "#FFA600",
-  redAccent: "#BF5E5E",
-  purpleAccent: "#7f4ba7ff",
-  secondaryBoxGrey: "rgb(244, 244, 244)",
-  nestedBG: "#FCFCFC",
+  greenAccent: "#1FAE5C",
+  blueAccent: "#6fadec",
+  yellowAccent: "#e4ae0b",
+  orangeAccent: "#ffae00",
+  redAccent: "#EF4444",
+  purpleAccent: "#9450E0",
+  tealAccent: "#12B3A8",
+  pinkAccent: "#FF4F93",
+
+  secondaryBoxGrey: "#F5F0E6",
+  nestedBG: "#FFFEFA",
   cardWhite: "#FFFFFF",
-  stepCircle: "#D1F1D7",
-  tipBadgeBg: "#FFE7AB",
+  stepCircle: "#B7ECC0",
+  tipBadgeBg: "#FFCE54",
   checkboxOutline: "#D9D9D9",
 
-  pillGreen: "#E1E9DC",
-  pillX: "#b5b5b5",
+  pillGreen: "#CFE8C7",
+  pillX: "#A39C8F",
 } as const;

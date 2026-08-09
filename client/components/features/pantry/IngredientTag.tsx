@@ -87,17 +87,12 @@ const IngredientTag = (props: Props) => {
         onPress={handleRemoveIngredient}
         style={{
           marginRight: 20,
-          backgroundColor: NEWCOLORS.redBlock,
+          backgroundColor: NEWCOLORS.redAccent,
           padding: 10,
           borderRadius: 1000,
         }}
       >
-        <CustomIcon
-          name="close"
-          filled={true}
-          color={NEWCOLORS.placeholderText}
-          size={18}
-        />
+        <CustomIcon name="close" filled={true} color="white" size={18} />
       </Pressable>
     </View>
   );

@@ -14,6 +14,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import httpClient from "@/app/httpClient";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { NEWCOLORS } from "@/constants/NewTheme";
 
 type UserState = { email: string } | "none";
 
@@ -128,7 +129,7 @@ export default function LoginPage() {
 
         <TouchableHighlight
           onPress={() => logoutUser()}
-          underlayColor="#3f3f3f"
+          underlayColor={NEWCOLORS.primaryDark}
           style={styles.button}
         >
           <Text style={styles.buttonText}>Logout</Text>
@@ -142,7 +143,7 @@ export default function LoginPage() {
       <View style={styles.container}>
         <TouchableHighlight
           onPress={() => backButton()}
-          underlayColor="#3f3f3f"
+          underlayColor={NEWCOLORS.primaryDark}
           style={styles.backButton}
         >
           <Ionicons name="arrow-back" size={24} color="#fff" />
@@ -190,7 +191,7 @@ export default function LoginPage() {
       <View style={styles.container}>
         <TouchableHighlight
           onPress={() => backButton()}
-          underlayColor="#3f3f3f"
+          underlayColor={NEWCOLORS.primaryDark}
           style={styles.backButton}
         >
           <Ionicons name="arrow-back" size={24} color="#fff" />
@@ -238,7 +239,7 @@ export default function LoginPage() {
       <View style={styles.container}>
         <TouchableHighlight
           onPress={() => setIsLogin(true)}
-          underlayColor="#3f3f3f"
+          underlayColor={NEWCOLORS.primaryDark}
           style={styles.button}
         >
           <Text style={styles.buttonText}>Login</Text>
@@ -246,7 +247,7 @@ export default function LoginPage() {
 
         <TouchableHighlight
           onPress={() => setIsSignup(true)}
-          underlayColor="#3f3f3f"
+          underlayColor={NEWCOLORS.primaryDark}
           style={styles.button}
         >
           <Text style={styles.buttonText}>Sign Up</Text>
@@ -268,14 +269,14 @@ const styles = StyleSheet.create({
   },
   button: {
     padding: 10,
-    backgroundColor: "#1d1d1d",
+    backgroundColor: NEWCOLORS.primary,
     borderRadius: 5,
     width: 150,
     alignItems: "center",
     marginVertical: 5,
   },
   disabledButton: {
-    backgroundColor: "#666",
+    backgroundColor: NEWCOLORS.unselectedShape,
   },
   buttonText: {
     fontSize: 18,
@@ -283,7 +284,7 @@ const styles = StyleSheet.create({
   },
   backButton: {
     padding: 10,
-    backgroundColor: "#1d1d1d",
+    backgroundColor: NEWCOLORS.primary,
     borderRadius: 50,
     width: 48,
     height: 48,
@@ -295,7 +296,7 @@ const styles = StyleSheet.create({
     width: "100%",
     maxWidth: 400,
     padding: 15,
-    backgroundColor: "#1d1d1d",
+    backgroundColor: NEWCOLORS.darkButton,
     color: "#fff",
     borderRadius: 5,
     marginBottom: 15,
@@ -310,7 +311,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   errorText: {
-    color: "red",
+    color: NEWCOLORS.redAccent,
     marginBottom: 10,
   },
 });

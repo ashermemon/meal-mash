@@ -55,7 +55,7 @@ const ListButtonSelect = (props: Props) => {
             <CustomIcon
               name={props.icons[index]}
               filled
-              color={NEWCOLORS.basicText}
+              color={index === props.selected ? "white" : NEWCOLORS.basicText}
               size={30}
             ></CustomIcon>
           </View>
@@ -65,7 +65,8 @@ const ListButtonSelect = (props: Props) => {
               {
                 fontSize: 24,
                 flex: 1,
-                color: NEWCOLORS.basicText,
+                color:
+                  index === props.selected ? "white" : NEWCOLORS.basicText,
                 fontFamily: "Nunito-Medium",
               },
             ]}

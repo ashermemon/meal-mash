@@ -1,57 +1,57 @@
 var hsl = require("hsl-to-hex");
 
-var sat = 80;
-var lightness = 97;
+var sat = 85;
+var lightness = 90;
 export const COLORS = {
-  navPrimary: "#9FCEA4",
-  navSecondary: "#6BBA83",
-  navSelected: "#E7FFE3",
+  navPrimary: "#5FCB77",
+  navSecondary: "#2FA857",
+  navSelected: "#DFF6DA",
   navUnselected: "#F7F7F7",
   navBG: "#FFFFFF",
   navBorder: "#A3A3A3",
-  navGenBg: "#F6E3FF",
-  navGenBorder: "#CBAFDF",
+  navGenBg: "#F0D9FF",
+  navGenBorder: "#C79EEA",
 
-  blueHeader: "#F0F9FE",
-  blueHeaderBorder: "#ACD3FF",
+  blueHeader: "#DCEFFF",
+  blueHeaderBorder: "#7EC1FF",
 
   newHeader: "#F6F6F6",
   newHeaderB: "#D1D1D1",
 
-  fontColor: "#39393A",
-  searchPlaceholder: "#898989",
-  addGrey: "#EFEFEF",
-  addButtonColor: "#E0E0E0",
-  addButtonStroke: "#D6D6D6",
+  fontColor: "#3A3532",
+  searchPlaceholder: "#8A8378",
+  addGrey: "#F3EEE4",
+  addButtonColor: "#E9E2D3",
+  addButtonStroke: "#D8CFBC",
 
-  ingredientContainerOutline: "#B0E1B9",
-  leftoverContainerOutline: "#ACD3FF",
-  addPlusGrey: "#A3A3A3",
+  ingredientContainerOutline: "#8FDD9E",
+  leftoverContainerOutline: "#7EC1FF",
+  addPlusGrey: "#A39A89",
 
-  searchGreyBG: "#E4E4E4",
-  searchGreyBorder: "#C5C5C5",
-  searchGreyPicker: "#FAFAFA",
+  searchGreyBG: "#F0EADD",
+  searchGreyBorder: "#D8CFBC",
+  searchGreyPicker: "#FBF8F2",
 
-  deleteExitStroke: "#E1B0B1",
-  deleteExitFill: "#FEF0F0",
+  deleteExitStroke: "#F0A3A3",
+  deleteExitFill: "#FFE5E5",
 
-  greenButtonColorOuline: "#B0E1B9",
-  greenButtonColor: "#F1FEF0",
+  greenButtonColorOuline: "#8FDD9E",
+  greenButtonColor: "#DFF6DA",
 
-  blueLink: "#496DDB",
-  greenLink: "#306B34",
+  blueLink: "#3D63FF",
+  greenLink: "#1E9E44",
 
-  ncBG: "#FAFAFA",
+  ncBG: "#FBF8F2",
 
-  deleteBorder: "#E1B0B1",
-  deleteFill: "#FEF0F0",
-  saveBorder: "#ACD3FF",
-  saveFill: "#F0F9FE",
-  genBorder: "#CBAFDF",
-  genFill: "#F6E3FF",
+  deleteBorder: "#F0A3A3",
+  deleteFill: "#FFE5E5",
+  saveBorder: "#7EC1FF",
+  saveFill: "#DCEFFF",
+  genBorder: "#C79EEA",
+  genFill: "#F0D9FF",
 
-  favoriteColor: "#FBC02D",
-  discardColor: "#FF5252",
+  favoriteColor: "#FFC22E",
+  discardColor: "#FF4D4D",
 
   cat1: hsl(105, sat, lightness),
   cat2: hsl(195, sat, lightness),
@@ -67,8 +67,8 @@ export const COLORS = {
   cat12: hsl(250, sat, lightness),
   cat13: hsl(100, sat, lightness),
 
-  greenProgressBar: "#6BBA83",
-  tipOutline: "#ECC090",
-  greyBtns: "#7B7B7B",
-  outlineProgress: "#B0E0B9",
+  greenProgressBar: "#2FAE5C",
+  tipOutline: "#F0B15E",
+  greyBtns: "#8A8378",
+  outlineProgress: "#8FDD9E",
 } as const;

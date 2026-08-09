@@ -58,7 +58,7 @@ export default function SavedCard(props: SavedProps) {
     let targetColor;
 
     if (pressed.value) {
-      targetColor = "#fcf5ff";
+      targetColor = COLORS.genFill;
     } else {
       targetColor = "white";
     }
@@ -77,7 +77,7 @@ export default function SavedCard(props: SavedProps) {
                 styles.emojiWrapCard,
                 {
                   borderColor: COLORS.genBorder,
-                  backgroundColor: "#fcf5ff",
+                  backgroundColor: COLORS.genFill,
                 },
               ]}
             >

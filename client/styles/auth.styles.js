@@ -152,7 +152,7 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
   },
   errorText: {
-    color: "red",
+    color: NEWCOLORS.redAccent,
   },
   generatorContainer: {
     flex: 1,
@@ -635,7 +635,7 @@ export const styles = StyleSheet.create({
     justifyContent: "flex-start",
   },
   circleButton: {
-    backgroundColor: NEWCOLORS.darkButton,
+    backgroundColor: NEWCOLORS.primary,
     borderRadius: 100,
   },
   recipeBar: {
@@ -835,7 +835,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 15,
     backgroundColor: "red",
     borderRadius: 15,
-    backgroundColor: NEWCOLORS.yellowBlock,
+    backgroundColor: NEWCOLORS.yellowAccent,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
