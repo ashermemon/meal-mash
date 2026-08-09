@@ -8,36 +8,6 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 15,
   },
-  ingredientContainer: {
-    flex: 1,
-    width: "100%",
-    alignItems: "flex-start",
-    alignSelf: "flex-start",
-  },
-  tipContainer: {
-    flex: 1,
-
-    marginVertical: 8,
-    marginHorizontal: 25,
-    borderRadius: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    backgroundColor: "white",
-    outlineColor: COLORS.tipOutline,
-    outlineWidth: 3,
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  image: {
-    ...StyleSheet.absoluteFillObject,
-    resizeMode: "cover",
-    opacity: 0.2,
-  },
-  text: {
-    fontFamily: "Nunito-Regular",
-    color: COLORS.fontColor,
-    fontWeight: 500,
-  },
   textCentered: {
     fontFamily: "Nunito-Regular",
     textAlign: "center",
@@ -55,18 +25,6 @@ export const styles = StyleSheet.create({
     color: COLORS.fontColor,
   },
 
-  linkText: {
-    fontFamily: "Nunito-SemiBold",
-    textAlign: "center",
-    justifyContent: "center",
-    color: COLORS.blueLink,
-  },
-  linkTextG: {
-    fontFamily: "Nunito-SemiBold",
-    textAlign: "center",
-    justifyContent: "center",
-    color: COLORS.greenLink,
-  },
   textLeft: {
     fontFamily: "Nunito-Regular",
     textAlign: "left",
@@ -90,40 +48,6 @@ export const styles = StyleSheet.create({
     color: COLORS.fontColor,
     fontSize: 17,
   },
-  headerText: {
-    fontFamily: "Nunito-Bold",
-    textAlign: "center",
-    fontSize: 18,
-
-    fontWeight: 700,
-
-    color: COLORS.fontColor,
-  },
-  headerContainer: {
-    paddingTop: 8,
-
-    margin: 0,
-    paddingHorizontal: 10,
-    paddingBottom: 5,
-    width: "100%",
-  },
-  generateButtonContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "row",
-  },
-  generateButton: {
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: COLORS.blueHeader,
-    borderColor: COLORS.blueHeaderBorder,
-    borderWidth: 3,
-    padding: 10,
-    marginVertical: 10,
-    height: 55,
-
-    borderRadius: 10,
-  },
   counterBtn: {
     alignItems: "center",
     alignSelf: "center",
@@ -136,18 +60,6 @@ export const styles = StyleSheet.create({
 
     height: 50,
     width: 100,
-
-    borderRadius: 10,
-  },
-  generateButtonNew: {
-    alignItems: "center",
-    justifyContent: "center",
-
-    borderWidth: 3,
-
-    height: 50,
-    width: 50,
-    marginHorizontal: 5,
 
     borderRadius: 10,
   },
@@ -173,211 +85,25 @@ export const styles = StyleSheet.create({
     alignSelf: "center",
     flexDirection: "row",
   },
-  ingredientPanel: {
-    justifyContent: "space-between",
-    alignItems: "center",
-    flexDirection: "row",
-  },
   ingredientPanelFav: {
     justifyContent: "flex-start",
     alignItems: "center",
     flexDirection: "row",
   },
 
-  centeredBox: {
-    justifyContent: "center",
-    textAlign: "center",
-    alignItems: "center",
-  },
 
-  addContainer: {
-    alignItems: "center",
-    backgroundColor: COLORS.addGrey,
-    paddingVertical: 15,
-    width: "100%",
-    margin: 0,
-    borderTopWidth: 3,
-    borderBottomWidth: 3,
-  },
-  addButton: {
-    alignItems: "center",
-    backgroundColor: COLORS.addButtonColor,
-    padding: 8,
-    borderRadius: "100%",
-    borderWidth: 3,
-    borderColor: COLORS.addButtonStroke,
-  },
 
-  addBigContainer: {
-    backgroundColor: "white",
-    width: "100%",
-    marginHorizontal: 0,
-    borderTopWidth: 3,
-    borderBottomWidth: 3,
-    marginBottom: 30,
-  },
-  addContainerHeader: {
-    fontFamily: "Nunito-Bold",
-    textAlign: "left",
-    fontSize: 20,
-    margin: 13,
-    fontWeight: 700,
 
-    color: COLORS.fontColor,
-  },
-  searchContainer: {
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingBottom: 7,
-    flexDirection: "row",
-    borderBottomWidth: 2,
-    borderColor: COLORS.searchGreyBorder,
-  },
-  searchWrap: {
-    borderRadius: 30,
-    justifyContent: "center",
 
-    padding: 10,
-    paddingBottom: 5,
-    width: 300,
-    zIndex: 100,
-    height: 320,
-    backgroundColor: COLORS.searchGreyBG,
-    borderColor: COLORS.searchGreyBorder,
-    borderWidth: 3,
-    marginBottom: 50,
-  },
-
-  ingredientResult: {
-    margin: 5,
-
-    width: "100%",
-    padding: 5,
-
-    borderRadius: 50,
-  },
-  exitSearch: {
-    backgroundColor: COLORS.deleteExitFill,
-    width: 40,
-    height: 40,
-    borderRadius: "100%",
-    borderWidth: 3,
-    borderColor: COLORS.deleteExitStroke,
-
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
-  searchContentContainer: {
-    flex: 5,
-    justifyContent: "center",
-  },
-  exitSearchContainer: {
-    flex: 1,
-  },
-  modalWrap: {
-    flex: 1,
-
-    alignItems: "center",
-  },
-  nextButton: {
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#DDDDDD",
-    width: 50,
-    height: 50,
-    borderRadius: "100%",
-    backgroundColor: COLORS.greenButtonColor,
-    borderColor: COLORS.greenButtonColorOuline,
-    borderWidth: 3,
-  },
-  nextButtonEmpty: {
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#DDDDDD",
-    width: 50,
-    height: 50,
-    borderRadius: "100%",
-    backgroundColor: COLORS.addGrey,
-    borderColor: COLORS.addButtonStroke,
-    borderWidth: 3,
-  },
-  arrowButtons: {
-    flexDirection: "row",
-    width: "100%",
-    paddingTop: 15,
-    paddingHorizontal: 25,
-    justifyContent: "space-between",
-  },
-  flexBTN: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  flexMiddle: {
-    flex: 3,
-    alignItems: "center",
-    justifyContent: "center",
-  },
   timerButton: {
     alignItems: "flex-end",
     justifyContent: "center",
     marginHorizontal: 10,
   },
-  timerButtons: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
 
-  spacer: {
-    height: 40,
-  },
-  searchText: {
-    fontFamily: "Nunito-Bold",
-    textAlign: "left",
-    zIndex: 500,
-    color: COLORS.fontColor,
-  },
-  searchBar: {
-    backgroundColor: COLORS.searchGreyBorder,
-    paddingHorizontal: 10,
-    minHeight: 40,
-    justifyContent: "center",
-    borderRadius: 50,
-    flex: 1,
-    marginLeft: 10,
-  },
   ingredientEmoji: {
     width: 30,
     height: 30,
-  },
-  customEmoji: {
-    width: 60,
-    height: 60,
-  },
-  emojiWrapBig: {
-    borderWidth: 3,
-    alignItems: "center",
-    justifyContent: "center",
-    width: 110,
-    height: 110,
-    borderRadius: 100,
-    marginTop: 15,
-  },
-  ingredientFlex: {
-    flex: 1,
-    padding: 10,
-    alignItems: "flex-start",
-    justifyContent: "center",
-  },
-  ingredientFlexEmoji: {
-    alignItems: "flex-end",
-    justifyContent: "center",
-  },
-  emojiWrap: {
-    borderWidth: 3,
-    padding: 10,
-    borderRadius: 100,
   },
 
   emojiWrapCard: {
@@ -397,24 +123,6 @@ export const styles = StyleSheet.create({
     paddingRight: 25,
     alignItems: "flex-end",
     justifyContent: "center",
-  },
-  ingredientFlexEmojiCard: {
-    alignItems: "flex-start",
-    justifyContent: "center",
-  },
-  addContainerIngredient: {
-    alignItems: "center",
-    justifyContent: "flex-start",
-    flexDirection: "row",
-
-    borderRightColor: COLORS.favoriteColor,
-    shadowColor: "black",
-    shadowRadius: 10,
-    shadowOpacity: 0.1,
-    paddingVertical: 15,
-    width: "100%",
-    margin: 0,
-    borderTopWidth: 3,
   },
   favoritedContainer: {
     borderWidth: 3,
@@ -462,32 +170,9 @@ export const styles = StyleSheet.create({
     textAlign: "right",
     color: COLORS.fontColor,
   },
-  infoTagBox: {
-    backgroundColor: NEWCOLORS.nestedBG,
-    borderRadius: 14,
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-  },
-  infoTagText: {
-    fontFamily: "Nunito-SemiBold",
-    color: COLORS.fontColor,
-    fontSize: 13,
-  },
-  legendRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 10,
-  },
   card: {
     borderTopColor: NEWCOLORS.dividerGrey2,
     borderTopWidth: 3,
-  },
-  checkboxOutline: {
-    width: 20,
-    height: 20,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: NEWCOLORS.checkboxOutline,
   },
   stepCircle: {
     width: 32,
@@ -498,56 +183,6 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
   },
 
-  customButton: {
-    alignItems: "center",
-    justifyContent: "center",
-
-    borderWidth: 3,
-    padding: 2,
-    borderRadius: 100,
-  },
-  swipeable: {
-    backgroundColor: COLORS.discardColor,
-    justifyContent: "center",
-    alignItems: "center",
-    width: 85,
-    height: "100%",
-    margin: 0,
-  },
-  swipeableSave: {
-    backgroundColor: COLORS.favoriteColor,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 25,
-    height: "100%",
-    margin: 0,
-  },
-  favSave: {
-    justifyContent: "center",
-    alignItems: "center",
-    width: 85,
-  },
-  deleteText: {
-    fontFamily: "Nunito-Bold",
-    textAlign: "center",
-    justifyContent: "center",
-
-    color: "white",
-  },
-  saveText: {
-    fontFamily: "Nunito-Bold",
-    textAlign: "center",
-    justifyContent: "center",
-
-    color: COLORS.fontColor,
-  },
-  customHeadText: {
-    fontFamily: "Nunito-Bold",
-    color: COLORS.fontColor,
-
-    marginVertical: 10,
-    fontSize: 18,
-  },
   profileHeader: {
     backgroundColor: COLORS.greenButtonColor,
 
@@ -567,62 +202,7 @@ export const styles = StyleSheet.create({
     marginBottom: 20,
     borderRadius: 200,
   },
-  safearea: {
-    flex: 1,
-    backgroundColor: COLORS.blueHeader,
-  },
-  body: {
-    flex: 1,
-    backgroundColor: "red",
-    padding: 20,
-    margin: 15,
-    borderRadius: 8,
-  },
-  checkbox: {
-    padding: 10,
-    outlineColor: COLORS.blueHeaderBorder,
-    outlineWidth: 2,
-    backgroundColor: COLORS.blueHeader,
-  },
-  contentContainer: {
-    flex: 1,
-    padding: 36,
-    alignItems: "center",
-  },
-  recipeMovement: {
-    alignItems: "center",
-    justifyContent: "space-between",
-    flexDirection: "row",
-    width: "100%",
-    paddingHorizontal: 25,
-    marginTop: 10,
-  },
-  overviewBoxes: {
-    alignItems: "center",
 
-    paddingVertical: 10,
-    paddingHorizontal: 5,
-    borderRadius: 10,
-    flex: 1,
-
-    borderWidth: 3,
-    marginVertical: 20,
-    marginHorizontal: 10,
-  },
-
-  dropdownWrap: {
-    borderRadius: 30,
-    justifyContent: "center",
-
-    padding: 10,
-
-    zIndex: 100,
-
-    backgroundColor: COLORS.searchGreyBG,
-    borderColor: COLORS.searchGreyBorder,
-    borderWidth: 3,
-    marginTop: 100,
-  },
 
   // --------------------------------------------//
 
@@ -670,15 +250,6 @@ export const styles = StyleSheet.create({
   bold: {
     fontFamily: "Nunito-Bold",
   },
-  sectionalWrapper: {
-    marginVertical: 5,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    flex: 1,
-    alignItems: "center",
-    flexWrap: "wrap",
-    gap: 10,
-  },
   categoriesSlider: {
     marginVertical: 5,
   },
@@ -711,12 +282,6 @@ export const styles = StyleSheet.create({
     borderRadius: 45,
     alignItems: "center",
     justifyContent: "center",
-  },
-  newShadow: {
-    shadowColor: "#000000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
   },
   infoTag: {
     backgroundColor: NEWCOLORS.greyBlock,

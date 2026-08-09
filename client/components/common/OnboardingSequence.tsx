@@ -2,7 +2,6 @@ import { View, Text, Pressable } from "react-native";
 import React, { createContext, useState } from "react";
 import { styles } from "@/styles/auth.styles";
 import ProgressBar from "../features/recipe/ProgressBar";
-import { CustomIcon } from "@/icon-loader/icon-loader";
 import { useRouter } from "expo-router";
 
 export type OnboardingContextType = {

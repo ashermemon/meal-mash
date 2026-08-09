@@ -4,7 +4,6 @@ import { CameraView, CameraType, useCameraPermissions } from "expo-camera";
 import { styles } from "@/styles/GlobalStyles";
 import { Image } from "expo-image";
 import { CustomIcon } from "@/icon-loader/icon-loader";
-import { COLORS } from "@/constants/Theme";
 import { NEWCOLORS } from "@/constants/NewTheme";
 
 export default function Camera() {

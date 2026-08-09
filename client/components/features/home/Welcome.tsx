@@ -8,7 +8,6 @@ import {
 } from "react-native";
 import React, { Dispatch, SetStateAction, useCallback, useState } from "react";
 import { styles } from "@/styles/GlobalStyles";
-import { COLORS } from "@/constants/Theme";
 import { Image } from "expo-image";
 import { ScrollView } from "react-native-gesture-handler";
 import { useFocusEffect, useRouter } from "expo-router";

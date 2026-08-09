@@ -1,5 +1,5 @@
 import { Food } from "@/components/features/pantry/Search";
-import { PantryDetails, PantryDetailsType } from "@/contexts/PantryDetails";
+import { PantryDetails } from "@/contexts/PantryDetails";
 
 type PromptProps = {
   pantryDetails: PantryDetails;

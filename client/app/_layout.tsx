@@ -2,7 +2,6 @@ import { View, Pressable, ScrollView } from "react-native";
 import { Stack } from "expo-router";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { Button, Platform, StatusBar, Text } from "react-native";
-import { styles } from "@/styles/GlobalStyles";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useCallback, useEffect, useRef, useState } from "react";

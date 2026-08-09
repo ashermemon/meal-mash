@@ -2,8 +2,6 @@ import { View, Text, Pressable } from "react-native";
 import React, { useState } from "react";
 import { styles } from "@/styles/GlobalStyles";
 import { CustomIcon } from "@/icon-loader/icon-loader";
-import { NEWCOLORS } from "@/constants/NewTheme";
-import InfoTag, { difficultyShape } from "../features/recipe/InfoTag";
 import { TextInput } from "react-native-gesture-handler";
 import * as Haptics from "expo-haptics";
 

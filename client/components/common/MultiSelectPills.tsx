@@ -1,9 +1,8 @@
 import { View, Text, Pressable } from "react-native";
 import React from "react";
 import { styles } from "@/styles/GlobalStyles";
-import { CustomIcon } from "@/icon-loader/icon-loader";
 import { NEWCOLORS } from "@/constants/NewTheme";
-import InfoTag, { difficultyShape } from "../features/recipe/InfoTag";
+import { difficultyShape } from "../features/recipe/InfoTag";
 import * as Haptics from "expo-haptics";
 
 type Props = {

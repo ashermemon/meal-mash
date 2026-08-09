@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Pressable, StyleSheet, Animated } from "react-native";
 import Svg, { Path } from "react-native-svg";
-import { COLORS } from "@/constants/Theme";
 import { NEWCOLORS } from "@/constants/NewTheme";
 
 interface CustomCheckboxProps {

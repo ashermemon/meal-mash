@@ -6,7 +6,6 @@ import { Image } from "expo-image";
 import emojiImages from "@/components/universal/EmojiImages";
 
 import SavedRecipesContext from "@/contexts/SavedRecipesContext";
-import { storage } from "@/utils/storage";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,

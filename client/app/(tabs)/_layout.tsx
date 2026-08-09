@@ -1,9 +1,6 @@
 import { Tabs, useRouter, useSegments } from "expo-router";
 import { Platform, View } from "react-native";
 import { CustomIcon } from "@/icon-loader/icon-loader";
-import { COLORS } from "@/constants/Theme";
-import { ImageBackground } from "react-native";
-import { styles } from "@/styles/GlobalStyles";
 import { NEWCOLORS } from "@/constants/NewTheme";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
@@ -71,7 +68,6 @@ export default function TabsLayout() {
 
   return (
     <>
-      {/* <ImageBackground source={image} style={styles.image} /> */}
       <SafeAreaProvider>
         <SafeAreaView style={{ flex: 1 }}>
           <GestureDetector gesture={panGesture}>

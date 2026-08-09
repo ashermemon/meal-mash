@@ -5,13 +5,11 @@ export const NEWCOLORS = {
   // Brand primary — used for main CTAs, active tab state, key actions
   primary: "#3A3532", // dark button
   primaryDark: "#242019", // pressed / border state
-  primarySoft: "#FFE1D2", // tinted background for primary highlights
 
   blueBlock: "rgb(210, 238, 255)",
   orangeBlock: "rgb(255, 194, 145)",
   yellowBlock: "rgb(255, 223, 150)",
   greenBlock: "rgb(197, 244, 187)",
-  purpleBlock: "#FBE8FF",
   purpblueBlock: "#E3E4FF",
   greyBlock: "#FEFEFE",
   redBlock: "#facdcd",
@@ -32,17 +30,12 @@ export const NEWCOLORS = {
   yellowAccent: "#e4ae0b",
   orangeAccent: "#ffae00",
   redAccent: "#EF4444",
-  purpleAccent: "#9450E0",
-  tealAccent: "#12B3A8",
-  pinkAccent: "#FF4F93",
 
   secondaryBoxGrey: "#F5F0E6",
   nestedBG: "#FFFEFA",
   cardWhite: "#FFFFFF",
   stepCircle: "#B7ECC0",
   tipBadgeBg: "#FFCE54",
-  checkboxOutline: "#D9D9D9",
 
-  pillGreen: "#CFE8C7",
   pillX: "#A39C8F",
 } as const;

@@ -19,7 +19,6 @@ import { searchIngredients } from "./SearchFunctionality";
 import { getCategoryDisplayLabel } from "@/constants/categoryLabels";
 import { styles } from "@/styles/auth.styles";
 import * as Haptics from "expo-haptics";
-import { PantryDetailsContext } from "@/contexts/PantryDetails";
 import { ScrollView } from "react-native-gesture-handler";
 
 type Props = {

@@ -1,6 +1,5 @@
-import { StyleSheet, Text, View } from "react-native";
-import React, { useContext, useEffect, useState } from "react";
-import { storage } from "@/utils/storage";
+import { Text, View } from "react-native";
+import React, { useContext } from "react";
 import { styles } from "@/styles/GlobalStyles";
 
 import FavIngredient from "@/components/features/saved/FavIngredient";

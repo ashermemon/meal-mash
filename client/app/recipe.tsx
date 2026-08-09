@@ -1,14 +1,10 @@
 import { View, Text, Platform, Pressable } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
-import { styles } from "@/styles/GlobalStyles";
 import { NEWCOLORS } from "@/constants/NewTheme";
 import RecipeContext from "@/contexts/RecipeContext";
 import NutrientsContext from "@/contexts/NutrientsContext";
-import { GenerationCardPreview } from "../components/features/generator/GenerationCardPreview";
-import Timer from "@/components/features/recipe/Timer";
 import { Image } from "expo-image";
 import { COLORS } from "@/constants/Theme";
-import CustomCheckbox from "@/components/common/CustomCheckbox";
 import * as Haptics from "expo-haptics";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import { useNavigation } from "@react-navigation/native";

@@ -2,7 +2,6 @@ import { View, Text, Pressable } from "react-native";
 import React, { useCallback, useContext, useRef, useState } from "react";
 import { ScrollView } from "react-native-gesture-handler";
 import { styles } from "@/styles/auth.styles";
-import { CustomIcon } from "@/icon-loader/icon-loader";
 import SliderField from "@/components/common/SliderField";
 import MultiSelectPills from "@/components/common/MultiSelectPills";
 import CountFieldPill from "@/components/common/CountFieldPill";
