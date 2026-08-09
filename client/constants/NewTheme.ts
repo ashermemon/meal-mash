@@ -35,5 +35,5 @@ export const NEWCOLORS = {
   checkboxOutline: "#D9D9D9",
 
   pillGreen: "#E1E9DC",
-  pillX: "#A8B5A4",
+  pillX: "#b5b5b5",
 } as const;

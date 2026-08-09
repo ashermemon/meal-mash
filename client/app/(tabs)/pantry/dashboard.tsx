@@ -147,28 +147,31 @@ export default function Dashboard() {
                   }}
                 />
               </View>
-              <FilterIngredients
-                setCurrentSelected={setSelectedFilter}
-                currentSelected={selectedFilter}
-                categories={ingredientCategories}
-              />
-              {pantryDetails.ingredients
-                .toReversed()
-                .map((ingredient: Food, index: number) =>
-                  selectedFilter === "All" ? (
-                    <IngredientTag
-                      key={index}
-                      ingredient={ingredient}
-                    ></IngredientTag>
-                  ) : selectedFilter === ingredient.category ? (
-                    <IngredientTag
-                      key={index}
-                      ingredient={ingredient}
-                    ></IngredientTag>
-                  ) : (
-                    <React.Fragment key={index}></React.Fragment>
-                  ),
-                )}
+
+              <View style={{ gap: 10 }}>
+                <FilterIngredients
+                  setCurrentSelected={setSelectedFilter}
+                  currentSelected={selectedFilter}
+                  categories={ingredientCategories}
+                />
+                {pantryDetails.ingredients
+                  .toReversed()
+                  .map((ingredient: Food, index: number) =>
+                    selectedFilter === "All" ? (
+                      <IngredientTag
+                        key={index}
+                        ingredient={ingredient}
+                      ></IngredientTag>
+                    ) : selectedFilter === ingredient.category ? (
+                      <IngredientTag
+                        key={index}
+                        ingredient={ingredient}
+                      ></IngredientTag>
+                    ) : (
+                      <React.Fragment key={index}></React.Fragment>
+                    ),
+                  )}
+              </View>
               {pantryDetails.ingredients.length < 1 ? (
                 <Text
                   style={[

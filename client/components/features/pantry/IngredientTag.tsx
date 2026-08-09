@@ -43,65 +43,45 @@ const IngredientTag = (props: Props) => {
       <View
         style={{
           flex: 1,
-          justifyContent: "flex-start",
-          alignItems: "center",
+          justifyContent: "center",
+          alignItems: "flex-start",
           paddingHorizontal: 10,
-          flexDirection: "row",
+          flexDirection: "column",
         }}
       >
-        <View
-          style={{
-            flex: 1,
-            width: "100%",
-          }}
-        >
-          <Text
-            numberOfLines={1}
-            minimumFontScale={0.5}
-            adjustsFontSizeToFit
-            style={[
-              styles.textLeftSemiBold,
-              {
-                paddingHorizontal: 3,
-                fontSize: 17,
-                width: "100%",
-
-                marginLeft: 5,
-              },
-            ]}
-          >
-            {props.ingredient.name}
-          </Text>
-        </View>
-
-        <View
+        <Text
+          numberOfLines={1}
+          minimumFontScale={0.5}
+          adjustsFontSizeToFit
           style={[
-            styles.infoTag,
+            styles.textLeftSemiBold,
             {
-              justifyContent: "center",
-              backgroundColor: NEWCOLORS.purpblueBlock,
-              borderRadius: 100,
-              marginLeft: 10,
-              marginTop: 2,
-              flex: 0,
-              paddingVertical: 3,
+              paddingHorizontal: 3,
+              fontSize: 17,
+              width: "100%",
+
+              marginLeft: 5,
             },
           ]}
         >
-          <Text
-            style={[
-              styles.textLeftSemiBold,
-              {
-                paddingHorizontal: 3,
-                fontSize: 12,
+          {props.ingredient.name}
+        </Text>
 
-                fontFamily: "Nunito-Medium",
-              },
-            ]}
-          >
-            {getCategoryDisplayLabel(props.ingredient.category)}
-          </Text>
-        </View>
+        <Text
+          numberOfLines={1}
+          style={[
+            styles.basicTextLeft,
+            {
+              paddingHorizontal: 3,
+              fontSize: 13,
+              marginLeft: 5,
+              fontFamily: "Nunito-Regular",
+              color: NEWCOLORS.pillX,
+            },
+          ]}
+        >
+          {getCategoryDisplayLabel(props.ingredient.category)}
+        </Text>
       </View>
       <Pressable
         onPress={handleRemoveIngredient}

@@ -24,7 +24,7 @@ const FilterIngredients = (props: Props) => {
 
         alignItems: "center",
         gap: 10,
-        marginBottom: 5,
+        marginBottom: 10,
       }}
     >
       {props.categories.map((string, index: number) => {
@@ -55,8 +55,7 @@ const FilterIngredients = (props: Props) => {
                 {
                   paddingHorizontal: 7,
                   color:
-                    props.currentSelected.toLowerCase() ===
-                    string.toLowerCase()
+                    props.currentSelected.toLowerCase() === string.toLowerCase()
                       ? "white"
                       : NEWCOLORS.basicText,
                 },
