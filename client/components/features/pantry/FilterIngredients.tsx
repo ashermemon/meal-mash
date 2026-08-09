@@ -37,7 +37,7 @@ const FilterIngredients = (props: Props) => {
               justifyContent: "center",
               alignItems: "center",
 
-              width: 90,
+              width: string.length >= 12 ? 140 : 90,
               height: 30,
               backgroundColor:
                 props.currentSelected.toLowerCase() === string.toLowerCase()
