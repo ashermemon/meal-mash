@@ -23,7 +23,7 @@ import { ScrollView } from "react-native-gesture-handler";
 
 type Props = {
   onSelectIngredient?: (item: Food) => void;
-
+  isGroceryList?: boolean;
   showDropdown?: boolean;
   onResultsChange?: (results: Food[], visible: boolean) => void;
 };
@@ -203,7 +203,9 @@ const Search = forwardRef<SearchHandle, Props>((props, ref) => {
           <TextInput
             onFocus={() => setShowResults(Boolean(query.trim()))}
             onBlur={() => {}}
-            placeholder="Search Ingredients"
+            placeholder={
+              props.isGroceryList ? "Add New Item" : "Search Ingredients"
+            }
             autoCapitalize="words"
             keyboardType="default"
             placeholderTextColor={NEWCOLORS.unselectedShape}
@@ -225,24 +227,29 @@ const Search = forwardRef<SearchHandle, Props>((props, ref) => {
             ]}
           />
         </View>
-        <View style={localStyles.searchInputAction}>
-          <View style={styles.verticalLine}></View>
-          <Pressable
-            style={{ paddingRight: 15, paddingLeft: 10, zIndex: 9999 }}
-            onPress={(event) => {
-              event.stopPropagation();
-              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-            }}
-            hitSlop={{ top: 10, bottom: 10, left: 15, right: 15 }}
-          >
-            <CustomIcon
-              name="camera-2"
-              filled={true}
-              color={NEWCOLORS.placeholderText}
-              size={25}
-            />
-          </Pressable>
-        </View>
+        {props.isGroceryList ? (
+          <></>
+        ) : (
+          <View style={localStyles.searchInputAction}>
+            <View style={styles.verticalLine}></View>
+
+            <Pressable
+              style={{ paddingRight: 15, paddingLeft: 10, zIndex: 9999 }}
+              onPress={(event) => {
+                event.stopPropagation();
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              }}
+              hitSlop={{ top: 10, bottom: 10, left: 15, right: 15 }}
+            >
+              <CustomIcon
+                name="camera-2"
+                filled={true}
+                color={NEWCOLORS.placeholderText}
+                size={25}
+              />
+            </Pressable>
+          </View>
+        )}
       </View>
 
       {showDropdown && results.length > 0 && showResults && (

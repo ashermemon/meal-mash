@@ -13,6 +13,7 @@ import FavLeftoversContext from "@/contexts/FavLeftoversContext";
 import SavedRecipesContext from "@/contexts/SavedRecipesContext";
 import MealsLeftContext from "@/contexts/MealsLeftContext";
 import { PantryDetailsContext, PantryDetails } from "@/contexts/PantryDetails";
+import GroceryListContext from "@/contexts/GroceryListContext";
 import { NotificationProvider } from "@/contexts/NotificationContext";
 import {
   GenerationDetailsContext,
@@ -54,6 +55,7 @@ export default function RootLayout() {
     ingredients: [],
   });
   const [browseIngredients, setBrowseIngredients] = useState<Food[]>([]);
+  const [groceryList, setGroceryList] = useState<Food[]>([]);
 
   const sheetRef = useRef<TrueSheet>(null);
   const [currentOptions, setCurrentOptions] = useState<string[]>([]);
@@ -199,6 +201,9 @@ export default function RootLayout() {
               <PantryDetailsContext.Provider
                 value={[pantryDetails, setPantryDetails]}
               >
+              <GroceryListContext.Provider
+                value={[groceryList, setGroceryList]}
+              >
                 <FavoritesContext.Provider value={[favorites, setFavorites]}>
                   <FavLeftoversContext.Provider
                     value={[favoritesL, setFavoritesL]}
@@ -277,6 +282,7 @@ export default function RootLayout() {
                     </SavedRecipesContext.Provider>
                   </FavLeftoversContext.Provider>
                 </FavoritesContext.Provider>
+              </GroceryListContext.Provider>
               </PantryDetailsContext.Provider>
             </GenerationDetailsContext.Provider>
           </TrueSheetProvider>
