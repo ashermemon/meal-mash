@@ -9,7 +9,7 @@ interface CustomCheckboxProps {
   initialValue?: boolean;
   size?: number;
   borderRadius?: number;
-
+  grocery?: boolean;
 }
 
 export default function CustomCheckbox({
@@ -18,7 +18,7 @@ export default function CustomCheckbox({
   initialValue = false,
   size = 24,
   borderRadius = 7,
-
+  grocery,
 }: CustomCheckboxProps) {
   const [internalChecked, setInternalChecked] = useState(initialValue);
   const isChecked = checked !== undefined ? checked : internalChecked;
@@ -77,6 +77,8 @@ export default function CustomCheckbox({
           {
             borderRadius,
             opacity: uncheckedOpacity,
+            borderColor: grocery ? NEWCOLORS.blueAccent : "#C4C4C6",
+            backgroundColor: grocery ? "white" : "#F2F2F5",
           },
         ]}
       />

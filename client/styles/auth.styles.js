@@ -91,10 +91,6 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
   },
 
-
-
-
-
   timerButton: {
     alignItems: "flex-end",
     justifyContent: "center",
@@ -202,7 +198,6 @@ export const styles = StyleSheet.create({
     marginBottom: 20,
     borderRadius: 200,
   },
-
 
   // --------------------------------------------//
 
@@ -394,11 +389,9 @@ export const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   pantryTip: {
-    flex: 1,
     gap: 10,
-    paddingVertical: 10,
+    paddingVertical: 13,
     paddingHorizontal: 15,
-    backgroundColor: "red",
     borderRadius: 15,
     backgroundColor: NEWCOLORS.yellowAccent,
     flexDirection: "row",

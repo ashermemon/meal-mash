@@ -1,4 +1,4 @@
-import { Animated, Text, View } from "react-native";
+import { Alert, Animated, Pressable, Text, View } from "react-native";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { styles } from "@/styles/GlobalStyles";
 import { NEWCOLORS } from "@/constants/NewTheme";
@@ -6,6 +6,7 @@ import { Image } from "expo-image";
 import { useNavigation } from "@react-navigation/native";
 import PantryPill from "@/components/features/pantry/PantryPill";
 import { ScrollView } from "react-native-gesture-handler";
+import { CustomIcon } from "@/icon-loader/icon-loader";
 
 import { LinearGradient } from "expo-linear-gradient";
 
@@ -14,7 +15,9 @@ import FilterIngredients from "@/components/features/pantry/FilterIngredients";
 import IngredientTag from "@/components/features/pantry/IngredientTag";
 import Search, { Food } from "@/components/features/pantry/Search";
 import GroceryListContext from "@/contexts/GroceryListContext";
+import CheckedGroceryListContext from "@/contexts/CheckedGroceryListContext";
 import GroceryListItem from "@/components/features/grocerylist/GroceryListItem";
+import CheckedGroceryList from "@/components/features/grocerylist/CheckedGroceryList";
 
 export default function Dashboard() {
   const searchOverlayOpacity = useRef(new Animated.Value(0)).current;
@@ -29,6 +32,28 @@ export default function Dashboard() {
   }, [searchActive, searchOverlayOpacity]);
   const navigation = useNavigation();
   const [groceryList, setGroceryList] = useContext(GroceryListContext);
+  const [checkedList, setCheckedList] = useContext(CheckedGroceryListContext);
+
+  const hasAnyItems = groceryList.length > 0 || checkedList.length > 0;
+
+  const clearList = () => {
+    Alert.alert(
+      "Clear grocery list?",
+      "This removes every item on your list, including checked ones. This can't be undone.",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Clear List",
+          style: "destructive",
+          onPress: () => {
+            setGroceryList([]);
+            setCheckedList([]);
+          },
+        },
+      ],
+    );
+  };
+
   const ingredientCategories: string[] = [
     "All",
     "Produce",
@@ -58,7 +83,7 @@ export default function Dashboard() {
           flexGrow: 1,
           paddingHorizontal: 25,
           paddingTop: 20,
-          paddingBottom: 130,
+          paddingBottom: 170,
         }}
         overScrollMode="never"
         alwaysBounceVertical={false}
@@ -70,23 +95,63 @@ export default function Dashboard() {
 
             position: "relative",
 
-            gap: 20,
+            gap: 10,
           }}
         >
-          <Text
-            style={[
-              styles.basicTextLeft,
-              styles.bold,
-              {
-                fontSize: 28,
-              },
-            ]}
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
           >
-            Grocery List
-          </Text>
+            <Text
+              style={[
+                styles.basicTextLeft,
+                styles.bold,
+                {
+                  fontSize: 28,
+                },
+              ]}
+            >
+              Grocery List
+            </Text>
 
-          <View style={{ gap: 25 }}>
-            <View style={{ gap: 20 }}>
+            {hasAnyItems ? (
+              <Pressable
+                onPress={clearList}
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 4,
+                }}
+                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+              >
+                <CustomIcon
+                  name="delete-2"
+                  filled
+                  color={NEWCOLORS.placeholderText}
+                  size={14}
+                />
+                <Text
+                  style={[
+                    styles.textLeftBold,
+                    {
+                      fontFamily: "Nunito-SemiBold",
+                      fontSize: 14,
+                      color: NEWCOLORS.placeholderText,
+                    },
+                  ]}
+                >
+                  Clear List
+                </Text>
+              </Pressable>
+            ) : null}
+          </View>
+
+          <View style={{ gap: 25, flex: 1 }}>
+            <View style={{ gap: 20, flex: 1 }}>
               <Text
                 adjustsFontSizeToFit
                 numberOfLines={1}
@@ -114,47 +179,102 @@ export default function Dashboard() {
                 }
               />
 
-              <View style={{ gap: 10 }}>
-                {groceryList
-                  .toReversed()
-                  .map((ingredient: Food) => (
-                    <GroceryListItem
-                      key={ingredient.id}
-                      food={ingredient}
-                    ></GroceryListItem>
-                  ))}
+              <View style={{ gap: 35, paddingHorizontal: 10, marginTop: 10 }}>
+                {groceryList.map((ingredient: Food) => (
+                  <GroceryListItem
+                    key={ingredient.id}
+                    food={ingredient}
+                  ></GroceryListItem>
+                ))}
               </View>
               {groceryList.length < 1 ? (
-                <>
-                  {/* <Text
-                    style={[
-                      styles.textCenterBold,
-                      {
-                        fontFamily: "Nunito-SemiBold",
-                        fontSize: 16,
-
-                        color: NEWCOLORS.placeholderText,
-                      },
-                    ]}
+                checkedList.length > 0 ? (
+                  <View
+                    style={{
+                      flex: 1,
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: 6,
+                      paddingHorizontal: 20,
+                      transform: [{ translateY: -50 }],
+                    }}
                   >
-                    Start by adding any ingredients you need to buy by searching
-                    above!
-                  </Text> */}
-                  <Text
-                    style={[
-                      styles.textLeftBold,
-                      {
-                        fontFamily: "Nunito-SemiBold",
-                        fontSize: 18,
-                        paddingTop: 5,
-                        paddingHorizontal: 15,
-                        color: NEWCOLORS.placeholderText,
-                      },
-                    ]}
+                    <CustomIcon
+                      name="celebrate"
+                      filled
+                      color={NEWCOLORS.greenAccent}
+                      size={36}
+                    />
+                    <Text
+                      style={[
+                        styles.textCenterBold,
+                        {
+                          fontFamily: "Nunito-Bold",
+                          fontSize: 20,
+                          color: NEWCOLORS.basicText,
+                        },
+                      ]}
+                    >
+                      All done!
+                    </Text>
+                    <Text
+                      style={[
+                        styles.textCentered,
+                        {
+                          fontFamily: "Nunito-SemiBold",
+                          fontSize: 15,
+                          color: NEWCOLORS.placeholderText,
+                          textAlign: "center",
+                        },
+                      ]}
+                    >
+                      Time to get cooking!
+                    </Text>
+                  </View>
+                ) : (
+                  <View
+                    style={{
+                      flex: 1,
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: 6,
+                      paddingHorizontal: 20,
+                      transform: [{ translateY: -50 }],
+                    }}
                   >
-                    Suggestions:
-                  </Text>
-                </>
+                    <CustomIcon
+                      name="list-check-3"
+                      filled={false}
+                      color={NEWCOLORS.blueAccent}
+                      size={36}
+                    />
+                    <Text
+                      style={[
+                        styles.textCenterBold,
+                        {
+                          fontFamily: "Nunito-Bold",
+                          fontSize: 20,
+                          color: NEWCOLORS.basicText,
+                        },
+                      ]}
+                    >
+                      Your list is empty
+                    </Text>
+                    <Text
+                      style={[
+                        styles.textCentered,
+                        {
+                          fontFamily: "Nunito-SemiBold",
+                          fontSize: 15,
+                          color: NEWCOLORS.placeholderText,
+                          textAlign: "center",
+                        },
+                      ]}
+                    >
+                      Start by adding ingredients you need to buy
+                    </Text>
+                  </View>
+                )
               ) : (
                 <></>
               )}
@@ -162,6 +282,8 @@ export default function Dashboard() {
           </View>
         </View>
       </ScrollView>
+
+      <CheckedGroceryList />
 
       <LinearGradient
         colors={[

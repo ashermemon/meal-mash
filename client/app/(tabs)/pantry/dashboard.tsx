@@ -13,6 +13,7 @@ import { PantryDetailsContext } from "@/contexts/PantryDetails";
 import FilterIngredients from "@/components/features/pantry/FilterIngredients";
 import IngredientTag from "@/components/features/pantry/IngredientTag";
 import Search, { Food } from "@/components/features/pantry/Search";
+import { CustomIcon } from "@/icon-loader/icon-loader";
 
 export default function Dashboard() {
   const searchOverlayOpacity = useRef(new Animated.Value(0)).current;
@@ -84,12 +85,12 @@ export default function Dashboard() {
             Pantry
           </Text>
 
-          <View style={{ gap: 25 }}>
+          <View style={{ gap: 25, flex: 1 }}>
             <PantryPill
               pantryName={pantryDetails.name}
               pantryPage={true}
             ></PantryPill>
-            <View style={{ gap: 20 }}>
+            <View style={{ gap: 20, flex: 1 }}>
               <Search
                 onSelectIngredient={(item: Food) =>
                   setPantryDetails((prev) => {
@@ -154,20 +155,47 @@ export default function Dashboard() {
                   )}
               </View>
               {pantryDetails.ingredients.length < 1 ? (
-                <Text
-                  style={[
-                    styles.textCenterBold,
-                    {
-                      fontFamily: "Nunito-SemiBold",
-                      fontSize: 22,
-                      paddingTop: 5,
-                      paddingHorizontal: 15,
-                      color: NEWCOLORS.placeholderText,
-                    },
-                  ]}
+                <View
+                  style={{
+                    flex: 1,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 6,
+                    paddingHorizontal: 20,
+                  }}
                 >
-                  Add the ingredients you have at home to get started!
-                </Text>
+                  <CustomIcon
+                    name="apple-fruit"
+                    filled
+                    color={NEWCOLORS.redAccent}
+                    size={36}
+                  />
+                  <Text
+                    style={[
+                      styles.textCenterBold,
+                      {
+                        fontFamily: "Nunito-Bold",
+                        fontSize: 20,
+                        color: NEWCOLORS.basicText,
+                      },
+                    ]}
+                  >
+                    {pantryDetails.name} is empty
+                  </Text>
+                  <Text
+                    style={[
+                      styles.textCentered,
+                      {
+                        fontFamily: "Nunito-SemiBold",
+                        fontSize: 15,
+                        color: NEWCOLORS.placeholderText,
+                        textAlign: "center",
+                      },
+                    ]}
+                  >
+                    Add the ingredients you have at home to get started!
+                  </Text>
+                </View>
               ) : (
                 <></>
               )}

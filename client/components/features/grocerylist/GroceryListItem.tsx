@@ -1,51 +1,129 @@
-import { View, Text, Pressable } from "react-native";
-import React, { useContext } from "react";
+import {
+  View,
+  Text,
+  Pressable,
+  Animated,
+  LayoutAnimation,
+  Platform,
+  UIManager,
+} from "react-native";
+import React, { useContext, useRef, useState } from "react";
 import CustomCheckbox from "@/components/common/CustomCheckbox";
 import { Food } from "../pantry/Search";
 import * as Haptics from "expo-haptics";
 import { styles } from "@/styles/auth.styles";
 import { COLORS } from "@/constants/Theme";
 import GroceryListContext from "@/contexts/GroceryListContext";
+import CheckedGroceryListContext from "@/contexts/CheckedGroceryListContext";
 import { PantryDetailsContext } from "@/contexts/PantryDetails";
+
+if (
+  Platform.OS === "android" &&
+  UIManager.setLayoutAnimationEnabledExperimental
+) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
 
 type Props = {
   food: Food;
+  // "active" = sits in the pending list, tapping checks it off.
+  // "checked" = sits in the checked history, tapping restores it to the pending list.
+  variant?: "active" | "checked";
 };
 
-const GroceryListItem = (props: Props) => {
+const GroceryListItem = ({ food, variant = "active" }: Props) => {
   const [, setGroceryList] = useContext(GroceryListContext);
+  const [, setCheckedList] = useContext(CheckedGroceryListContext);
   const [, setPantryDetails] = useContext(PantryDetailsContext);
 
-  const checkOff = () => {
-    setGroceryList((prev) =>
-      prev.filter((item) => item.id !== props.food.id),
-    );
-    setPantryDetails((prev) => {
-      const alreadyAdded = prev.ingredients.some(
-        (item) => item.id === props.food.id,
-      );
-      return alreadyAdded
-        ? prev
-        : { ...prev, ingredients: [...prev.ingredients, props.food] };
-    });
+  const startsChecked = variant === "checked";
+  const [checked, setChecked] = useState(startsChecked);
+  const [busy, setBusy] = useState(false);
+  const [rowWidth, setRowWidth] = useState(0);
+  const isAnimatingRef = useRef(false);
+
+  const strikeAnim = useRef(new Animated.Value(startsChecked ? 1 : 0)).current;
+  const fadeAnim = useRef(new Animated.Value(1)).current;
+
+  const textColorAnim = strikeAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [COLORS.fontColor, COLORS.searchPlaceholder],
+  });
+
+  const toggle = () => {
+    if (isAnimatingRef.current) return;
+    isAnimatingRef.current = true;
+    setBusy(true);
+
+    const checkingOff = variant === "active";
+    setChecked(checkingOff);
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
+
+    Animated.sequence([
+      Animated.delay(320),
+      Animated.timing(strikeAnim, {
+        toValue: checkingOff ? 1 : 0,
+        duration: 280,
+        useNativeDriver: false,
+      }),
+      Animated.delay(220),
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 240,
+        useNativeDriver: true,
+      }),
+    ]).start(() => {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+
+      if (checkingOff) {
+        setGroceryList((prev) => prev.filter((item) => item.id !== food.id));
+        setCheckedList((prev) =>
+          prev.some((item) => item.id === food.id) ? prev : [...prev, food],
+        );
+        setPantryDetails((prev) => {
+          const alreadyAdded = prev.ingredients.some(
+            (item) => item.id === food.id,
+          );
+          return alreadyAdded
+            ? prev
+            : { ...prev, ingredients: [...prev.ingredients, food] };
+        });
+      } else {
+        setCheckedList((prev) => prev.filter((item) => item.id !== food.id));
+        setGroceryList((prev) =>
+          prev.some((item) => item.id === food.id) ? prev : [...prev, food],
+        );
+        setPantryDetails((prev) => ({
+          ...prev,
+          ingredients: prev.ingredients.filter((item) => item.id !== food.id),
+        }));
+      }
+    });
   };
 
   return (
-    <View
+    <Animated.View
       style={{
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        marginBottom: 33,
+        opacity: fadeAnim,
       }}
     >
-      <View style={{ marginRight: 12 }}>
-        <CustomCheckbox checked={false} onChange={checkOff} size={24} />
+      <View style={{ marginRight: 12 }} pointerEvents={busy ? "none" : "auto"}>
+        <CustomCheckbox
+          checked={checked}
+          onChange={toggle}
+          size={24}
+          borderRadius={100}
+          grocery
+        />
       </View>
       <Pressable
-        style={{ flex: 1, flexDirection: "row" }}
-        onPress={checkOff}
+        style={{ flex: 1, flexDirection: "row", position: "relative" }}
+        onPress={toggle}
+        disabled={busy}
+        onLayout={(e) => setRowWidth(e.nativeEvent.layout.width)}
       >
         <View
           style={{
@@ -54,7 +132,7 @@ const GroceryListItem = (props: Props) => {
             flex: 1,
           }}
         >
-          <Text
+          <Animated.Text
             numberOfLines={1}
             style={[
               styles.textLeftSemiBold,
@@ -62,12 +140,12 @@ const GroceryListItem = (props: Props) => {
                 marginLeft: 0,
                 flex: 1,
                 fontSize: 15,
-                color: COLORS.fontColor,
+                color: textColorAnim,
               },
             ]}
           >
-            {props.food.displayName}
-          </Text>
+            {food.displayName}
+          </Animated.Text>
         </View>
 
         <Text
@@ -80,10 +158,27 @@ const GroceryListItem = (props: Props) => {
             },
           ]}
         >
-          {props.food.category}
+          {food.category}
         </Text>
+
+        <Animated.View
+          pointerEvents="none"
+          style={{
+            position: "absolute",
+            left: 0,
+            top: "50%",
+            marginTop: -1,
+            height: 1.5,
+            borderRadius: 1,
+            backgroundColor: COLORS.searchPlaceholder,
+            width: strikeAnim.interpolate({
+              inputRange: [0, 1],
+              outputRange: [0, rowWidth],
+            }),
+          }}
+        />
       </Pressable>
-    </View>
+    </Animated.View>
   );
 };
 
