@@ -4,17 +4,20 @@ import { styles } from "@/styles/GlobalStyles";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import { TextInput } from "react-native-gesture-handler";
 import * as Haptics from "expo-haptics";
+import { NEWCOLORS } from "@/constants/NewTheme";
 
 type Props = {
   title: string;
   num: number;
   setNum: React.Dispatch<React.SetStateAction<number>>;
+  max: number;
 };
 
 const CountFieldPill = (props: Props) => {
   const handleChange = (text: string) => {
     const numericValue = text.replace(/[^0-9]/g, "");
-    props.setNum(Number(numericValue));
+    const parsed = numericValue === "" ? 0 : Number(numericValue);
+    props.setNum(Math.min(parsed, props.max));
   };
 
   return (
@@ -43,8 +46,8 @@ const CountFieldPill = (props: Props) => {
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "space-between",
-              paddingHorizontal: 9,
-              width: 105,
+              paddingHorizontal: 8,
+              width: 115,
               flex: 0,
             },
           ]}
@@ -53,47 +56,18 @@ const CountFieldPill = (props: Props) => {
             style={{
               flexDirection: "row",
               alignItems: "center",
-              justifyContent: "center",
+              justifyContent: "space-between",
 
               flex: 1,
             }}
           >
-            <TextInput
-              style={[styles.textCentered, { fontSize: 12.5 }]}
-              maxLength={4}
-              onChangeText={handleChange}
-              value={props.num.toString()}
-              keyboardType="numeric"
-              inputMode="numeric"
-            ></TextInput>
-          </View>
-          <View style={{ alignItems: "center", justifyContent: "center" }}>
             <Pressable
-              hitSlop={{ top: 5, bottom: 0, left: 5, right: 5 }}
-              onPress={() => {
-                [
-                  Haptics.selectionAsync(),
-                  props.setNum((current) =>
-                    current < 1
-                      ? current === 0
-                        ? 0.25
-                        : current * 2
-                      : current + 1,
-                  ),
-                ];
+              hitSlop={{ top: 5, bottom: 5, left: 5, right: 5 }}
+              style={{
+                borderRadius: 10,
+                backgroundColor: "white",
+                padding: 3,
               }}
-            >
-              <View style={{ marginVertical: -5 }}>
-                <CustomIcon
-                  name="up-small"
-                  filled={true}
-                  color="grey"
-                  size={25}
-                />
-              </View>
-            </Pressable>
-            <Pressable
-              hitSlop={{ top: 0, bottom: 5, left: 5, right: 5 }}
               onPress={() => {
                 [
                   Haptics.selectionAsync(),
@@ -107,14 +81,48 @@ const CountFieldPill = (props: Props) => {
                 ];
               }}
             >
-              <View style={{ marginVertical: -5 }}>
-                <CustomIcon
-                  name="down-small"
-                  filled={true}
-                  color="grey"
-                  size={25}
-                />
-              </View>
+              <CustomIcon
+                name="minimize"
+                filled={true}
+                color="grey"
+                size={15}
+              />
+            </Pressable>
+            <TextInput
+              style={[
+                styles.textCentered,
+                { fontSize: 12.5, margin: 0, padding: 0 },
+              ]}
+              maxLength={4}
+              onChangeText={handleChange}
+              value={props.num.toString()}
+              keyboardType="numeric"
+              inputMode="numeric"
+            ></TextInput>
+
+            <Pressable
+              hitSlop={{ top: 5, bottom: 5, left: 5, right: 5 }}
+              style={{
+                borderRadius: 10,
+                backgroundColor: "white",
+                padding: 3,
+              }}
+              onPress={() => {
+                [
+                  Haptics.selectionAsync(),
+                  props.setNum((current) => {
+                    const next =
+                      current < 1
+                        ? current === 0
+                          ? 0.25
+                          : current * 2
+                        : current + 1;
+                    return Math.min(next, props.max);
+                  }),
+                ];
+              }}
+            >
+              <CustomIcon name="add" filled={true} color="grey" size={15} />
             </Pressable>
           </View>
         </View>

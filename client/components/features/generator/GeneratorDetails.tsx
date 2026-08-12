@@ -203,6 +203,7 @@ const GeneratorDetails = (props: Props) => {
                 num={num}
                 setNum={setNum}
                 title={"Number of Servings:"}
+                max={20}
               ></CountFieldPill>
               <DropDownPill
                 title={"Meal Type:"}

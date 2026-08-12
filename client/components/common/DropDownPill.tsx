@@ -168,7 +168,7 @@ const DropDownPill = (props: Props) => {
                 name="down-small"
                 filled={true}
                 color="grey"
-                size={25}
+                size={30}
               />
             </View>
           </View>
