@@ -118,7 +118,7 @@ export default function Dashboard() {
                   to use in recipes!
                 </Text>
                 <Image
-                  source={require("@/assets/images/leftover.png")}
+                  source={require("@/assets/images/leftover.webp")}
                   style={{
                     width: 50,
                     height: 50,

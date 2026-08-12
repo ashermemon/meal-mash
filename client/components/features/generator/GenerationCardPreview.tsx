@@ -39,20 +39,20 @@ const SkeletonSettings = {
 } as const;
 
 const MEAL_IMAGES: Record<string, any> = {
-  burger: require("@/assets/images/meal-images/burger.png"),
-  pizza: require("@/assets/images/meal-images/pizza.png"),
-  pasta: require("@/assets/images/meal-images/pasta.png"),
-  salad: require("@/assets/images/meal-images/salad.png"),
-  curry: require("@/assets/images/meal-images/curry.png"),
-  "fried-rice": require("@/assets/images/meal-images/fried-rice.png"),
-  sandwich: require("@/assets/images/meal-images/sandwich.png"),
-  taco: require("@/assets/images/meal-images/taco.png"),
-  soup: require("@/assets/images/meal-images/soup.png"),
-  dessert: require("@/assets/images/meal-images/dessert.png"),
-  breakfast: require("@/assets/images/meal-images/breakfast.png"),
-  seafood: require("@/assets/images/meal-images/seafood.png"),
-  steak: require("@/assets/images/meal-images/steak.png"),
-  bowl: require("@/assets/images/meal-images/bowl.png"),
+  burger: require("@/assets/images/meal-images/burger.webp"),
+  pizza: require("@/assets/images/meal-images/pizza.webp"),
+  pasta: require("@/assets/images/meal-images/pasta.webp"),
+  salad: require("@/assets/images/meal-images/salad.webp"),
+  curry: require("@/assets/images/meal-images/curry.webp"),
+  "fried-rice": require("@/assets/images/meal-images/fried-rice.webp"),
+  sandwich: require("@/assets/images/meal-images/sandwich.webp"),
+  taco: require("@/assets/images/meal-images/taco.webp"),
+  soup: require("@/assets/images/meal-images/soup.webp"),
+  dessert: require("@/assets/images/meal-images/dessert.webp"),
+  breakfast: require("@/assets/images/meal-images/breakfast.webp"),
+  seafood: require("@/assets/images/meal-images/seafood.webp"),
+  steak: require("@/assets/images/meal-images/steak.webp"),
+  bowl: require("@/assets/images/meal-images/bowl.webp"),
 };
 
 export const GenerationCardPreview = (props: Props) => {
