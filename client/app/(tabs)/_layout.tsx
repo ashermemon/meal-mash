@@ -13,8 +13,8 @@ const TAB_ROUTES = [
   { name: "index", path: "/(tabs)" },
   { name: "pantry", path: "/(tabs)/pantry" },
   { name: "generationpage", path: "/(tabs)/generationpage" },
+  { name: "grocery", path: "/(tabs)/grocery" },
   { name: "profile", path: "/(tabs)/profile" },
-  { name: "saves", path: "/(tabs)/saves" },
 ];
 
 export default function TabsLayout() {
@@ -46,7 +46,7 @@ export default function TabsLayout() {
         router.navigate(TAB_ROUTES[targetIndex].path as any);
       }
     },
-    [router]
+    [router],
   );
 
   const panGesture = Gesture.Pan()
@@ -57,7 +57,10 @@ export default function TabsLayout() {
       const { translationX, velocityX } = event;
 
       // Swipe left (drag right-to-left) -> go to next tab
-      if ((translationX < -50 || velocityX < -300) && currentTabIdx < TAB_ROUTES.length - 1) {
+      if (
+        (translationX < -50 || velocityX < -300) &&
+        currentTabIdx < TAB_ROUTES.length - 1
+      ) {
         runOnJS(navigateToTab)(currentTabIdx + 1);
       }
       // Swipe right (drag left-to-right) -> go to prev tab
@@ -83,7 +86,7 @@ export default function TabsLayout() {
                   tabBarStyle: {
                     position: "absolute",
 
-                    height: 60,
+                    height: 65,
                     marginHorizontal: 20,
                     borderRadius: 100,
                     backgroundColor: NEWCOLORS.greyBlock,
@@ -197,6 +200,33 @@ export default function TabsLayout() {
                     ),
                   }}
                 />
+                <Tabs.Screen
+                  name="grocery"
+                  options={{
+                    tabBarLabel: "Grocery",
+                    tabBarIcon: ({ color, focused }) => (
+                      <View
+                        style={{
+                          width: 48,
+                          height: 48,
+                          borderRadius: 100,
+                          justifyContent: "center",
+                          alignItems: "center",
+                          backgroundColor: focused
+                            ? NEWCOLORS.primary
+                            : "transparent",
+                        }}
+                      >
+                        <CustomIcon
+                          name="shopping-cart-1"
+                          filled={focused}
+                          color={color}
+                          size={iconSizeMobile}
+                        />
+                      </View>
+                    ),
+                  }}
+                />
 
                 <Tabs.Screen
                   name="profile"
@@ -225,34 +255,6 @@ export default function TabsLayout() {
                     ),
                   }}
                 />
-
-                <Tabs.Screen
-                  name="saves"
-                  options={{
-                    tabBarLabel: "Saves",
-                    tabBarIcon: ({ color, focused }) => (
-                      <View
-                        style={{
-                          width: 48,
-                          height: 48,
-                          borderRadius: 100,
-                          justifyContent: "center",
-                          alignItems: "center",
-                          backgroundColor: focused
-                            ? NEWCOLORS.primary
-                            : "transparent",
-                        }}
-                      >
-                        <CustomIcon
-                          name="bookmark"
-                          filled={focused}
-                          color={color}
-                          size={iconSizeMobile}
-                        />
-                      </View>
-                    ),
-                  }}
-                />
               </Tabs>
             </View>
           </GestureDetector>
@@ -261,4 +263,3 @@ export default function TabsLayout() {
     </>
   );
 }
-

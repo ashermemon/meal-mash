@@ -23,13 +23,17 @@ import { ScrollView } from "react-native-gesture-handler";
 
 type Props = {
   onSelectIngredient?: (item: Food) => void;
-
+  onRemoveIngredient?: (item: Food) => void;
+  addedIds?: Set<number>;
+  getAddedAction?: (item: Food) => "remove" | "uncheck";
+  isGroceryList?: boolean;
   showDropdown?: boolean;
   onResultsChange?: (results: Food[], visible: boolean) => void;
 };
 
 export type SearchHandle = {
   selectIngredient: (item: Food) => void;
+  removeIngredient: (item: Food) => void;
 };
 
 export type Food = {
@@ -46,6 +50,8 @@ type SearchResultItemProps = {
   isLast: boolean;
   onPress: (item: Food) => void;
   rounded?: boolean;
+  added?: boolean;
+  addedAction?: "remove" | "uncheck";
 };
 
 export const SearchResultItem = ({
@@ -53,56 +59,101 @@ export const SearchResultItem = ({
   isLast,
   onPress,
   rounded = true,
-}: SearchResultItemProps) => (
-  <Pressable
-    style={[localStyles.resultItem, { borderRadius: rounded ? 22 : 0 }]}
-    onPress={(event) => {
-      event.stopPropagation();
-      onPress(item);
-    }}
-  >
-    <View
-      style={{
-        width: "100%",
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        borderBottomWidth: isLast ? 0 : 1,
-        borderColor: NEWCOLORS.unselectedGrey,
-        paddingVertical: 18,
-        paddingHorizontal: 12,
+  added = false,
+  addedAction = "remove",
+}: SearchResultItemProps) => {
+  const addedColor =
+    addedAction === "uncheck" ? NEWCOLORS.blueAccent : NEWCOLORS.redAccent;
+  const addedLabel = addedAction === "uncheck" ? "Uncheck" : "Remove";
+  const addedIconName = addedAction === "uncheck" ? "circle-dash" : "minimize";
+
+  return (
+    <Pressable
+      style={[localStyles.resultItem, { borderRadius: rounded ? 22 : 0 }]}
+      onPress={(event) => {
+        event.stopPropagation();
+        onPress(item);
       }}
     >
-      <View style={{ paddingRight: 10, flex: 1 }}>
-        <Text
-          adjustsFontSizeToFit
-          numberOfLines={1}
-          style={[
-            styles.basicTextLeft,
-            { fontSize: 15, fontFamily: "Nunito-SemiBold" },
-          ]}
-        >
-          {item.displayName}
-        </Text>
+      <View
+        style={{
+          width: "100%",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          borderBottomWidth: isLast ? 0 : 1,
+          borderColor: NEWCOLORS.unselectedGrey,
+          paddingVertical: 18,
+          paddingHorizontal: 12,
+        }}
+      >
+        <View style={{ paddingRight: 10, flex: 1 }}>
+          <View
+            style={{
+              flexDirection: "row",
+              gap: 10,
+              alignItems: "center",
+              justifyContent: "flex-start",
+            }}
+          >
+            {added ? (
+              <CustomIcon
+                name={addedIconName}
+                filled
+                color={addedColor}
+                size={18}
+              />
+            ) : (
+              <></>
+            )}
+            <Text
+              adjustsFontSizeToFit
+              numberOfLines={1}
+              style={[
+                styles.basicTextLeft,
+                { fontSize: 15, fontFamily: "Nunito-SemiBold" },
+              ]}
+            >
+              {item.displayName}
+            </Text>
+          </View>
+        </View>
+        {added ? (
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
+            <Text
+              style={[
+                styles.basicTextLeft,
+                {
+                  fontSize: 13,
+                  fontFamily: "Nunito-SemiBold",
+                  color: addedColor,
+                },
+              ]}
+            >
+              {addedLabel}
+            </Text>
+          </View>
+        ) : (
+          <View>
+            <Text
+              style={[
+                styles.basicTextLeft,
+                {
+                  fontSize: 13,
+                  flex: 1,
+                  fontFamily: "Nunito-Regular",
+                  color: NEWCOLORS.unselectedShape,
+                },
+              ]}
+            >
+              {getCategoryDisplayLabel(item.category)}
+            </Text>
+          </View>
+        )}
       </View>
-      <View>
-        <Text
-          style={[
-            styles.basicTextLeft,
-            {
-              fontSize: 13,
-              flex: 1,
-              fontFamily: "Nunito-Regular",
-              color: NEWCOLORS.unselectedShape,
-            },
-          ]}
-        >
-          {getCategoryDisplayLabel(item.category)}
-        </Text>
-      </View>
-    </View>
-  </Pressable>
-);
+    </Pressable>
+  );
+};
 
 const Search = forwardRef<SearchHandle, Props>((props, ref) => {
   const { showDropdown = true } = props;
@@ -144,12 +195,12 @@ const Search = forwardRef<SearchHandle, Props>((props, ref) => {
 
   const selectingRef = React.useRef(false);
 
-  function selectIngredient(item: Food) {
+  function handleResultAction(item: Food, action?: (item: Food) => void) {
     if (selectingRef.current) return;
     selectingRef.current = true;
 
-    if (props.onSelectIngredient) {
-      props.onSelectIngredient(item);
+    if (action) {
+      action(item);
     }
 
     Keyboard.dismiss();
@@ -161,8 +212,17 @@ const Search = forwardRef<SearchHandle, Props>((props, ref) => {
     }, 300);
   }
 
+  function selectIngredient(item: Food) {
+    handleResultAction(item, props.onSelectIngredient);
+  }
+
+  function removeIngredient(item: Food) {
+    handleResultAction(item, props.onRemoveIngredient);
+  }
+
   useImperativeHandle(ref, () => ({
     selectIngredient,
+    removeIngredient,
   }));
 
   return (
@@ -203,7 +263,9 @@ const Search = forwardRef<SearchHandle, Props>((props, ref) => {
           <TextInput
             onFocus={() => setShowResults(Boolean(query.trim()))}
             onBlur={() => {}}
-            placeholder="Search Ingredients"
+            placeholder={
+              props.isGroceryList ? "Add New Item" : "Search Ingredients"
+            }
             autoCapitalize="words"
             keyboardType="default"
             placeholderTextColor={NEWCOLORS.unselectedShape}
@@ -225,24 +287,29 @@ const Search = forwardRef<SearchHandle, Props>((props, ref) => {
             ]}
           />
         </View>
-        <View style={localStyles.searchInputAction}>
-          <View style={styles.verticalLine}></View>
-          <Pressable
-            style={{ paddingRight: 15, paddingLeft: 10, zIndex: 9999 }}
-            onPress={(event) => {
-              event.stopPropagation();
-              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-            }}
-            hitSlop={{ top: 10, bottom: 10, left: 15, right: 15 }}
-          >
-            <CustomIcon
-              name="camera-2"
-              filled={true}
-              color={NEWCOLORS.placeholderText}
-              size={25}
-            />
-          </Pressable>
-        </View>
+        {props.isGroceryList ? (
+          <></>
+        ) : (
+          <View style={localStyles.searchInputAction}>
+            <View style={styles.verticalLine}></View>
+
+            <Pressable
+              style={{ paddingRight: 15, paddingLeft: 10, zIndex: 9999 }}
+              onPress={(event) => {
+                event.stopPropagation();
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              }}
+              hitSlop={{ top: 10, bottom: 10, left: 15, right: 15 }}
+            >
+              <CustomIcon
+                name="camera-2"
+                filled={true}
+                color={NEWCOLORS.placeholderText}
+                size={25}
+              />
+            </Pressable>
+          </View>
+        )}
       </View>
 
       {showDropdown && results.length > 0 && showResults && (
@@ -255,14 +322,19 @@ const Search = forwardRef<SearchHandle, Props>((props, ref) => {
             contentContainerStyle={{ paddingBottom: 8 }}
             bounces={false}
           >
-            {results.map((item, index) => (
-              <SearchResultItem
-                key={item.id}
-                item={item}
-                isLast={index === results.length - 1}
-                onPress={selectIngredient}
-              />
-            ))}
+            {results.map((item, index) => {
+              const added = props.addedIds?.has(item.id) ?? false;
+              return (
+                <SearchResultItem
+                  key={item.id}
+                  item={item}
+                  isLast={index === results.length - 1}
+                  added={added}
+                  addedAction={added ? props.getAddedAction?.(item) : undefined}
+                  onPress={added ? removeIngredient : selectIngredient}
+                />
+              );
+            })}
           </ScrollView>
         </View>
       )}

@@ -1,5 +1,11 @@
 import { Animated, Text, View } from "react-native";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, {
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { styles } from "@/styles/GlobalStyles";
 import { NEWCOLORS } from "@/constants/NewTheme";
 import { Image } from "expo-image";
@@ -13,6 +19,7 @@ import { PantryDetailsContext } from "@/contexts/PantryDetails";
 import FilterIngredients from "@/components/features/pantry/FilterIngredients";
 import IngredientTag from "@/components/features/pantry/IngredientTag";
 import Search, { Food } from "@/components/features/pantry/Search";
+import { CustomIcon } from "@/icon-loader/icon-loader";
 
 export default function Dashboard() {
   const searchOverlayOpacity = useRef(new Animated.Value(0)).current;
@@ -28,6 +35,10 @@ export default function Dashboard() {
   const navigation = useNavigation();
   const [pantryDetails, setPantryDetails] = useContext(PantryDetailsContext);
   const [selectedFilter, setSelectedFilter] = useState("All");
+  const pantryIngredientIds = useMemo(
+    () => new Set(pantryDetails.ingredients.map((item) => item.id)),
+    [pantryDetails.ingredients],
+  );
   const ingredientCategories: string[] = [
     "All",
     "Produce",
@@ -84,16 +95,19 @@ export default function Dashboard() {
             Pantry
           </Text>
 
-          <View style={{ gap: 25 }}>
+          <View style={{ gap: 25, flex: 1 }}>
             <PantryPill
               pantryName={pantryDetails.name}
               pantryPage={true}
             ></PantryPill>
-            <View style={{ gap: 20 }}>
+            <View style={{ gap: 20, flex: 1 }}>
               <Search
+                addedIds={pantryIngredientIds}
                 onSelectIngredient={(item: Food) =>
                   setPantryDetails((prev) => {
-                    const alreadyAdded = prev.ingredients.includes(item);
+                    const alreadyAdded = prev.ingredients.some(
+                      (ingredient) => ingredient.id === item.id,
+                    );
                     const nextIngredients = alreadyAdded
                       ? prev.ingredients
                       : [...prev.ingredients, item];
@@ -103,6 +117,14 @@ export default function Dashboard() {
                       ingredients: nextIngredients,
                     };
                   })
+                }
+                onRemoveIngredient={(item: Food) =>
+                  setPantryDetails((prev) => ({
+                    ...prev,
+                    ingredients: prev.ingredients.filter(
+                      (ingredient) => ingredient.id !== item.id,
+                    ),
+                  }))
                 }
               />
 
@@ -117,7 +139,7 @@ export default function Dashboard() {
                   to use in recipes!
                 </Text>
                 <Image
-                  source={require("@/assets/images/leftover.png")}
+                  source={require("@/assets/images/leftover.webp")}
                   style={{
                     width: 50,
                     height: 50,
@@ -154,20 +176,47 @@ export default function Dashboard() {
                   )}
               </View>
               {pantryDetails.ingredients.length < 1 ? (
-                <Text
-                  style={[
-                    styles.textCenterBold,
-                    {
-                      fontFamily: "Nunito-SemiBold",
-                      fontSize: 22,
-                      paddingTop: 5,
-                      paddingHorizontal: 15,
-                      color: NEWCOLORS.placeholderText,
-                    },
-                  ]}
+                <View
+                  style={{
+                    flex: 1,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 6,
+                    paddingHorizontal: 20,
+                  }}
                 >
-                  Add the ingredients you have at home to get started!
-                </Text>
+                  <CustomIcon
+                    name="apple-fruit"
+                    filled
+                    color={NEWCOLORS.redAccent}
+                    size={36}
+                  />
+                  <Text
+                    style={[
+                      styles.textCenterBold,
+                      {
+                        fontFamily: "Nunito-Bold",
+                        fontSize: 20,
+                        color: NEWCOLORS.basicText,
+                      },
+                    ]}
+                  >
+                    {pantryDetails.name} is empty
+                  </Text>
+                  <Text
+                    style={[
+                      styles.textCentered,
+                      {
+                        fontFamily: "Nunito-SemiBold",
+                        fontSize: 15,
+                        color: NEWCOLORS.placeholderText,
+                        textAlign: "center",
+                      },
+                    ]}
+                  >
+                    Add the ingredients you have at home to get started!
+                  </Text>
+                </View>
               ) : (
                 <></>
               )}

@@ -135,7 +135,7 @@ const IngredientPickerCard = (props: Props) => {
       }}
     >
       <Image
-        source={require("@/assets/images/meal-images/burger.png")}
+        source={require("@/assets/images/meal-images/burger.webp")}
         style={{
           width: 40,
           height: 40,
