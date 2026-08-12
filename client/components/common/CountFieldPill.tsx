@@ -14,12 +14,6 @@ type Props = {
 };
 
 const CountFieldPill = (props: Props) => {
-  const handleChange = (text: string) => {
-    const numericValue = text.replace(/[^0-9]/g, "");
-    const parsed = numericValue === "" ? 0 : Number(numericValue);
-    props.setNum(Math.min(parsed, props.max));
-  };
-
   return (
     <View
       style={{
@@ -62,7 +56,7 @@ const CountFieldPill = (props: Props) => {
             }}
           >
             <Pressable
-              hitSlop={{ top: 5, bottom: 5, left: 5, right: 5 }}
+              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
               style={{
                 borderRadius: 10,
                 backgroundColor: "white",
@@ -88,20 +82,17 @@ const CountFieldPill = (props: Props) => {
                 size={15}
               />
             </Pressable>
-            <TextInput
+            <Text
               style={[
                 styles.textCentered,
                 { fontSize: 12.5, margin: 0, padding: 0 },
               ]}
-              maxLength={4}
-              onChangeText={handleChange}
-              value={props.num.toString()}
-              keyboardType="numeric"
-              inputMode="numeric"
-            ></TextInput>
+            >
+              {props.num.toString()}
+            </Text>
 
             <Pressable
-              hitSlop={{ top: 5, bottom: 5, left: 5, right: 5 }}
+              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
               style={{
                 borderRadius: 10,
                 backgroundColor: "white",
