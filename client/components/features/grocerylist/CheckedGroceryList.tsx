@@ -95,7 +95,7 @@ const CheckedGroceryList = () => {
               name={expanded ? "up-small" : "down-small"}
               filled
               color={NEWCOLORS.placeholderText}
-              size={20}
+              size={26}
             />
             <Text
               style={[
