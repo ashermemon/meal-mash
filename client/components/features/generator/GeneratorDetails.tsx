@@ -1,5 +1,11 @@
 import { View, Text, Pressable } from "react-native";
-import React, { useCallback, useContext, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { ScrollView } from "react-native-gesture-handler";
 import { styles } from "@/styles/auth.styles";
 import SliderField from "@/components/common/SliderField";
@@ -94,6 +100,10 @@ const GeneratorDetails = (props: Props) => {
 
   const [searchResults, setSearchResults] = useState<Food[]>([]);
   const [searchResultsVisible, setSearchResultsVisible] = useState(false);
+  const browseIngredientIds = useMemo(
+    () => new Set(browseIngredients.map((item) => item.id)),
+    [browseIngredients],
+  );
 
   return (
     <>
@@ -325,12 +335,18 @@ const GeneratorDetails = (props: Props) => {
             <Search
               ref={searchRef}
               showDropdown={false}
+              addedIds={browseIngredientIds}
               onSelectIngredient={(item: Food) =>
                 setBrowseIngredients((prev) => {
                   const alreadyAdded = prev.some((i) => i.id === item.id);
                   if (alreadyAdded) return prev;
                   return [...prev, item];
                 })
+              }
+              onRemoveIngredient={(item: Food) =>
+                setBrowseIngredients((prev) =>
+                  prev.filter((i) => i.id !== item.id),
+                )
               }
               onResultsChange={(results, visible) => {
                 setSearchResults(results);
@@ -414,17 +430,23 @@ const GeneratorDetails = (props: Props) => {
             >
               {searchResults
                 .slice(0, MAX_VISIBLE_SEARCH_RESULTS)
-                .map((item: Food, index: number, arr) => (
-                  <SearchResultItem
-                    key={item.id}
-                    item={item}
-                    isLast={index === arr.length - 1}
-                    rounded={false}
-                    onPress={(item) =>
-                      searchRef.current?.selectIngredient(item)
-                    }
-                  />
-                ))}
+                .map((item: Food, index: number, arr) => {
+                  const added = browseIngredientIds.has(item.id);
+                  return (
+                    <SearchResultItem
+                      key={item.id}
+                      item={item}
+                      isLast={index === arr.length - 1}
+                      rounded={false}
+                      added={added}
+                      onPress={(item) =>
+                        added
+                          ? searchRef.current?.removeIngredient(item)
+                          : searchRef.current?.selectIngredient(item)
+                      }
+                    />
+                  );
+                })}
             </View>
           )}
         </View>

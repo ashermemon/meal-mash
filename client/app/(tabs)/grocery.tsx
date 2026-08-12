@@ -1,5 +1,11 @@
 import { Alert, Animated, Pressable, Text, View } from "react-native";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, {
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { styles } from "@/styles/GlobalStyles";
 import { NEWCOLORS } from "@/constants/NewTheme";
 import { Image } from "expo-image";
@@ -33,8 +39,20 @@ export default function Dashboard() {
   const navigation = useNavigation();
   const [groceryList, setGroceryList] = useContext(GroceryListContext);
   const [checkedList, setCheckedList] = useContext(CheckedGroceryListContext);
+  const [, setPantryDetails] = useContext(PantryDetailsContext);
 
   const hasAnyItems = groceryList.length > 0 || checkedList.length > 0;
+  const checkedIds = useMemo(
+    () => new Set(checkedList.map((item) => item.id)),
+    [checkedList],
+  );
+  const listedIds = useMemo(
+    () =>
+      new Set(
+        [...groceryList, ...checkedList].map((item) => item.id),
+      ),
+    [groceryList, checkedList],
+  );
 
   const clearList = () => {
     Alert.alert(
@@ -169,6 +187,10 @@ export default function Dashboard() {
               </Text>
               <Search
                 isGroceryList
+                addedIds={listedIds}
+                getAddedAction={(item: Food) =>
+                  checkedIds.has(item.id) ? "uncheck" : "remove"
+                }
                 onSelectIngredient={(item: Food) =>
                   setGroceryList((prev) => {
                     const alreadyAdded = prev.some(
@@ -177,6 +199,30 @@ export default function Dashboard() {
                     return alreadyAdded ? prev : [...prev, item];
                   })
                 }
+                onRemoveIngredient={(item: Food) => {
+                  if (checkedIds.has(item.id)) {
+                    // Checked items are already "on the list" — tapping
+                    // them just undoes the checkmark instead of removing.
+                    setCheckedList((prev) =>
+                      prev.filter((food) => food.id !== item.id),
+                    );
+                    setGroceryList((prev) =>
+                      prev.some((food) => food.id === item.id)
+                        ? prev
+                        : [...prev, item],
+                    );
+                    setPantryDetails((prev) => ({
+                      ...prev,
+                      ingredients: prev.ingredients.filter(
+                        (food) => food.id !== item.id,
+                      ),
+                    }));
+                  } else {
+                    setGroceryList((prev) =>
+                      prev.filter((food) => food.id !== item.id),
+                    );
+                  }
+                }}
               />
 
               <View style={{ gap: 35, paddingHorizontal: 10, marginTop: 10 }}>

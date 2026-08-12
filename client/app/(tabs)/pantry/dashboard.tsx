@@ -1,5 +1,11 @@
 import { Animated, Text, View } from "react-native";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, {
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { styles } from "@/styles/GlobalStyles";
 import { NEWCOLORS } from "@/constants/NewTheme";
 import { Image } from "expo-image";
@@ -29,6 +35,10 @@ export default function Dashboard() {
   const navigation = useNavigation();
   const [pantryDetails, setPantryDetails] = useContext(PantryDetailsContext);
   const [selectedFilter, setSelectedFilter] = useState("All");
+  const pantryIngredientIds = useMemo(
+    () => new Set(pantryDetails.ingredients.map((item) => item.id)),
+    [pantryDetails.ingredients],
+  );
   const ingredientCategories: string[] = [
     "All",
     "Produce",
@@ -92,9 +102,12 @@ export default function Dashboard() {
             ></PantryPill>
             <View style={{ gap: 20, flex: 1 }}>
               <Search
+                addedIds={pantryIngredientIds}
                 onSelectIngredient={(item: Food) =>
                   setPantryDetails((prev) => {
-                    const alreadyAdded = prev.ingredients.includes(item);
+                    const alreadyAdded = prev.ingredients.some(
+                      (ingredient) => ingredient.id === item.id,
+                    );
                     const nextIngredients = alreadyAdded
                       ? prev.ingredients
                       : [...prev.ingredients, item];
@@ -104,6 +117,14 @@ export default function Dashboard() {
                       ingredients: nextIngredients,
                     };
                   })
+                }
+                onRemoveIngredient={(item: Food) =>
+                  setPantryDetails((prev) => ({
+                    ...prev,
+                    ingredients: prev.ingredients.filter(
+                      (ingredient) => ingredient.id !== item.id,
+                    ),
+                  }))
                 }
               />
 
