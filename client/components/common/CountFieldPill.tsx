@@ -88,7 +88,11 @@ const CountFieldPill = (props: Props) => {
                 { fontSize: 12.5, margin: 0, padding: 0 },
               ]}
             >
-              {props.num.toString()}
+              {props.num == 0.5
+                ? "1/2"
+                : props.num == 0.25
+                  ? "1/4"
+                  : props.num.toString()}
             </Text>
 
             <Pressable

@@ -26,7 +26,7 @@ export const RecipeSchema = {
       enum: ["Easy", "Intermediate", "Expert"],
     },
     time: { type: Type.STRING },
-    servings: { type: Type.INTEGER },
+    servings: { type: Type.NUMBER },
     tags: { type: Type.ARRAY, items: { type: Type.STRING } },
     nutrients: {
       type: Type.OBJECT,
@@ -69,8 +69,9 @@ export const RecipeSchema = {
     imageCategory: {
       type: Type.STRING,
       enum: [...IMAGE_CATEGORIES],
-      description: "Select the single best matching image category to represent the final dish. Must be one of the provided enum values."
-    }
+      description:
+        "Select the single best matching image category to represent the final dish. Must be one of the provided enum values.",
+    },
   },
   required: [
     "title",
