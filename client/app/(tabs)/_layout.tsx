@@ -13,8 +13,8 @@ const TAB_ROUTES = [
   { name: "index", path: "/(tabs)" },
   { name: "pantry", path: "/(tabs)/pantry" },
   { name: "generationpage", path: "/(tabs)/generationpage" },
+  { name: "grocery", path: "/(tabs)/grocery" },
   { name: "profile", path: "/(tabs)/profile" },
-  { name: "saves", path: "/(tabs)/saves" },
 ];
 
 export default function TabsLayout() {
@@ -86,7 +86,7 @@ export default function TabsLayout() {
                   tabBarStyle: {
                     position: "absolute",
 
-                    height: 60,
+                    height: 65,
                     marginHorizontal: 20,
                     borderRadius: 100,
                     backgroundColor: NEWCOLORS.greyBlock,

@@ -32,9 +32,9 @@ type Props = {
 };
 
 const GroceryListItem = ({ food, variant = "active" }: Props) => {
-  const [, setGroceryList] = useContext(GroceryListContext);
-  const [, setCheckedList] = useContext(CheckedGroceryListContext);
-  const [, setPantryDetails] = useContext(PantryDetailsContext);
+  const [groceryList, setGroceryList] = useContext(GroceryListContext);
+  const [checkedList, setCheckedList] = useContext(CheckedGroceryListContext);
+  const [pantryDetails, setPantryDetails] = useContext(PantryDetailsContext);
 
   const startsChecked = variant === "checked";
   const [checked, setChecked] = useState(startsChecked);

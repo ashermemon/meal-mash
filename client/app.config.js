@@ -2,7 +2,7 @@ import "dotenv/config";
 
 export default {
   expo: {
-    name: "Meal Mash",
+    name: "MealMash",
     slug: "never-leftover-new",
     version: "1.0.0",
     orientation: "portrait",
@@ -12,6 +12,9 @@ export default {
     newArchEnabled: true,
     ios: {
       supportsTablet: true,
+      infoPlist: {
+        CFBundleDisplayName: "MealMash",
+      },
       bundleIdentifier: "com.sdsecureapp.neverleftovernew",
       icon: {
         light: "./assets/images/IconLight.png",
@@ -23,6 +26,7 @@ export default {
       },
     },
     android: {
+      name: "MealMash - Quick & Easy Recipes",
       adaptiveIcon: {
         foregroundImage: "./assets/images/adaptivef.png",
         backgroundImage: "./assets/images/adaptiveb.png",
@@ -60,7 +64,6 @@ export default {
       ],
 
       "expo-font",
-      "expo-web-browser",
       "expo-notifications",
     ],
     experiments: {

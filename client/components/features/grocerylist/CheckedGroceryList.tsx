@@ -26,8 +26,8 @@ if (
 
 const CheckedGroceryList = () => {
   const [checkedList, setCheckedList] = useContext(CheckedGroceryListContext);
-  const [, setGroceryList] = useContext(GroceryListContext);
-  const [, setPantryDetails] = useContext(PantryDetailsContext);
+  const [groceryList, setGroceryList] = useContext(GroceryListContext);
+  const [pantryDetails, setPantryDetails] = useContext(PantryDetailsContext);
   const [expanded, setExpanded] = useState(false);
 
   if (checkedList.length < 1) return null;
@@ -91,6 +91,12 @@ const CheckedGroceryList = () => {
             style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
             hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
           >
+            <CustomIcon
+              name={expanded ? "up-small" : "down-small"}
+              filled
+              color={NEWCOLORS.placeholderText}
+              size={20}
+            />
             <Text
               style={[
                 styles.textLeftBold,
@@ -103,12 +109,6 @@ const CheckedGroceryList = () => {
             >
               Checked ({checkedList.length})
             </Text>
-            <CustomIcon
-              name={expanded ? "up-small" : "down-small"}
-              filled
-              color={NEWCOLORS.placeholderText}
-              size={20}
-            />
           </Pressable>
 
           <Pressable
