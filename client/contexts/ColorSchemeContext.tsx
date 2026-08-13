@@ -1,17 +1,5 @@
-import React, {
-  createContext,
-  useContext,
-  useRef,
-  useState,
-  ReactNode,
-} from "react";
-import { Appearance, ColorSchemeName, StyleSheet, View } from "react-native";
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withTiming,
-  Easing,
-} from "react-native-reanimated";
+import React, { createContext, useContext, useState, ReactNode } from "react";
+import { Appearance, ColorSchemeName } from "react-native";
 import { storage } from "@/utils/storage";
 import { NEWCOLORS, DARK_NEWCOLORS } from "@/constants/NewTheme";
 import { COLORS, DARK_COLORS } from "@/constants/Theme";
@@ -48,60 +36,19 @@ const getInitialColorScheme = (): ColorScheme => {
   return system === "dark" ? "dark" : "light";
 };
 
-// How long each half of the crossfade takes: fading to the solid overlay
-// color, then fading back to reveal the (now-switched) real content.
-const FADE_IN_MS = 200;
-const FADE_OUT_MS = 280;
-
 export const ColorSchemeProvider = ({ children }: { children: ReactNode }) => {
   const [colorScheme, setColorSchemeState] = useState<ColorScheme>(
     getInitialColorScheme,
   );
-  const [overlayColor, setOverlayColor] = useState(
-    getInitialColorScheme() === "dark"
-      ? DARK_THEME.backgroundColor
-      : LIGHT_THEME.backgroundColor,
-  );
-  const overlayOpacity = useSharedValue(0);
-  const pendingCommit = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const setColorScheme = (scheme: ColorScheme) => {
-    if (scheme === colorScheme) return;
-    if (pendingCommit.current) {
-      clearTimeout(pendingCommit.current);
-      pendingCommit.current = null;
-    }
-    // Fade the overlay to fully opaque first — only once it's actually
-    // covering the screen do we swap the real theme underneath, so the
-    // instant swap is hidden. Then fade the (now up-to-date) overlay back
-    // out to reveal it. The commit is a plain JS timeout matched to the
-    // fade-in duration, not a reanimated UI-thread callback, so there's no
-    // worklet/JS-thread race to double-fire it.
-    setOverlayColor(
-      scheme === "dark" ? DARK_THEME.backgroundColor : LIGHT_THEME.backgroundColor,
-    );
-    overlayOpacity.value = withTiming(1, {
-      duration: FADE_IN_MS,
-      easing: Easing.in(Easing.cubic),
-    });
-    pendingCommit.current = setTimeout(() => {
-      storage.set(STORAGE_KEY, scheme);
-      setColorSchemeState(scheme);
-      overlayOpacity.value = withTiming(0, {
-        duration: FADE_OUT_MS,
-        easing: Easing.out(Easing.cubic),
-      });
-      pendingCommit.current = null;
-    }, FADE_IN_MS);
+    storage.set(STORAGE_KEY, scheme);
+    setColorSchemeState(scheme);
   };
 
   const toggleColorScheme = () => {
     setColorScheme(colorScheme === "dark" ? "light" : "dark");
   };
-
-  const overlayStyle = useAnimatedStyle(() => ({
-    opacity: overlayOpacity.value,
-  }));
 
   return (
     <ColorSchemeContext.Provider
@@ -112,17 +59,7 @@ export const ColorSchemeProvider = ({ children }: { children: ReactNode }) => {
         toggleColorScheme,
       }}
     >
-      <View style={{ flex: 1 }}>
-        {children}
-        <Animated.View
-          pointerEvents="none"
-          style={[
-            StyleSheet.absoluteFillObject,
-            { backgroundColor: overlayColor },
-            overlayStyle,
-          ]}
-        />
-      </View>
+      {children}
     </ColorSchemeContext.Provider>
   );
 };

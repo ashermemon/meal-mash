@@ -4,6 +4,7 @@ import Animated, {
   interpolateColor,
   useAnimatedStyle,
   withTiming,
+  ReduceMotion,
 } from "react-native-reanimated";
 import { useStyles } from "@/styles/GlobalStyles";
 import { useTheme } from "@/contexts/ColorSchemeContext";
@@ -45,6 +46,7 @@ const SwitchToggle = (props: Props) => {
         {
           translateX: withTiming(props.value ? maxTranslate : padding, {
             duration: 200,
+            reduceMotion: ReduceMotion.Never,
           }),
         },
       ],

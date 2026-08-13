@@ -26,7 +26,7 @@ export const NEWCOLORS = {
 
   greenAccent: "#1C9350",
   blueAccent: "#2F66B0",
-  yellowAccent: "#A6740A",
+  yellowAccent: "#dfa922",
   orangeAccent: "#C97317",
   redAccent: "#EF4444",
 
@@ -38,9 +38,6 @@ export const NEWCOLORS = {
 
   pillX: "#A39C8F",
 
-  // Constant — does not flip with theme. For text/icons that sit on a
-  // colored accent surface (buttons, badges, image scrims) that stays
-  // roughly as dark/saturated in both themes.
   pureWhite: "#FFFFFF",
 } as const;
 
@@ -48,9 +45,6 @@ export const DARK_NEWCOLORS: Record<keyof typeof NEWCOLORS, string> = {
   backgroundColor: "#1C1A17",
   sheetBackgroundColor: "#242220",
 
-  // Kept dark (not inverted to light) so it reads as an elevated dark
-  // surface against the dark background, same role it plays in light
-  // mode — this keeps white icon/text foregrounds on it readable.
   primary: "#4A443C",
   primaryDark: "#5A5348",
 
