@@ -1,8 +1,8 @@
 import React, {
   createContext,
   useContext,
+  useRef,
   useState,
-  useEffect,
   ReactNode,
 } from "react";
 import { Appearance, ColorSchemeName, StyleSheet, View } from "react-native";
@@ -10,7 +10,6 @@ import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withTiming,
-  runOnJS,
   Easing,
 } from "react-native-reanimated";
 import { storage } from "@/utils/storage";
@@ -64,31 +63,36 @@ export const ColorSchemeProvider = ({ children }: { children: ReactNode }) => {
       : LIGHT_THEME.backgroundColor,
   );
   const overlayOpacity = useSharedValue(0);
-
-  const commitColorScheme = (scheme: ColorScheme) => {
-    storage.set(STORAGE_KEY, scheme);
-    setColorSchemeState(scheme);
-    overlayOpacity.value = withTiming(0, {
-      duration: FADE_OUT_MS,
-      easing: Easing.out(Easing.cubic),
-    });
-  };
+  const pendingCommit = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const setColorScheme = (scheme: ColorScheme) => {
     if (scheme === colorScheme) return;
+    if (pendingCommit.current) {
+      clearTimeout(pendingCommit.current);
+      pendingCommit.current = null;
+    }
+    // Fade the overlay to fully opaque first — only once it's actually
+    // covering the screen do we swap the real theme underneath, so the
+    // instant swap is hidden. Then fade the (now up-to-date) overlay back
+    // out to reveal it. The commit is a plain JS timeout matched to the
+    // fade-in duration, not a reanimated UI-thread callback, so there's no
+    // worklet/JS-thread race to double-fire it.
     setOverlayColor(
       scheme === "dark" ? DARK_THEME.backgroundColor : LIGHT_THEME.backgroundColor,
     );
-    overlayOpacity.value = withTiming(
-      1,
-      { duration: FADE_IN_MS, easing: Easing.in(Easing.cubic) },
-      (finished) => {
-        "worklet";
-        if (finished) {
-          runOnJS(commitColorScheme)(scheme);
-        }
-      },
-    );
+    overlayOpacity.value = withTiming(1, {
+      duration: FADE_IN_MS,
+      easing: Easing.in(Easing.cubic),
+    });
+    pendingCommit.current = setTimeout(() => {
+      storage.set(STORAGE_KEY, scheme);
+      setColorSchemeState(scheme);
+      overlayOpacity.value = withTiming(0, {
+        duration: FADE_OUT_MS,
+        easing: Easing.out(Easing.cubic),
+      });
+      pendingCommit.current = null;
+    }, FADE_IN_MS);
   };
 
   const toggleColorScheme = () => {

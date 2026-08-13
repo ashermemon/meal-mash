@@ -1,7 +1,7 @@
 import { View, Text, Pressable, TextInput } from "react-native";
 import React, { useContext, useRef, useState } from "react";
 import { useStyles } from "@/styles/GlobalStyles";
-import { useTheme } from "@/contexts/ColorSchemeContext";
+import { useIsDarkMode, useTheme } from "@/contexts/ColorSchemeContext";
 import { router } from "expo-router";
 import * as Haptics from "expo-haptics";
 import { PantryDetailsContext } from "@/contexts/PantryDetails";
@@ -15,6 +15,7 @@ type Props = {
 const PantryPill = (props: Props) => {
   const styles = useStyles();
   const theme = useTheme();
+  const isDark = useIsDarkMode();
   const [pantryDetails, setPantryDetails] = useContext(PantryDetailsContext);
   const [rename, setRename] = useState(false);
   const inputRef = useRef<TextInput>(null);
@@ -118,6 +119,7 @@ const PantryPill = (props: Props) => {
               width: 100,
               justifyContent: "center",
               alignItems: "center",
+              backgroundColor: isDark ? theme.lightGrey : theme.unselectedGrey,
             },
           ]}
           onPress={handleRenamePress}

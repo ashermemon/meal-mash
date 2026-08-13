@@ -14,7 +14,7 @@ import React, {
   useState,
 } from "react";
 import { CustomIcon } from "@/icon-loader/icon-loader";
-import { useTheme } from "@/contexts/ColorSchemeContext";
+import { useIsDarkMode, useTheme } from "@/contexts/ColorSchemeContext";
 import { searchIngredients } from "./SearchFunctionality";
 import { getCategoryDisplayLabel } from "@/constants/categoryLabels";
 import { useStyles } from "@/styles/GlobalStyles";
@@ -64,6 +64,7 @@ export const SearchResultItem = ({
 }: SearchResultItemProps) => {
   const styles = useStyles();
   const theme = useTheme();
+  const isDark = useIsDarkMode();
   const addedColor =
     addedAction === "uncheck" ? theme.blueAccent : theme.redAccent;
   const addedLabel = addedAction === "uncheck" ? "Uncheck" : "Remove";
@@ -147,7 +148,7 @@ export const SearchResultItem = ({
                   fontSize: 13,
                   flex: 1,
                   fontFamily: "Nunito-Regular",
-                  color: theme.unselectedShape,
+                  color: isDark ? theme.placeholderText : theme.addPlusGrey,
                 },
               ]}
             >

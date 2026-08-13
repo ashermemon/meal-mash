@@ -1,7 +1,7 @@
 import { Dimensions, Pressable, Text, View } from "react-native";
 import React, { useState } from "react";
 import { useStyles } from "@/styles/GlobalStyles";
-import { useTheme } from "@/contexts/ColorSchemeContext";
+import { useTheme, useIsDarkMode } from "@/contexts/ColorSchemeContext";
 import { router } from "expo-router";
 import emojiImages from "@/components/universal/EmojiImages";
 import { Image } from "expo-image";
@@ -41,6 +41,7 @@ const featuredRecipes = [
 export default function ExploreSection() {
   const styles = useStyles();
   const theme = useTheme();
+  const isDark = useIsDarkMode();
   const ref = React.useRef<ICarouselInstance>(null);
   const progress = useSharedValue<number>(0);
   const onPressPagination = (index: number) => {
@@ -237,7 +238,7 @@ export default function ExploreSection() {
         <Block
           height={200}
           title="Meal Generator"
-          color={theme.blueAccent}
+          color={isDark ? theme.blueBlock : theme.blueAccent}
           link="generationpage"
           icon="Burrito"
         >
@@ -255,13 +256,13 @@ export default function ExploreSection() {
         <View style={{ flex: 1, flexDirection: "column", gap: 10 }}>
           <Block
             title="Your Pantry"
-            color={theme.orangeAccent}
+            color={isDark ? theme.orangeBlock : theme.orangeAccent}
             link="pantry"
             icon="Fridge"
           />
           <Block
             title="Saved Recipes"
-            color={theme.greenAccent}
+            color={isDark ? theme.greenBlock : theme.greenAccent}
             link="saves"
             icon="Book"
           />

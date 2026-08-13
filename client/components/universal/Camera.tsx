@@ -48,7 +48,7 @@ export default function Camera() {
           ]}
         >
           <Text
-            style={[styles.basicTextCenter, { color: theme.greyBlock }]}
+            style={[styles.basicTextCenter, { color: theme.pureWhite }]}
           >
             Retake photo?
           </Text>
@@ -67,7 +67,7 @@ export default function Camera() {
           ]}
         >
           <Text
-            style={[styles.basicTextCenter, { color: theme.greyBlock }]}
+            style={[styles.basicTextCenter, { color: theme.pureWhite }]}
           >
             Generate Meal
           </Text>
@@ -116,7 +116,7 @@ export default function Camera() {
                       width: pressed ? 85 : 70,
                       height: pressed ? 85 : 70,
                       borderRadius: 100,
-                      backgroundColor: theme.greyBlock,
+                      backgroundColor: theme.pureWhite,
                     },
                   ]}
                 />
@@ -129,7 +129,7 @@ export default function Camera() {
             <CustomIcon
               name="refresh-3"
               filled={false}
-              color={theme.greyBlock}
+              color={theme.pureWhite}
               size={20}
             ></CustomIcon>
           </Pressable>

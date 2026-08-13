@@ -186,14 +186,14 @@ export default function Profile() {
                       <CustomIcon
                         name="pencil"
                         filled={true}
-                        color={theme.greyBlock}
+                        color={theme.pureWhite}
                         size={13}
                       />
 
                       <Text
                         style={[
                           styles.textLeftSemiBold,
-                          { color: theme.greyBlock, fontSize: 13 },
+                          { color: theme.pureWhite, fontSize: 13 },
                         ]}
                       >
                         Edit Profile
@@ -254,13 +254,13 @@ export default function Profile() {
                         <CustomIcon
                           name="check"
                           filled={true}
-                          color={theme.greyBlock}
+                          color={theme.pureWhite}
                           size={13}
                         />
                         <Text
                           style={[
                             styles.textLeftSemiBold,
-                            { color: theme.greyBlock, fontSize: 13 },
+                            { color: theme.pureWhite, fontSize: 13 },
                           ]}
                         >
                           Save

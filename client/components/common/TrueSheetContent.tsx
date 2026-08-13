@@ -81,6 +81,7 @@ const TrueSheetContent = (props: Props) => {
                     fontSize: 16,
                     fontFamily: "Nunito-Regular",
                     flex: 1,
+                    color: theme.basicText,
                   }}
                   numberOfLines={1}
                 >

@@ -3,7 +3,7 @@ import { COLORS, DARK_COLORS } from "@/constants/Theme";
 import { StyleSheet } from "react-native";
 import { useColorScheme } from "@/contexts/ColorSchemeContext";
 
-const createStyles = (NEWCOLORS, COLORS) =>
+const createStyles = (NEWCOLORS, COLORS, isDark) =>
   StyleSheet.create({
     container: {
       flex: 1,
@@ -398,7 +398,7 @@ const createStyles = (NEWCOLORS, COLORS) =>
       paddingVertical: 13,
       paddingHorizontal: 15,
       borderRadius: 15,
-      backgroundColor: NEWCOLORS.yellowAccent,
+      backgroundColor: isDark ? NEWCOLORS.yellowBlock : NEWCOLORS.yellowAccent,
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
@@ -417,8 +417,8 @@ const createStyles = (NEWCOLORS, COLORS) =>
     },
   });
 
-const lightStyles = createStyles(NEWCOLORS, COLORS);
-const darkStyles = createStyles(DARK_NEWCOLORS, DARK_COLORS);
+const lightStyles = createStyles(NEWCOLORS, COLORS, false);
+const darkStyles = createStyles(DARK_NEWCOLORS, DARK_COLORS, true);
 
 export const styles = lightStyles;
 

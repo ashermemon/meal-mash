@@ -111,8 +111,8 @@ export default function TabsLayout() {
                   },
 
                   tabBarLabelPosition: "beside-icon",
-                  tabBarActiveTintColor: theme.greyBlock,
-                  tabBarInactiveTintColor: theme.darkButton,
+                  tabBarActiveTintColor: theme.pureWhite,
+                  tabBarInactiveTintColor: theme.basicText,
                   headerShadowVisible: false,
                   tabBarActiveBackgroundColor: "transparent",
                   tabBarInactiveBackgroundColor: "transparent",

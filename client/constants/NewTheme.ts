@@ -24,10 +24,10 @@ export const NEWCOLORS = {
   dividerGrey: "#d1d1d6",
   dividerGrey2: "#EFE9DD",
 
-  greenAccent: "#1FAE5C",
-  blueAccent: "#6fadec",
-  yellowAccent: "#e4ae0b",
-  orangeAccent: "#ffae00",
+  greenAccent: "#1C9350",
+  blueAccent: "#2F66B0",
+  yellowAccent: "#A6740A",
+  orangeAccent: "#C97317",
   redAccent: "#EF4444",
 
   secondaryBoxGrey: "#F5F0E6",
@@ -73,10 +73,10 @@ export const DARK_NEWCOLORS: Record<keyof typeof NEWCOLORS, string> = {
   dividerGrey: "#3A3A3D",
   dividerGrey2: "#302D28",
 
-  greenAccent: "#3DDC84",
-  blueAccent: "#7FB8FF",
-  yellowAccent: "#F4C430",
-  orangeAccent: "#FFB84D",
+  greenAccent: "#22A363",
+  blueAccent: "#3B6FD9",
+  yellowAccent: "#C2850C",
+  orangeAccent: "#D9600F",
   redAccent: "#FF6B6B",
 
   secondaryBoxGrey: "#252220",

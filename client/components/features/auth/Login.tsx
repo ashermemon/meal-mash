@@ -283,7 +283,7 @@ const createStyles = (theme: Theme) =>
     },
     buttonText: {
       fontSize: 18,
-      color: "#fff",
+      color: theme.pureWhite,
     },
     backButton: {
       padding: 10,
@@ -300,7 +300,7 @@ const createStyles = (theme: Theme) =>
       maxWidth: 400,
       padding: 15,
       backgroundColor: theme.darkButton,
-      color: "#fff",
+      color: theme.pureWhite,
       borderRadius: 5,
       marginBottom: 15,
     },

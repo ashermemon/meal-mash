@@ -11,7 +11,7 @@ import NutrientCircle from "@/components/features/recipe/NutrientCircle";
 import { useStyles } from "@/styles/GlobalStyles";
 import RecipeInfoTags from "../recipe/RecipeInfoTags";
 import NutrientsContext from "@/contexts/NutrientsContext";
-import { useTheme } from "@/contexts/ColorSchemeContext";
+import { useTheme, useColorScheme } from "@/contexts/ColorSchemeContext";
 import { router } from "expo-router";
 import { Skeleton } from "moti/skeleton";
 import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
@@ -37,12 +37,9 @@ type Props = {
   makeRecipe: () => void;
 };
 
-const SkeletonSettings = {
-  colorMode: "light",
-  transition: {
-    type: "timing",
-    duration: 2000,
-  },
+const SKELETON_TRANSITION = {
+  type: "timing",
+  duration: 2000,
 } as const;
 
 const MEAL_IMAGES: Record<string, any> = {
@@ -65,6 +62,11 @@ const MEAL_IMAGES: Record<string, any> = {
 export const GenerationCardPreview = (props: Props) => {
   const styles = useStyles();
   const theme = useTheme();
+  const colorScheme = useColorScheme();
+  const SkeletonSettings = {
+    colorMode: colorScheme === "dark" ? "dark" : "light",
+    transition: SKELETON_TRANSITION,
+  } as const;
 
   // useEffect(() => {
 
