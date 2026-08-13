@@ -134,18 +134,15 @@ const IngredientPickerCard = (props: Props) => {
         }
       }}
     >
-      <Image
-        source={require("@/assets/images/meal-images/burger.webp")}
-        style={{
-          width: 40,
-          height: 40,
-          borderRadius: 110,
-          shadowColor: "black",
-          shadowRadius: 50,
-          shadowOpacity: 1,
-        }}
-        contentFit="cover"
-      />
+      <View
+        style={[styles.imageGlow, { width: 40, height: 40, borderRadius: 110 }]}
+      >
+        <Image
+          source={require("@/assets/images/meal-images/burger.webp")}
+          style={{ width: "100%", height: "100%", borderRadius: 110 }}
+          contentFit="cover"
+        />
+      </View>
       <Text
         style={[
           styles.textLeftSemiBold,

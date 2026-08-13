@@ -232,7 +232,14 @@ const createStyles = (NEWCOLORS, COLORS, isDark) =>
       flexDirection: "row",
     },
     basicBoxShadow: {
-      boxShadow: "0px 2px 2px rgba(0, 0, 0, 0.10)",
+      boxShadow: isDark
+        ? "0px 3px 10px rgba(0, 0, 0, 0.45)"
+        : "0px 3px 8px rgba(58, 53, 50, 0.14)",
+    },
+    imageGlow: {
+      boxShadow: isDark
+        ? "0px 4px 16px rgba(0, 0, 0, 0.5)"
+        : "0px 4px 14px rgba(58, 53, 50, 0.18)",
     },
     basicTextCenter: {
       fontFamily: "Nunito-Regular",

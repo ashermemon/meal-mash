@@ -1,7 +1,7 @@
 export const COLORS = {
-  blueHeader: "#DCEFFF",
+  blueHeader: "#A9CFE0",
 
-  newHeader: "#F6F6F6",
+  newHeader: "#FBF5EA",
 
   fontColor: "#3A3532",
   searchPlaceholder: "#8A8378",
@@ -9,15 +9,15 @@ export const COLORS = {
 
   addPlusGrey: "#A39A89",
 
-  greenButtonColorOuline: "#8FDD9E",
-  greenButtonColor: "#DFF6DA",
+  greenButtonColorOuline: "#6FAE7B",
+  greenButtonColor: "#C9E4C0",
 
-  saveBorder: "#7EC1FF",
-  saveFill: "#DCEFFF",
-  genBorder: "#C79EEA",
-  genFill: "#F0D9FF",
+  saveBorder: "#6FB4D6",
+  saveFill: "#BEE0EC",
+  genBorder: "#A6A2DE",
+  genFill: "#DCDCF5",
 
-  favoriteColor: "#FFC22E",
+  favoriteColor: "#F0B429",
 
   greyBtns: "#8A8378",
 } as const;

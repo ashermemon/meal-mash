@@ -141,17 +141,14 @@ export default function Dashboard() {
                   Be sure to add any leftover dishes you have at home and want
                   to use in recipes!
                 </Text>
-                <Image
-                  source={require("@/assets/images/leftover.webp")}
-                  style={{
-                    width: 50,
-                    height: 50,
-                    borderRadius: 110,
-                    shadowColor: "black",
-                    shadowRadius: 50,
-                    shadowOpacity: 1,
-                  }}
-                />
+                <View
+                  style={[styles.imageGlow, { width: 50, height: 50, borderRadius: 110 }]}
+                >
+                  <Image
+                    source={require("@/assets/images/leftover.webp")}
+                    style={{ width: "100%", height: "100%", borderRadius: 110 }}
+                  />
+                </View>
               </View>
 
               <View style={{ gap: 10 }}>

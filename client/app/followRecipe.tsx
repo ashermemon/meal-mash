@@ -134,18 +134,15 @@ const followRecipe = () => {
               marginBottom: 20,
             }}
           >
-            <Image
-              source={MEAL_IMAGES[recipeData.imageCategory] || MEAL_IMAGES.bowl}
-              style={{
-                width: 70,
-                height: 70,
-                borderRadius: 110,
-                shadowColor: "black",
-                shadowRadius: 50,
-                shadowOpacity: 1,
-              }}
-              contentFit="cover"
-            />
+            <View
+              style={[styles.imageGlow, { width: 70, height: 70, borderRadius: 110 }]}
+            >
+              <Image
+                source={MEAL_IMAGES[recipeData.imageCategory] || MEAL_IMAGES.bowl}
+                style={{ width: "100%", height: "100%", borderRadius: 110 }}
+                contentFit="cover"
+              />
+            </View>
             <View style={{ flex: 1, paddingHorizontal: 18 }}>
               <Text
                 numberOfLines={1}
@@ -284,7 +281,7 @@ const followRecipe = () => {
                 <View
                   style={[
                     styles.stepCircle,
-                    { backgroundColor: theme.stepCircle, flexShrink: 0 },
+                    { backgroundColor: theme.greenBlock, flexShrink: 0 },
                   ]}
                 >
                   <Text
@@ -303,7 +300,7 @@ const followRecipe = () => {
                       flex: 1,
                       fontSize: 15,
                       lineHeight: 22,
-                      marginLeft: 12,
+                      marginLeft: 16,
                       marginTop: 5,
                       marginBottom: bulletMargin,
                     },
@@ -343,7 +340,7 @@ const followRecipe = () => {
                   >
                     <Path
                       d="M11.8307 3.50018C13.1625 -1.16672 19.7764 -1.16672 21.1083 3.50018C21.8228 6.00364 24.3948 7.48858 26.92 6.85558C31.6276 5.67557 34.9346 11.4034 31.5589 14.8903C29.748 16.7607 29.748 19.7306 31.5589 21.6011C34.9346 25.088 31.6276 30.8158 26.92 29.6357C24.3948 29.0028 21.8228 30.4877 21.1083 32.9912C19.7764 37.6581 13.1625 37.6581 11.8307 32.9912C11.1162 30.4877 8.54421 29.0028 6.01892 29.6357C1.31134 30.8158 -1.99562 25.088 1.3801 21.6011C3.19094 19.7306 3.19094 16.7607 1.3801 14.8903C-1.99561 11.4034 1.31134 5.67557 6.01892 6.85559C8.54421 7.48858 11.1162 6.00364 11.8307 3.50018Z"
-                      fill={isDark ? theme.yellowBlock : theme.tipBadgeBg}
+                      fill={theme.yellowBlock}
                     />
                   </Svg>
 
@@ -363,7 +360,7 @@ const followRecipe = () => {
                       flex: 1,
                       fontSize: 15,
                       lineHeight: 22,
-                      marginLeft: 12,
+                      marginLeft: 16,
                       marginBottom: bulletMargin,
                       marginTop: 5,
                     },

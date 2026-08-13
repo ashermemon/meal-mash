@@ -1,7 +1,7 @@
 import { Tabs, useRouter, useSegments } from "expo-router";
 import { Platform, View } from "react-native";
 import { CustomIcon } from "@/icon-loader/icon-loader";
-import { useTheme } from "@/contexts/ColorSchemeContext";
+import { useTheme, useIsDarkMode } from "@/contexts/ColorSchemeContext";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import * as Haptics from "expo-haptics";
@@ -19,6 +19,7 @@ const TAB_ROUTES = [
 
 export default function TabsLayout() {
   const theme = useTheme();
+  const isDark = useIsDarkMode();
   const iconSizeMobile = 30;
   const router = useRouter();
   const segments = useSegments();
@@ -94,8 +95,8 @@ export default function TabsLayout() {
 
                     shadowColor: "#000",
                     shadowOffset: { width: 0, height: 10 },
-                    shadowOpacity: 0.1,
-                    shadowRadius: 5,
+                    shadowOpacity: isDark ? 0.35 : 0.1,
+                    shadowRadius: isDark ? 10 : 5,
                     paddingBottom: 0,
                     marginBottom: 10,
                     borderTopWidth: 0,
