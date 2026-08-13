@@ -13,39 +13,43 @@ export const styles = StyleSheet.create({
     textAlign: "center",
     justifyContent: "center",
 
-    color: COLORS.fontColor,
+    color: NEWCOLORS.basicText,
     fontWeight: 500,
   },
   nameInput: {
-    fontSize: 18,
-    marginBottom: 20,
-    textAlign: "center",
-    justifyContent: "center",
+    fontSize: 26,
+    lineHeight: 32,
+    height: 32,
+    padding: 0,
+    margin: 0,
+    textAlignVertical: "center",
+    includeFontPadding: false,
+
     fontFamily: "Nunito-Bold",
-    color: COLORS.fontColor,
+    color: NEWCOLORS.basicText,
   },
 
   textLeft: {
     fontFamily: "Nunito-Regular",
     textAlign: "left",
-    color: COLORS.fontColor,
+    color: NEWCOLORS.basicText,
     flex: 1,
   },
   textLeftSemiBold: {
     fontFamily: "Nunito-SemiBold",
     textAlign: "left",
-    color: COLORS.fontColor,
+    color: NEWCOLORS.basicText,
   },
   textLeftBold: {
     fontFamily: "Nunito-Bold",
     textAlign: "left",
-    color: COLORS.fontColor,
+    color: NEWCOLORS.basicText,
     fontSize: 17,
   },
   textCenterBold: {
     fontFamily: "Nunito-Bold",
     textAlign: "center",
-    color: COLORS.fontColor,
+    color: NEWCOLORS.basicText,
     fontSize: 17,
   },
   counterBtn: {
@@ -157,14 +161,14 @@ export const styles = StyleSheet.create({
   },
   textLegend: {
     fontFamily: "Nunito-SemiBold",
-    color: COLORS.fontColor,
+    color: NEWCOLORS.basicText,
     fontSize: 16,
     alignItems: "center",
   },
   textRight: {
     fontFamily: "Nunito-Regular",
     textAlign: "right",
-    color: COLORS.fontColor,
+    color: NEWCOLORS.basicText,
   },
   card: {
     borderTopColor: NEWCOLORS.dividerGrey2,
@@ -191,11 +195,10 @@ export const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   pfp: {
-    height: 90,
-    width: 90,
-    backgroundColor: COLORS.addPlusGrey,
-    marginTop: 30,
-    marginBottom: 20,
+    height: 80,
+    width: 80,
+    backgroundColor: NEWCOLORS.lightGrey,
+
     borderRadius: 200,
   },
 
@@ -234,13 +237,13 @@ export const styles = StyleSheet.create({
     textAlign: "center",
     justifyContent: "center",
 
-    color: COLORS.fontColor,
+    color: NEWCOLORS.basicText,
   },
   basicTextLeft: {
     fontFamily: "Nunito-Regular",
     textAlign: "left",
 
-    color: COLORS.fontColor,
+    color: NEWCOLORS.basicText,
   },
   bold: {
     fontFamily: "Nunito-Bold",
@@ -397,5 +400,17 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+  },
+  track: {
+    height: 32,
+    borderRadius: 16,
+    justifyContent: "center",
+    paddingHorizontal: 2,
+  },
+  thumb: {
+    width: 24,
+    height: 24,
+    borderRadius: 100,
+    backgroundColor: "white",
   },
 });

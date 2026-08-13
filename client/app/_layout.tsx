@@ -29,6 +29,7 @@ import { TrueSheetProvider } from "@/contexts/TrueSheetContext";
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import TrueSheetContent from "@/components/common/TrueSheetContent";
 import { NEWCOLORS } from "@/constants/NewTheme";
+import { ColorSchemeProvider } from "@/contexts/ColorSchemeContext";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -113,6 +114,10 @@ export default function RootLayout() {
   });
 
   useEffect(() => {
+    storage.set("pantrynumber", pantryDetails.ingredients.length);
+  });
+
+  useEffect(() => {
     if (loaded || error) {
       SplashScreen.hideAsync();
     }
@@ -185,6 +190,7 @@ export default function RootLayout() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
+      <ColorSchemeProvider>
       <BrowseIngredientsContext.Provider
         value={[browseIngredients, setBrowseIngredients]}
       >
@@ -294,6 +300,7 @@ export default function RootLayout() {
           </TrueSheetProvider>
         </NotificationProvider>
       </BrowseIngredientsContext.Provider>
+      </ColorSchemeProvider>
     </GestureHandlerRootView>
   );
 }

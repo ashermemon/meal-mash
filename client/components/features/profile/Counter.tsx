@@ -15,33 +15,40 @@ export default function Counter(props: counterProps) {
   return (
     <View
       style={[
+        styles.basicBoxShadow,
         {
           backgroundColor: "white",
-          borderColor: COLORS.addButtonStroke,
-          borderWidth: 5,
-          borderRadius: 20,
-          margin: 10,
+          alignItems: "center",
+          justifyContent: "center",
+          borderRadius: 15,
+          flex: 1,
+
           paddingVertical: 20,
-          width: "85%",
+          paddingHorizontal: 5,
         },
       ]}
     >
       <Text
+        numberOfLines={1}
+        adjustsFontSizeToFit
         style={[
           styles.textCentered,
-          { fontSize: 18, fontFamily: "Nunito-SemiBold" },
+          { fontSize: 42, fontFamily: "Nunito-Bold" },
+        ]}
+      >
+        {totalMeals}
+      </Text>
+      <Text
+        numberOfLines={2}
+        style={[
+          styles.textCentered,
+          {
+            fontSize: 14,
+            paddingBottom: 5,
+            fontFamily: "Nunito-Medium",
+          },
         ]}
       >{`${props.text}`}</Text>
-      <View style={styles.counterBtn}>
-        <Text
-          style={[
-            styles.textCentered,
-            { fontSize: 16, fontFamily: "Nunito-Bold" },
-          ]}
-        >
-          {totalMeals}
-        </Text>
-      </View>
     </View>
   );
 }

@@ -1,10 +1,9 @@
 export const NEWCOLORS = {
-  backgroundColor: "#FFF8ED", // warm cream canvas
+  backgroundColor: "#FFF8ED",
   sheetBackgroundColor: "#FFFDF7",
 
-  // Brand primary — used for main CTAs, active tab state, key actions
-  primary: "#3A3532", // dark button
-  primaryDark: "#242019", // pressed / border state
+  primary: "#3A3532",
+  primaryDark: "#242019",
 
   blueBlock: "rgb(210, 238, 255)",
   orangeBlock: "rgb(255, 194, 145)",
