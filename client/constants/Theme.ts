@@ -21,3 +21,27 @@ export const COLORS = {
 
   greyBtns: "#8A8378",
 } as const;
+
+export const DARK_COLORS: Record<keyof typeof COLORS, string> = {
+  blueHeader: "#16324A",
+
+  newHeader: "#242424",
+
+  fontColor: "#F2ECE0",
+  searchPlaceholder: "#A79F92",
+  addButtonStroke: "#4A453D",
+
+  addPlusGrey: "#8A8378",
+
+  greenButtonColorOuline: "#3D7A4E",
+  greenButtonColor: "#1F3A26",
+
+  saveBorder: "#3E7FBF",
+  saveFill: "#16324A",
+  genBorder: "#6C4E8A",
+  genFill: "#332745",
+
+  favoriteColor: "#E0A82A",
+
+  greyBtns: "#A79F92",
+};

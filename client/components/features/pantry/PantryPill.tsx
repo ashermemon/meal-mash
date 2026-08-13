@@ -1,7 +1,7 @@
 import { View, Text, Pressable, TextInput } from "react-native";
 import React, { useContext, useRef, useState } from "react";
-import { styles } from "@/styles/auth.styles";
-import { NEWCOLORS } from "@/constants/NewTheme";
+import { useStyles } from "@/styles/GlobalStyles";
+import { useTheme } from "@/contexts/ColorSchemeContext";
 import { router } from "expo-router";
 import * as Haptics from "expo-haptics";
 import { PantryDetailsContext } from "@/contexts/PantryDetails";
@@ -13,6 +13,8 @@ type Props = {
 };
 
 const PantryPill = (props: Props) => {
+  const styles = useStyles();
+  const theme = useTheme();
   const [pantryDetails, setPantryDetails] = useContext(PantryDetailsContext);
   const [rename, setRename] = useState(false);
   const inputRef = useRef<TextInput>(null);
@@ -83,7 +85,7 @@ const PantryPill = (props: Props) => {
                 {
                   flex: 1,
                   fontSize: 18,
-                  color: NEWCOLORS.placeholderText,
+                  color: theme.placeholderText,
                   fontFamily: "Nunito-SemiBold",
                   paddingVertical: 0,
                   paddingHorizontal: 0,
@@ -99,7 +101,7 @@ const PantryPill = (props: Props) => {
                 {
                   flex: 1,
                   fontSize: 18,
-                  color: NEWCOLORS.placeholderText,
+                  color: theme.placeholderText,
                   fontFamily: "Nunito-SemiBold",
                 },
               ]}
@@ -125,7 +127,7 @@ const PantryPill = (props: Props) => {
               styles.textCentered,
               {
                 fontSize: 13,
-                color: NEWCOLORS.placeholderText,
+                color: theme.placeholderText,
                 fontFamily: "Nunito-SemiBold",
               },
             ]}

@@ -1,19 +1,13 @@
 import { Text, View } from "react-native";
 import React, { useContext, useState } from "react";
-import { styles } from "@/styles/GlobalStyles";
+import { useStyles } from "@/styles/GlobalStyles";
 import Svg, { Path, Circle, G } from "react-native-svg";
 import NutrientsContext from "@/contexts/NutrientsContext";
-import { NEWCOLORS } from "@/constants/NewTheme";
+import { useTheme } from "@/contexts/ColorSchemeContext";
 
 interface Props {
   textInBox?: boolean;
 }
-
-const NUTRIENT_COLORS = [
-  NEWCOLORS.blueAccent,
-  NEWCOLORS.greenAccent,
-  NEWCOLORS.orangeAccent,
-];
 
 const getSlicePath = (
   startAngle: number,
@@ -42,6 +36,13 @@ const getSlicePath = (
 };
 
 export default function NutrientCircle({ textInBox }: Props) {
+  const styles = useStyles();
+  const theme = useTheme();
+  const NUTRIENT_COLORS = [
+    theme.blueAccent,
+    theme.greenAccent,
+    theme.orangeAccent,
+  ];
   const [nutrients] = useContext(NutrientsContext);
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
 
@@ -86,7 +87,7 @@ export default function NutrientCircle({ textInBox }: Props) {
             cx={cx}
             cy={cy}
             r={(rOuter + rInner) / 2}
-            stroke={NEWCOLORS.dividerGrey2 || "#ECECEC"}
+            stroke={theme.dividerGrey2 || "#ECECEC"}
             strokeWidth={rOuter - rInner}
             fill="none"
           />
@@ -174,14 +175,14 @@ export default function NutrientCircle({ textInBox }: Props) {
   const focusedNutrient =
     focusedIndex !== null ? slicesData[focusedIndex] : null;
   const caloriesToShow = focusedNutrient ? focusedNutrient.value : total;
-  const textColor = focusedNutrient ? focusedNutrient.color : "#616060";
+  const textColor = focusedNutrient ? focusedNutrient.color : theme.basicText;
 
   return (
     <View
       style={[
         styles.basicBoxShadow,
         {
-          backgroundColor: NEWCOLORS.secondaryBoxGrey,
+          backgroundColor: theme.secondaryBoxGrey,
           borderRadius: 15,
           alignItems: "center",
         },
@@ -226,7 +227,7 @@ export default function NutrientCircle({ textInBox }: Props) {
               </Text>
               <Text
                 style={{
-                  color: "#616060",
+                  color: theme.basicText,
                   fontSize: 11,
                   fontFamily: "Nunito-Medium",
                 }}

@@ -1,7 +1,7 @@
 import { View, Text, Pressable } from "react-native";
 import React, { Dispatch, SetStateAction } from "react";
-import { styles } from "@/styles/auth.styles";
-import { NEWCOLORS } from "@/constants/NewTheme";
+import { useStyles } from "@/styles/GlobalStyles";
+import { useTheme } from "@/contexts/ColorSchemeContext";
 import { getCategoryDisplayLabel } from "@/constants/categoryLabels";
 import { ScrollView } from "react-native-gesture-handler";
 
@@ -12,6 +12,8 @@ type Props = {
 };
 
 const FilterIngredients = (props: Props) => {
+  const styles = useStyles();
+  const theme = useTheme();
   return (
     <ScrollView
       horizontal
@@ -44,8 +46,8 @@ const FilterIngredients = (props: Props) => {
                 height: 30,
                 backgroundColor:
                   props.currentSelected.toLowerCase() === string.toLowerCase()
-                    ? NEWCOLORS.greenAccent
-                    : NEWCOLORS.unselectedGrey,
+                    ? theme.greenAccent
+                    : theme.unselectedGrey,
               },
             ]}
           >
@@ -56,8 +58,8 @@ const FilterIngredients = (props: Props) => {
                   paddingHorizontal: 7,
                   color:
                     props.currentSelected.toLowerCase() === string.toLowerCase()
-                      ? "white"
-                      : NEWCOLORS.basicText,
+                      ? theme.pureWhite
+                      : theme.basicText,
                 },
               ]}
               numberOfLines={1}

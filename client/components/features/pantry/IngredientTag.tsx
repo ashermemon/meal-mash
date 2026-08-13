@@ -1,8 +1,8 @@
 import { View, Text, Pressable } from "react-native";
 import React, { useContext } from "react";
-import { styles } from "@/styles/auth.styles";
+import { useStyles } from "@/styles/GlobalStyles";
 import { CustomIcon } from "@/icon-loader/icon-loader";
-import { NEWCOLORS } from "@/constants/NewTheme";
+import { useTheme } from "@/contexts/ColorSchemeContext";
 import { getCategoryDisplayLabel } from "@/constants/categoryLabels";
 import { PantryDetailsContext } from "@/contexts/PantryDetails";
 import { Food } from "./Search";
@@ -13,6 +13,8 @@ type Props = {
 };
 
 const IngredientTag = (props: Props) => {
+  const styles = useStyles();
+  const theme = useTheme();
   const [pantryDetails, setPantryDetails] = useContext(PantryDetailsContext);
 
   const handleRemoveIngredient = () => {
@@ -76,7 +78,7 @@ const IngredientTag = (props: Props) => {
               fontSize: 13,
               marginLeft: 5,
               fontFamily: "Nunito-Regular",
-              color: NEWCOLORS.pillX,
+              color: theme.pillX,
             },
           ]}
         >
@@ -87,12 +89,12 @@ const IngredientTag = (props: Props) => {
         onPress={handleRemoveIngredient}
         style={{
           marginRight: 20,
-          backgroundColor: NEWCOLORS.redAccent,
+          backgroundColor: theme.redAccent,
           padding: 10,
           borderRadius: 1000,
         }}
       >
-        <CustomIcon name="close" filled={true} color="white" size={18} />
+        <CustomIcon name="close" filled={true} color={theme.pureWhite} size={18} />
       </Pressable>
     </View>
   );

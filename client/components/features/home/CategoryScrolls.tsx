@@ -1,7 +1,7 @@
 import { View, Text, Pressable } from "react-native";
 import React, { useContext } from "react";
-import { styles } from "@/styles/GlobalStyles";
-import { NEWCOLORS } from "@/constants/NewTheme";
+import { useStyles } from "@/styles/GlobalStyles";
+import { useTheme } from "@/contexts/ColorSchemeContext";
 import { FlashList } from "@shopify/flash-list";
 import { Image } from "expo-image";
 import emojiImages from "@/components/universal/EmojiImages";
@@ -29,6 +29,8 @@ const data = [
 ];
 
 const FeaturedRecipeButton = () => {
+  const styles = useStyles();
+  const theme = useTheme();
   const [recipeData, setRecipeData] = useContext(RecipeContext);
   const [generationDetails, setGenerationDetails] = useContext(
     GenerationDetailsContext,
@@ -53,7 +55,7 @@ const FeaturedRecipeButton = () => {
                 styles.homeBlock,
                 {
                   backgroundColor:
-                    NEWCOLORS[`${item.color}Block` as keyof typeof NEWCOLORS],
+                    theme[`${item.color}Block` as keyof typeof theme],
                   width: 80,
                   height: 100,
                   marginRight: Number(item.id) === data.length ? 0 : 10,
@@ -102,6 +104,7 @@ const FeaturedRecipeButton = () => {
 };
 
 const FeaturedRecipes = () => {
+  const styles = useStyles();
   return (
     <View style={styles.paddingOnlyWrapper}>
       <Text style={[styles.basicTextLeft, { fontSize: 20, marginVertical: 5 }]}>

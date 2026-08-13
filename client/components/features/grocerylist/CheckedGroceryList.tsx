@@ -8,8 +8,8 @@ import {
   UIManager,
 } from "react-native";
 import React, { useContext, useState } from "react";
-import { NEWCOLORS } from "@/constants/NewTheme";
-import { styles } from "@/styles/GlobalStyles";
+import { useTheme } from "@/contexts/ColorSchemeContext";
+import { useStyles } from "@/styles/GlobalStyles";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import CheckedGroceryListContext from "@/contexts/CheckedGroceryListContext";
 import GroceryListContext from "@/contexts/GroceryListContext";
@@ -25,6 +25,8 @@ if (
 }
 
 const CheckedGroceryList = () => {
+  const styles = useStyles();
+  const theme = useTheme();
   const [checkedList, setCheckedList] = useContext(CheckedGroceryListContext);
   const [groceryList, setGroceryList] = useContext(GroceryListContext);
   const [pantryDetails, setPantryDetails] = useContext(PantryDetailsContext);
@@ -71,7 +73,7 @@ const CheckedGroceryList = () => {
         style={[
           styles.basicBoxShadow,
           {
-            backgroundColor: NEWCOLORS.cardWhite,
+            backgroundColor: theme.cardWhite,
             borderRadius: 26,
             paddingHorizontal: 18,
             paddingVertical: 16,
@@ -94,7 +96,7 @@ const CheckedGroceryList = () => {
             <CustomIcon
               name={expanded ? "up-small" : "down-small"}
               filled
-              color={NEWCOLORS.placeholderText}
+              color={theme.placeholderText}
               size={26}
             />
             <Text
@@ -103,7 +105,7 @@ const CheckedGroceryList = () => {
                 {
                   fontFamily: "Nunito-SemiBold",
                   fontSize: 16,
-                  color: NEWCOLORS.basicText,
+                  color: theme.basicText,
                 },
               ]}
             >
@@ -121,7 +123,7 @@ const CheckedGroceryList = () => {
                 {
                   fontFamily: "Nunito-SemiBold",
                   fontSize: 14,
-                  color: NEWCOLORS.blueAccent,
+                  color: theme.blueAccent,
                 },
               ]}
             >

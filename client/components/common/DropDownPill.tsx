@@ -1,6 +1,6 @@
 import { View, Text, Pressable } from "react-native";
 import React, { useState } from "react";
-import { styles } from "@/styles/GlobalStyles";
+import { useStyles } from "@/styles/GlobalStyles";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import { TextInput } from "react-native-gesture-handler";
 import * as Haptics from "expo-haptics";
@@ -99,6 +99,7 @@ export function openDropDown(
 }
 
 const DropDownPill = (props: Props) => {
+  const styles = useStyles();
   const { openSheet } = useTrueSheet();
 
   return (

@@ -1,6 +1,6 @@
 import { View, Text, Pressable } from "react-native";
 import React, { useEffect } from "react";
-import { styles } from "@/styles/GlobalStyles";
+import { useStyles } from "@/styles/GlobalStyles";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import * as Haptics from "expo-haptics";
 import {
@@ -19,7 +19,7 @@ import Animated, {
   withSpring,
   interpolateColor,
 } from "react-native-reanimated";
-import { NEWCOLORS } from "@/constants/NewTheme";
+import { useTheme } from "@/contexts/ColorSchemeContext";
 type Props = {
   setSelected: React.Dispatch<React.SetStateAction<number>>;
   selected: number;
@@ -27,6 +27,8 @@ type Props = {
 };
 
 const SliderField = (props: Props) => {
+  const styles = useStyles();
+  const theme = useTheme();
   const translateX = useSharedValue(0);
 
   const colorProgress = useSharedValue(props.selected);
@@ -39,7 +41,7 @@ const SliderField = (props: Props) => {
     backgroundColor: interpolateColor(
       colorProgress.value,
       [0, 1, 2],
-      [NEWCOLORS.yellowBlock, NEWCOLORS.greenBlock, NEWCOLORS.blueBlock],
+      [theme.yellowBlock, theme.greenBlock, theme.blueBlock],
     ),
   }));
 

@@ -5,7 +5,6 @@ import { Button, Platform, StatusBar, Text } from "react-native";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { COLORS } from "@/constants/Theme";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { storage } from "@/utils/storage";
 import FavoritesContext from "@/contexts/FavoritesContext";
@@ -28,12 +27,27 @@ import { RecipeProvider, type RecipeData } from "@/contexts/RecipeContext";
 import { TrueSheetProvider } from "@/contexts/TrueSheetContext";
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import TrueSheetContent from "@/components/common/TrueSheetContent";
-import { NEWCOLORS } from "@/constants/NewTheme";
-import { ColorSchemeProvider } from "@/contexts/ColorSchemeContext";
+import {
+  ColorSchemeProvider,
+  useTheme,
+  useColorScheme,
+} from "@/contexts/ColorSchemeContext";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <ColorSchemeProvider>
+        <RootLayoutContent />
+      </ColorSchemeProvider>
+    </GestureHandlerRootView>
+  );
+}
+
+function RootLayoutContent() {
+  const theme = useTheme();
+  const colorScheme = useColorScheme();
   const [favorites, setFavorites] = useState<string[]>([]);
   const [favoritesL, setFavoritesL] = useState<string[]>([]);
   const [savedRecipes, setSavedRecipes] = useState<RecipeData[]>([]);
@@ -189,8 +203,6 @@ export default function RootLayout() {
   }
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <ColorSchemeProvider>
       <BrowseIngredientsContext.Provider
         value={[browseIngredients, setBrowseIngredients]}
       >
@@ -227,15 +239,19 @@ export default function RootLayout() {
                       >
                         <RecipeProvider>
                           <StatusBar
-                            barStyle="dark-content"
-                            backgroundColor={COLORS.newHeader}
+                            barStyle={
+                              colorScheme === "dark"
+                                ? "light-content"
+                                : "dark-content"
+                            }
+                            backgroundColor={theme.newHeader}
                           />
 
                           <Stack
                             screenOptions={{
                               headerShown: false,
                               contentStyle: {
-                                backgroundColor: NEWCOLORS.backgroundColor,
+                                backgroundColor: theme.backgroundColor,
                               },
                             }}
                           />
@@ -251,7 +267,7 @@ export default function RootLayout() {
                                     width: 44,
                                     height: 4,
                                     borderRadius: 999,
-                                    backgroundColor: NEWCOLORS.unselectedShape,
+                                    backgroundColor: theme.unselectedShape,
                                     marginTop: 6,
                                     marginBottom: 15,
                                   }}
@@ -262,7 +278,7 @@ export default function RootLayout() {
                                     fontFamily: "Nunito-SemiBold",
                                     marginTop: 4,
                                     marginBottom: 15,
-                                    color: NEWCOLORS.basicText,
+                                    color: theme.basicText,
                                   }}
                                 >
                                   {currentTitle}
@@ -271,7 +287,7 @@ export default function RootLayout() {
                                   style={{
                                     height: 2.5,
                                     borderRadius: 1000,
-                                    backgroundColor: NEWCOLORS.placeholderText,
+                                    backgroundColor: theme.placeholderText,
                                   }}
                                 ></View>
                               </>
@@ -280,7 +296,7 @@ export default function RootLayout() {
                               paddingHorizontal: 20,
                               paddingTop: 16,
                             }}
-                            backgroundColor={NEWCOLORS.sheetBackgroundColor}
+                            backgroundColor={theme.sheetBackgroundColor}
                           >
                             <TrueSheetContent
                               currentOnSelect={currentOnSelect}
@@ -300,7 +316,5 @@ export default function RootLayout() {
           </TrueSheetProvider>
         </NotificationProvider>
       </BrowseIngredientsContext.Provider>
-      </ColorSchemeProvider>
-    </GestureHandlerRootView>
   );
 }

@@ -7,7 +7,7 @@ import Animated, {
 } from "react-native-reanimated";
 import * as Haptics from "expo-haptics";
 import { CustomIcon } from "@/icon-loader/icon-loader";
-import { NEWCOLORS } from "@/constants/NewTheme";
+import { useTheme } from "@/contexts/ColorSchemeContext";
 
 export const EMOJIS = [
   "🍄",
@@ -88,6 +88,7 @@ const EmojiButton = ({
   iconSize = 22,
   style,
 }: Props) => {
+  const theme = useTheme();
   const pressed = useSharedValue<boolean>(false);
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -114,7 +115,7 @@ const EmojiButton = ({
             size={iconSize}
             name={"emoji"}
             filled={false}
-            color={NEWCOLORS.unselectedShape}
+            color={theme.unselectedShape}
           />
         ) : (
           <Text style={{ fontSize }}>{emoji}</Text>
@@ -136,7 +137,7 @@ const EmojiButton = ({
             size={iconSize}
             name={"emoji"}
             filled={false}
-            color={NEWCOLORS.unselectedShape}
+            color={theme.unselectedShape}
           />
         ) : (
           <Text style={{ fontSize }}>{emoji}</Text>

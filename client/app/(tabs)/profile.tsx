@@ -9,20 +9,25 @@ import {
   Switch,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
-import { styles } from "@/styles/GlobalStyles";
-import { COLORS } from "@/constants/Theme";
+import { useStyles } from "@/styles/GlobalStyles";
 import Counter from "@/components/features/profile/Counter";
 import * as Haptics from "expo-haptics";
 import { storage } from "@/utils/storage";
 import { CustomIcon } from "@/icon-loader/icon-loader";
-import { NEWCOLORS } from "@/constants/NewTheme";
+import { hexToRgba } from "@/utils/color";
 
 import { LinearGradient } from "expo-linear-gradient";
 import DisplaySaved from "@/components/features/saved/DisplaySaved";
 import SwitchToggle from "@/components/common/SwitchToggle";
-import { useIsDarkMode, useToggleColorScheme } from "@/contexts/ColorSchemeContext";
+import {
+  useIsDarkMode,
+  useToggleColorScheme,
+  useTheme,
+} from "@/contexts/ColorSchemeContext";
 
 export default function Profile() {
+  const styles = useStyles();
+  const theme = useTheme();
   const [editMode, setEditMode] = useState(false);
 
   const [lastSavedName, setLastSavedName] = useState("");
@@ -81,7 +86,7 @@ export default function Profile() {
       <View
         style={{
           flex: 1,
-          backgroundColor: NEWCOLORS.backgroundColor,
+          backgroundColor: theme.backgroundColor,
           position: "relative",
         }}
       >
@@ -157,9 +162,9 @@ export default function Profile() {
                       value={editMode ? nameQ : nameQ == "" ? "Guest" : nameQ}
                       onChangeText={setNameQ}
                       placeholder="Add Name"
-                      placeholderTextColor={COLORS.addPlusGrey}
-                      cursorColor={NEWCOLORS.basicText}
-                      selectionColor={NEWCOLORS.basicText}
+                      placeholderTextColor={theme.addPlusGrey}
+                      cursorColor={theme.basicText}
+                      selectionColor={theme.basicText}
                     ></TextInput>
                   </View>
                   {!editMode ? (
@@ -181,14 +186,14 @@ export default function Profile() {
                       <CustomIcon
                         name="pencil"
                         filled={true}
-                        color={NEWCOLORS.greyBlock}
+                        color={theme.greyBlock}
                         size={13}
                       />
 
                       <Text
                         style={[
                           styles.textLeftSemiBold,
-                          { color: NEWCOLORS.greyBlock, fontSize: 13 },
+                          { color: theme.greyBlock, fontSize: 13 },
                         ]}
                       >
                         Edit Profile
@@ -213,20 +218,20 @@ export default function Profile() {
                             paddingHorizontal: 12,
                             flexDirection: "row",
                             alignItems: "center",
-                            backgroundColor: NEWCOLORS.greyBlock,
+                            backgroundColor: theme.greyBlock,
                           },
                         ]}
                       >
                         <CustomIcon
                           name="close"
                           filled={true}
-                          color={COLORS.fontColor}
+                          color={theme.fontColor}
                           size={13}
                         />
                         <Text
                           style={[
                             styles.textLeftSemiBold,
-                            { color: COLORS.fontColor, fontSize: 13 },
+                            { color: theme.fontColor, fontSize: 13 },
                           ]}
                         >
                           Cancel
@@ -249,13 +254,13 @@ export default function Profile() {
                         <CustomIcon
                           name="check"
                           filled={true}
-                          color={NEWCOLORS.greyBlock}
+                          color={theme.greyBlock}
                           size={13}
                         />
                         <Text
                           style={[
                             styles.textLeftSemiBold,
-                            { color: NEWCOLORS.greyBlock, fontSize: 13 },
+                            { color: theme.greyBlock, fontSize: 13 },
                           ]}
                         >
                           Save
@@ -306,10 +311,10 @@ export default function Profile() {
 
         <LinearGradient
           colors={[
-            "rgba(255, 248, 237, 0)",
-            "rgba(255, 248, 237, 0.75)",
-            "rgba(255, 248, 237, 0.98)",
-            NEWCOLORS.backgroundColor,
+            hexToRgba(theme.backgroundColor, 0),
+            hexToRgba(theme.backgroundColor, 0.75),
+            hexToRgba(theme.backgroundColor, 0.98),
+            theme.backgroundColor,
           ]}
           locations={[0, 0.4, 0.75, 1]}
           style={{

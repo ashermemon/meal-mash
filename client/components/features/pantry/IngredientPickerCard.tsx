@@ -1,8 +1,8 @@
 import { View, Text, ViewStyle, Pressable } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
-import { styles } from "@/styles/auth.styles";
+import { useStyles } from "@/styles/GlobalStyles";
 import { Image } from "expo-image";
-import { NEWCOLORS } from "@/constants/NewTheme";
+import { useTheme } from "@/contexts/ColorSchemeContext";
 import { IosAllowsPreviews } from "expo-notifications";
 import { useTrueSheet } from "@/contexts/TrueSheetContext";
 import { openDropDown } from "@/components/common/DropDownPill";
@@ -17,6 +17,8 @@ type Props = {
 };
 
 const IngredientPickerCard = (props: Props) => {
+  const styles = useStyles();
+  const theme = useTheme();
   const { openSheet } = useTrueSheet();
   const [pantryDetails, setPantryDetails] = useContext(PantryDetailsContext);
   const [selected, setSelected] = useState(false);
@@ -96,9 +98,7 @@ const IngredientPickerCard = (props: Props) => {
         styles.ingredientPickerCard,
         styles.basicBoxShadow,
         {
-          backgroundColor: selected
-            ? NEWCOLORS.greenAccent
-            : NEWCOLORS.unselectedGrey,
+          backgroundColor: selected ? theme.greenAccent : theme.unselectedGrey,
         },
       ]}
       onPress={() => {
@@ -154,7 +154,7 @@ const IngredientPickerCard = (props: Props) => {
             fontSize: 13,
             marginTop: 5,
             fontFamily: selected ? "Nunito-Bold" : "Nunito-SemiBold",
-            color: selected ? "white" : NEWCOLORS.basicText,
+            color: selected ? theme.pureWhite : theme.basicText,
           },
         ]}
       >

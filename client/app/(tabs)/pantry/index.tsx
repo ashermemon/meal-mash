@@ -3,11 +3,12 @@ import { View, ActivityIndicator } from "react-native";
 import { useRouter } from "expo-router";
 import { useFocusEffect } from "@react-navigation/native";
 import { storage } from "@/utils/storage";
-import { NEWCOLORS } from "@/constants/NewTheme";
+import { useTheme } from "@/contexts/ColorSchemeContext";
 
 type Props = {};
 
 const PantryIndex = (props: Props) => {
+  const theme = useTheme();
   const router = useRouter();
   const didPushSetup = useRef(false);
 
@@ -31,7 +32,7 @@ const PantryIndex = (props: Props) => {
   );
 
   return (
-    <View style={{ flex: 1, backgroundColor: NEWCOLORS.backgroundColor }} />
+    <View style={{ flex: 1, backgroundColor: theme.backgroundColor }} />
   );
 };
 

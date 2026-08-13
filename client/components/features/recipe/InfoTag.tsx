@@ -1,15 +1,20 @@
 import { NEWCOLORS } from "@/constants/NewTheme";
-import { styles } from "@/styles/GlobalStyles";
+import { useStyles } from "@/styles/GlobalStyles";
+import { useTheme, type Theme } from "@/contexts/ColorSchemeContext";
 import { Text, View } from "react-native";
 
 interface Props {
   type: "difficulty" | "time" | "tags";
   data: string;
 }
+// theme defaults to the static (light-only) NEWCOLORS palette so callers
+// that don't thread a live theme through (e.g. outside this dark-mode
+// batch) keep working unchanged.
 export const difficultyShape = (
   diff: string,
   colorState?: boolean,
   select?: boolean,
+  theme: Theme | typeof NEWCOLORS = NEWCOLORS,
 ) => {
   const difficulty = diff.toLowerCase();
 
@@ -19,8 +24,8 @@ export const difficultyShape = (
         style={{
           borderRadius: 999,
           backgroundColor: colorState
-            ? NEWCOLORS.unselectedShape
-            : NEWCOLORS.greenAccent,
+            ? theme.unselectedShape
+            : theme.greenAccent,
           width: select ? 12 : 15,
           height: select ? 12 : 15,
         }}
@@ -35,8 +40,8 @@ export const difficultyShape = (
           width: select ? 10 : 13,
           height: select ? 10 : 13,
           backgroundColor: colorState
-            ? NEWCOLORS.unselectedShape
-            : NEWCOLORS.blueAccent,
+            ? theme.unselectedShape
+            : theme.blueAccent,
         }}
       />
     );
@@ -50,8 +55,8 @@ export const difficultyShape = (
           height: select ? 9 : 12,
           transform: [{ rotate: "45deg" }],
           backgroundColor: colorState
-            ? NEWCOLORS.unselectedShape
-            : NEWCOLORS.redAccent,
+            ? theme.unselectedShape
+            : theme.redAccent,
         }}
       />
     );
@@ -61,6 +66,8 @@ export const difficultyShape = (
 };
 
 export default function InfoTag(props: Props) {
+  const styles = useStyles();
+  const theme = useTheme();
   const displayData =
     props.type === "time"
       ? props.data.replace(/minutes?/gi, "min")
@@ -74,13 +81,13 @@ export default function InfoTag(props: Props) {
           backgroundColor:
             props.type == "difficulty"
               ? props.data.toLowerCase() === "easy"
-                ? NEWCOLORS.greenBlock
+                ? theme.greenBlock
                 : props.data.toLowerCase() === "expert"
-                  ? NEWCOLORS.redBlock
-                  : NEWCOLORS.blueBlock
+                  ? theme.redBlock
+                  : theme.blueBlock
               : props.type == "time"
-                ? NEWCOLORS.orangeBlock
-                : NEWCOLORS.purpblueBlock,
+                ? theme.orangeBlock
+                : theme.purpblueBlock,
           flexShrink: 1,
           minWidth: 0,
           paddingHorizontal: 8,
@@ -91,7 +98,7 @@ export default function InfoTag(props: Props) {
       ]}
     >
       {props.type == "difficulty" ? (
-        difficultyShape(props.data.toLowerCase())
+        difficultyShape(props.data.toLowerCase(), undefined, undefined, theme)
       ) : (
         <></>
       )}

@@ -1,15 +1,17 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { storage } from "@/utils/storage";
-import { styles } from "@/styles/GlobalStyles";
+import { useStyles } from "@/styles/GlobalStyles";
 import { ColorProperties } from "react-native-reanimated/lib/typescript/Colors";
-import { COLORS } from "@/constants/Theme";
+import { useTheme } from "@/contexts/ColorSchemeContext";
 
 type counterProps = {
   variable: string;
   text: string;
 };
 export default function Counter(props: counterProps) {
+  const styles = useStyles();
+  const theme = useTheme();
   const totalMeals = storage.getNumber(props.variable) ?? 0;
 
   return (
@@ -17,7 +19,7 @@ export default function Counter(props: counterProps) {
       style={[
         styles.basicBoxShadow,
         {
-          backgroundColor: "white",
+          backgroundColor: theme.cardWhite,
           alignItems: "center",
           justifyContent: "center",
           borderRadius: 15,

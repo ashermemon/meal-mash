@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
-import { styles } from "@/styles/GlobalStyles";
-import { COLORS } from "@/constants/Theme";
+import { useStyles } from "@/styles/GlobalStyles";
+import { useTheme } from "@/contexts/ColorSchemeContext";
 import { Image } from "expo-image";
 import emojiImages from "@/components/universal/EmojiImages";
 
@@ -23,6 +23,8 @@ type SavedProps = {
 };
 
 export default function SavedCard(props: SavedProps) {
+  const styles = useStyles();
+  const theme = useTheme();
   const [saved, setSaved] = useState(true);
   const [savesRecipes, setSavesRecipes] = useContext(SavedRecipesContext);
   const [recipeData, setRecipeData] = useContext(RecipeContext);
@@ -57,9 +59,9 @@ export default function SavedCard(props: SavedProps) {
     let targetColor;
 
     if (pressed.value) {
-      targetColor = COLORS.genFill;
+      targetColor = theme.genFill;
     } else {
-      targetColor = "white";
+      targetColor = theme.pureWhite;
     }
 
     return {
@@ -75,8 +77,8 @@ export default function SavedCard(props: SavedProps) {
               style={[
                 styles.emojiWrapCard,
                 {
-                  borderColor: COLORS.genBorder,
-                  backgroundColor: COLORS.genFill,
+                  borderColor: theme.genBorder,
+                  backgroundColor: theme.genFill,
                 },
               ]}
             >
@@ -99,14 +101,14 @@ export default function SavedCard(props: SavedProps) {
                   <CustomIcon
                     name="bookmark"
                     filled={true}
-                    color={COLORS.saveBorder}
+                    color={theme.saveBorder}
                     size={30}
                   />
                 ) : (
                   <CustomIcon
                     name="bookmark"
                     filled={false}
-                    color={COLORS.saveBorder}
+                    color={theme.saveBorder}
                     size={30}
                   />
                 )}

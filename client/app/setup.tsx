@@ -12,8 +12,8 @@ import {
 import React, { useState, useEffect, useCallback, useContext } from "react";
 import { useFocusEffect, useRouter } from "expo-router";
 import { storage } from "@/utils/storage";
-import { styles } from "@/styles/auth.styles";
-import { NEWCOLORS } from "@/constants/NewTheme";
+import { useStyles } from "@/styles/GlobalStyles";
+import { useTheme } from "@/contexts/ColorSchemeContext";
 import OnboardingSequence from "@/components/common/OnboardingSequence";
 import OnboardingStep from "@/components/common/OnboardingStep";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -40,6 +40,8 @@ import EmojiButton from "@/components/universal/EmojiButton";
 type Props = {};
 
 const SetupScreen = (props: Props) => {
+  const styles = useStyles();
+  const theme = useTheme();
   const router = useRouter();
   const [pantryDetails, setPantryDetails] = useContext(PantryDetailsContext);
   const [pantryName, setPantryName] = useState(
@@ -260,7 +262,7 @@ const SetupScreen = (props: Props) => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: NEWCOLORS.nestedBG }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: theme.nestedBG }}>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
@@ -311,7 +313,7 @@ const SetupScreen = (props: Props) => {
                 value={pantryName}
                 onChangeText={setPantryName}
                 placeholder="Your Pantry"
-                placeholderTextColor={NEWCOLORS.placeholderText}
+                placeholderTextColor={theme.placeholderText}
               />
             </OnboardingStep>,
             <OnboardingStep

@@ -6,12 +6,13 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { styles } from "@/styles/GlobalStyles";
-import { NEWCOLORS } from "@/constants/NewTheme";
+import { useStyles } from "@/styles/GlobalStyles";
+import { useTheme } from "@/contexts/ColorSchemeContext";
 import { Image } from "expo-image";
 import { useNavigation } from "@react-navigation/native";
 import PantryPill from "@/components/features/pantry/PantryPill";
 import { ScrollView } from "react-native-gesture-handler";
+import { hexToRgba } from "@/utils/color";
 
 import { LinearGradient } from "expo-linear-gradient";
 
@@ -22,6 +23,8 @@ import Search, { Food } from "@/components/features/pantry/Search";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 
 export default function Dashboard() {
+  const styles = useStyles();
+  const theme = useTheme();
   const searchOverlayOpacity = useRef(new Animated.Value(0)).current;
   const [searchActive, setSearchActive] = useState(false);
 
@@ -56,7 +59,7 @@ export default function Dashboard() {
     <View
       style={{
         flex: 1,
-        backgroundColor: NEWCOLORS.backgroundColor,
+        backgroundColor: theme.backgroundColor,
         position: "relative",
       }}
     >
@@ -130,7 +133,7 @@ export default function Dashboard() {
 
               <View style={styles.pantryTip}>
                 <Text
-                  style={[styles.textLeft, { color: "white" }]}
+                  style={[styles.textLeft, { color: theme.pureWhite }]}
                   numberOfLines={2}
                   adjustsFontSizeToFit
                 >
@@ -188,7 +191,7 @@ export default function Dashboard() {
                   <CustomIcon
                     name="apple-fruit"
                     filled
-                    color={NEWCOLORS.redAccent}
+                    color={theme.redAccent}
                     size={36}
                   />
                   <Text
@@ -197,7 +200,7 @@ export default function Dashboard() {
                       {
                         fontFamily: "Nunito-Bold",
                         fontSize: 20,
-                        color: NEWCOLORS.basicText,
+                        color: theme.basicText,
                       },
                     ]}
                   >
@@ -209,7 +212,7 @@ export default function Dashboard() {
                       {
                         fontFamily: "Nunito-SemiBold",
                         fontSize: 15,
-                        color: NEWCOLORS.placeholderText,
+                        color: theme.placeholderText,
                         textAlign: "center",
                       },
                     ]}
@@ -226,10 +229,10 @@ export default function Dashboard() {
       </ScrollView>
       <LinearGradient
         colors={[
-          "rgba(255, 248, 237, 0)",
-          "rgba(255, 248, 237, 0.75)",
-          "rgba(255, 248, 237, 0.98)",
-          NEWCOLORS.backgroundColor,
+          hexToRgba(theme.backgroundColor, 0),
+          hexToRgba(theme.backgroundColor, 0.75),
+          hexToRgba(theme.backgroundColor, 0.98),
+          theme.backgroundColor,
         ]}
         locations={[0, 0.4, 0.75, 1]}
         style={{

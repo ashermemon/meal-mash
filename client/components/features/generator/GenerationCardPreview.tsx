@@ -1,10 +1,17 @@
-import { View, Text, Pressable, Dimensions, InteractionManager, Image } from "react-native";
+import {
+  View,
+  Text,
+  Pressable,
+  Dimensions,
+  InteractionManager,
+  Image,
+} from "react-native";
 import React, { useEffect } from "react";
 import NutrientCircle from "@/components/features/recipe/NutrientCircle";
-import { styles } from "@/styles/GlobalStyles";
+import { useStyles } from "@/styles/GlobalStyles";
 import RecipeInfoTags from "../recipe/RecipeInfoTags";
 import NutrientsContext from "@/contexts/NutrientsContext";
-import { NEWCOLORS } from "@/constants/NewTheme";
+import { useTheme } from "@/contexts/ColorSchemeContext";
 import { router } from "expo-router";
 import { Skeleton } from "moti/skeleton";
 import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
@@ -56,12 +63,13 @@ const MEAL_IMAGES: Record<string, any> = {
 };
 
 export const GenerationCardPreview = (props: Props) => {
+  const styles = useStyles();
+  const theme = useTheme();
 
   // useEffect(() => {
 
   //   router.prefetch("/followRecipe");
   // }, [])
-
 
   if (props.isLoading) {
     return (
@@ -75,7 +83,7 @@ export const GenerationCardPreview = (props: Props) => {
           paddingHorizontal: 15,
           paddingTop: 10,
           paddingBottom: 8,
-          backgroundColor: NEWCOLORS.nestedBG,
+          backgroundColor: theme.nestedBG,
           borderRadius: 5,
           overflow: "hidden",
         }}
@@ -192,7 +200,7 @@ export const GenerationCardPreview = (props: Props) => {
                 style={[
                   styles.basicBoxShadow,
                   {
-                    backgroundColor: NEWCOLORS.primary,
+                    backgroundColor: theme.primary,
                     paddingVertical: 14,
                     borderRadius: 15,
                     width: "100%",
@@ -203,7 +211,7 @@ export const GenerationCardPreview = (props: Props) => {
                 <Text
                   style={[
                     styles.textCenterBold,
-                    { color: "white", fontSize: 18 },
+                    { color: theme.pureWhite, fontSize: 18 },
                   ]}
                 >
                   Make Recipe
@@ -223,7 +231,7 @@ export const GenerationCardPreview = (props: Props) => {
                   style={[
                     styles.basicBoxShadow,
                     {
-                      backgroundColor: NEWCOLORS.redBlock,
+                      backgroundColor: theme.redBlock,
                       paddingVertical: 14,
                       borderRadius: 15,
                       width: "48%",
@@ -234,7 +242,7 @@ export const GenerationCardPreview = (props: Props) => {
                   <Text
                     style={[
                       styles.textCenterBold,
-                      { fontSize: 17, color: "white" },
+                      { fontSize: 17, color: theme.pureWhite },
                     ]}
                   >
                     ← Skip
@@ -245,7 +253,7 @@ export const GenerationCardPreview = (props: Props) => {
                   style={[
                     styles.basicBoxShadow,
                     {
-                      backgroundColor: NEWCOLORS.greenBlock,
+                      backgroundColor: theme.greenBlock,
                       paddingVertical: 14,
                       borderRadius: 15,
                       width: "48%",
@@ -256,7 +264,7 @@ export const GenerationCardPreview = (props: Props) => {
                   <Text
                     style={[
                       styles.textCenterBold,
-                      { fontSize: 17, color: "white" },
+                      { fontSize: 17, color: theme.pureWhite },
                     ]}
                   >
                     Save →
@@ -281,7 +289,7 @@ export const GenerationCardPreview = (props: Props) => {
         paddingHorizontal: 15,
         paddingTop: 10,
         paddingBottom: 8,
-        backgroundColor: NEWCOLORS.nestedBG,
+        backgroundColor: theme.nestedBG,
         borderRadius: 5,
         overflow: "hidden",
       }}
@@ -340,7 +348,9 @@ export const GenerationCardPreview = (props: Props) => {
           {props.description}
         </Text>
 
-        <NutrientsContext.Provider value={[props.nutrients || [0, 0, 0], () => { }]}>
+        <NutrientsContext.Provider
+          value={[props.nutrients || [0, 0, 0], () => {}]}
+        >
           <NutrientCircle textInBox={false} />
         </NutrientsContext.Provider>
 
@@ -349,7 +359,7 @@ export const GenerationCardPreview = (props: Props) => {
             style={[
               styles.basicBoxShadow,
               {
-                backgroundColor: NEWCOLORS.primary,
+                backgroundColor: theme.primary,
                 paddingVertical: 14,
                 borderRadius: 15,
                 width: "100%",
@@ -357,10 +367,13 @@ export const GenerationCardPreview = (props: Props) => {
             ]}
             onPress={props.makeRecipe}
 
-          //more laggy: InteractionManager.runAfterInteractions(() => { router.navigate("/followRecipe") })
+            //more laggy: InteractionManager.runAfterInteractions(() => { router.navigate("/followRecipe") })
           >
             <Text
-              style={[styles.textCenterBold, { color: "white", fontSize: 18 }]}
+              style={[
+                styles.textCenterBold,
+                { color: theme.pureWhite, fontSize: 18 },
+              ]}
             >
               Make Recipe
             </Text>
@@ -379,7 +392,7 @@ export const GenerationCardPreview = (props: Props) => {
               style={[
                 styles.basicBoxShadow,
                 {
-                  backgroundColor: NEWCOLORS.redBlock,
+                  backgroundColor: theme.redBlock,
                   paddingVertical: 14,
                   borderRadius: 15,
                   width: "48%",
@@ -396,7 +409,7 @@ export const GenerationCardPreview = (props: Props) => {
               style={[
                 styles.basicBoxShadow,
                 {
-                  backgroundColor: NEWCOLORS.greenBlock,
+                  backgroundColor: theme.greenBlock,
                   paddingVertical: 14,
                   borderRadius: 15,
                   width: "48%",

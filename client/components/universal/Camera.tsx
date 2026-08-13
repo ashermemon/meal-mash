@@ -1,12 +1,14 @@
 import { Button, Pressable, StyleSheet, Text, View } from "react-native";
 import React, { useRef, useState } from "react";
 import { CameraView, CameraType, useCameraPermissions } from "expo-camera";
-import { styles } from "@/styles/GlobalStyles";
+import { useStyles } from "@/styles/GlobalStyles";
 import { Image } from "expo-image";
 import { CustomIcon } from "@/icon-loader/icon-loader";
-import { NEWCOLORS } from "@/constants/NewTheme";
+import { useTheme } from "@/contexts/ColorSchemeContext";
 
 export default function Camera() {
+  const styles = useStyles();
+  const theme = useTheme();
   const ref = useRef<CameraView>(null);
   const [facing, setFacing] = useState<CameraType>("back");
 
@@ -46,7 +48,7 @@ export default function Camera() {
           ]}
         >
           <Text
-            style={[styles.basicTextCenter, { color: NEWCOLORS.greyBlock }]}
+            style={[styles.basicTextCenter, { color: theme.greyBlock }]}
           >
             Retake photo?
           </Text>
@@ -60,12 +62,12 @@ export default function Camera() {
               marginTop: 10,
               paddingVertical: 10,
               width: 200,
-              backgroundColor: NEWCOLORS.greenAccent,
+              backgroundColor: theme.greenAccent,
             },
           ]}
         >
           <Text
-            style={[styles.basicTextCenter, { color: NEWCOLORS.greyBlock }]}
+            style={[styles.basicTextCenter, { color: theme.greyBlock }]}
           >
             Generate Meal
           </Text>
@@ -114,7 +116,7 @@ export default function Camera() {
                       width: pressed ? 85 : 70,
                       height: pressed ? 85 : 70,
                       borderRadius: 100,
-                      backgroundColor: NEWCOLORS.greyBlock,
+                      backgroundColor: theme.greyBlock,
                     },
                   ]}
                 />
@@ -127,7 +129,7 @@ export default function Camera() {
             <CustomIcon
               name="refresh-3"
               filled={false}
-              color={NEWCOLORS.greyBlock}
+              color={theme.greyBlock}
               size={20}
             ></CustomIcon>
           </Pressable>

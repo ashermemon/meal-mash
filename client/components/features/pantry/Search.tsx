@@ -14,10 +14,10 @@ import React, {
   useState,
 } from "react";
 import { CustomIcon } from "@/icon-loader/icon-loader";
-import { NEWCOLORS } from "@/constants/NewTheme";
+import { useTheme } from "@/contexts/ColorSchemeContext";
 import { searchIngredients } from "./SearchFunctionality";
 import { getCategoryDisplayLabel } from "@/constants/categoryLabels";
-import { styles } from "@/styles/auth.styles";
+import { useStyles } from "@/styles/GlobalStyles";
 import * as Haptics from "expo-haptics";
 import { ScrollView } from "react-native-gesture-handler";
 
@@ -62,14 +62,19 @@ export const SearchResultItem = ({
   added = false,
   addedAction = "remove",
 }: SearchResultItemProps) => {
+  const styles = useStyles();
+  const theme = useTheme();
   const addedColor =
-    addedAction === "uncheck" ? NEWCOLORS.blueAccent : NEWCOLORS.redAccent;
+    addedAction === "uncheck" ? theme.blueAccent : theme.redAccent;
   const addedLabel = addedAction === "uncheck" ? "Uncheck" : "Remove";
   const addedIconName = addedAction === "uncheck" ? "circle-dash" : "minimize";
 
   return (
     <Pressable
-      style={[localStyles.resultItem, { borderRadius: rounded ? 22 : 0 }]}
+      style={[
+        localStyles.resultItem,
+        { borderRadius: rounded ? 22 : 0, backgroundColor: theme.greyBlock },
+      ]}
       onPress={(event) => {
         event.stopPropagation();
         onPress(item);
@@ -82,7 +87,7 @@ export const SearchResultItem = ({
           justifyContent: "space-between",
           alignItems: "center",
           borderBottomWidth: isLast ? 0 : 1,
-          borderColor: NEWCOLORS.unselectedGrey,
+          borderColor: theme.unselectedGrey,
           paddingVertical: 18,
           paddingHorizontal: 12,
         }}
@@ -142,7 +147,7 @@ export const SearchResultItem = ({
                   fontSize: 13,
                   flex: 1,
                   fontFamily: "Nunito-Regular",
-                  color: NEWCOLORS.unselectedShape,
+                  color: theme.unselectedShape,
                 },
               ]}
             >
@@ -156,6 +161,8 @@ export const SearchResultItem = ({
 };
 
 const Search = forwardRef<SearchHandle, Props>((props, ref) => {
+  const styles = useStyles();
+  const theme = useTheme();
   const { showDropdown = true } = props;
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Food[]>([]);
@@ -242,7 +249,7 @@ const Search = forwardRef<SearchHandle, Props>((props, ref) => {
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
-            backgroundColor: NEWCOLORS.greyBlock,
+            backgroundColor: theme.greyBlock,
           },
         ]}
       >
@@ -257,7 +264,7 @@ const Search = forwardRef<SearchHandle, Props>((props, ref) => {
           <CustomIcon
             name="search-2"
             filled={false}
-            color={NEWCOLORS.placeholderText}
+            color={theme.placeholderText}
             size={25}
           />
           <TextInput
@@ -268,7 +275,7 @@ const Search = forwardRef<SearchHandle, Props>((props, ref) => {
             }
             autoCapitalize="words"
             keyboardType="default"
-            placeholderTextColor={NEWCOLORS.unselectedShape}
+            placeholderTextColor={theme.unselectedShape}
             autoCorrect={true}
             maxLength={32}
             value={query}
@@ -279,7 +286,7 @@ const Search = forwardRef<SearchHandle, Props>((props, ref) => {
                 zIndex: 9999,
                 fontSize: 18,
                 marginLeft: 12,
-                color: NEWCOLORS.basicText,
+                color: theme.basicText,
                 fontFamily: "Nunito-Medium",
                 height: 48,
                 minHeight: 48,
@@ -304,7 +311,7 @@ const Search = forwardRef<SearchHandle, Props>((props, ref) => {
               <CustomIcon
                 name="camera-2"
                 filled={true}
-                color={NEWCOLORS.placeholderText}
+                color={theme.placeholderText}
                 size={25}
               />
             </Pressable>
@@ -313,7 +320,13 @@ const Search = forwardRef<SearchHandle, Props>((props, ref) => {
       </View>
 
       {showDropdown && results.length > 0 && showResults && (
-        <View style={[localStyles.resultsOverlay, styles.basicBoxShadow]}>
+        <View
+          style={[
+            localStyles.resultsOverlay,
+            styles.basicBoxShadow,
+            { backgroundColor: theme.cardWhite },
+          ]}
+        >
           <ScrollView
             style={{ maxHeight: 240 }}
             showsVerticalScrollIndicator={true}
@@ -369,7 +382,6 @@ const localStyles = StyleSheet.create({
     width: "100%",
     top: 65,
     maxHeight: 240,
-    backgroundColor: NEWCOLORS.cardWhite,
     borderRadius: 30,
     paddingVertical: 4,
     paddingHorizontal: 12,
@@ -380,7 +392,6 @@ const localStyles = StyleSheet.create({
 
   resultItem: {
     borderRadius: 22,
-    backgroundColor: NEWCOLORS.greyBlock,
     zIndex: 9999,
     justifyContent: "center",
     alignItems: "center",

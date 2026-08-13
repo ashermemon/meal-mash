@@ -5,8 +5,8 @@ import Animated, {
   useAnimatedStyle,
   withTiming,
 } from "react-native-reanimated";
-import { styles } from "@/styles/auth.styles";
-import { NEWCOLORS } from "@/constants/NewTheme";
+import { useStyles } from "@/styles/GlobalStyles";
+import { useTheme } from "@/contexts/ColorSchemeContext";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 
 type Props = {
@@ -15,6 +15,8 @@ type Props = {
 };
 
 const SwitchToggle = (props: Props) => {
+  const styles = useStyles();
+  const theme = useTheme();
   const trackLength = 60;
   const thumbSize = 24;
   const padding = 5;
@@ -23,7 +25,7 @@ const SwitchToggle = (props: Props) => {
     const backgroundColor = interpolateColor(
       props.value ? 1 : 0,
       [0, 1],
-      [NEWCOLORS.yellowBlock, NEWCOLORS.blueBlock],
+      [theme.yellowBlock, theme.blueBlock],
     );
     return { backgroundColor };
   });
@@ -34,7 +36,7 @@ const SwitchToggle = (props: Props) => {
     const backgroundColor = interpolateColor(
       props.value ? 1 : 0,
       [0, 1],
-      [NEWCOLORS.yellowAccent, NEWCOLORS.blueAccent],
+      [theme.yellowAccent, theme.blueAccent],
     );
 
     return {
@@ -76,7 +78,7 @@ const SwitchToggle = (props: Props) => {
         >
           <CustomIcon
             name={props.value ? "moon" : "sun"}
-            color={"white"}
+            color={theme.pureWhite}
             size={15}
             filled
           ></CustomIcon>

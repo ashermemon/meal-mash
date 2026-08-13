@@ -1,19 +1,22 @@
 import { View, Text, ScrollView } from "react-native";
 import React from "react";
 import DisplaySaved from "@/components/features/saved/DisplaySaved";
-import { styles } from "@/styles/auth.styles";
+import { useStyles } from "@/styles/GlobalStyles";
 import { LinearGradient } from "expo-linear-gradient";
-import { NEWCOLORS } from "@/constants/NewTheme";
+import { useTheme } from "@/contexts/ColorSchemeContext";
+import { hexToRgba } from "@/utils/color";
 
 type Props = {};
 
 const saves = (props: Props) => {
+  const styles = useStyles();
+  const theme = useTheme();
   return (
     <>
       <View
         style={{
           flex: 1,
-          backgroundColor: NEWCOLORS.backgroundColor,
+          backgroundColor: theme.backgroundColor,
           position: "relative",
         }}
       >
@@ -43,10 +46,10 @@ const saves = (props: Props) => {
 
             <LinearGradient
               colors={[
-                "rgba(255, 248, 237, 0)",
-                "rgba(255, 248, 237, 0.75)",
-                "rgba(255, 248, 237, 0.98)",
-                NEWCOLORS.backgroundColor,
+                hexToRgba(theme.backgroundColor, 0),
+                hexToRgba(theme.backgroundColor, 0.75),
+                hexToRgba(theme.backgroundColor, 0.98),
+                theme.backgroundColor,
               ]}
               locations={[0, 0.4, 0.75, 1]}
               style={{

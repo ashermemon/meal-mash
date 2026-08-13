@@ -1,7 +1,7 @@
 import { View, Text, Pressable } from "react-native";
 import React from "react";
-import { styles } from "@/styles/GlobalStyles";
-import { NEWCOLORS } from "@/constants/NewTheme";
+import { useStyles } from "@/styles/GlobalStyles";
+import { useTheme } from "@/contexts/ColorSchemeContext";
 import { difficultyShape } from "../features/recipe/InfoTag";
 import * as Haptics from "expo-haptics";
 
@@ -14,6 +14,8 @@ type Props = {
 };
 
 const MultiSelectPills = (props: Props) => {
+  const styles = useStyles();
+  const theme = useTheme();
   return (
     <View
       style={{
@@ -51,17 +53,22 @@ const MultiSelectPills = (props: Props) => {
               props.selected.includes(index)
                 ? props.diff
                   ? label === "Easy"
-                    ? { backgroundColor: NEWCOLORS.greenBlock }
+                    ? { backgroundColor: theme.greenBlock }
                     : label === "Intermediate"
-                      ? { backgroundColor: NEWCOLORS.blueBlock }
-                      : { backgroundColor: NEWCOLORS.redBlock }
-                  : { backgroundColor: NEWCOLORS.greenAccent }
-                : { backgroundColor: NEWCOLORS.unselectedGrey },
+                      ? { backgroundColor: theme.blueBlock }
+                      : { backgroundColor: theme.redBlock }
+                  : { backgroundColor: theme.greenAccent }
+                : { backgroundColor: theme.unselectedGrey },
             ]}
             key={index}
           >
             {props.diff ? (
-              difficultyShape(label, !props.selected.includes(index), true)
+              difficultyShape(
+                label,
+                !props.selected.includes(index),
+                true,
+                theme,
+              )
             ) : (
               <></>
             )}
@@ -71,9 +78,9 @@ const MultiSelectPills = (props: Props) => {
                 { flexGrow: 1, fontSize: 12.5, textAlign: "center" },
                 props.selected.includes(index)
                   ? props.diff
-                    ? { color: NEWCOLORS.basicText }
-                    : { color: "white" }
-                  : { color: NEWCOLORS.basicText },
+                    ? { color: theme.basicText }
+                    : { color: theme.pureWhite }
+                  : { color: theme.basicText },
               ]}
             >
               {label}

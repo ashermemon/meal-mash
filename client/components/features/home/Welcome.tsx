@@ -7,11 +7,11 @@ import {
   View,
 } from "react-native";
 import React, { Dispatch, SetStateAction, useCallback, useState } from "react";
-import { styles } from "@/styles/GlobalStyles";
+import { useStyles } from "@/styles/GlobalStyles";
 import { Image } from "expo-image";
 import { ScrollView } from "react-native-gesture-handler";
 import { useFocusEffect, useRouter } from "expo-router";
-import { NEWCOLORS } from "@/constants/NewTheme";
+import { useTheme } from "@/contexts/ColorSchemeContext";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import FeaturedRecipes from "@/components/features/home/CategoryScrolls";
 import ExploreSection from "@/components/features/home/ExploreSection";
@@ -20,6 +20,8 @@ import { useCameraPermissions } from "expo-camera";
 import { BackHandler } from "react-native";
 
 export default function Welcome() {
+  const styles = useStyles();
+  const theme = useTheme();
   const router = useRouter();
   const [showCamera, setShowCamera] = useState(false);
   const [permission, requestPermission] = useCameraPermissions();
@@ -89,7 +91,7 @@ export default function Welcome() {
                 : [requestPermission(), setShowCamera(true)],
             ]}
           >
-            <CustomIcon name="camera" filled={true} color={"white"} />
+            <CustomIcon name="camera" filled={true} color={theme.pureWhite} />
           </Pressable>
           <TextInput
             keyboardType="default"
@@ -97,13 +99,13 @@ export default function Welcome() {
             autoCorrect={false}
             autoCapitalize="sentences"
             placeholder={"What are you craving today?"}
-            placeholderTextColor={NEWCOLORS.placeholderText}
+            placeholderTextColor={theme.placeholderText}
             style={[
               styles.basicTextLeft,
               {
                 flex: 1,
                 fontSize: 18,
-                color: NEWCOLORS.basicText,
+                color: theme.basicText,
                 fontFamily: "Nunito-Regular",
                 marginLeft: 10,
                 marginRight: 10,

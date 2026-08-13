@@ -1,7 +1,7 @@
 import { View, Text, Pressable } from "react-native";
 import React, { Dispatch, useState } from "react";
-import { styles } from "@/styles/auth.styles";
-import { NEWCOLORS } from "@/constants/NewTheme";
+import { useStyles } from "@/styles/GlobalStyles";
+import { useTheme } from "@/contexts/ColorSchemeContext";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 
 type Props = {
@@ -12,6 +12,8 @@ type Props = {
 };
 
 const ListButtonSelect = (props: Props) => {
+  const styles = useStyles();
+  const theme = useTheme();
   return (
     <View style={{ gap: 25 }}>
       {props.options.map((option: string, index: number) => (
@@ -22,8 +24,8 @@ const ListButtonSelect = (props: Props) => {
             {
               backgroundColor:
                 index === props.selected
-                  ? NEWCOLORS.greenBlock
-                  : NEWCOLORS.unselectedGrey,
+                  ? theme.greenBlock
+                  : theme.unselectedGrey,
               paddingHorizontal: 30,
               flexDirection: "row",
               position: "relative",
@@ -43,19 +45,26 @@ const ListButtonSelect = (props: Props) => {
                 width: 30,
                 height: 30,
                 borderRadius: 17,
-                backgroundColor: NEWCOLORS.greenAccent,
+                backgroundColor: theme.greenAccent,
                 justifyContent: "center",
                 alignItems: "center",
               }}
             >
-              <CustomIcon name="check" filled color="white" size={15} />
+              <CustomIcon
+                name="check"
+                filled
+                color={theme.pureWhite}
+                size={15}
+              />
             </View>
           )}
           <View>
             <CustomIcon
               name={props.icons[index]}
               filled
-              color={index === props.selected ? "white" : NEWCOLORS.basicText}
+              color={
+                index === props.selected ? theme.pureWhite : theme.basicText
+              }
               size={30}
             ></CustomIcon>
           </View>
@@ -66,7 +75,9 @@ const ListButtonSelect = (props: Props) => {
                 fontSize: 24,
                 flex: 1,
                 color:
-                  index === props.selected ? "white" : NEWCOLORS.basicText,
+                  index === props.selected
+                    ? theme.pureWhite
+                    : theme.basicText,
                 fontFamily: "Nunito-Medium",
               },
             ]}

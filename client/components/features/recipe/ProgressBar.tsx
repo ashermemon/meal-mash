@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import * as Progress from "react-native-progress";
 
 import { Dimensions } from "react-native";
-import { NEWCOLORS } from "@/constants/NewTheme";
-import { styles } from "@/styles/auth.styles";
+import { useTheme } from "@/contexts/ColorSchemeContext";
+import { useStyles } from "@/styles/GlobalStyles";
 
 interface ProgressProps {
   progress: number;
@@ -15,6 +15,8 @@ interface ProgressProps {
 }
 
 export default function ProgressBar(props: ProgressProps) {
+  const styles = useStyles();
+  const theme = useTheme();
   const windowWidth = Dimensions.get("window").width;
   const [containerWidth, setContainerWidth] = useState(0);
   const segments = Array.from({ length: props.steps || 1 });
@@ -49,8 +51,8 @@ export default function ProgressBar(props: ProgressProps) {
                   {
                     height: props.height,
                     backgroundColor: isFilled
-                      ? NEWCOLORS.greenAccent
-                      : NEWCOLORS.dividerGrey2,
+                      ? theme.greenAccent
+                      : theme.dividerGrey2,
                   },
                 ]}
               />
@@ -60,10 +62,10 @@ export default function ProgressBar(props: ProgressProps) {
             <Progress.Bar
               progress={props.progress}
               width={containerWidth}
-              color={NEWCOLORS.greenAccent}
+              color={theme.greenAccent}
               height={props.height ?? 4}
               borderRadius={0}
-              unfilledColor="#ECECEC"
+              unfilledColor={theme.dividerGrey2}
               borderWidth={0}
             />
           )}

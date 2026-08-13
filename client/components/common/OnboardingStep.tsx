@@ -1,9 +1,9 @@
 import { View, Text, Pressable } from "react-native";
 import React, { useContext } from "react";
-import { styles } from "@/styles/auth.styles";
+import { useStyles } from "@/styles/GlobalStyles";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import { OnboardingContext } from "./OnboardingSequence";
-import { NEWCOLORS } from "@/constants/NewTheme";
+import { useTheme } from "@/contexts/ColorSchemeContext";
 
 type Props = {
   children: React.ReactNode;
@@ -13,6 +13,8 @@ type Props = {
 };
 
 const OnboardingStep = (props: Props) => {
+  const styles = useStyles();
+  const theme = useTheme();
   const onboarding = useContext(OnboardingContext);
 
   const isDisabled = props.disableNext === true;
@@ -45,12 +47,16 @@ const OnboardingStep = (props: Props) => {
               {
                 height: 56,
                 width: 56,
-                backgroundColor: NEWCOLORS.placeholderText,
+                backgroundColor: theme.placeholderText,
               },
             ]}
             onPress={() => onboarding?.goToPrevStep()}
           >
-            <CustomIcon name="arrow-left" size={33} color="white"></CustomIcon>
+            <CustomIcon
+              name="arrow-left"
+              size={33}
+              color={theme.pureWhite}
+            ></CustomIcon>
           </Pressable>
           <Pressable
             disabled={isDisabled}
@@ -61,13 +67,13 @@ const OnboardingStep = (props: Props) => {
               {
                 flex: 1,
                 backgroundColor: isDisabled
-                  ? NEWCOLORS.dividerGrey
-                  : NEWCOLORS.greenAccent,
+                  ? theme.dividerGrey
+                  : theme.greenAccent,
               },
             ]}
             onPress={isDisabled ? undefined : handleContinue}
           >
-            <Text style={[styles.textCenterBold, { color: "white" }]}>
+            <Text style={[styles.textCenterBold, { color: theme.pureWhite }]}>
               Continue
             </Text>
           </Pressable>

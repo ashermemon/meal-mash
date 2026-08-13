@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import { storage } from "@/utils/storage";
-import { styles } from "@/styles/GlobalStyles";
+import { useStyles } from "@/styles/GlobalStyles";
 import { Image } from "expo-image";
 import FavoritesContext from "@/contexts/FavoritesContext";
 import FavLeftoversContext from "@/contexts/FavLeftoversContext";
 import { GenerationDetailsContext } from "@/contexts/GenerationDetailsContext";
-import { COLORS } from "@/constants/Theme";
+import { useTheme } from "@/contexts/ColorSchemeContext";
 import emojiImages from "@/components/universal/EmojiImages";
 import Animated, {
   useAnimatedStyle,
@@ -23,6 +23,8 @@ import * as Haptics from "expo-haptics";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 
 export default function FavIngredient(props: CardProps) {
+  const styles = useStyles();
+  const theme = useTheme();
   const [favorite, setFavorite] = useState(true);
 
   const [favorites, setFavorites] = useContext(FavoritesContext);
@@ -110,9 +112,9 @@ export default function FavIngredient(props: CardProps) {
   const animatedStyles = useAnimatedStyle(() => {
     const targetColor = pressed.value
       ? props.leftover
-        ? COLORS.blueHeader
-        : COLORS.greenButtonColor
-      : "white";
+        ? theme.blueHeader
+        : theme.greenButtonColor
+      : theme.pureWhite;
 
     return {
       backgroundColor: withTiming(targetColor),
@@ -136,8 +138,8 @@ export default function FavIngredient(props: CardProps) {
         style={[
           {
             borderColor: props.leftover
-              ? COLORS.saveBorder
-              : COLORS.greenButtonColorOuline,
+              ? theme.saveBorder
+              : theme.greenButtonColorOuline,
           },
           styles.favoritedContainer,
           animatedStyles,
@@ -149,11 +151,11 @@ export default function FavIngredient(props: CardProps) {
               styles.emojiWrapCard,
               {
                 borderColor: props.leftover
-                  ? COLORS.saveBorder
-                  : COLORS.greenButtonColorOuline,
+                  ? theme.saveBorder
+                  : theme.greenButtonColorOuline,
                 backgroundColor: props.leftover
-                  ? COLORS.saveFill
-                  : COLORS.greenButtonColor,
+                  ? theme.saveFill
+                  : theme.greenButtonColor,
               },
             ]}
           >
@@ -174,14 +176,14 @@ export default function FavIngredient(props: CardProps) {
                 <CustomIcon
                   name="star"
                   filled={true}
-                  color={COLORS.favoriteColor}
+                  color={theme.favoriteColor}
                   size={30}
                 />
               ) : (
                 <CustomIcon
                   name="star"
                   filled={false}
-                  color={COLORS.favoriteColor}
+                  color={theme.favoriteColor}
                   size={30}
                 />
               )}

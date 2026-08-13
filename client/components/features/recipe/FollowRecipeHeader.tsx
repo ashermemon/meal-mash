@@ -1,21 +1,22 @@
 import { View, Text, Pressable } from "react-native";
 import React, { useContext } from "react";
 import ProgressBar from "@/components/features/recipe/ProgressBar";
-import { styles } from "@/styles/GlobalStyles";
+import { useStyles } from "@/styles/GlobalStyles";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import { useNavigation } from "expo-router";
-import { COLORS } from "@/constants/Theme";
+import { useTheme } from "@/contexts/ColorSchemeContext";
 import * as Haptics from "expo-haptics";
 import { saveRecipe, equal } from "@/components/features/recipe/SaveRecipe";
 import SavedRecipesContext from "@/contexts/SavedRecipesContext";
 import RecipeContext from "@/contexts/RecipeContext";
-import { NEWCOLORS } from "@/constants/NewTheme";
 
 type HeaderProps = {
   pageTitle: string;
   progress: number;
 };
 const FollowRecipeHeader = (props: HeaderProps) => {
+  const styles = useStyles();
+  const theme = useTheme();
   const navigation = useNavigation();
   const [recipeData] = useContext(RecipeContext);
   const [savedRecipes, setSavedRecipes] = useContext(SavedRecipesContext);
@@ -53,7 +54,7 @@ const FollowRecipeHeader = (props: HeaderProps) => {
             <CustomIcon
               name="arrow-left"
               filled={false}
-              color={COLORS.fontColor}
+              color={theme.fontColor}
               size={20}
             />
           </Pressable>
@@ -73,7 +74,7 @@ const FollowRecipeHeader = (props: HeaderProps) => {
             <CustomIcon
               name="bookmark"
               filled={isSaved}
-              color={isSaved ? NEWCOLORS.redAccent : NEWCOLORS.basicText}
+              color={isSaved ? theme.redAccent : theme.basicText}
               size={20}
             />
           </Pressable>
