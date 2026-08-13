@@ -1,8 +1,10 @@
 import { View, Text, Pressable } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import Animated, {
+  interpolate,
   interpolateColor,
   useAnimatedStyle,
+  useSharedValue,
   withTiming,
   ReduceMotion,
 } from "react-native-reanimated";
@@ -21,33 +23,41 @@ const SwitchToggle = (props: Props) => {
   const trackLength = 60;
   const thumbSize = 24;
   const padding = 5;
+  const maxTranslate = trackLength - thumbSize - padding;
+
+  const progress = useSharedValue(props.value ? 1 : 0);
+
+  useEffect(() => {
+    progress.value = withTiming(props.value ? 1 : 0, {
+      duration: 350,
+      reduceMotion: ReduceMotion.Never,
+    });
+  }, [props.value]);
 
   const trackAnimatedStyle = useAnimatedStyle(() => {
-    const backgroundColor = interpolateColor(
-      props.value ? 1 : 0,
-      [0, 1],
-      [theme.yellowBlock, theme.blueBlock],
-    );
-    return { backgroundColor };
+    return {
+      backgroundColor: interpolateColor(
+        progress.value,
+        [0, 1],
+        [theme.yellowBlock, theme.blueBlock],
+      ),
+    };
   });
 
   const thumbAnimatedStyle = useAnimatedStyle(() => {
-    const maxTranslate = trackLength - thumbSize - padding;
-
-    const backgroundColor = interpolateColor(
-      props.value ? 1 : 0,
-      [0, 1],
-      [theme.yellowAccent, theme.blueAccent],
-    );
-
     return {
-      backgroundColor,
+      backgroundColor: interpolateColor(
+        progress.value,
+        [0, 1],
+        [theme.yellowAccent, theme.blueAccent],
+      ),
       transform: [
         {
-          translateX: withTiming(props.value ? maxTranslate : padding, {
-            duration: 200,
-            reduceMotion: ReduceMotion.Never,
-          }),
+          translateX: interpolate(
+            progress.value,
+            [0, 1],
+            [padding, maxTranslate],
+          ),
         },
       ],
     };
