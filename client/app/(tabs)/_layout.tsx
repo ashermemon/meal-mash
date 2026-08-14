@@ -1,7 +1,8 @@
 import { Tabs, useRouter, useSegments } from "expo-router";
 import { Platform, View } from "react-native";
 import { CustomIcon } from "@/icon-loader/icon-loader";
-import { useTheme, useIsDarkMode } from "@/contexts/ColorSchemeContext";
+import { useTheme } from "@/contexts/ColorSchemeContext";
+import { useStyles } from "@/styles/GlobalStyles";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import * as Haptics from "expo-haptics";
@@ -19,7 +20,7 @@ const TAB_ROUTES = [
 
 export default function TabsLayout() {
   const theme = useTheme();
-  const isDark = useIsDarkMode();
+  const styles = useStyles();
   const iconSizeMobile = 30;
   const router = useRouter();
   const segments = useSegments();
@@ -85,22 +86,21 @@ export default function TabsLayout() {
                   headerShown: false,
                   tabBarPosition: Platform.OS == "web" ? "left" : "bottom",
 
-                  tabBarStyle: {
-                    position: "absolute",
+                  tabBarStyle: [
+                    styles.elevatedShadow,
+                    {
+                      position: "absolute",
 
-                    height: 65,
-                    marginHorizontal: 20,
-                    borderRadius: 100,
-                    backgroundColor: theme.greyBlock,
+                      height: 65,
+                      marginHorizontal: 20,
+                      borderRadius: 100,
+                      backgroundColor: theme.greyBlock,
 
-                    shadowColor: "#000",
-                    shadowOffset: { width: 0, height: 10 },
-                    shadowOpacity: isDark ? 0.35 : 0.1,
-                    shadowRadius: isDark ? 10 : 5,
-                    paddingBottom: 0,
-                    marginBottom: 10,
-                    borderTopWidth: 0,
-                  },
+                      paddingBottom: 0,
+                      marginBottom: 10,
+                      borderTopWidth: 0,
+                    },
+                  ],
 
                   tabBarItemStyle: {
                     paddingVertical: 10,
