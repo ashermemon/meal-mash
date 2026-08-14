@@ -427,6 +427,15 @@ const createStyles = (NEWCOLORS, COLORS, isDark) =>
       borderRadius: 100,
       backgroundColor: NEWCOLORS.cardWhite,
     },
+    savesCard: {
+      gap: 15,
+      padding: 20,
+      paddingVertical: 23,
+
+      flex: 1,
+      borderRadius: 15,
+      backgroundColor: NEWCOLORS.blueBlock,
+    },
   });
 
 const lightStyles = createStyles(NEWCOLORS, COLORS, false);

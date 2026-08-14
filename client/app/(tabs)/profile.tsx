@@ -24,6 +24,7 @@ import {
   useToggleColorScheme,
   useTheme,
 } from "@/contexts/ColorSchemeContext";
+import { router } from "expo-router";
 
 export default function Profile() {
   const styles = useStyles();
@@ -304,6 +305,89 @@ export default function Profile() {
                     text={"Ingredients\nin Pantry"}
                   ></Counter>
                 </View>
+              </View>
+              <View style={{ gap: 15 }}>
+                <Text
+                  style={[
+                    styles.basicTextLeft,
+                    styles.bold,
+                    {
+                      fontSize: 28,
+                    },
+                  ]}
+                >
+                  Saves
+                </Text>
+
+                <Pressable
+                  style={[styles.savesCard, styles.basicBoxShadow]}
+                  onPress={() => router.navigate("/saves")}
+                >
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      gap: 15,
+                    }}
+                  >
+                    <View style={{ paddingBottom: 2 }}>
+                      <CustomIcon
+                        name="chef-hat"
+                        filled={true}
+                        color={theme.blueAccent}
+                        size={30}
+                      />
+                    </View>
+                    <Text
+                      adjustsFontSizeToFit
+                      numberOfLines={1}
+                      style={[
+                        styles.textLeftBold,
+                        {
+                          fontFamily: "Nunito-Bold",
+
+                          color: theme.basicText,
+                        },
+                      ]}
+                    >
+                      Click to view your saved recipes
+                    </Text>
+                  </View>
+                  <Text
+                    style={[
+                      styles.textLeftBold,
+                      {
+                        fontFamily: "Nunito-SemiBold",
+                        fontSize: 15,
+                        color: theme.placeholderText,
+                      },
+                    ]}
+                  >
+                    Look through bookmarked recipes by category or search and
+                    pick your favorite!
+                  </Text>
+                </Pressable>
+              </View>
+              <View style={{ gap: 15 }}>
+                <Text
+                  style={[
+                    styles.basicTextLeft,
+                    styles.bold,
+                    {
+                      fontSize: 28,
+                    },
+                  ]}
+                >
+                  Achievements
+                </Text>
+
+                <View
+                  style={{
+                    gap: 12,
+                    flexDirection: "row",
+                    flex: 1,
+                  }}
+                ></View>
               </View>
             </View>
           </View>
