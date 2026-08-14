@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View, Text, ColorValue } from "react-native";
 import React, { ReactNode } from "react";
 import { useStyles } from "@/styles/auth.styles";
 import { CustomIcon } from "@/icon-loader/icon-loader";
@@ -10,13 +10,22 @@ type Props = {
   description: string;
   unlocked: boolean;
   emoji: ReactNode;
+  color: ColorValue;
 };
 
 const Achievement = (props: Props) => {
   const styles = useStyles();
   const theme = useTheme();
   return (
-    <View style={[styles.savesCard, styles.basicBoxShadow]}>
+    <View
+      style={[
+        styles.savesCard,
+        styles.basicBoxShadow,
+        {
+          backgroundColor: props.unlocked ? props.color : theme.unselectedGrey,
+        },
+      ]}
+    >
       <View
         style={{
           flexDirection: "row",

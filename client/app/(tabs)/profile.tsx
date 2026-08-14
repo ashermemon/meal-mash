@@ -25,7 +25,11 @@ import {
   useTheme,
 } from "@/contexts/ColorSchemeContext";
 import { router } from "expo-router";
-import AchievementsContext from "@/contexts/AchievementsContext";
+import AchievementsContext, {
+  AchievementData,
+} from "@/contexts/AchievementsContext";
+import Achievement from "@/components/features/profile/Achievement";
+import { getUnlockedAchievementIds } from "@/utils/achievements";
 
 export default function Profile() {
   const styles = useStyles();
@@ -42,6 +46,74 @@ export default function Profile() {
   const [achievements, setAchievements] = useContext(AchievementsContext);
   const { toggleColorScheme } = useToggleColorScheme();
 
+  const unlockedAchievementIds = getUnlockedAchievementIds();
+
+  const availableAchievements: AchievementData[] = [
+    {
+      id: "first-mash",
+      title: "First Mash",
+      description: "Make your first meal with MealMash",
+      emoji: <></>,
+      color: theme.yellowBlock,
+      unlocked: unlockedAchievementIds.includes("first-mash"),
+    },
+    {
+      id: "sweet-tooth",
+      title: "Sweet Tooth",
+      description: "Generate 10 dessert recipes",
+      emoji: <></>,
+      color: theme.orangeBlock,
+      unlocked: unlockedAchievementIds.includes("sweet-tooth"),
+    },
+    {
+      id: "world-tour",
+      title: "World Tour",
+      description: "Generate recipes from 5 different cuisines",
+      emoji: <></>,
+      color: theme.blueBlock,
+      unlocked: unlockedAchievementIds.includes("world-tour"),
+    },
+    {
+      id: "the-cookbook",
+      title: "The Cookbook",
+      description: "Save 50 generated recipes",
+      emoji: <></>,
+      color: theme.greenBlock,
+      unlocked: unlockedAchievementIds.includes("the-cookbook"),
+    },
+    {
+      id: "late-night-snack",
+      title: "Late-Night Snack",
+      description: "Create a recipe after 10pm",
+      emoji: <></>,
+      color: theme.purpblueBlock,
+      unlocked: unlockedAchievementIds.includes("late-night-snack"),
+    },
+    {
+      id: "leftover-legend",
+      title: "Leftover Legend",
+      description: "Make 25 meals with leftovers",
+      emoji: <></>,
+      color: theme.orangeBlock,
+      unlocked: unlockedAchievementIds.includes("leftover-legend"),
+    },
+    {
+      id: "on-fire",
+      title: "On Fire",
+      description: "Generate a recipe 7 days in a row",
+      emoji: <></>,
+      color: theme.redBlock,
+      unlocked: unlockedAchievementIds.includes("on-fire"),
+    },
+    {
+      id: "century",
+      title: "Century",
+      description: "Make 100 meals",
+      emoji: <></>,
+      color: theme.greenBlock,
+      unlocked: unlockedAchievementIds.includes("century"),
+    },
+  ];
   const handleEditPress = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setEditMode(true);
@@ -70,6 +142,10 @@ export default function Profile() {
       return () => cancelAnimationFrame(frame);
     }
   }, [editMode]);
+
+  useEffect(() => {
+    setAchievements(availableAchievements);
+  }, [theme]);
 
   useEffect(() => {
     const storedName = storage.getString("name") ?? "";
@@ -386,10 +462,23 @@ export default function Profile() {
                 <View
                   style={{
                     gap: 12,
-                    flexDirection: "row",
+
                     flex: 1,
                   }}
-                ></View>
+                >
+                  {achievements.map(
+                    (achievement: AchievementData, index: number) => (
+                      <Achievement
+                        title={achievement.title}
+                        description={achievement.description}
+                        emoji={achievement.emoji}
+                        unlocked={achievement.unlocked}
+                        color={achievement.color}
+                        key={index}
+                      ></Achievement>
+                    ),
+                  )}
+                </View>
               </View>
             </View>
           </View>

@@ -11,6 +11,9 @@ import FavoritesContext from "@/contexts/FavoritesContext";
 import FavLeftoversContext from "@/contexts/FavLeftoversContext";
 import SavedRecipesContext from "@/contexts/SavedRecipesContext";
 import MealsLeftContext from "@/contexts/MealsLeftContext";
+import AchievementsContext, {
+  type AchievementData,
+} from "@/contexts/AchievementsContext";
 import { PantryDetailsContext, PantryDetails } from "@/contexts/PantryDetails";
 import GroceryListContext from "@/contexts/GroceryListContext";
 import CheckedGroceryListContext from "@/contexts/CheckedGroceryListContext";
@@ -65,6 +68,7 @@ function RootLayoutContent() {
     },
   );
   const [mealsLeft, setMealsLeft] = useState<number>(500);
+  const [achievements, setAchievements] = useState<AchievementData[]>([]);
   const [pantryDetails, setPantryDetails] = useState<PantryDetails>({
     name: "Your Pantry",
     icon: "",
@@ -237,6 +241,9 @@ function RootLayoutContent() {
                       <MealsLeftContext.Provider
                         value={[mealsLeft, setMealsLeft]}
                       >
+                      <AchievementsContext.Provider
+                        value={[achievements, setAchievements]}
+                      >
                         <RecipeProvider>
                           <StatusBar
                             barStyle={
@@ -305,6 +312,7 @@ function RootLayoutContent() {
                             ></TrueSheetContent>
                           </TrueSheet>
                         </RecipeProvider>
+                      </AchievementsContext.Provider>
                       </MealsLeftContext.Provider>
                     </SavedRecipesContext.Provider>
                   </FavLeftoversContext.Provider>
