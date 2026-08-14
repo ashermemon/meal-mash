@@ -8,7 +8,7 @@ import {
   TextInput,
   Switch,
 } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useStyles } from "@/styles/GlobalStyles";
 import Counter from "@/components/features/profile/Counter";
 import * as Haptics from "expo-haptics";
@@ -25,6 +25,7 @@ import {
   useTheme,
 } from "@/contexts/ColorSchemeContext";
 import { router } from "expo-router";
+import AchievementsContext from "@/contexts/AchievementsContext";
 
 export default function Profile() {
   const styles = useStyles();
@@ -38,6 +39,7 @@ export default function Profile() {
   const nameInputRef = useRef<TextInput>(null);
 
   const isDark = useIsDarkMode();
+  const [achievements, setAchievements] = useContext(AchievementsContext);
   const { toggleColorScheme } = useToggleColorScheme();
 
   const handleEditPress = () => {

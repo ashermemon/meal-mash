@@ -44,79 +44,56 @@ export default function SavedCard(props: SavedProps) {
   const pressed = useSharedValue<boolean>(false);
   const handleCardPress = () => {
     setRecipeData(props.SavedRecipe);
-    router.push("/followRecipe");
+    router.navigate("/followRecipe");
   };
 
-  const tap = Gesture.Tap()
-    .onBegin(() => {
-      pressed.value = true;
-    })
-    .onFinalize(() => {
-      pressed.value = false;
-      runOnJS(handleCardPress)();
-    });
-  const animatedStyles = useAnimatedStyle(() => {
-    let targetColor;
-
-    if (pressed.value) {
-      targetColor = theme.genFill;
-    } else {
-      targetColor = theme.pureWhite;
-    }
-
-    return {
-      backgroundColor: withTiming(targetColor),
-    };
-  });
   return (
     <>
-      <GestureDetector gesture={tap}>
-        <Animated.View style={[styles.favRecipe, animatedStyles]}>
-          <View style={styles.ingredientPanelFav}>
-            <View
-              style={[
-                styles.emojiWrapCard,
-                {
-                  borderColor: theme.genBorder,
-                  backgroundColor: theme.genFill,
-                },
-              ]}
-            >
-              <Image
-                style={styles.ingredientEmoji}
-                source={emojiImages.Default}
-              ></Image>
-            </View>
-
-            <View style={styles.ingredientFlexCard}>
-              <Text
-                style={[styles.textLeftBold, { fontSize: 13, width: "100%" }]}
-              >
-                {props.SavedRecipe.title}
-              </Text>
-            </View>
-            <View style={styles.favFlex}>
-              <Pressable onPress={() => saveCard()}>
-                {saved ? (
-                  <CustomIcon
-                    name="bookmark"
-                    filled={true}
-                    color={theme.saveBorder}
-                    size={30}
-                  />
-                ) : (
-                  <CustomIcon
-                    name="bookmark"
-                    filled={false}
-                    color={theme.saveBorder}
-                    size={30}
-                  />
-                )}
-              </Pressable>
-            </View>
+      <Pressable style={[styles.favRecipe]} onPress={handleCardPress}>
+        <View style={styles.ingredientPanelFav}>
+          <View
+            style={[
+              styles.emojiWrapCard,
+              {
+                borderColor: theme.genBorder,
+                backgroundColor: theme.genFill,
+              },
+            ]}
+          >
+            <Image
+              style={styles.ingredientEmoji}
+              source={emojiImages.Default}
+            ></Image>
           </View>
-        </Animated.View>
-      </GestureDetector>
+
+          <View style={styles.ingredientFlexCard}>
+            <Text
+              style={[styles.textLeftBold, { fontSize: 13, width: "100%" }]}
+            >
+              {props.SavedRecipe.title}
+            </Text>
+          </View>
+          <View style={styles.favFlex}>
+            <Pressable onPress={() => saveCard()}>
+              {saved ? (
+                <CustomIcon
+                  name="bookmark"
+                  filled={true}
+                  color={theme.saveBorder}
+                  size={30}
+                />
+              ) : (
+                <CustomIcon
+                  name="bookmark"
+                  filled={false}
+                  color={theme.saveBorder}
+                  size={30}
+                />
+              )}
+            </Pressable>
+          </View>
+        </View>
+      </Pressable>
     </>
   );
 }

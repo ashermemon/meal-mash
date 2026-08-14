@@ -66,7 +66,7 @@ const SwipableCard = ({
 
   const makeRecipe = () => {
     if (!isSwipingRef.current) {
-      router.push("/followRecipe");
+      router.navigate("/followRecipe");
     }
   };
 
