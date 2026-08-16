@@ -10,22 +10,19 @@ import RecipeContext from "@/contexts/RecipeContext";
 import * as Haptics from "expo-haptics";
 import { initialRecipeData } from "@/contexts/RecipeContext";
 import { GenerationDetailsContext } from "@/contexts/GenerationDetailsContext";
+import icons3d from "@/components/universal/3dIcons";
 
 const data = [
-  { id: "1", name: "Leftovers", color: "grey", icon: "Avocado" },
-  { id: "2", name: "Snacks", color: "grey", icon: "Fries" },
-  { id: "3", name: "Dinner", color: "grey", icon: "Spaghetti" },
+  { id: "1", name: "Leftovers", color: "grey", icon: "Pizza" },
+  { id: "2", name: "Snacks", color: "grey", icon: "Pretzel" },
+  { id: "3", name: "Dinner", color: "grey", icon: "Steak" },
   { id: "4", name: "Dessert", color: "grey", icon: "Cake" },
   { id: "5", name: "Sides", color: "grey", icon: "Fries" },
-  { id: "6", name: "Lunch", color: "grey", icon: "Chicken" },
-  { id: "7", name: "Beverages", color: "grey" },
-  { id: "8", name: "Breakfast", color: "grey" },
-  { id: "9", name: "Sauces", color: "grey" },
-  { id: "10", name: "Vegetarian", color: "grey", icon: "Watermelon" },
-  { id: "11", name: "Vegan", color: "grey", icon: "Avocado" },
-  { id: "12", name: "Keto", color: "grey" },
-  { id: "13", name: "Gluten-Free", color: "grey" },
-  { id: "14", name: "Dairy-Free", color: "grey" },
+  { id: "6", name: "Lunch", color: "grey", icon: "Burger" },
+  { id: "7", name: "Beverages", color: "grey", icon: "Float" },
+  { id: "8", name: "Breakfast", color: "grey", icon: "EggAndBacon" },
+  { id: "9", name: "Vegetarian", color: "grey", icon: "Eggplant" },
+  { id: "10", name: "Vegan", color: "grey", icon: "Salad" },
 ];
 
 const FeaturedRecipeButton = () => {
@@ -85,12 +82,12 @@ const FeaturedRecipeButton = () => {
               <Image
                 source={
                   item.icon
-                    ? emojiImages[item.icon] || emojiImages.Default
-                    : emojiImages.Default
+                    ? icons3d[item.icon] || icons3d.Default
+                    : icons3d.Default
                 }
                 style={{
-                  width: 50,
-                  height: 50,
+                  width: 57,
+                  height: 57,
 
                   alignSelf: "center",
                 }}

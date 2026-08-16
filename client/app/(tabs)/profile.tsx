@@ -30,6 +30,8 @@ import AchievementsContext, {
 } from "@/contexts/AchievementsContext";
 import Achievement from "@/components/features/profile/Achievement";
 import { getUnlockedAchievementIds } from "@/utils/achievements";
+import { Image } from "expo-image";
+import icons3d from "@/components/universal/3dIcons";
 
 export default function Profile() {
   const styles = useStyles();
@@ -53,7 +55,7 @@ export default function Profile() {
       id: "first-mash",
       title: "First Mash",
       description: "Make your first meal with MealMash",
-      emoji: <></>,
+      emoji: "Medal",
       color: theme.yellowBlock,
       unlocked: unlockedAchievementIds.includes("first-mash"),
     },
@@ -61,7 +63,7 @@ export default function Profile() {
       id: "sweet-tooth",
       title: "Sweet Tooth",
       description: "Generate 10 dessert recipes",
-      emoji: <></>,
+      emoji: "Popsicle",
       color: theme.orangeBlock,
       unlocked: unlockedAchievementIds.includes("sweet-tooth"),
     },
@@ -69,7 +71,7 @@ export default function Profile() {
       id: "world-tour",
       title: "World Tour",
       description: "Generate recipes from 5 different cuisines",
-      emoji: <></>,
+      emoji: "<></>",
       color: theme.blueBlock,
       unlocked: unlockedAchievementIds.includes("world-tour"),
     },
@@ -77,7 +79,7 @@ export default function Profile() {
       id: "the-cookbook",
       title: "The Cookbook",
       description: "Save 50 generated recipes",
-      emoji: <></>,
+      emoji: "RecipeBook",
       color: theme.greenBlock,
       unlocked: unlockedAchievementIds.includes("the-cookbook"),
     },
@@ -85,7 +87,7 @@ export default function Profile() {
       id: "late-night-snack",
       title: "Late-Night Snack",
       description: "Create a recipe after 10pm",
-      emoji: <></>,
+      emoji: "<></>",
       color: theme.purpblueBlock,
       unlocked: unlockedAchievementIds.includes("late-night-snack"),
     },
@@ -93,7 +95,7 @@ export default function Profile() {
       id: "leftover-legend",
       title: "Leftover Legend",
       description: "Make 25 meals with leftovers",
-      emoji: <></>,
+      emoji: "HotDog",
       color: theme.orangeBlock,
       unlocked: unlockedAchievementIds.includes("leftover-legend"),
     },
@@ -101,7 +103,7 @@ export default function Profile() {
       id: "on-fire",
       title: "On Fire",
       description: "Generate a recipe 7 days in a row",
-      emoji: <></>,
+      emoji: "Fire",
       color: theme.redBlock,
       unlocked: unlockedAchievementIds.includes("on-fire"),
     },
@@ -109,7 +111,7 @@ export default function Profile() {
       id: "century",
       title: "Century",
       description: "Make 100 meals",
-      emoji: <></>,
+      emoji: "",
       color: theme.greenBlock,
       unlocked: unlockedAchievementIds.includes("century"),
     },

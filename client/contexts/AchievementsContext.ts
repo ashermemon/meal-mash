@@ -6,7 +6,7 @@ export type AchievementData = {
   title: string;
   description: string;
   unlocked: boolean;
-  emoji: ReactNode;
+  emoji: string;
   color: ColorValue;
 };
 

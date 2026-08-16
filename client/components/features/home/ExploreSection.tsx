@@ -4,6 +4,7 @@ import { useStyles } from "@/styles/GlobalStyles";
 import { useTheme, useIsDarkMode } from "@/contexts/ColorSchemeContext";
 import { router } from "expo-router";
 import emojiImages from "@/components/universal/EmojiImages";
+import icons3d from "@/components/universal/3dIcons";
 import { Image } from "expo-image";
 import { useSharedValue } from "react-native-reanimated";
 import Carousel, {
@@ -78,7 +79,7 @@ export default function ExploreSection() {
         },
         styles.basicBoxShadow,
       ]}
-      onPress={() => router.push(`/(tabs)/${link}` as any)}
+      onPress={() => router.navigate(`/${link}` as any)}
     >
       <></>
 
@@ -106,13 +107,9 @@ export default function ExploreSection() {
         }}
       >
         <Image
-          source={
-            (icon ? emojiImages[icon] : emojiImages.Default) ||
-            emojiImages.Default
-          }
+          source={(icon ? icons3d[icon] : icons3d.Default) || icons3d.Default}
           contentFit="contain"
           style={{
-            marginVertical: 10,
             alignSelf: "center",
             flex: 1,
             aspectRatio: 1,
@@ -239,7 +236,7 @@ export default function ExploreSection() {
           height={200}
           title="Meal Generator"
           color={isDark ? theme.blueBlock : theme.blueAccent}
-          link="generationpage"
+          link="(tabs)/generationpage"
           icon="Burrito"
         >
           <Text
@@ -257,14 +254,14 @@ export default function ExploreSection() {
           <Block
             title="Your Pantry"
             color={isDark ? theme.orangeBlock : theme.orangeAccent}
-            link="pantry"
-            icon="Fridge"
+            link="(tabs)/pantry"
+            icon="Peach"
           />
           <Block
             title="Saved Recipes"
             color={isDark ? theme.greenBlock : theme.greenAccent}
-            link="saves"
-            icon="Book"
+            link="../saves"
+            icon="RecipeBook"
           />
         </View>
       </View>

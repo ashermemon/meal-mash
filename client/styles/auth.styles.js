@@ -407,10 +407,10 @@ const createStyles = (NEWCOLORS, COLORS, isDark) =>
     },
     pantryTip: {
       gap: 10,
-      paddingVertical: 13,
+      paddingVertical: 9,
       paddingHorizontal: 15,
       borderRadius: 15,
-      backgroundColor: isDark ? NEWCOLORS.yellowBlock : NEWCOLORS.yellowAccent,
+      backgroundColor: NEWCOLORS.yellowBlock,
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",

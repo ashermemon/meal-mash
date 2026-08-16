@@ -1,11 +1,5 @@
 import { Animated, Text, View } from "react-native";
-import React, {
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { useStyles } from "@/styles/GlobalStyles";
 import { useTheme } from "@/contexts/ColorSchemeContext";
 import { Image } from "expo-image";
@@ -21,6 +15,7 @@ import FilterIngredients from "@/components/features/pantry/FilterIngredients";
 import IngredientTag from "@/components/features/pantry/IngredientTag";
 import Search, { Food } from "@/components/features/pantry/Search";
 import { CustomIcon } from "@/icon-loader/icon-loader";
+import icons3d from "@/components/universal/3dIcons";
 
 export default function Dashboard() {
   const styles = useStyles();
@@ -133,7 +128,7 @@ export default function Dashboard() {
 
               <View style={styles.pantryTip}>
                 <Text
-                  style={[styles.textLeft, { color: theme.pureWhite }]}
+                  style={[styles.textLeft, { color: theme.fontColor }]}
                   numberOfLines={2}
                   adjustsFontSizeToFit
                 >
@@ -141,14 +136,11 @@ export default function Dashboard() {
                   Be sure to add any leftover dishes you have at home and want
                   to use in recipes!
                 </Text>
-                <View
-                  style={[styles.imageGlow, { width: 50, height: 50, borderRadius: 110 }]}
-                >
-                  <Image
-                    source={require("@/assets/images/leftover.webp")}
-                    style={{ width: "100%", height: "100%", borderRadius: 110 }}
-                  />
-                </View>
+
+                <Image
+                  source={icons3d["Pizza"]}
+                  style={{ width: 60, height: 60, marginBottom: 4 }}
+                />
               </View>
 
               <View style={{ gap: 10 }}>
