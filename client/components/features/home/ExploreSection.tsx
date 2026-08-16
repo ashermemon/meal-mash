@@ -226,7 +226,13 @@ export default function ExploreSection() {
           data={featuredRecipes}
           size={7}
           dotStyle={{
-            backgroundColor: "rgba(0,0,0,0.25)",
+            backgroundColor: isDark
+              ? "rgba(255,255,255,0.25)"
+              : "rgba(0,0,0,0.25)",
+            borderRadius: 999,
+          }}
+          activeDotStyle={{
+            backgroundColor: isDark ? "white" : "black",
             borderRadius: 999,
           }}
           containerStyle={{ gap: 6, marginTop: 9 }}

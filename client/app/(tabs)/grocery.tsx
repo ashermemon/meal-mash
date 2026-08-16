@@ -1,11 +1,5 @@
 import { Alert, Animated, Pressable, Text, View } from "react-native";
-import React, {
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { useStyles } from "@/styles/GlobalStyles";
 import { useTheme } from "@/contexts/ColorSchemeContext";
 import { Image } from "expo-image";
@@ -50,10 +44,7 @@ export default function Dashboard() {
     [checkedList],
   );
   const listedIds = useMemo(
-    () =>
-      new Set(
-        [...groceryList, ...checkedList].map((item) => item.id),
-      ),
+    () => new Set([...groceryList, ...checkedList].map((item) => item.id)),
     [groceryList, checkedList],
   );
 
@@ -204,8 +195,6 @@ export default function Dashboard() {
                 }
                 onRemoveIngredient={(item: Food) => {
                   if (checkedIds.has(item.id)) {
-                    // Checked items are already "on the list" — tapping
-                    // them just undoes the checkmark instead of removing.
                     setCheckedList((prev) =>
                       prev.filter((food) => food.id !== item.id),
                     );

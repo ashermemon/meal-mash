@@ -37,6 +37,7 @@
     "expo-notifications": "~0.32.15",
     "expo-router": "~6.0.19",
     "expo-splash-screen": "~31.0.12",
+    "expo-updates": "~29.0.19",
     "hsl-to-hex": "^1.0.0",
     "moti": "^0.30.0",
     "react": "19.1.0",

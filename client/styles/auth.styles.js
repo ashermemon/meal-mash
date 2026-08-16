@@ -357,6 +357,7 @@ const createStyles = (NEWCOLORS, COLORS, isDark) =>
       fontFamily: "Nunito-Bold",
       textAlign: "center",
       marginBottom: 20,
+      color: NEWCOLORS.basicText,
     },
     setupInput: {
       fontSize: 27,

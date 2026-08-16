@@ -7,6 +7,7 @@ import {
   Pressable,
   TextInput,
   Switch,
+  Alert,
 } from "react-native";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useStyles } from "@/styles/GlobalStyles";
@@ -15,7 +16,7 @@ import * as Haptics from "expo-haptics";
 import { storage } from "@/utils/storage";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import { hexToRgba } from "@/utils/color";
-
+// import * as Updates from "expo-updates";
 import { LinearGradient } from "expo-linear-gradient";
 import DisplaySaved from "@/components/features/saved/DisplaySaved";
 import SwitchToggle from "@/components/common/SwitchToggle";
@@ -49,6 +50,34 @@ export default function Profile() {
   const { toggleColorScheme } = useToggleColorScheme();
 
   const unlockedAchievementIds = getUnlockedAchievementIds();
+  const resetData = () => {
+    Alert.alert(
+      "Are you sure?",
+      "This removes all data from your account including saved recipes, achievements and pantry items. This action cannot be reversed.",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Reset Data",
+          style: "destructive",
+
+          onPress: async () => {
+            try {
+              storage.clearAll();
+
+              // await Updates.reloadAsync();
+            } catch (error) {
+              console.error("Failed to reload the application safely:", error);
+
+              Alert.alert(
+                "Error",
+                "Please manually restart the app to complete the reset.",
+              );
+            }
+          },
+        },
+      ],
+    );
+  };
 
   const availableAchievements: AchievementData[] = [
     {
@@ -481,6 +510,42 @@ export default function Profile() {
                     ),
                   )}
                 </View>
+              </View>
+              <View style={{ gap: 15 }}>
+                <Text
+                  style={[
+                    styles.basicTextLeft,
+                    styles.bold,
+                    {
+                      fontSize: 28,
+                    },
+                  ]}
+                >
+                  Danger Zone
+                </Text>
+
+                <Pressable
+                  style={[
+                    styles.savesCard,
+                    styles.basicBoxShadow,
+
+                    { backgroundColor: theme.redAccent },
+                  ]}
+                  onPress={resetData}
+                >
+                  <Text
+                    style={[
+                      styles.textCenterBold,
+
+                      {
+                        color: theme.pureWhite,
+                        fontSize: 16,
+                      },
+                    ]}
+                  >
+                    Reset App & Delete All Data
+                  </Text>
+                </Pressable>
               </View>
             </View>
           </View>
