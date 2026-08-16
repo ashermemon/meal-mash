@@ -24,7 +24,7 @@ const ListButtonSelect = (props: Props) => {
             {
               backgroundColor:
                 index === props.selected
-                  ? theme.greenBlock
+                  ? theme.greenAccent
                   : theme.unselectedGrey,
               paddingHorizontal: 30,
               flexDirection: "row",
@@ -45,7 +45,7 @@ const ListButtonSelect = (props: Props) => {
                 width: 30,
                 height: 30,
                 borderRadius: 17,
-                backgroundColor: theme.greenAccent,
+                backgroundColor: theme.greenBlock,
                 justifyContent: "center",
                 alignItems: "center",
               }}
@@ -53,7 +53,7 @@ const ListButtonSelect = (props: Props) => {
               <CustomIcon
                 name="check"
                 filled
-                color={theme.pureWhite}
+                color={theme.greenAccent}
                 size={15}
               />
             </View>
@@ -75,9 +75,7 @@ const ListButtonSelect = (props: Props) => {
                 fontSize: 24,
                 flex: 1,
                 color:
-                  index === props.selected
-                    ? theme.pureWhite
-                    : theme.basicText,
+                  index === props.selected ? theme.pureWhite : theme.basicText,
                 fontFamily: "Nunito-Medium",
               },
             ]}

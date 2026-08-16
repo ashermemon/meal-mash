@@ -78,7 +78,7 @@ const SwipableCard = ({
     runOnJS(markSwiping)();
     translateX.value = withTiming(
       SCREEN_WIDTH + 100,
-      { duration: 400, easing: Easing.inOut(Easing.cubic) },
+      { duration: 800, easing: Easing.inOut(Easing.cubic) },
       (finished) => {
         if (finished) {
           runOnJS(onSwipeRight)();
@@ -92,7 +92,7 @@ const SwipableCard = ({
     runOnJS(markSwiping)();
     translateX.value = withTiming(
       -SCREEN_WIDTH - 100,
-      { duration: 600, easing: Easing.inOut(Easing.cubic) },
+      { duration: 800, easing: Easing.inOut(Easing.cubic) },
       (finished) => {
         if (finished) {
           runOnJS(onSwipeLeft)();

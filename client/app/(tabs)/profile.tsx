@@ -430,7 +430,7 @@ export default function Profile() {
 
                 <Pressable
                   style={[styles.savesCard, styles.basicBoxShadow]}
-                  onPress={() => router.navigate("/saves")}
+                  onPress={() => router.navigate("/saveshome")}
                 >
                   <View
                     style={{

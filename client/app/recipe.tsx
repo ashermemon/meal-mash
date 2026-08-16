@@ -15,7 +15,6 @@ export default function RecipePage() {
   const [recipeData] = useContext(RecipeContext);
   const navigation = useNavigation();
 
-
   const [nutrients, setNutrients] = useState<number[]>(recipeData.nutrients);
 
   useEffect(() => {
@@ -37,15 +36,12 @@ export default function RecipePage() {
             navigation.canGoBack()
               ? [navigation.goBack(), Haptics.selectionAsync()]
               : null
-
           }
         >
           <CustomIcon
             name="arrow-left"
             filled={false}
-            color={
-              navigation.canGoBack() ? theme.fontColor : theme.addPlusGrey
-            }
+            color={navigation.canGoBack() ? theme.fontColor : theme.addPlusGrey}
             size={20}
           />
         </Pressable>
@@ -64,6 +60,6 @@ export default function RecipePage() {
           </View>
         </NutrientsContext.Provider>
       </View>
-    </SafeAreaView >
+    </SafeAreaView>
   );
 }
