@@ -6,14 +6,15 @@ import { Text, View } from "react-native";
 interface Props {
   type: "difficulty" | "time" | "tags";
   data: string;
+  fontSize?: number;
+  c?: boolean;
 }
-// theme defaults to the static (light-only) NEWCOLORS palette so callers
-// that don't thread a live theme through (e.g. outside this dark-mode
-// batch) keep working unchanged.
+
 export const difficultyShape = (
   diff: string,
   colorState?: boolean,
   select?: boolean,
+
   theme: Theme | typeof NEWCOLORS = NEWCOLORS,
 ) => {
   const difficulty = diff.toLowerCase();
@@ -54,9 +55,7 @@ export const difficultyShape = (
           width: select ? 9 : 12,
           height: select ? 9 : 12,
           transform: [{ rotate: "45deg" }],
-          backgroundColor: colorState
-            ? theme.unselectedShape
-            : theme.redAccent,
+          backgroundColor: colorState ? theme.unselectedShape : theme.redAccent,
         }}
       />
     );
@@ -98,12 +97,20 @@ export default function InfoTag(props: Props) {
       ]}
     >
       {props.type == "difficulty" ? (
-        difficultyShape(props.data.toLowerCase(), undefined, undefined, theme)
+        difficultyShape(
+          props.data.toLowerCase(),
+          undefined,
+          props.c || undefined,
+          theme,
+        )
       ) : (
         <></>
       )}
       <Text
-        style={[styles.textCentered, { flexShrink: 1, fontSize: 15 }]}
+        style={[
+          styles.textCentered,
+          { flexShrink: 1, fontSize: props.fontSize || 15 },
+        ]}
         numberOfLines={1}
         adjustsFontSizeToFit
         minimumFontScale={0.85}

@@ -5,6 +5,8 @@ import { CustomIcon } from "@/icon-loader/icon-loader";
 import { useTheme } from "@/contexts/ColorSchemeContext";
 import { Image } from "expo-image";
 import icons3d from "@/components/universal/3dIcons";
+import { FilterImage } from "react-native-svg/filter-image";
+import { lightenColor } from "@/utils/color";
 
 type Props = {
   title: string;
@@ -23,11 +25,13 @@ const Achievement = (props: Props) => {
         styles.savesCard,
         styles.basicBoxShadow,
         {
-          backgroundColor: props.unlocked ? props.color : theme.unselectedGrey,
+          backgroundColor: props.unlocked
+            ? lightenColor(props.color as string, 0.6)
+            : theme.unselectedGrey,
         },
       ]}
     >
-      {props.unlocked && (
+      {!props.unlocked && (
         <Image
           source={icons3d["Lock"]}
           style={{
@@ -49,10 +53,16 @@ const Achievement = (props: Props) => {
         }}
       >
         <View>
-          <Image
+          <FilterImage
             source={icons3d[props.emoji]}
-            style={{ width: 45, height: 45 }}
-          ></Image>
+            style={[
+              {
+                width: 45,
+                height: 45,
+              },
+              !props.unlocked ? ({ filter: "grayscale(100%)" } as any) : {},
+            ]}
+          ></FilterImage>
         </View>
         <View style={{ gap: 3, flex: 1 }}>
           <Text

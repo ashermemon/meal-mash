@@ -209,8 +209,7 @@ const createStyles = (NEWCOLORS, COLORS, isDark) =>
     // New Styles Below
     homeBlock: {
       backgroundColor: NEWCOLORS.greyBlock,
-      paddingHorizontal: 10,
-      paddingVertical: 10,
+      padding: 10,
       borderRadius: 10,
       justifyContent: "flex-start",
     },

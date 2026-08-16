@@ -11,31 +11,34 @@ import Carousel, {
   ICarouselInstance,
   Pagination,
 } from "react-native-reanimated-carousel";
+import InfoTag from "../recipe/InfoTag";
 
 const featuredRecipes = [
   {
     id: "1",
     title: "Salad Mix Bowl",
-    description:
-      "Tasty and healthy bowl filled with veggies and meat! Ready to eat in under 20 minutes!",
+    tag: "Lunch",
+    time: "25m",
     difficulty: "Intermediate",
-    icon: "Salad",
+    icon: require("@/assets/images/meal-images/salad.webp"),
   },
   {
     id: "2",
-    title: "Mashed Potatoes",
-    description:
-      "Simple, one ingredient mashed potatoes! Perfect as a side with any meal!",
+    title: "Fish Tacos",
+    tag: "Lunch",
+    time: "55m",
+
     difficulty: "Expert",
-    icon: "Placeholder",
+    icon: require("@/assets/images/meal-images/taco.webp"),
   },
   {
     id: "3",
     title: "Chicken Sliders",
-    description:
-      "A quick, easy-to-make chicken slider filled with a homemade sauce, crsipy chicken and coleslaw!",
-    difficulty: "Beginner",
-    icon: "Chicken",
+    tag: "Lunch",
+    time: "1hr 30m",
+
+    difficulty: "Easy",
+    icon: require("@/assets/images/meal-images/burger.webp"),
   },
 ];
 
@@ -118,7 +121,7 @@ export default function ExploreSection() {
       </View>
     </Pressable>
   );
-  const width = Dimensions.get("window").width - 40;
+  const [width, setWidth] = useState(Dimensions.get("window").width - 60);
 
   return (
     <View style={{ flexDirection: "column", gap: 10, width: "100%" }}>
@@ -129,94 +132,94 @@ export default function ExploreSection() {
           {
             flex: 1,
             backgroundColor: theme.greyBlock,
+
             flexDirection: "column",
-            justifyContent: "flex-start",
+            justifyContent: "center",
             alignItems: "center",
           },
         ]}
       >
-        <Carousel
-          autoPlay
-          autoPlayInterval={3000}
-          scrollAnimationDuration={1500}
-          ref={ref}
-          width={width}
-          data={featuredRecipes}
-          height={110}
-          onProgressChange={progress}
-          renderItem={({ item }) => (
-            <View
-              style={{
-                flexDirection: "row",
-
-                alignItems: "center",
-              }}
-            >
-              <View style={{ flex: 1, height: "100%", paddingHorizontal: 15 }}>
-                <Text
-                  style={[
-                    styles.basicTextLeft,
-                    { textDecorationLine: "underline", fontSize: 12 },
-                  ]}
-                >
-                  Featured Recipes
-                </Text>
-
-                <Text
-                  style={[
-                    styles.basicTextLeft,
-
-                    {
-                      fontFamily: "Nunito-SemiBold",
-                      fontSize: 22,
-                      marginVertical: 6,
-                    },
-                  ]}
-                  numberOfLines={1}
-                >
-                  {item.title}
-                </Text>
-
-                <Text
-                  numberOfLines={2}
-                  style={[styles.basicTextLeft, { fontSize: 11 }]}
-                >
-                  {item.description}
-                </Text>
-              </View>
+        {/* <View
+          style={{
+            borderBottomWidth: 1,
+            paddingBottom: 5,
+            marginBottom: 5,
+            width: "100%",
+            alignItems: "center",
+            borderColor: theme.addButtonStroke,
+          }}
+        >
+          <Text
+            style={[
+              styles.textLeftSemiBold,
+              { fontSize: 16, margin: 5, fontFamily: "Nunito-Medium" },
+            ]}
+          >
+            Featured Recipes of the Week
+          </Text>
+        </View> */}
+        <View
+          style={{ width: "100%" }}
+          onLayout={(e) => setWidth(e.nativeEvent.layout.width)}
+        >
+          <Carousel
+            autoPlay
+            autoPlayInterval={3000}
+            scrollAnimationDuration={1500}
+            ref={ref}
+            width={width}
+            data={featuredRecipes}
+            height={110}
+            onProgressChange={progress}
+            renderItem={({ item }) => (
               <View
                 style={{
+                  flex: 1,
+                  flexDirection: "row",
+                  justifyContent: "space-between",
                   alignItems: "center",
-                  flex: 0,
-                  height: "100%",
-                  paddingVertical: 35,
-                  marginHorizontal: 20,
+                  paddingHorizontal: 16,
                 }}
               >
-                <Image
-                  source={
-                    emojiImages[item.icon ?? "Default"] ?? emojiImages.Default
-                  }
-                  style={{
-                    width: 55,
-                    height: 55,
-                  }}
-                  contentFit="contain"
-                />
+                <View style={{ flex: 0, marginRight: 25 }}>
+                  <Image
+                    source={item.icon}
+                    style={{
+                      width: 80,
+                      height: 80,
+                    }}
+                    contentFit="contain"
+                  />
+                </View>
+                <View style={{ flex: 1, gap: 7 }}>
+                  <Text
+                    style={[
+                      styles.basicTextLeft,
+
+                      {
+                        fontFamily: "Nunito-SemiBold",
+                        fontSize: 22,
+                      },
+                    ]}
+                    numberOfLines={1}
+                  >
+                    {item.title}
+                  </Text>
+                  <View style={{ flexDirection: "row", gap: 7 }}>
+                    <InfoTag
+                      type="difficulty"
+                      data={item.difficulty}
+                      fontSize={12}
+                      c
+                    />
+                    <InfoTag type="time" data={item.time} fontSize={12} c />
+                    <InfoTag type="tags" data={item.tag} fontSize={12} c />
+                  </View>
+                </View>
               </View>
-              <View
-                style={{
-                  width: 1,
-                  height: "60%",
-                  backgroundColor: theme.dividerGrey,
-                  alignSelf: "center",
-                  borderRadius: 1,
-                  marginRight: 12,
-                }}
-              />
-            </View>
-          )}
-        />
+            )}
+          />
+        </View>
 
         <Pagination.Basic
           progress={progress}
@@ -226,7 +229,7 @@ export default function ExploreSection() {
             backgroundColor: "rgba(0,0,0,0.25)",
             borderRadius: 999,
           }}
-          containerStyle={{ gap: 6, marginTop: 8 }}
+          containerStyle={{ gap: 6, marginTop: 9 }}
           onPress={onPressPagination}
         />
       </View>

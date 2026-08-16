@@ -4,6 +4,7 @@ const icons3d: { [key: string]: any } = {
   Burrito: require(`@/assets/3dIcons/burrito.webp`),
   Cake: require(`@/assets/3dIcons/cake.webp`),
   Carrot: require(`@/assets/3dIcons/carrot.webp`),
+  Clock: require(`@/assets/3dIcons/clock.webp`),
   Coffee: require(`@/assets/3dIcons/coffee.webp`),
   Cookies: require(`@/assets/3dIcons/cookies.webp`),
   Croissant: require(`@/assets/3dIcons/croissant.webp`),
@@ -33,6 +34,7 @@ const icons3d: { [key: string]: any } = {
   SushiCaviar: require(`@/assets/3dIcons/sushi-caviar.webp`),
   Taco: require(`@/assets/3dIcons/taco.webp`),
   Trophy: require(`@/assets/3dIcons/trophy.webp`),
+  World: require(`@/assets/3dIcons/world.webp`),
   Peach: require(`@/assets/3dIcons/peach.webp`),
   Default: require(`@/assets/3dIcons/empty-plate.webp`),
 };
