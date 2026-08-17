@@ -7,8 +7,6 @@ import * as SplashScreen from "expo-splash-screen";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { storage } from "@/utils/storage";
-import FavoritesContext from "@/contexts/FavoritesContext";
-import FavLeftoversContext from "@/contexts/FavLeftoversContext";
 import SavedRecipesContext from "@/contexts/SavedRecipesContext";
 import MealsLeftContext from "@/contexts/MealsLeftContext";
 import AchievementsContext, {
@@ -51,8 +49,6 @@ export default function RootLayout() {
 function RootLayoutContent() {
   const theme = useTheme();
   const colorScheme = useColorScheme();
-  const [favorites, setFavorites] = useState<string[]>([]);
-  const [favoritesL, setFavoritesL] = useState<string[]>([]);
   const [savedRecipes, setSavedRecipes] = useState<RecipeData[]>([]);
   const [generationDetails, setGenerationDetails] = useState<GenerationDetails>(
     {
@@ -127,11 +123,6 @@ function RootLayoutContent() {
   });
 
   useEffect(() => {
-    const totalSaves = storage.getNumber("favsnumber") ?? 0;
-    storage.set("favsnumber", favorites.length + favoritesL.length);
-  });
-
-  useEffect(() => {
     storage.set("pantrynumber", pantryDetails.ingredients.length);
   });
 
@@ -153,27 +144,7 @@ function RootLayoutContent() {
   }, []);
 
   useEffect(() => {
-    const storedFavoritesString = storage.getString("favorites");
-    const storedFavoritesStringL = storage.getString("favoritesL");
     const storedSaved = storage.getString("saves");
-    if (storedFavoritesString) {
-      try {
-        const storedFavoritesArray = JSON.parse(storedFavoritesString);
-        setFavorites(storedFavoritesArray);
-      } catch (e) {
-        console.error("Failed to parse favorites from storage:", e);
-        setFavorites([]);
-      }
-    }
-    if (storedFavoritesStringL) {
-      try {
-        const storedFavoritesArray = JSON.parse(storedFavoritesStringL);
-        setFavoritesL(storedFavoritesArray);
-      } catch (e) {
-        console.error("Failed to parse favorites from storage:", e);
-        setFavoritesL([]);
-      }
-    }
     if (storedSaved) {
       try {
         const storedSavedArray = JSON.parse(storedSaved);
@@ -231,20 +202,16 @@ function RootLayoutContent() {
               <CheckedGroceryListContext.Provider
                 value={[checkedGroceryList, setCheckedGroceryList]}
               >
-                <FavoritesContext.Provider value={[favorites, setFavorites]}>
-                  <FavLeftoversContext.Provider
-                    value={[favoritesL, setFavoritesL]}
+                <SavedRecipesContext.Provider
+                  value={[savedRecipes, setSavedRecipes]}
+                >
+                  <MealsLeftContext.Provider
+                    value={[mealsLeft, setMealsLeft]}
                   >
-                    <SavedRecipesContext.Provider
-                      value={[savedRecipes, setSavedRecipes]}
-                    >
-                      <MealsLeftContext.Provider
-                        value={[mealsLeft, setMealsLeft]}
-                      >
-                      <AchievementsContext.Provider
-                        value={[achievements, setAchievements]}
-                      >
-                        <RecipeProvider>
+                  <AchievementsContext.Provider
+                    value={[achievements, setAchievements]}
+                  >
+                    <RecipeProvider>
                           <StatusBar
                             barStyle={
                               colorScheme === "dark"
@@ -311,12 +278,10 @@ function RootLayoutContent() {
                               currentOptions={currentOptions}
                             ></TrueSheetContent>
                           </TrueSheet>
-                        </RecipeProvider>
-                      </AchievementsContext.Provider>
-                      </MealsLeftContext.Provider>
-                    </SavedRecipesContext.Provider>
-                  </FavLeftoversContext.Provider>
-                </FavoritesContext.Provider>
+                    </RecipeProvider>
+                  </AchievementsContext.Provider>
+                  </MealsLeftContext.Provider>
+                </SavedRecipesContext.Provider>
               </CheckedGroceryListContext.Provider>
               </GroceryListContext.Provider>
               </PantryDetailsContext.Provider>

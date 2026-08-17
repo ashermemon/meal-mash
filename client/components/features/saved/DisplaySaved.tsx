@@ -2,87 +2,83 @@ import { Text, View } from "react-native";
 import React, { useContext } from "react";
 import { useStyles } from "@/styles/GlobalStyles";
 
-import FavIngredient from "@/components/features/saved/FavIngredient";
-import FavoritesContext from "@/contexts/FavoritesContext";
-import FavLeftoversContext from "@/contexts/FavLeftoversContext";
 import SavedRecipesContext from "@/contexts/SavedRecipesContext";
 import SavedCard from "@/components/features/saved/SavedCard";
 import { type RecipeData } from "@/contexts/RecipeContext";
+import { CustomIcon } from "@/icon-loader/icon-loader";
+import { useTheme } from "@/contexts/ColorSchemeContext";
 
 export default function DisplaySaved() {
   const styles = useStyles();
-  const [favorites, setFavorites] = useContext(FavoritesContext);
-  const [favoritesL, setFavoritesL] = useContext(FavLeftoversContext);
+
   const [saves, setSaves] = useContext(SavedRecipesContext);
+  const theme = useTheme();
 
   return (
-    <View style={{ width: "100%", paddingHorizontal: 20, paddingBottom: 30 }}>
-      {favorites.length === 0 &&
-        favoritesL.length === 0 &&
-        saves.length === 0 ? (
-        <Text style={[styles.textCentered]}>
-          Your saves and favorites will show up here.
-        </Text>
+    <View style={{ width: "100%", paddingBottom: 30, flex: 1 }}>
+      {saves.length === 0 ? (
+        <View
+          style={{
+            alignItems: "center",
+            gap: 13,
+            width: "100%",
+            height: "100%",
+            justifyContent: "center",
+            marginTop: 45,
+          }}
+        >
+          <CustomIcon
+            name="bookmark-add"
+            filled
+            color={theme.orangeAccent}
+            size={36}
+          />
+          <Text
+            style={[
+              styles.textCenterBold,
+              {
+                fontFamily: "Nunito-Bold",
+                fontSize: 20,
+                color: theme.basicText,
+              },
+            ]}
+          >
+            Nothing here yet
+          </Text>
+          <Text
+            style={[
+              styles.textCentered,
+              {
+                fontFamily: "Nunito-SemiBold",
+                fontSize: 15,
+                color: theme.placeholderText,
+                textAlign: "center",
+              },
+            ]}
+          >
+            Save some recipes and they'll show up here!
+          </Text>
+        </View>
       ) : (
         <>
-          <Text style={[styles.textCentered, { marginBottom: 10 }]}>
-            View favorited foods and saved recipes below! {"\n"} Click on a
-            saved recipe to view step-by-step instructions!
-          </Text>
           {saves.length !== 0 ? (
             <>
               <Text
+                adjustsFontSizeToFit
+                numberOfLines={1}
                 style={[
                   styles.textLeftBold,
-                  { marginTop: 15, marginBottom: 5 },
+                  { marginTop: 5, marginBottom: 25, fontSize: 20 },
                 ]}
               >
-                Saved Recipes:
+                Click on a saved recipe to make it!
               </Text>
 
-              {saves.map((item: RecipeData, index: number) => (
-                <SavedCard SavedRecipe={item} key={index}></SavedCard>
-              ))}
-            </>
-          ) : null}
-          {favoritesL.length !== 0 ? (
-            <>
-              <Text
-                style={[
-                  styles.textLeftBold,
-                  { marginTop: 15, marginBottom: 5 },
-                ]}
-              >
-                Favorite Leftovers:
-              </Text>
-
-              {favoritesL.map((item: string, index: number) => (
-                <FavIngredient
-                  leftover={true}
-                  ingredientName={item}
-                  key={index}
-                ></FavIngredient>
-              ))}
-            </>
-          ) : null}
-          {favorites.length !== 0 ? (
-            <>
-              <Text
-                style={[
-                  styles.textLeftBold,
-                  { marginTop: 15, marginBottom: 5 },
-                ]}
-              >
-                Favorite Ingredients:
-              </Text>
-
-              {favorites.map((item: string, index: number) => (
-                <FavIngredient
-                  leftover={false}
-                  ingredientName={item}
-                  key={index}
-                ></FavIngredient>
-              ))}
+              <View style={{ gap: 20 }}>
+                {saves.map((item: RecipeData, index: number) => (
+                  <SavedCard SavedRecipe={item} key={index}></SavedCard>
+                ))}
+              </View>
             </>
           ) : null}
         </>

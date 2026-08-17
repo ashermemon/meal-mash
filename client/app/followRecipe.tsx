@@ -17,7 +17,7 @@ import Svg, { Path } from "react-native-svg";
 import FollowRecipeHeader from "@/components/features/recipe/FollowRecipeHeader";
 import { router } from "expo-router";
 
-const MEAL_IMAGES: Record<string, any> = {
+export const MEAL_IMAGES: Record<string, any> = {
   burger: require("@/assets/images/meal-images/burger.webp"),
   pizza: require("@/assets/images/meal-images/pizza.webp"),
   pasta: require("@/assets/images/meal-images/pasta.webp"),
@@ -48,7 +48,7 @@ const followRecipe = () => {
     title: "Recipe Title",
     description:
       "A delicious and easy-to-make meal that is perfect for any occasion. Packed with flavor and nutrients, this recipe is sure to become a family favorite.",
-    difficulty: "Intermediate",
+    difficulty: "Moderate",
     time: "30 min",
     tags: ["Lunch", "Vegetarian"],
     servings: 2,
@@ -135,10 +135,15 @@ const followRecipe = () => {
             }}
           >
             <View
-              style={[styles.imageGlow, { width: 70, height: 70, borderRadius: 110 }]}
+              style={[
+                styles.imageGlow,
+                { width: 70, height: 70, borderRadius: 110 },
+              ]}
             >
               <Image
-                source={MEAL_IMAGES[recipeData.imageCategory] || MEAL_IMAGES.bowl}
+                source={
+                  MEAL_IMAGES[recipeData.imageCategory] || MEAL_IMAGES.bowl
+                }
                 style={{ width: "100%", height: "100%", borderRadius: 110 }}
                 contentFit="cover"
               />
@@ -147,7 +152,7 @@ const followRecipe = () => {
               <Text
                 numberOfLines={1}
                 adjustsFontSizeToFit
-                style={[styles.textCenterBold, { fontSize: 23 }]}
+                style={[styles.textLeftBold, { fontSize: 23 }]}
               >
                 {recipeData.title}
               </Text>

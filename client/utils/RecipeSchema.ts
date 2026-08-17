@@ -23,7 +23,7 @@ export const RecipeSchema = {
     description: { type: Type.STRING },
     difficulty: {
       type: Type.STRING,
-      enum: ["Easy", "Intermediate", "Expert"],
+      enum: ["Easy", "Moderate", "Expert"],
     },
     time: { type: Type.STRING },
     servings: { type: Type.NUMBER },

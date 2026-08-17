@@ -44,7 +44,7 @@ const GeneratorDetails = (props: Props) => {
     "Select Specific Ingredients",
     "Any Ingredients",
   ];
-  const difficultyLabels = ["Easy", "Intermediate", "Expert"];
+  const difficultyLabels = ["Easy", "Moderate", "Expert"];
   const timeLabels = ["<15m", "~30m", "1hr+"];
   const [recipeData, setRecipeData] = useContext(RecipeContext);
 

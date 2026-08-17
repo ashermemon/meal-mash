@@ -54,21 +54,6 @@ const createStyles = (NEWCOLORS, COLORS, isDark) =>
       color: NEWCOLORS.basicText,
       fontSize: 17,
     },
-    counterBtn: {
-      alignItems: "center",
-      alignSelf: "center",
-      justifyContent: "center",
-      backgroundColor: COLORS.greenButtonColor,
-      borderColor: COLORS.greenButtonColorOuline,
-      borderWidth: 3,
-
-      marginTop: 20,
-
-      height: 50,
-      width: 100,
-
-      borderRadius: 10,
-    },
     errorText: {
       color: NEWCOLORS.redAccent,
     },
@@ -103,49 +88,11 @@ const createStyles = (NEWCOLORS, COLORS, isDark) =>
       marginHorizontal: 10,
     },
 
-    ingredientEmoji: {
-      width: 30,
-      height: 30,
-    },
-
-    emojiWrapCard: {
-      borderWidth: 3,
-      padding: 10,
-      borderRadius: 100,
-      marginLeft: 15,
-      marginRight: 10,
-    },
-    ingredientFlexCard: {
-      padding: 10,
-      alignItems: "flex-start",
-      justifyContent: "center",
-    },
     favFlex: {
       flex: 1,
       paddingRight: 25,
       alignItems: "flex-end",
       justifyContent: "center",
-    },
-    favoritedContainer: {
-      borderWidth: 3,
-      backgroundColor: NEWCOLORS.cardWhite,
-
-      borderRadius: 30,
-
-      paddingVertical: 15,
-      width: "100%",
-      marginTop: 10,
-    },
-    favRecipe: {
-      borderColor: COLORS.genBorder,
-      borderWidth: 3,
-      backgroundColor: NEWCOLORS.cardWhite,
-
-      borderRadius: 30,
-
-      paddingVertical: 15,
-      width: "100%",
-      marginTop: 10,
     },
     nutrientCircle: {
       alignItems: "center",
@@ -185,17 +132,6 @@ const createStyles = (NEWCOLORS, COLORS, isDark) =>
       justifyContent: "center",
     },
 
-    profileHeader: {
-      backgroundColor: COLORS.greenButtonColor,
-
-      width: "100%",
-      borderColor: COLORS.greenButtonColorOuline,
-
-      borderBottomWidth: 10,
-
-      flexDirection: "row",
-      justifyContent: "space-between",
-    },
     pfp: {
       height: 80,
       width: 80,
@@ -435,6 +371,15 @@ const createStyles = (NEWCOLORS, COLORS, isDark) =>
       flex: 1,
       borderRadius: 15,
       backgroundColor: NEWCOLORS.blueBlock,
+    },
+    saveTag: {
+      borderTopLeftRadius: 10,
+      borderBottomLeftRadius: 10,
+      padding: 2,
+      justifyContent: "center",
+      height: 19,
+      width: 60,
+      paddingLeft: 4,
     },
   });
 

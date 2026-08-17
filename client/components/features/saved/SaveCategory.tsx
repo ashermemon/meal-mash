@@ -4,6 +4,7 @@ import { useStyles } from "@/styles/auth.styles";
 import { useTheme } from "@/contexts/ColorSchemeContext";
 import { Image } from "expo-image";
 import icons3d from "@/components/universal/3dIcons";
+import { router } from "expo-router";
 
 type Props = {
   title: string;
@@ -15,7 +16,7 @@ const SaveCategory = (props: Props) => {
   const styles = useStyles();
   return (
     <Pressable
-      onPress={() => []}
+      onPress={() => router.navigate("/saves")}
       style={{
         width: "45%",
 

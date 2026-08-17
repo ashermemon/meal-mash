@@ -18,15 +18,15 @@ const featuredRecipes = [
     id: "1",
     title: "Salad Mix Bowl",
     tag: "Lunch",
-    time: "25m",
-    difficulty: "Intermediate",
+    time: "25 m",
+    difficulty: "Moderate",
     icon: require("@/assets/images/meal-images/salad.webp"),
   },
   {
     id: "2",
     title: "Fish Tacos",
     tag: "Lunch",
-    time: "55m",
+    time: "55 m",
 
     difficulty: "Expert",
     icon: require("@/assets/images/meal-images/taco.webp"),
@@ -35,7 +35,7 @@ const featuredRecipes = [
     id: "3",
     title: "Chicken Sliders",
     tag: "Lunch",
-    time: "1hr 30m",
+    time: "1 hr 30 m",
 
     difficulty: "Easy",
     icon: require("@/assets/images/meal-images/burger.webp"),
@@ -269,7 +269,7 @@ export default function ExploreSection() {
           <Block
             title="Saved Recipes"
             color={isDark ? theme.greenBlock : theme.greenAccent}
-            link="../saves"
+            link="../saveshome"
             icon="RecipeBook"
           />
         </View>

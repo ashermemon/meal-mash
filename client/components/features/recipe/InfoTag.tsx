@@ -34,7 +34,7 @@ export const difficultyShape = (
     );
   }
 
-  if (difficulty === "intermediate") {
+  if (difficulty === "moderate") {
     return (
       <View
         style={{

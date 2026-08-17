@@ -19,12 +19,13 @@ const SavesHome = (props: Props) => {
   const [query, setQuery] = useState("");
   const navigation = useNavigation();
   const categories = [
-    { title: "Made With Leftovers", image: "Pizza" },
-    { title: "Sweet Treats", image: "Cake" },
-    { title: "Quick Snacks", image: "Cookies" },
-    { title: "Under 15 Minutes", image: "Clock" },
-    { title: "Solid Meals", image: "Burger" },
-    { title: "Breakfast Recipes", image: "EggAndBacon" },
+    // filters
+    { title: "Made With Leftovers", image: "Pizza" }, //uses any prepared ingredients
+    { title: "Tasty Meals", image: "Burger" }, //all marked breakfast/lunch/dinner
+    { title: "Sweet Treats", image: "Cake" }, //anything marked dessert
+    { title: "Quick Snacks", image: "Cookies" }, //anything marked snack/side
+    { title: "Under 15 Minutes", image: "Clock" }, //anything that takes less than 15 minutes
+    { title: "All Recipes", image: "SushiCaviar" }, //everything
   ];
 
   const [results, setResults] = useState<RecipeData[]>([]);

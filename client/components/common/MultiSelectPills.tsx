@@ -54,7 +54,7 @@ const MultiSelectPills = (props: Props) => {
                 ? props.diff
                   ? label === "Easy"
                     ? { backgroundColor: theme.greenBlock }
-                    : label === "Intermediate"
+                    : label === "Moderate"
                       ? { backgroundColor: theme.blueBlock }
                       : { backgroundColor: theme.redBlock }
                   : { backgroundColor: theme.greenAccent }
