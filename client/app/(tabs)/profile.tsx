@@ -255,7 +255,17 @@ export default function Profile() {
                   marginTop: 15,
                 }}
               >
-                <View style={styles.pfp}></View>
+                <Pressable
+                  style={styles.pfp}
+                  onPress={editMode ? () => "" : () => ""}
+                >
+                  <CustomIcon
+                    name={editMode ? "camera-2" : "user-2"}
+                    filled
+                    size={editMode ? 40 : 47}
+                    color={editMode ? theme.pillX : theme.placeholderText}
+                  ></CustomIcon>
+                </Pressable>
                 <View style={{ flex: 1, gap: 10 }}>
                   <View
                     style={{ height: 32, justifyContent: "center" }}

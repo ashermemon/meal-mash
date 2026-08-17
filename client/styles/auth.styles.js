@@ -136,7 +136,8 @@ const createStyles = (NEWCOLORS, COLORS, isDark) =>
       height: 80,
       width: 80,
       backgroundColor: NEWCOLORS.lightGrey,
-
+      justifyContent: "center",
+      alignItems: "center",
       borderRadius: 200,
     },
 
