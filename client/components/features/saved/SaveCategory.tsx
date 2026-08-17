@@ -5,6 +5,7 @@ import { useTheme } from "@/contexts/ColorSchemeContext";
 import { Image } from "expo-image";
 import icons3d from "@/components/universal/3dIcons";
 import { router } from "expo-router";
+import { storage } from "@/utils/storage";
 
 type Props = {
   title: string;
@@ -39,7 +40,7 @@ const SaveCategory = (props: Props) => {
         {props.title}
       </Text>
       <Text style={[styles.basicTextLeft, { fontSize: 12, marginTop: 1 }]}>
-        101 Saved
+        {storage.getNumber("savesnumber")} Saved
       </Text>
     </Pressable>
   );

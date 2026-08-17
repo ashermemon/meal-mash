@@ -37,6 +37,9 @@ export const RecipeSchema = {
       },
       required: ["protein", "fat", "carbs"],
     },
+    categories: {
+      //add the t/f logic here where the ai says if each category matches (made with leftovers, tasty meals, sweet treats, etc...)
+    },
     ingredients: {
       type: Type.ARRAY,
       items: {

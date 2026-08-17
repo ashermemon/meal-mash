@@ -74,6 +74,7 @@ ${
 ${props.generationType === 2 ? `Dietary Restrictions: ${props.dietaryPreference}` : ``} `
 }
 
+
 CULINARY GUIDELINES:
 1. Incorporate the provided ingredients naturally.
 2. Assume the user has basic kitchen staples like salt, pepper, cooking oil, and standard pots/pans.
@@ -87,5 +88,6 @@ CULINARY GUIDELINES:
 10. Tips: Provide 3 genuinely helpful cooking tips for this recipe.
 11. Difficulty: Repeat the user-inputted recipe difficulty/complexity level.
 12. Time: Specify a realistic total cooking duration, e.g., "15 mins", "40 mins", or "1 hr 15 mins". Ensure the duration is near/within the inputted time range.
-13. Nutrients: Estimate realistic nutritional values per serving (protein, fat, and carbs in grams) as integers.`;
+13. Nutrients: Estimate realistic nutritional values per serving (protein, fat, and carbs in grams) as integers.
+14. Categories: Answer true to categories that fit and are true for the recipe. Answer false if the recipe does not fall under this category.`;
 }

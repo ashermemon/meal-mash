@@ -24,7 +24,7 @@ export default function DisplaySaved() {
             width: "100%",
             height: "100%",
             justifyContent: "center",
-            marginTop: 45,
+            marginTop: -25,
           }}
         >
           <CustomIcon
