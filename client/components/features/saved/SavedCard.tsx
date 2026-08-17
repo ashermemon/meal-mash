@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Alert, Pressable, StyleSheet, Text, View } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { useStyles } from "@/styles/GlobalStyles";
 import { useTheme } from "@/contexts/ColorSchemeContext";
@@ -37,13 +37,26 @@ export default function SavedCard(props: SavedProps) {
   }, [props.SavedRecipe, savesRecipes]);
 
   const saveCard = () => {
-    saveRecipe(props.SavedRecipe, setSavesRecipes);
+    const wasSaved = saved;
+    const recipeToRestore = props.SavedRecipe;
+    saveRecipe(recipeToRestore, setSavesRecipes);
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-    alert(
-      `${props.SavedRecipe.title ? props.SavedRecipe.title.trim() : "Recipe"} was ${
-        saved ? `removed from saves.` : `saved.`
-      }`,
-    );
+
+    const title = props.SavedRecipe.title
+      ? props.SavedRecipe.title.trim()
+      : "Recipe";
+
+    if (wasSaved) {
+      Alert.alert("Removed from Saves", `${title} was removed from saves.`, [
+        { text: "OK", style: "cancel" },
+        {
+          text: "Undo",
+          onPress: () => saveRecipe(recipeToRestore, setSavesRecipes),
+        },
+      ]);
+    } else {
+      Alert.alert("Saved", `${title} was saved.`);
+    }
   };
   const displayTime = props.SavedRecipe.time.replace(
     /\b(min|mins|minute|minutes)\b/gi,

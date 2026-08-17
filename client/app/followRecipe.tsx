@@ -407,7 +407,7 @@ const followRecipe = () => {
                 { color: theme.pureWhite, fontSize: 18 },
               ]}
             >
-              ← Return to Swiping
+              ← Return
             </Text>
           </Pressable>
         </RecipeSection>
