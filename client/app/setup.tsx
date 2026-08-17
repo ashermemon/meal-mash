@@ -293,7 +293,6 @@ const SetupScreen = (props: Props) => {
                 <EmojiButton
                   emoji={currentEmojiText}
                   onEmojiChange={setCurrentEmojiText}
-                  fontSize={keyboardOpen ? 70 : 100}
                   iconSize={keyboardOpen ? 100 : 140}
                   style={[
                     styles.emojiCircle,

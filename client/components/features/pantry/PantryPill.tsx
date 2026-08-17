@@ -63,10 +63,9 @@ const PantryPill = (props: Props) => {
           <EmojiButton
             emoji={pantryDetails.icon}
             editable={rename}
-            fontSize={18}
-            iconSize={22}
-            onEmojiChange={(newEmoji) =>
-              setPantryDetails((prev) => ({ ...prev, icon: newEmoji }))
+            iconSize={32}
+            onEmojiChange={(newIcon) =>
+              setPantryDetails((prev) => ({ ...prev, icon: newIcon }))
             }
           />
 

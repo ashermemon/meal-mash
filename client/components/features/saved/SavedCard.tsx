@@ -3,7 +3,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { useStyles } from "@/styles/GlobalStyles";
 import { useTheme } from "@/contexts/ColorSchemeContext";
 import { Image } from "expo-image";
-import emojiImages from "@/components/universal/EmojiImages";
 import * as Haptics from "expo-haptics";
 import SavedRecipesContext from "@/contexts/SavedRecipesContext";
 import Animated, {

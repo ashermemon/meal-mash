@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { useStyles } from "@/styles/GlobalStyles";
 import { useTheme, useIsDarkMode } from "@/contexts/ColorSchemeContext";
 import { router } from "expo-router";
-import emojiImages from "@/components/universal/EmojiImages";
 import icons3d from "@/components/universal/3dIcons";
 import { Image } from "expo-image";
 import { useSharedValue } from "react-native-reanimated";

@@ -4,7 +4,6 @@ import { useStyles } from "@/styles/GlobalStyles";
 import { useTheme } from "@/contexts/ColorSchemeContext";
 import { FlashList } from "@shopify/flash-list";
 import { Image } from "expo-image";
-import emojiImages from "@/components/universal/EmojiImages";
 import { router } from "expo-router";
 import RecipeContext from "@/contexts/RecipeContext";
 import * as Haptics from "expo-haptics";
