@@ -6,9 +6,10 @@ import { LinearGradient } from "expo-linear-gradient";
 import * as Haptics from "expo-haptics";
 import { useTheme } from "@/contexts/ColorSchemeContext";
 import { hexToRgba } from "@/utils/color";
-import { useNavigation } from "expo-router";
+import { useNavigation, useLocalSearchParams } from "expo-router";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { type RecipeCategories } from "@/contexts/RecipeContext";
 
 type Props = {};
 
@@ -16,6 +17,10 @@ const saves = (props: Props) => {
   const styles = useStyles();
   const theme = useTheme();
   const navigation = useNavigation();
+  const { filter, filterTitle } = useLocalSearchParams<{
+    filter?: "all" | keyof RecipeCategories;
+    filterTitle?: string;
+  }>();
   return (
     <>
       <SafeAreaView
@@ -66,7 +71,16 @@ const saves = (props: Props) => {
             }}
           >
             <View style={styles.container}>
-              <DisplaySaved></DisplaySaved>
+              <Text
+                style={[
+                  styles.textLeftBold,
+                  { marginTop: 0, marginBottom: 15, fontSize: 20 },
+                ]}
+              >
+                {filterTitle}
+              </Text>
+
+              <DisplaySaved filter={filter}></DisplaySaved>
             </View>
           </View>
         </ScrollView>

@@ -52,6 +52,13 @@ const followRecipe = () => {
     time: "30 min",
     tags: ["Lunch", "Vegetarian"],
     servings: 2,
+    categories: {
+      madeWithLeftovers: false,
+      tastyMeals: true,
+      sweetTreats: false,
+      quickSnacks: false,
+      under15Minutes: false,
+    },
     ingredients: [
       ["1.5 tbsp", "olive oil"],
       ["2 cloves", "garlic, minced"],

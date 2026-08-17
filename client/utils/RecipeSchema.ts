@@ -38,7 +38,38 @@ export const RecipeSchema = {
       required: ["protein", "fat", "carbs"],
     },
     categories: {
-      //add the t/f logic here where the ai says if each category matches (made with leftovers, tasty meals, sweet treats, etc...)
+      type: Type.OBJECT,
+      properties: {
+        madeWithLeftovers: {
+          type: Type.BOOLEAN,
+          description:
+            "True if the recipe uses any leftovers (leftover/prepared ingredients).",
+        },
+        tastyMeals: {
+          type: Type.BOOLEAN,
+          description:
+            "True if the recipe is a full meal (breakfast, lunch, or dinner).",
+        },
+        sweetTreats: {
+          type: Type.BOOLEAN,
+          description: "True if the recipe is a sweet dish or a dessert.",
+        },
+        quickSnacks: {
+          type: Type.BOOLEAN,
+          description: "True if the recipe is a quick snack or side",
+        },
+        under15Minutes: {
+          type: Type.BOOLEAN,
+          description: "True if the recipe's total time is 15 minutes or less.",
+        },
+      },
+      required: [
+        "madeWithLeftovers",
+        "tastyMeals",
+        "sweetTreats",
+        "quickSnacks",
+        "under15Minutes",
+      ],
     },
     ingredients: {
       type: Type.ARRAY,
@@ -84,6 +115,7 @@ export const RecipeSchema = {
     "servings",
     "tags",
     "nutrients",
+    "categories",
     "ingredients",
     "instructions",
     "tips",

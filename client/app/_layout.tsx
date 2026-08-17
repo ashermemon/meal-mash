@@ -148,6 +148,13 @@ function RootLayoutContent() {
     if (storedSaved) {
       try {
         const storedSavedArray = JSON.parse(storedSaved);
+        const defaultCategories = {
+          madeWithLeftovers: false,
+          tastyMeals: false,
+          sweetTreats: false,
+          quickSnacks: false,
+          under15Minutes: false,
+        };
         const normalizedSaves = storedSavedArray.map((item: any) => {
           if (typeof item === "string") {
             return {
@@ -159,12 +166,13 @@ function RootLayoutContent() {
               servings: null,
               nutrients: [0, 0, 0],
               tags: [],
+              categories: defaultCategories,
               ingredients: [],
               instructions: [],
               tips: [],
             };
           }
-          return item;
+          return { categories: defaultCategories, ...item };
         });
         setSavedRecipes(normalizedSaves);
       } catch (e) {

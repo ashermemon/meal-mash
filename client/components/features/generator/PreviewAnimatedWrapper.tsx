@@ -259,6 +259,13 @@ const PreviewAnimatedWrapper = (props: Props) => {
             Number(parsedRecipe.nutrients?.carbs) || 0,
           ],
           tags: parsedRecipe.tags,
+          categories: {
+            madeWithLeftovers: !!parsedRecipe.categories?.madeWithLeftovers,
+            tastyMeals: !!parsedRecipe.categories?.tastyMeals,
+            sweetTreats: !!parsedRecipe.categories?.sweetTreats,
+            quickSnacks: !!parsedRecipe.categories?.quickSnacks,
+            under15Minutes: !!parsedRecipe.categories?.under15Minutes,
+          },
           ingredients: parsedRecipe.ingredients,
           instructions: parsedRecipe.instructions,
           tips: parsedRecipe.tips,

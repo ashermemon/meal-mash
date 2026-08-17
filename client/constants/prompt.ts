@@ -89,5 +89,5 @@ CULINARY GUIDELINES:
 11. Difficulty: Repeat the user-inputted recipe difficulty/complexity level.
 12. Time: Specify a realistic total cooking duration, e.g., "15 mins", "40 mins", or "1 hr 15 mins". Ensure the duration is near/within the inputted time range.
 13. Nutrients: Estimate realistic nutritional values per serving (protein, fat, and carbs in grams) as integers.
-14. Categories: Answer true to categories that fit and are true for the recipe. Answer false if the recipe does not fall under this category.`;
+14. Categories: For each category below, answer true if the recipe fits, false otherwise. A recipe can be true for multiple categories at once.`;
 }

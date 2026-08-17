@@ -12,6 +12,14 @@ export type RecipeInstruction = {
   timerTask?: string;
 };
 
+export type RecipeCategories = {
+  madeWithLeftovers: boolean;
+  tastyMeals: boolean;
+  sweetTreats: boolean;
+  quickSnacks: boolean;
+  under15Minutes: boolean;
+};
+
 export type RecipeData = {
   id?: string;
   prompt?: string;
@@ -23,6 +31,7 @@ export type RecipeData = {
   servings: number | null;
   nutrients: number[];
   tags: string[];
+  categories: RecipeCategories;
   ingredients: [string, string][];
   instructions: RecipeInstruction[];
   tips: string[];
@@ -45,6 +54,13 @@ export const initialRecipeData: RecipeData = {
   servings: null,
   nutrients: [0, 0, 0],
   tags: [],
+  categories: {
+    madeWithLeftovers: false,
+    tastyMeals: false,
+    sweetTreats: false,
+    quickSnacks: false,
+    under15Minutes: false,
+  },
   ingredients: [],
   instructions: [],
   tips: [],

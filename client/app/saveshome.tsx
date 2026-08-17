@@ -20,13 +20,13 @@ const SavesHome = (props: Props) => {
   const navigation = useNavigation();
   const categories = [
     // filters
-    { title: "Made With Leftovers", image: "Pizza" }, //uses any prepared ingredients
-    { title: "Tasty Meals", image: "Burger" }, //all marked breakfast/lunch/dinner
-    { title: "Sweet Treats", image: "Cake" }, //anything marked dessert
-    { title: "Quick Snacks", image: "Cookies" }, //anything marked snack/side
-    { title: "Under 15 Minutes", image: "Clock" }, //anything that takes less than 15 minutes
-    { title: "All Recipes", image: "SushiCaviar" }, //everything
-  ];
+    { title: "Made With Leftovers", image: "Pizza", filter: "madeWithLeftovers" }, //uses any prepared ingredients
+    { title: "Tasty Meals", image: "Burger", filter: "tastyMeals" }, //all marked breakfast/lunch/dinner
+    { title: "Sweet Treats", image: "Cake", filter: "sweetTreats" }, //anything marked dessert
+    { title: "Quick Snacks", image: "Cookies", filter: "quickSnacks" }, //anything marked snack/side
+    { title: "Under 15 Minutes", image: "Clock", filter: "under15Minutes" }, //anything that takes less than 15 minutes
+    { title: "All Recipes", image: "SushiCaviar", filter: "all" }, //everything
+  ] as const;
 
   const [results, setResults] = useState<RecipeData[]>([]);
   function handleSearch(text: string) {
@@ -118,6 +118,7 @@ const SavesHome = (props: Props) => {
               <SaveCategory
                 title={item.title}
                 image={item.image}
+                filter={item.filter}
                 key={index}
               ></SaveCategory>
             ))}

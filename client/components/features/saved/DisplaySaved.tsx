@@ -4,15 +4,27 @@ import { useStyles } from "@/styles/GlobalStyles";
 
 import SavedRecipesContext from "@/contexts/SavedRecipesContext";
 import SavedCard from "@/components/features/saved/SavedCard";
-import { type RecipeData } from "@/contexts/RecipeContext";
+import {
+  type RecipeData,
+  type RecipeCategories,
+} from "@/contexts/RecipeContext";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import { useTheme } from "@/contexts/ColorSchemeContext";
 
-export default function DisplaySaved() {
+type Props = {
+  filter?: "all" | keyof RecipeCategories;
+};
+
+export default function DisplaySaved({ filter }: Props) {
   const styles = useStyles();
 
-  const [saves, setSaves] = useContext(SavedRecipesContext);
+  const [allSaves, setSaves] = useContext(SavedRecipesContext);
   const theme = useTheme();
+
+  const saves =
+    !filter || filter === "all"
+      ? allSaves
+      : allSaves.filter((recipe) => recipe.categories?.[filter]);
 
   return (
     <View style={{ width: "100%", paddingBottom: 30, flex: 1 }}>
@@ -56,7 +68,9 @@ export default function DisplaySaved() {
               },
             ]}
           >
-            Save some recipes and they'll show up here!
+            {filter && filter !== "all"
+              ? "No saved recipes match this category yet."
+              : "Save some recipes and they'll show up here!"}
           </Text>
         </View>
       ) : (
@@ -67,8 +81,13 @@ export default function DisplaySaved() {
                 adjustsFontSizeToFit
                 numberOfLines={1}
                 style={[
-                  styles.textLeftBold,
-                  { marginTop: 5, marginBottom: 25, fontSize: 20 },
+                  styles.textLeftSemiBold,
+                  {
+                    marginTop: 5,
+                    marginBottom: 25,
+                    fontSize: 18,
+                    fontFamily: "Nunito-Medium",
+                  },
                 ]}
               >
                 Click on a saved recipe to make it!
