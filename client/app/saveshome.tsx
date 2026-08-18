@@ -1,26 +1,25 @@
-import { View, Text, TextInput, Pressable } from "react-native";
-import React, { useState } from "react";
+import { View, Text, TextInput, Pressable, FlatList } from "react-native";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import Search from "@/components/features/pantry/Search";
 import { styles, useStyles } from "@/styles/auth.styles";
 import DisplaySaved from "@/components/features/saved/DisplaySaved";
 import { useTheme } from "@/contexts/ColorSchemeContext";
 import * as Haptics from "expo-haptics";
 import { CustomIcon } from "@/icon-loader/icon-loader";
-import { RecipeData } from "@/contexts/RecipeContext";
+import SavedRecipesContext from "@/contexts/SavedRecipesContext";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "expo-router";
 import SaveCategory from "@/components/features/saved/SaveCategory";
+import SavedCard from "@/components/features/saved/SavedCard";
 
-type Props = {};
-
-const SavesHome = (props: Props) => {
-  const styles = useStyles();
-  const theme = useTheme();
-  const [query, setQuery] = useState("");
-  const navigation = useNavigation();
+const CategoriesDisplay = () => {
   const categories = [
     // filters
-    { title: "Made With Leftovers", image: "Pizza", filter: "madeWithLeftovers" }, //uses any prepared ingredients
+    {
+      title: "Made With Leftovers",
+      image: "Pizza",
+      filter: "madeWithLeftovers",
+    }, //uses any prepared ingredients
     { title: "Tasty Meals", image: "Burger", filter: "tastyMeals" }, //all marked breakfast/lunch/dinner
     { title: "Sweet Treats", image: "Cake", filter: "sweetTreats" }, //anything marked dessert
     { title: "Quick Snacks", image: "Cookies", filter: "quickSnacks" }, //anything marked snack/side
@@ -28,11 +27,51 @@ const SavesHome = (props: Props) => {
     { title: "All Recipes", image: "SushiCaviar", filter: "all" }, //everything
   ] as const;
 
-  const [results, setResults] = useState<RecipeData[]>([]);
-  function handleSearch(text: string) {
-    setQuery(text);
-    //show results
-  }
+  return (
+    <View
+      style={{
+        flex: 1,
+        flexDirection: "row",
+        flexWrap: "wrap",
+        justifyContent: "space-between",
+        alignContent: "space-between",
+        paddingBottom: 20,
+      }}
+    >
+      {categories.map((item, index: number) => (
+        <SaveCategory
+          title={item.title}
+          image={item.image}
+          filter={item.filter}
+          key={index}
+        ></SaveCategory>
+      ))}
+    </View>
+  );
+};
+
+const SavesHome = () => {
+  const styles = useStyles();
+  const theme = useTheme();
+  const [query, setQuery] = useState("");
+  const [debouncedQuery, setDebouncedQuery] = useState("");
+  const navigation = useNavigation();
+  const [savedRecipes] = useContext(SavedRecipesContext);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => setDebouncedQuery(query), 300);
+    return () => clearTimeout(timeout);
+  }, [query]);
+
+  const filteredRecipes = useMemo(() => {
+    if (!debouncedQuery) return savedRecipes;
+    const query1 = debouncedQuery.toLowerCase();
+    return savedRecipes.filter((item) => {
+      const title1 = item.title?.toLowerCase() || "";
+      return title1.includes(query1);
+    });
+  }, [debouncedQuery, savedRecipes]);
+
   return (
     <>
       <SafeAreaView style={{ flex: 1, backgroundColor: theme.nestedBG }}>
@@ -88,7 +127,7 @@ const SavesHome = (props: Props) => {
               autoCorrect={true}
               maxLength={32}
               value={query}
-              onChangeText={handleSearch}
+              onChangeText={(text) => setQuery(text)}
               style={[
                 {
                   flex: 1,
@@ -104,25 +143,28 @@ const SavesHome = (props: Props) => {
             />
           </View>
 
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              flexWrap: "wrap",
-              justifyContent: "space-between",
-              alignContent: "space-between",
-              paddingBottom: 20,
-            }}
-          >
-            {categories.map((item, index: number) => (
-              <SaveCategory
-                title={item.title}
-                image={item.image}
-                filter={item.filter}
-                key={index}
-              ></SaveCategory>
-            ))}
-          </View>
+          {debouncedQuery ? (
+            <FlatList
+              data={filteredRecipes}
+              keyExtractor={(item, index) => item.id ?? index.toString()}
+              renderItem={({ item }) => (
+                <SavedCard SavedRecipe={item}></SavedCard>
+              )}
+              ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
+              ListEmptyComponent={
+                <Text
+                  style={[
+                    styles.textCentered,
+                    { color: theme.placeholderText, marginTop: 0 },
+                  ]}
+                >
+                  No saved recipes match "{debouncedQuery}".
+                </Text>
+              }
+            />
+          ) : (
+            <CategoriesDisplay />
+          )}
         </View>
       </SafeAreaView>
     </>
