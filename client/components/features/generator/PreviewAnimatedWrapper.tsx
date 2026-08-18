@@ -26,6 +26,7 @@ import { storage } from "@/utils/storage";
 import { router } from "expo-router";
 import { PantryDetailsContext } from "@/contexts/PantryDetails";
 import { BrowseIngredientsContext } from "@/contexts/BrowseIngredientsContext";
+import { trackRecipeGenerated, trackMealMade } from "@/utils/achievements";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
@@ -66,6 +67,7 @@ const SwipableCard = ({
 
   const makeRecipe = () => {
     if (!isSwipingRef.current) {
+      if (recipe) trackMealMade(recipe);
       router.navigate("/followRecipe");
     }
   };
@@ -212,6 +214,12 @@ const PreviewAnimatedWrapper = (props: Props) => {
     setIsPreFetching(true);
     try {
       const nextConstraints = generateConstraints();
+      const pickedCuisine =
+        generationDetails.cuisine.length > 0
+          ? generationDetails.cuisine[
+              Math.floor(Math.random() * generationDetails.cuisine.length)
+            ]
+          : "Any";
       const nextPrompt = Prompt({
         pantryDetails: pantryDetails,
         browseIngredients: browseIngredients,
@@ -226,7 +234,7 @@ const PreviewAnimatedWrapper = (props: Props) => {
         recipeTime: generationDetails.recipeTime,
         numberOfServings: generationDetails.numberOfServings,
         mealType: generationDetails.mealType,
-        cuisine: generationDetails.cuisine,
+        cuisine: [pickedCuisine],
         dietaryPreference: generationDetails.dietaryPreference,
         portalCategory: generationDetails.portalCategory || undefined,
       });
@@ -275,6 +283,7 @@ const PreviewAnimatedWrapper = (props: Props) => {
 
         const totalMeals = storage.getNumber("mealsnumber") ?? 0;
         storage.set("mealsnumber", totalMeals + 1);
+        trackRecipeGenerated(newRecipe, pickedCuisine);
 
         setRecipeQueue((prevQueue) => {
           if (

@@ -26,6 +26,7 @@ import {
   useTheme,
 } from "@/contexts/ColorSchemeContext";
 import { router } from "expo-router";
+import { useFocusEffect } from "@react-navigation/native";
 import AchievementsContext, {
   AchievementData,
 } from "@/contexts/AchievementsContext";
@@ -49,7 +50,6 @@ export default function Profile() {
   const [achievements, setAchievements] = useContext(AchievementsContext);
   const { toggleColorScheme } = useToggleColorScheme();
 
-  const unlockedAchievementIds = getUnlockedAchievementIds();
   const resetData = () => {
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
     Alert.alert(
@@ -80,72 +80,75 @@ export default function Profile() {
     );
   };
 
-  const availableAchievements: AchievementData[] = [
-    {
-      id: "first-mash",
-      title: "First Mash",
-      description: "Make your first meal with MealMash",
-      emoji: "Medal",
-      color: theme.yellowBlock,
-      unlocked: unlockedAchievementIds.includes("first-mash"),
-    },
-    {
-      id: "sweet-tooth",
-      title: "Sweet Tooth",
-      description: "Generate 10 dessert recipes",
-      emoji: "Popsicle",
-      color: theme.orangeBlock,
-      unlocked: unlockedAchievementIds.includes("sweet-tooth"),
-    },
-    {
-      id: "world-tour",
-      title: "World Tour",
-      description: "Generate recipes from 5 different cuisines",
-      emoji: "World",
-      color: theme.blueBlock,
-      unlocked: unlockedAchievementIds.includes("world-tour"),
-    },
-    {
-      id: "the-cookbook",
-      title: "The Cookbook",
-      description: "Save 50 generated recipes",
-      emoji: "RecipeBook",
-      color: theme.greenBlock,
-      unlocked: unlockedAchievementIds.includes("the-cookbook"),
-    },
-    {
-      id: "late-night-snack",
-      title: "Late-Night Snack",
-      description: "Create a recipe after 10pm",
-      emoji: "Clock",
-      color: theme.purpblueBlock,
-      unlocked: unlockedAchievementIds.includes("late-night-snack"),
-    },
-    {
-      id: "leftover-legend",
-      title: "Leftover Legend",
-      description: "Make 25 meals with leftovers",
-      emoji: "HotDog",
-      color: theme.orangeBlock,
-      unlocked: unlockedAchievementIds.includes("leftover-legend"),
-    },
-    {
-      id: "on-fire",
-      title: "On Fire",
-      description: "Generate a recipe 7 days in a row",
-      emoji: "Fire",
-      color: theme.redBlock,
-      unlocked: unlockedAchievementIds.includes("on-fire"),
-    },
-    {
-      id: "century",
-      title: "Century",
-      description: "Make 100 meals",
-      emoji: "Trophy",
-      color: theme.greenBlock,
-      unlocked: unlockedAchievementIds.includes("century"),
-    },
-  ];
+  const buildAvailableAchievements = (): AchievementData[] => {
+    const unlockedIds = getUnlockedAchievementIds();
+    return [
+      {
+        id: "first-mash",
+        title: "First Mash",
+        description: "Make your first meal with MealMash", // unlocked when a meal is made for the first time (follow a recipe)
+        emoji: "Medal",
+        color: theme.yellowBlock,
+        unlocked: unlockedIds.includes("first-mash"),
+      },
+      {
+        id: "sweet-tooth",
+        title: "Sweet Tooth",
+        description: "Generate 10 dessert recipes", // unlocked when 10 recipes classified with the category "Sweet Treats" have been generated
+        emoji: "Popsicle",
+        color: theme.orangeBlock,
+        unlocked: unlockedIds.includes("sweet-tooth"),
+      },
+      {
+        id: "world-tour",
+        title: "World Tour",
+        description: "Generate recipes from 5 different cuisines", //Each distinct explicit cuisine in prompt counts. Like if it says Chinese in the constructed prompt."Any" DOES NOT count as a cuisine.
+        emoji: "World",
+        color: theme.blueBlock,
+        unlocked: unlockedIds.includes("world-tour"),
+      },
+      {
+        id: "the-cookbook",
+        title: "The Cookbook",
+        description: "Save 50 generated recipes", // 50 recipes saved
+        emoji: "RecipeBook",
+        color: theme.greenBlock,
+        unlocked: unlockedIds.includes("the-cookbook"),
+      },
+      {
+        id: "late-night-snack",
+        title: "Late-Night Snack",
+        description: "Create a recipe after 10pm", // Generate a recipe after 10pm local time
+        emoji: "Clock",
+        color: theme.purpblueBlock,
+        unlocked: unlockedIds.includes("late-night-snack"),
+      },
+      {
+        id: "leftover-legend",
+        title: "Leftover Legend",
+        description: "Make 25 meals with leftovers", // Unlocked when 25 recipes meals classified with the category "Made With Leftovers" have been made and followed (click follow recpie to count)
+        emoji: "HotDog",
+        color: theme.orangeBlock,
+        unlocked: unlockedIds.includes("leftover-legend"),
+      },
+      {
+        id: "on-fire",
+        title: "On Fire",
+        description: "Generate a recipe 7 days in a row", // Generate a recipe every day for 7 days in a row (streak)
+        emoji: "Fire",
+        color: theme.redBlock,
+        unlocked: unlockedIds.includes("on-fire"),
+      },
+      {
+        id: "century",
+        title: "Century",
+        description: "Make 100 meals", // MAKE and FOLLOW 100 recipes (go through the steps not just generate it)
+        emoji: "Trophy",
+        color: theme.greenBlock,
+        unlocked: unlockedIds.includes("century"),
+      },
+    ];
+  };
   const handleEditPress = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setEditMode(true);
@@ -176,8 +179,14 @@ export default function Profile() {
   }, [editMode]);
 
   useEffect(() => {
-    setAchievements(availableAchievements);
+    setAchievements(buildAvailableAchievements());
   }, [theme]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      setAchievements(buildAvailableAchievements());
+    }, [theme]),
+  );
 
   useEffect(() => {
     const storedName = storage.getString("name") ?? "";

@@ -2,11 +2,11 @@ import { View, Text, ColorValue } from "react-native";
 import React, { ReactNode } from "react";
 import { useStyles } from "@/styles/auth.styles";
 import { CustomIcon } from "@/icon-loader/icon-loader";
-import { useTheme } from "@/contexts/ColorSchemeContext";
+import { useTheme, useIsDarkMode } from "@/contexts/ColorSchemeContext";
 import { Image } from "expo-image";
 import icons3d from "@/components/universal/3dIcons";
 import { FilterImage } from "react-native-svg/filter-image";
-import { lightenColor } from "@/utils/color";
+import { lightenColor, hexToRgba } from "@/utils/color";
 
 type Props = {
   title: string;
@@ -19,6 +19,7 @@ type Props = {
 const Achievement = (props: Props) => {
   const styles = useStyles();
   const theme = useTheme();
+  const isDark = useIsDarkMode();
   return (
     <View
       style={[
@@ -26,7 +27,9 @@ const Achievement = (props: Props) => {
         styles.basicBoxShadow,
         {
           backgroundColor: props.unlocked
-            ? lightenColor(props.color as string, 0.6)
+            ? isDark
+              ? hexToRgba(props.color as string, 0.8)
+              : lightenColor(props.color as string, 0.6)
             : theme.unselectedGrey,
         },
       ]}
@@ -49,7 +52,7 @@ const Achievement = (props: Props) => {
           alignItems: "center",
           justifyContent: "flex-start",
           gap: 20,
-          paddingRight: 40,
+          paddingRight: props.unlocked ? 10 : 40,
         }}
       >
         <View>

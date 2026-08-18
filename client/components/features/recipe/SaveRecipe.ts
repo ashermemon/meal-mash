@@ -1,5 +1,6 @@
 import { storage } from "@/utils/storage";
 import { type RecipeData } from "@/contexts/RecipeContext";
+import { trackRecipeSaved } from "@/utils/achievements";
 
 export function equal(r1: RecipeData, r2: RecipeData): boolean {
   if (!r1 || !r2) return false;
@@ -33,6 +34,7 @@ export function saveRecipe(
 
     storage.set("saves", JSON.stringify(updatedSaves));
     storage.set("savesnumber", updatedSaves.length);
+    trackRecipeSaved(updatedSaves.length);
     return updatedSaves;
   });
 }
