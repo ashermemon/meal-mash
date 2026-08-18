@@ -290,6 +290,7 @@ const GeneratorDetails = (props: Props) => {
         detents={[0.6, 1]}
         ref={browseIngredientsSheetRef}
         scrollable
+        grabber={false}
         header={
           <>
             <View
@@ -298,7 +299,7 @@ const GeneratorDetails = (props: Props) => {
                 width: 44,
                 height: 4,
                 borderRadius: 999,
-                // backgroundColor: theme.unselectedShape,
+                backgroundColor: theme.unselectedShape,
                 marginTop: 6,
                 marginBottom: 15,
               }}

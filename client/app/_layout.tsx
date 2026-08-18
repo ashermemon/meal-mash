@@ -241,6 +241,7 @@ function RootLayoutContent() {
                             detents={[0.6, 1]}
                             ref={sheetRef}
                             scrollable
+                            grabber={false}
                             header={
                               <>
                                 <View
