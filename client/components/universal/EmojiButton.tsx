@@ -14,15 +14,13 @@ import icons3d from "@/components/universal/3dIcons";
 // Food-appropriate subset of the 3D icon set (excludes generic app icons
 // like Clock, Lock, Medal, RecipeBook, Trophy, World, Fire, Float, Default).
 export const PANTRY_ICONS = [
-  "Apple",
   "Burger",
   "Burrito",
   "Cake",
-  "Carrot",
+
   "Coffee",
   "Cookies",
   "Croissant",
-  "CupCake",
   "Donut",
   "EggAndBacon",
   "Eggplant",
@@ -30,7 +28,6 @@ export const PANTRY_ICONS = [
   "HotDog",
   "IceCream",
   "Lollipop",
-  "LollipopSwirl",
   "Macaroon",
   "Meat",
   "Pancake",
@@ -43,6 +40,8 @@ export const PANTRY_ICONS = [
   "Steak",
   "SushiCaviar",
   "Taco",
+  "Cheese",
+  "Chicken",
 ];
 
 type Props = {

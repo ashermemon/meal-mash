@@ -8,6 +8,7 @@ import { useTrueSheet } from "@/contexts/TrueSheetContext";
 import { openDropDown } from "@/components/common/DropDownPill";
 import { PantryDetailsContext } from "@/contexts/PantryDetails";
 import { Food } from "./Search";
+import icons3d from "@/components/universal/3dIcons";
 
 type Props = {
   ingredient?: Food;
@@ -134,11 +135,13 @@ const IngredientPickerCard = (props: Props) => {
         }
       }}
     >
-      <View
-        style={[styles.imageGlow, { width: 40, height: 40, borderRadius: 110 }]}
-      >
+      <View style={[{ width: 40, height: 40, borderRadius: 110 }]}>
         <Image
-          source={require("@/assets/images/meal-images/burger.webp")}
+          source={
+            (props.ingredient?.name && icons3d[props.ingredient?.name]) ||
+            (props.ingredientName && icons3d[props.ingredientName]) ||
+            icons3d["Default"]
+          }
           style={{ width: "100%", height: "100%", borderRadius: 110 }}
           contentFit="cover"
         />
