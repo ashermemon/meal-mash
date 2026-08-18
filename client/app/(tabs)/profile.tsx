@@ -51,6 +51,7 @@ export default function Profile() {
 
   const unlockedAchievementIds = getUnlockedAchievementIds();
   const resetData = () => {
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
     Alert.alert(
       "Are you sure?",
       "This removes all data from your account including saved recipes, achievements and pantry items. This action cannot be reversed.",

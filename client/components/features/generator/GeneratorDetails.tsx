@@ -37,6 +37,7 @@ const GeneratorDetails = (props: Props) => {
   const searchRef = useRef<SearchHandle>(null);
 
   const openBrowseIngredients = useCallback(() => {
+    Haptics.selectionAsync();
     browseIngredientsSheetRef.current?.present();
   }, []);
   const modes: string[] = [
@@ -297,7 +298,7 @@ const GeneratorDetails = (props: Props) => {
                 width: 44,
                 height: 4,
                 borderRadius: 999,
-                backgroundColor: theme.unselectedShape,
+                // backgroundColor: theme.unselectedShape,
                 marginTop: 6,
                 marginBottom: 15,
               }}
@@ -322,7 +323,12 @@ const GeneratorDetails = (props: Props) => {
               >
                 Add Ingredients
               </Text>
-              <Pressable onPress={() => setBrowseIngredients([])}>
+              <Pressable
+                onPress={() => {
+                  setBrowseIngredients([]);
+                  Haptics.notificationAsync();
+                }}
+              >
                 <Text
                   style={{
                     fontSize: 14,

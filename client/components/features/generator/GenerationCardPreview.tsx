@@ -14,6 +14,7 @@ import NutrientsContext from "@/contexts/NutrientsContext";
 import { useTheme, useColorScheme } from "@/contexts/ColorSchemeContext";
 import { router } from "expo-router";
 import { Skeleton } from "moti/skeleton";
+import * as Haptics from "expo-haptics";
 import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
@@ -368,7 +369,10 @@ export const GenerationCardPreview = (props: Props) => {
                 width: "100%",
               },
             ]}
-            onPress={props.makeRecipe}
+            onPress={() => {
+              Haptics.selectionAsync();
+              props.makeRecipe();
+            }}
 
             //more laggy: InteractionManager.runAfterInteractions(() => { router.navigate("/followRecipe") })
           >
@@ -401,7 +405,9 @@ export const GenerationCardPreview = (props: Props) => {
                   width: "48%",
                 },
               ]}
-              onPress={props.skipRecipe}
+              onPress={() => {
+                props.skipRecipe();
+              }}
             >
               <Text style={[styles.textCenterBold, { fontSize: 17 }]}>
                 ← Skip
@@ -418,7 +424,9 @@ export const GenerationCardPreview = (props: Props) => {
                   width: "48%",
                 },
               ]}
-              onPress={props.saveRecipe}
+              onPress={() => {
+                props.saveRecipe();
+              }}
             >
               <Text style={[styles.textCenterBold, { fontSize: 17 }]}>
                 Save →

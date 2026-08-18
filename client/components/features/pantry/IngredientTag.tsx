@@ -6,6 +6,7 @@ import { useTheme } from "@/contexts/ColorSchemeContext";
 import { getCategoryDisplayLabel } from "@/constants/categoryLabels";
 import { PantryDetailsContext } from "@/contexts/PantryDetails";
 import { Food } from "./Search";
+import * as Haptics from "expo-haptics";
 
 type Props = {
   ingredient: Food;
@@ -18,6 +19,7 @@ const IngredientTag = (props: Props) => {
   const [pantryDetails, setPantryDetails] = useContext(PantryDetailsContext);
 
   const handleRemoveIngredient = () => {
+    Haptics.selectionAsync();
     if (props.onRemove) {
       props.onRemove();
     } else {
@@ -94,7 +96,12 @@ const IngredientTag = (props: Props) => {
           borderRadius: 1000,
         }}
       >
-        <CustomIcon name="close" filled={true} color={theme.pureWhite} size={18} />
+        <CustomIcon
+          name="close"
+          filled={true}
+          color={theme.pureWhite}
+          size={18}
+        />
       </Pressable>
     </View>
   );

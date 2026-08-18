@@ -63,6 +63,7 @@ export default function SavedCard(props: SavedProps) {
   );
   const pressed = useSharedValue<boolean>(false);
   const handleCardPress = () => {
+    Haptics.selectionAsync();
     setRecipeData(props.SavedRecipe);
     router.navigate("/followRecipe");
   };

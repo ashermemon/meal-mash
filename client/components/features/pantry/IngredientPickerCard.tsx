@@ -9,6 +9,7 @@ import { openDropDown } from "@/components/common/DropDownPill";
 import { PantryDetailsContext } from "@/contexts/PantryDetails";
 import { Food } from "./Search";
 import icons3d from "@/components/universal/3dIcons";
+import * as Haptics from "expo-haptics";
 
 type Props = {
   ingredient?: Food;
@@ -104,6 +105,7 @@ const IngredientPickerCard = (props: Props) => {
       ]}
       onPress={() => {
         if (props.selectionMenuOptions.length === 0) {
+          Haptics.selectionAsync();
           if (selected) {
             setSelectedOptions([]);
             setSelected(false);

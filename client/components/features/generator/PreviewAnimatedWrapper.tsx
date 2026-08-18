@@ -9,7 +9,7 @@ import Animated, {
   runOnJS,
   Easing,
 } from "react-native-reanimated";
-
+import * as Haptics from "expo-haptics";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import GenerationCardPreview from "./GenerationCardPreview";
 import SavedRecipesContext from "@/contexts/SavedRecipesContext";
@@ -70,15 +70,13 @@ const SwipableCard = ({
     }
   };
 
-  const saveRecipe = () => {
-    "worklet";
-    if (onSwipeRightStart) {
-      runOnJS(onSwipeRightStart)();
-    }
-    runOnJS(markSwiping)();
+  const saveRecipe = (duration: number = 800) => {
+    markSwiping();
+    onSwipeRightStart?.();
+    Haptics.selectionAsync();
     translateX.value = withTiming(
       SCREEN_WIDTH + 100,
-      { duration: 800, easing: Easing.inOut(Easing.cubic) },
+      { duration, easing: Easing.inOut(Easing.cubic) },
       (finished) => {
         if (finished) {
           runOnJS(onSwipeRight)();
@@ -87,12 +85,12 @@ const SwipableCard = ({
     );
   };
 
-  const skipRecipe = () => {
-    "worklet";
-    runOnJS(markSwiping)();
+  const skipRecipe = (duration: number = 800) => {
+    markSwiping();
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     translateX.value = withTiming(
       -SCREEN_WIDTH - 100,
-      { duration: 800, easing: Easing.inOut(Easing.cubic) },
+      { duration, easing: Easing.inOut(Easing.cubic) },
       (finished) => {
         if (finished) {
           runOnJS(onSwipeLeft)();
@@ -101,6 +99,9 @@ const SwipableCard = ({
     );
   };
 
+  const saveRecipeFromSwipe = () => saveRecipe(600);
+  const skipRecipeFromSwipe = () => skipRecipe(600);
+
   const pan = Gesture.Pan()
     .enabled(isTop && !isLoading)
     .onUpdate((event) => {
@@ -108,9 +109,9 @@ const SwipableCard = ({
     })
     .onEnd(() => {
       if (translateX.value > 120) {
-        saveRecipe();
+        runOnJS(saveRecipeFromSwipe)();
       } else if (translateX.value < -120) {
-        skipRecipe();
+        runOnJS(skipRecipeFromSwipe)();
       } else {
         translateX.value = withSpring(0, {
           damping: 20,

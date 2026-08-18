@@ -78,7 +78,7 @@ export const SearchResultItem = ({
       ]}
       onPress={(event) => {
         event.stopPropagation();
-        onPress(item);
+        (Haptics.selectionAsync(), onPress(item));
       }}
     >
       <View

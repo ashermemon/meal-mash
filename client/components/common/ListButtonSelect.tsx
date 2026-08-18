@@ -3,6 +3,7 @@ import React, { Dispatch, useState } from "react";
 import { useStyles } from "@/styles/GlobalStyles";
 import { useTheme } from "@/contexts/ColorSchemeContext";
 import { CustomIcon } from "@/icon-loader/icon-loader";
+import * as Haptics from "expo-haptics";
 
 type Props = {
   options: string[];
@@ -33,7 +34,10 @@ const ListButtonSelect = (props: Props) => {
               alignItems: "center",
             },
           ]}
-          onPress={() => props.setSelected(index)}
+          onPress={() => {
+            props.setSelected(index);
+            Haptics.selectionAsync();
+          }}
           key={index}
         >
           {index === props.selected && (

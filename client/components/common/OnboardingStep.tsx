@@ -4,6 +4,7 @@ import { useStyles } from "@/styles/GlobalStyles";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import { OnboardingContext } from "./OnboardingSequence";
 import { useTheme } from "@/contexts/ColorSchemeContext";
+import * as Haptics from "expo-haptics";
 
 type Props = {
   children: React.ReactNode;
@@ -20,12 +21,18 @@ const OnboardingStep = (props: Props) => {
   const isDisabled = props.disableNext === true;
 
   const handleContinue = () => {
+    Haptics.selectionAsync();
     if (props.onPress) {
       try {
         props.onPress();
       } catch (e) {}
     }
     onboarding?.goToNextStep();
+  };
+
+  const handleGoBack = () => {
+    Haptics.selectionAsync();
+    onboarding?.goToPrevStep();
   };
 
   return (
@@ -50,7 +57,7 @@ const OnboardingStep = (props: Props) => {
                 backgroundColor: theme.placeholderText,
               },
             ]}
-            onPress={() => onboarding?.goToPrevStep()}
+            onPress={handleGoBack}
           >
             <CustomIcon
               name="arrow-left"
