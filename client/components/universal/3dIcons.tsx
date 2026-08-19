@@ -23,6 +23,7 @@ const icons3d: { [key: string]: any } = {
   Fire: require(`@/assets/3dIcons/fire.webp`),
   Float: require(`@/assets/3dIcons/float.webp`),
   Fries: require(`@/assets/3dIcons/fries.webp`),
+  Gift: require(`@/assets/3dIcons/gift.webp`),
   HotDog: require(`@/assets/3dIcons/hot-dog.webp`),
   IceCream: require(`@/assets/3dIcons/ice-cream.webp`),
   Lock: require(`@/assets/3dIcons/lock.webp`),

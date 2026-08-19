@@ -155,22 +155,22 @@ const createStyles = (NEWCOLORS, COLORS, isDark) =>
       borderRadius: 100,
     },
     recipeBar: {
-      height: 46,
-      borderRadius: 400,
+      height: 66,
+      borderRadius: 15,
       padding: 5,
       width: "100%",
-      backgroundColor: NEWCOLORS.greyBlock,
-      marginTop: 5,
-      marginBottom: 10,
+      marginTop: 4,
+      marginBottom: 3,
+      overflow: "hidden",
 
       alignItems: "center",
-      justifyContent: "center",
+      justifyContent: "flex-start",
       flexDirection: "row",
     },
     basicBoxShadow: {
       boxShadow: isDark
-        ? "0px 2px 5px rgba(10, 8, 6, 0.24)"
-        : "0px 2px 4px rgba(58, 53, 50, 0.12)",
+        ? "0px 2.5px 3px rgba(10, 8, 6, 0.24)"
+        : "0px 2.5px 2px rgba(58, 53, 50, 0.08)",
     },
     imageGlow: {
       boxShadow: isDark
@@ -179,8 +179,8 @@ const createStyles = (NEWCOLORS, COLORS, isDark) =>
     },
     elevatedShadow: {
       boxShadow: isDark
-        ? "0px 2px 4px rgba(10, 8, 6, 0.20), 0px 16px 34px rgba(10, 8, 6, 0.24)"
-        : "0px 2px 4px rgba(58, 53, 50, 0.10), 0px 14px 30px rgba(58, 53, 50, 0.16)",
+        ? "0px 2px 3px rgba(10, 8, 6, 0.16), 0px 8px 18px rgba(10, 8, 6, 0.16)"
+        : "0px 2px 3px rgba(58, 53, 50, 0.08), 0px 6px 16px rgba(58, 53, 50, 0.09)",
     },
     basicTextCenter: {
       fontFamily: "Nunito-Regular",
