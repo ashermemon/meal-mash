@@ -7,6 +7,7 @@ import { Image } from "expo-image";
 import icons3d from "@/components/universal/3dIcons";
 import { FilterImage } from "react-native-svg/filter-image";
 import { lightenColor, hexToRgba } from "@/utils/color";
+import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 
 type Props = {
   title: string;
@@ -20,11 +21,14 @@ const Achievement = (props: Props) => {
   const styles = useStyles();
   const theme = useTheme();
   const isDark = useIsDarkMode();
+  const cardShadow = useTintedBoxShadow(
+    props.unlocked ? (props.color as string) : theme.unselectedGrey,
+  );
   return (
     <View
       style={[
         styles.savesCard,
-        styles.basicBoxShadow,
+        cardShadow,
         {
           backgroundColor: props.unlocked
             ? isDark

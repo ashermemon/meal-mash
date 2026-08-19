@@ -3,7 +3,7 @@ import { COLORS, DARK_COLORS } from "@/constants/Theme";
 import { StyleSheet } from "react-native";
 import { useColorScheme } from "@/contexts/ColorSchemeContext";
 
-const createStyles = (NEWCOLORS, COLORS, isDark) =>
+const createStyles = (NEWCOLORS, COLORS) =>
   StyleSheet.create({
     container: {
       flex: 1,
@@ -166,21 +166,6 @@ const createStyles = (NEWCOLORS, COLORS, isDark) =>
       alignItems: "center",
       justifyContent: "flex-start",
       flexDirection: "row",
-    },
-    basicBoxShadow: {
-      boxShadow: isDark
-        ? "0px 2.5px 3px rgba(10, 8, 6, 0.24)"
-        : "0px 2.5px 2px rgba(58, 53, 50, 0.08)",
-    },
-    imageGlow: {
-      boxShadow: isDark
-        ? "0px 1px 2px rgba(10, 8, 6, 0.20), 0px 6px 16px rgba(10, 8, 6, 0.24)"
-        : "0px 1px 2px rgba(58, 53, 50, 0.14), 0px 6px 14px rgba(58, 53, 50, 0.16)",
-    },
-    elevatedShadow: {
-      boxShadow: isDark
-        ? "0px 2px 3px rgba(10, 8, 6, 0.16), 0px 8px 18px rgba(10, 8, 6, 0.16)"
-        : "0px 2px 3px rgba(58, 53, 50, 0.08), 0px 6px 16px rgba(58, 53, 50, 0.09)",
     },
     basicTextCenter: {
       fontFamily: "Nunito-Regular",
@@ -384,8 +369,8 @@ const createStyles = (NEWCOLORS, COLORS, isDark) =>
     },
   });
 
-const lightStyles = createStyles(NEWCOLORS, COLORS, false);
-const darkStyles = createStyles(DARK_NEWCOLORS, DARK_COLORS, true);
+const lightStyles = createStyles(NEWCOLORS, COLORS);
+const darkStyles = createStyles(DARK_NEWCOLORS, DARK_COLORS);
 
 export const styles = lightStyles;
 

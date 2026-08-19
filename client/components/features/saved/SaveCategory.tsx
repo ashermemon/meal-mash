@@ -7,6 +7,7 @@ import icons3d from "@/components/universal/3dIcons";
 import { router } from "expo-router";
 import SavedRecipesContext from "@/contexts/SavedRecipesContext";
 import { type RecipeCategories } from "@/contexts/RecipeContext";
+import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 
 type Props = {
   title: string;
@@ -17,6 +18,7 @@ type Props = {
 const SaveCategory = (props: Props) => {
   const theme = useTheme();
   const styles = useStyles();
+  const homeBlockShadow = useTintedBoxShadow(theme.greyBlock);
   const [saves] = useContext(SavedRecipesContext);
 
   const filter = props.filter;
@@ -46,7 +48,7 @@ const SaveCategory = (props: Props) => {
             backgroundColor: theme.greyBlock,
             aspectRatio: 1,
           },
-          styles.basicBoxShadow,
+          homeBlockShadow,
         ]}
       >
         <Image style={{ flex: 1 }} source={icons3d[props.image]}></Image>

@@ -6,6 +6,7 @@ import { router } from "expo-router";
 import * as Haptics from "expo-haptics";
 import { PantryDetailsContext } from "@/contexts/PantryDetails";
 import EmojiButton from "@/components/universal/EmojiButton";
+import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 
 type Props = {
   pantryName: string;
@@ -19,6 +20,7 @@ const PantryPill = (props: Props) => {
   const [pantryDetails, setPantryDetails] = useContext(PantryDetailsContext);
   const [rename, setRename] = useState(false);
   const inputRef = useRef<TextInput>(null);
+  const pillShadow = useTintedBoxShadow(theme.greyBlock);
 
   const handleRenamePress = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -43,7 +45,7 @@ const PantryPill = (props: Props) => {
       <View
         style={[
           styles.sliderPill,
-          styles.basicBoxShadow,
+          pillShadow,
           {
             flexDirection: "row",
             justifyContent: "space-between",

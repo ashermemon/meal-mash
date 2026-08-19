@@ -5,10 +5,13 @@ import { useStyles } from "@/styles/GlobalStyles";
 import { Image } from "expo-image";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import { useTheme } from "@/contexts/ColorSchemeContext";
+import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 
 export default function Camera() {
   const styles = useStyles();
   const theme = useTheme();
+  const circleButtonShadow = useTintedBoxShadow(theme.primary);
+  const generateButtonShadow = useTintedBoxShadow(theme.greenAccent);
   const ref = useRef<CameraView>(null);
   const [facing, setFacing] = useState<CameraType>("back");
 
@@ -43,7 +46,7 @@ export default function Camera() {
           onPress={() => setUri(null)}
           style={[
             styles.circleButton,
-            styles.basicBoxShadow,
+            circleButtonShadow,
             { marginTop: 20, paddingVertical: 10, width: 200 },
           ]}
         >
@@ -57,7 +60,7 @@ export default function Camera() {
           onPress={() => console.log("Generate Meal")}
           style={[
             styles.circleButton,
-            styles.basicBoxShadow,
+            generateButtonShadow,
             {
               marginTop: 10,
               paddingVertical: 10,

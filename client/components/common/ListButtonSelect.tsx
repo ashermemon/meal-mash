@@ -1,9 +1,10 @@
 import { View, Text, Pressable } from "react-native";
 import React, { Dispatch, useState } from "react";
 import { useStyles } from "@/styles/GlobalStyles";
-import { useTheme } from "@/contexts/ColorSchemeContext";
+import { useTheme, useIsDarkMode } from "@/contexts/ColorSchemeContext";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import * as Haptics from "expo-haptics";
+import { getTintedBoxShadow } from "@/utils/shadow";
 
 type Props = {
   options: string[];
@@ -15,18 +16,19 @@ type Props = {
 const ListButtonSelect = (props: Props) => {
   const styles = useStyles();
   const theme = useTheme();
+  const isDark = useIsDarkMode();
   return (
     <View style={{ gap: 25 }}>
-      {props.options.map((option: string, index: number) => (
+      {props.options.map((option: string, index: number) => {
+        const buttonBackgroundColor =
+          index === props.selected ? theme.greenAccent : theme.unselectedGrey;
+        return (
         <Pressable
           style={[
             styles.selectButton,
-            styles.basicBoxShadow,
+            getTintedBoxShadow(buttonBackgroundColor, isDark),
             {
-              backgroundColor:
-                index === props.selected
-                  ? theme.greenAccent
-                  : theme.unselectedGrey,
+              backgroundColor: buttonBackgroundColor,
               paddingHorizontal: 30,
               flexDirection: "row",
               position: "relative",
@@ -87,7 +89,8 @@ const ListButtonSelect = (props: Props) => {
             {option}
           </Text>
         </Pressable>
-      ))}
+        );
+      })}
     </View>
   );
 };

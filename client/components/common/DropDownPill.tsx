@@ -5,6 +5,8 @@ import { CustomIcon } from "@/icon-loader/icon-loader";
 import { TextInput } from "react-native-gesture-handler";
 import * as Haptics from "expo-haptics";
 import { useTrueSheet } from "@/contexts/TrueSheetContext";
+import { useTheme } from "@/contexts/ColorSchemeContext";
+import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 
 type Props = {
   title: string;
@@ -100,7 +102,9 @@ export function openDropDown(
 
 const DropDownPill = (props: Props) => {
   const styles = useStyles();
+  const theme = useTheme();
   const { openSheet } = useTrueSheet();
+  const selectPillShadow = useTintedBoxShadow(theme.unselectedGrey);
 
   return (
     <Pressable
@@ -132,7 +136,7 @@ const DropDownPill = (props: Props) => {
         <View
           style={[
             styles.selectPill,
-            styles.basicBoxShadow,
+            selectPillShadow,
             {
               flexDirection: "row",
               alignItems: "center",

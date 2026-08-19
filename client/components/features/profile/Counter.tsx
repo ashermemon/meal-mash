@@ -4,6 +4,7 @@ import { storage } from "@/utils/storage";
 import { useStyles } from "@/styles/GlobalStyles";
 import { ColorProperties } from "react-native-reanimated/lib/typescript/Colors";
 import { useTheme } from "@/contexts/ColorSchemeContext";
+import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 
 type counterProps = {
   variable: string;
@@ -12,12 +13,13 @@ type counterProps = {
 export default function Counter(props: counterProps) {
   const styles = useStyles();
   const theme = useTheme();
+  const counterShadow = useTintedBoxShadow(theme.cardWhite);
   const totalMeals = storage.getNumber(props.variable) ?? 0;
 
   return (
     <View
       style={[
-        styles.basicBoxShadow,
+        counterShadow,
         {
           backgroundColor: theme.cardWhite,
           alignItems: "center",

@@ -16,6 +16,7 @@ import GroceryListContext from "@/contexts/GroceryListContext";
 import { PantryDetailsContext } from "@/contexts/PantryDetails";
 import { Food } from "@/components/features/pantry/Search";
 import GroceryListItem from "./GroceryListItem";
+import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 
 if (
   Platform.OS === "android" &&
@@ -31,6 +32,7 @@ const CheckedGroceryList = () => {
   const [groceryList, setGroceryList] = useContext(GroceryListContext);
   const [pantryDetails, setPantryDetails] = useContext(PantryDetailsContext);
   const [expanded, setExpanded] = useState(false);
+  const listShadow = useTintedBoxShadow(theme.cardWhite);
 
   if (checkedList.length < 1) return null;
 
@@ -71,7 +73,7 @@ const CheckedGroceryList = () => {
     >
       <View
         style={[
-          styles.basicBoxShadow,
+          listShadow,
           {
             backgroundColor: theme.cardWhite,
             borderRadius: 26,

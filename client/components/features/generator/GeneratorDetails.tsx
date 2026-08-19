@@ -13,6 +13,7 @@ import MultiSelectPills from "@/components/common/MultiSelectPills";
 import CountFieldPill from "@/components/common/CountFieldPill";
 import DropDownPill from "@/components/common/DropDownPill";
 import { useTheme } from "@/contexts/ColorSchemeContext";
+import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 import { GenerationDetailsContext } from "@/contexts/GenerationDetailsContext";
 import { router } from "expo-router";
 import * as Haptics from "expo-haptics";
@@ -33,6 +34,9 @@ const MAX_VISIBLE_SEARCH_RESULTS = 5;
 const GeneratorDetails = (props: Props) => {
   const styles = useStyles();
   const theme = useTheme();
+  const browseIngredientsShadow = useTintedBoxShadow(theme.unselectedGrey);
+  const generateButtonShadow = useTintedBoxShadow(theme.primary);
+  const searchResultsShadow = useTintedBoxShadow(theme.cardWhite);
   const browseIngredientsSheetRef = useRef<TrueSheet>(null);
   const searchRef = useRef<SearchHandle>(null);
 
@@ -159,7 +163,7 @@ const GeneratorDetails = (props: Props) => {
                       onPress={openBrowseIngredients}
                       style={[
                         styles.sliderPill,
-                        styles.basicBoxShadow,
+                        browseIngredientsShadow,
                         {
                           flexDirection: "row",
                           justifyContent: "center",
@@ -235,7 +239,7 @@ const GeneratorDetails = (props: Props) => {
           <View>
             <Pressable
               style={[
-                styles.basicBoxShadow,
+                generateButtonShadow,
                 {
                   backgroundColor: theme.primary,
                   paddingVertical: 20,
@@ -424,7 +428,7 @@ const GeneratorDetails = (props: Props) => {
           {searchResultsVisible && (
             <View
               style={[
-                styles.basicBoxShadow,
+                searchResultsShadow,
                 {
                   position: "absolute",
                   top: 0,

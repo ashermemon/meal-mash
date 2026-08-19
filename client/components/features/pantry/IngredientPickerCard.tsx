@@ -10,6 +10,7 @@ import { PantryDetailsContext } from "@/contexts/PantryDetails";
 import { Food } from "./Search";
 import icons3d from "@/components/universal/3dIcons";
 import * as Haptics from "expo-haptics";
+import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 
 type Props = {
   ingredient?: Food;
@@ -94,13 +95,18 @@ const IngredientPickerCard = (props: Props) => {
     }
   }, [selected]);
 
+  const cardBackgroundColor = selected
+    ? theme.greenAccent
+    : theme.unselectedGrey;
+  const cardShadow = useTintedBoxShadow(cardBackgroundColor);
+
   return (
     <Pressable
       style={[
         styles.ingredientPickerCard,
-        styles.basicBoxShadow,
+        cardShadow,
         {
-          backgroundColor: selected ? theme.greenAccent : theme.unselectedGrey,
+          backgroundColor: cardBackgroundColor,
         },
       ]}
       onPress={() => {

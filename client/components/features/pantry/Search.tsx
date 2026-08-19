@@ -20,6 +20,7 @@ import { getCategoryDisplayLabel } from "@/constants/categoryLabels";
 import { useStyles } from "@/styles/GlobalStyles";
 import * as Haptics from "expo-haptics";
 import { ScrollView } from "react-native-gesture-handler";
+import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 
 type Props = {
   onSelectIngredient?: (item: Food) => void;
@@ -164,6 +165,8 @@ export const SearchResultItem = ({
 const Search = forwardRef<SearchHandle, Props>((props, ref) => {
   const styles = useStyles();
   const theme = useTheme();
+  const sliderPillShadow = useTintedBoxShadow(theme.greyBlock);
+  const resultsOverlayShadow = useTintedBoxShadow(theme.cardWhite);
   const { showDropdown = true } = props;
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Food[]>([]);
@@ -244,7 +247,7 @@ const Search = forwardRef<SearchHandle, Props>((props, ref) => {
       <View
         style={[
           styles.sliderPill,
-          styles.basicBoxShadow,
+          sliderPillShadow,
           {
             zIndex: 9999,
             flexDirection: "row",
@@ -324,7 +327,7 @@ const Search = forwardRef<SearchHandle, Props>((props, ref) => {
         <View
           style={[
             localStyles.resultsOverlay,
-            styles.basicBoxShadow,
+            resultsOverlayShadow,
             { backgroundColor: theme.cardWhite },
           ]}
         >

@@ -12,6 +12,7 @@ import { useStyles } from "@/styles/GlobalStyles";
 import RecipeInfoTags from "../recipe/RecipeInfoTags";
 import NutrientsContext from "@/contexts/NutrientsContext";
 import { useTheme, useColorScheme } from "@/contexts/ColorSchemeContext";
+import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 import { router } from "expo-router";
 import { Skeleton } from "moti/skeleton";
 import * as Haptics from "expo-haptics";
@@ -64,6 +65,9 @@ export const GenerationCardPreview = (props: Props) => {
   const styles = useStyles();
   const theme = useTheme();
   const colorScheme = useColorScheme();
+  const makeRecipeShadow = useTintedBoxShadow(theme.primary);
+  const skipShadow = useTintedBoxShadow(theme.redBlock);
+  const saveShadow = useTintedBoxShadow(theme.greenBlock);
   const SkeletonSettings = {
     colorMode: colorScheme === "dark" ? "dark" : "light",
     transition: SKELETON_TRANSITION,
@@ -201,7 +205,7 @@ export const GenerationCardPreview = (props: Props) => {
             >
               <Pressable
                 style={[
-                  styles.basicBoxShadow,
+                  makeRecipeShadow,
                   {
                     backgroundColor: theme.primary,
                     paddingVertical: 14,
@@ -232,7 +236,7 @@ export const GenerationCardPreview = (props: Props) => {
               >
                 <Pressable
                   style={[
-                    styles.basicBoxShadow,
+                    skipShadow,
                     {
                       backgroundColor: theme.redBlock,
                       paddingVertical: 14,
@@ -254,7 +258,7 @@ export const GenerationCardPreview = (props: Props) => {
 
                 <Pressable
                   style={[
-                    styles.basicBoxShadow,
+                    saveShadow,
                     {
                       backgroundColor: theme.greenBlock,
                       paddingVertical: 14,
@@ -361,7 +365,7 @@ export const GenerationCardPreview = (props: Props) => {
         <View style={{ width: "100%", alignItems: "center", marginTop: 10 }}>
           <Pressable
             style={[
-              styles.basicBoxShadow,
+              makeRecipeShadow,
               {
                 backgroundColor: theme.primary,
                 paddingVertical: 14,
@@ -397,7 +401,7 @@ export const GenerationCardPreview = (props: Props) => {
           >
             <Pressable
               style={[
-                styles.basicBoxShadow,
+                skipShadow,
                 {
                   backgroundColor: theme.redBlock,
                   paddingVertical: 14,
@@ -416,7 +420,7 @@ export const GenerationCardPreview = (props: Props) => {
 
             <Pressable
               style={[
-                styles.basicBoxShadow,
+                saveShadow,
                 {
                   backgroundColor: theme.greenBlock,
                   paddingVertical: 14,

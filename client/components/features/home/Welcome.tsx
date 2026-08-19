@@ -31,6 +31,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { useIsDarkMode } from "@/contexts/ColorSchemeContext";
+import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 import { GenerationDetailsContext } from "@/contexts/GenerationDetailsContext";
 import RecipeContext, { initialRecipeData } from "@/contexts/RecipeContext";
 import MealsLeftContext from "@/contexts/MealsLeftContext";
@@ -152,8 +153,8 @@ const IridescentBackground = () => {
 
 export default function Welcome() {
   const styles = useStyles();
-  const isDark = useIsDarkMode();
   const theme = useTheme();
+  const recipeBarShadow = useTintedBoxShadow(theme.secondaryBoxGrey);
   const router = useRouter();
   const [showCamera, setShowCamera] = useState(false);
   const [permission, requestPermission] = useCameraPermissions();
@@ -209,16 +210,7 @@ export default function Welcome() {
         >
           Welcome to MealMash!
         </Text>
-        <View
-          style={[
-            styles.recipeBar,
-            {
-              boxShadow: isDark
-                ? "0 2px 2px rgba(10, 8, 6, 0.24)"
-                : "0 2px 2px rgba(60, 50, 40, 0.08)",
-            },
-          ]}
-        >
+        <View style={[styles.recipeBar, recipeBarShadow]}>
           <IridescentBackground />
           {/*  <Pressable
             style={[

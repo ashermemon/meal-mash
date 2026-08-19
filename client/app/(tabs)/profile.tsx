@@ -34,6 +34,7 @@ import Achievement from "@/components/features/profile/Achievement";
 import { getUnlockedAchievementIds } from "@/utils/achievements";
 import { Image } from "expo-image";
 import icons3d from "@/components/universal/3dIcons";
+import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 
 export default function Profile() {
   const styles = useStyles();
@@ -49,6 +50,11 @@ export default function Profile() {
   const isDark = useIsDarkMode();
   const [achievements, setAchievements] = useContext(AchievementsContext);
   const { toggleColorScheme } = useToggleColorScheme();
+  const circleButtonShadow = useTintedBoxShadow(theme.primary);
+  const cancelButtonShadow = useTintedBoxShadow(theme.greyBlock);
+  const savesCardShadow = useTintedBoxShadow(theme.blueBlock);
+  const dangerZoneShadow = useTintedBoxShadow(theme.redAccent);
+  const pfpShadow = useTintedBoxShadow(theme.lightGrey);
 
   const resetData = () => {
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
@@ -272,7 +278,7 @@ export default function Profile() {
                 }}
               >
                 <Pressable
-                  style={styles.pfp}
+                  style={[styles.pfp, pfpShadow]}
                   onPress={editMode ? () => "" : () => ""}
                 >
                   <CustomIcon
@@ -308,7 +314,7 @@ export default function Profile() {
                       onPress={handleEditPress}
                       style={[
                         styles.circleButton,
-                        styles.basicBoxShadow,
+                        circleButtonShadow,
                         {
                           alignSelf: "flex-start",
                           height: 28,
@@ -347,7 +353,7 @@ export default function Profile() {
                         onPress={handleCancelPress}
                         style={[
                           styles.circleButton,
-                          styles.basicBoxShadow,
+                          cancelButtonShadow,
                           {
                             height: 28,
                             gap: 6,
@@ -377,7 +383,7 @@ export default function Profile() {
                         onPress={handleSavePress}
                         style={[
                           styles.circleButton,
-                          styles.basicBoxShadow,
+                          circleButtonShadow,
                           {
                             height: 28,
                             gap: 6,
@@ -455,7 +461,7 @@ export default function Profile() {
                 </Text>
 
                 <Pressable
-                  style={[styles.savesCard, styles.basicBoxShadow]}
+                  style={[styles.savesCard, savesCardShadow]}
                   onPress={() => router.navigate("/saveshome")}
                 >
                   <View
@@ -553,7 +559,7 @@ export default function Profile() {
                 <Pressable
                   style={[
                     styles.savesCard,
-                    styles.basicBoxShadow,
+                    dangerZoneShadow,
 
                     { backgroundColor: theme.redAccent },
                   ]}

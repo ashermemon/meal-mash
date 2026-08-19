@@ -9,7 +9,8 @@ import NutrientCircle from "@/components/features/recipe/NutrientCircle";
 import Timer from "@/components/features/recipe/Timer";
 import CustomCheckbox from "@/components/common/CustomCheckbox";
 import { useStyles } from "@/styles/GlobalStyles";
-import { useIsDarkMode, useTheme } from "@/contexts/ColorSchemeContext";
+import { useTheme } from "@/contexts/ColorSchemeContext";
+import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 import { useNavigation } from "@react-navigation/native";
 import * as Haptics from "expo-haptics";
 import RecipeSection from "@/components/features/recipe/RecipeSection";
@@ -37,7 +38,8 @@ export const MEAL_IMAGES: Record<string, any> = {
 const followRecipe = () => {
   const styles = useStyles();
   const theme = useTheme();
-  const isDark = useIsDarkMode();
+  const imageGlowShadow = useTintedBoxShadow(theme.backgroundColor, "glow");
+  const returnButtonShadow = useTintedBoxShadow(theme.primary);
   const [contextRecipeData] = useContext(RecipeContext);
   const navigation = useNavigation();
   const bulletMargin = 45; //33
@@ -143,7 +145,7 @@ const followRecipe = () => {
           >
             <View
               style={[
-                styles.imageGlow,
+                imageGlowShadow,
                 { width: 70, height: 70, borderRadius: 110 },
               ]}
             >
@@ -387,7 +389,7 @@ const followRecipe = () => {
         <RecipeSection titleOff>
           <Pressable
             style={[
-              styles.basicBoxShadow,
+              returnButtonShadow,
               {
                 backgroundColor: theme.primary,
                 paddingVertical: 14,

@@ -8,6 +8,7 @@ import { useTheme } from "@/contexts/ColorSchemeContext";
 
 import * as Haptics from "expo-haptics";
 import { CustomIcon } from "@/icon-loader/icon-loader";
+import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 
 type TimerProps = {
   time: number;
@@ -23,6 +24,7 @@ type TimerProps = {
 export default function Timer(props: TimerProps) {
   const styles = useStyles();
   const theme = useTheme();
+  const timerShadow = useTintedBoxShadow(theme.secondaryBoxGrey);
   const [isPlaying, setIsPlaying] = useState(false);
   const [timerKey, setTimerKey] = useState(0);
   const [timerFinished, setTimerFinished] = useState(false);
@@ -40,7 +42,7 @@ export default function Timer(props: TimerProps) {
   });
 
   return (
-    <View style={[styles.timer, styles.basicBoxShadow]}>
+    <View style={[styles.timer, timerShadow]}>
       <View
         style={{
           flexDirection: "row",

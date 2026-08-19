@@ -14,6 +14,7 @@ import { useFocusEffect, useRouter } from "expo-router";
 import { storage } from "@/utils/storage";
 import { useStyles } from "@/styles/GlobalStyles";
 import { useTheme } from "@/contexts/ColorSchemeContext";
+import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 import OnboardingSequence from "@/components/common/OnboardingSequence";
 import OnboardingStep from "@/components/common/OnboardingStep";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -42,6 +43,7 @@ type Props = {};
 const SetupScreen = (props: Props) => {
   const styles = useStyles();
   const theme = useTheme();
+  const emojiCircleShadow = useTintedBoxShadow(theme.unselectedGrey);
   const router = useRouter();
   const [pantryDetails, setPantryDetails] = useContext(PantryDetailsContext);
   const [pantryName, setPantryName] = useState(
@@ -297,7 +299,7 @@ const SetupScreen = (props: Props) => {
                   iconSize={keyboardOpen ? 100 : 140}
                   style={[
                     styles.emojiCircle,
-                    styles.basicBoxShadow,
+                    emojiCircleShadow,
                     {
                       height: keyboardOpen ? 150 : 220,
                       width: keyboardOpen ? 150 : 220,

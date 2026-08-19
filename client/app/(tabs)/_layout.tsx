@@ -3,6 +3,7 @@ import { Platform, View } from "react-native";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import { useTheme } from "@/contexts/ColorSchemeContext";
 import { useStyles } from "@/styles/GlobalStyles";
+import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import * as Haptics from "expo-haptics";
@@ -21,6 +22,7 @@ const TAB_ROUTES = [
 export default function TabsLayout() {
   const theme = useTheme();
   const styles = useStyles();
+  const tabBarShadow = useTintedBoxShadow(theme.greyBlock, "elevated");
   const iconSizeMobile = 30;
   const router = useRouter();
   const segments = useSegments();
@@ -87,7 +89,7 @@ export default function TabsLayout() {
                   tabBarPosition: Platform.OS == "web" ? "left" : "bottom",
 
                   tabBarStyle: [
-                    styles.elevatedShadow,
+                    tabBarShadow,
                     {
                       position: "absolute",
 

@@ -4,6 +4,7 @@ import { useStyles } from "@/styles/GlobalStyles";
 import Svg, { Path, Circle, G } from "react-native-svg";
 import NutrientsContext from "@/contexts/NutrientsContext";
 import { useTheme } from "@/contexts/ColorSchemeContext";
+import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 
 interface Props {
   textInBox?: boolean;
@@ -38,6 +39,7 @@ const getSlicePath = (
 export default function NutrientCircle({ textInBox }: Props) {
   const styles = useStyles();
   const theme = useTheme();
+  const circleShadow = useTintedBoxShadow(theme.secondaryBoxGrey);
   const NUTRIENT_COLORS = [
     theme.blueAccent,
     theme.greenAccent,
@@ -180,7 +182,7 @@ export default function NutrientCircle({ textInBox }: Props) {
   return (
     <View
       style={[
-        styles.basicBoxShadow,
+        circleShadow,
         {
           backgroundColor: theme.secondaryBoxGrey,
           borderRadius: 15,

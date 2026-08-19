@@ -20,6 +20,7 @@ import Animated, {
   interpolateColor,
 } from "react-native-reanimated";
 import { useTheme } from "@/contexts/ColorSchemeContext";
+import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 type Props = {
   setSelected: React.Dispatch<React.SetStateAction<number>>;
   selected: number;
@@ -29,6 +30,13 @@ type Props = {
 const SliderField = (props: Props) => {
   const styles = useStyles();
   const theme = useTheme();
+  const currentPillColor =
+    props.selected === 0
+      ? theme.yellowBlock
+      : props.selected === 1
+        ? theme.greenBlock
+        : theme.blueBlock;
+  const sliderPillShadow = useTintedBoxShadow(currentPillColor);
   const translateX = useSharedValue(0);
 
   const colorProgress = useSharedValue(props.selected);
@@ -86,7 +94,7 @@ const SliderField = (props: Props) => {
           style={[
             styles.sliderPill,
 
-            styles.basicBoxShadow,
+            sliderPillShadow,
             animatedColor,
             {
               // backgroundColor:

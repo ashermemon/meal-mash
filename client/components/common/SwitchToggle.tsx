@@ -11,6 +11,7 @@ import Animated, {
 import { useStyles } from "@/styles/GlobalStyles";
 import { useTheme } from "@/contexts/ColorSchemeContext";
 import { CustomIcon } from "@/icon-loader/icon-loader";
+import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 
 type Props = {
   value: boolean;
@@ -24,6 +25,13 @@ const SwitchToggle = (props: Props) => {
   const thumbSize = 24;
   const padding = 5;
   const maxTranslate = trackLength - thumbSize - padding;
+
+  const trackShadow = useTintedBoxShadow(
+    props.value ? theme.blueBlock : theme.yellowBlock,
+  );
+  const thumbShadow = useTintedBoxShadow(
+    props.value ? theme.blueAccent : theme.yellowAccent,
+  );
 
   const progress = useSharedValue(props.value ? 1 : 0);
 
@@ -68,7 +76,7 @@ const SwitchToggle = (props: Props) => {
       <Animated.View
         style={[
           styles.track,
-          styles.basicBoxShadow,
+          trackShadow,
           trackAnimatedStyle,
           { width: trackLength, justifyContent: "center" },
         ]}
@@ -76,7 +84,7 @@ const SwitchToggle = (props: Props) => {
         <Animated.View
           style={[
             styles.thumb,
-            styles.basicBoxShadow,
+            thumbShadow,
             thumbAnimatedStyle,
             {
               width: thumbSize,

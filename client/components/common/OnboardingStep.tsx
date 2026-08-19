@@ -4,6 +4,7 @@ import { useStyles } from "@/styles/GlobalStyles";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import { OnboardingContext } from "./OnboardingSequence";
 import { useTheme } from "@/contexts/ColorSchemeContext";
+import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 import * as Haptics from "expo-haptics";
 
 type Props = {
@@ -19,6 +20,11 @@ const OnboardingStep = (props: Props) => {
   const onboarding = useContext(OnboardingContext);
 
   const isDisabled = props.disableNext === true;
+
+  const backButtonShadow = useTintedBoxShadow(theme.placeholderText);
+  const continueButtonShadow = useTintedBoxShadow(
+    isDisabled ? theme.dividerGrey : theme.greenAccent,
+  );
 
   const handleContinue = () => {
     Haptics.selectionAsync();
@@ -50,7 +56,7 @@ const OnboardingStep = (props: Props) => {
           <Pressable
             style={[
               styles.setupButton,
-              styles.basicBoxShadow,
+              backButtonShadow,
               {
                 height: 56,
                 width: 56,
@@ -70,7 +76,7 @@ const OnboardingStep = (props: Props) => {
             pointerEvents={isDisabled ? "none" : "auto"}
             style={({ pressed }) => [
               styles.setupButton,
-              styles.basicBoxShadow,
+              continueButtonShadow,
               {
                 flex: 1,
                 backgroundColor: isDisabled

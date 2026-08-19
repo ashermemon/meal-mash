@@ -5,6 +5,7 @@ import { CustomIcon } from "@/icon-loader/icon-loader";
 import { TextInput } from "react-native-gesture-handler";
 import * as Haptics from "expo-haptics";
 import { useTheme } from "@/contexts/ColorSchemeContext";
+import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 
 type Props = {
   title: string;
@@ -16,6 +17,7 @@ type Props = {
 const CountFieldPill = (props: Props) => {
   const styles = useStyles();
   const theme = useTheme();
+  const selectPillShadow = useTintedBoxShadow(theme.unselectedGrey);
   return (
     <View
       style={{
@@ -37,7 +39,7 @@ const CountFieldPill = (props: Props) => {
         <View
           style={[
             styles.selectPill,
-            styles.basicBoxShadow,
+            selectPillShadow,
             {
               flexDirection: "row",
               alignItems: "center",

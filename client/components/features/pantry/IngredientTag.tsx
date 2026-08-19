@@ -7,6 +7,7 @@ import { getCategoryDisplayLabel } from "@/constants/categoryLabels";
 import { PantryDetailsContext } from "@/contexts/PantryDetails";
 import { Food } from "./Search";
 import * as Haptics from "expo-haptics";
+import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 
 type Props = {
   ingredient: Food;
@@ -17,6 +18,7 @@ const IngredientTag = (props: Props) => {
   const styles = useStyles();
   const theme = useTheme();
   const [pantryDetails, setPantryDetails] = useContext(PantryDetailsContext);
+  const tagShadow = useTintedBoxShadow(theme.greyBlock);
 
   const handleRemoveIngredient = () => {
     Haptics.selectionAsync();
@@ -36,7 +38,7 @@ const IngredientTag = (props: Props) => {
     <View
       style={[
         styles.ingredientPill,
-        styles.basicBoxShadow,
+        tagShadow,
         {
           justifyContent: "space-between",
           alignItems: "center",

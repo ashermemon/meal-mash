@@ -1,7 +1,7 @@
 import { View, Text, Pressable } from "react-native";
 import React, { useContext } from "react";
 import { useStyles } from "@/styles/GlobalStyles";
-import { useTheme } from "@/contexts/ColorSchemeContext";
+import { useTheme, useIsDarkMode } from "@/contexts/ColorSchemeContext";
 import { FlashList } from "@shopify/flash-list";
 import { Image } from "expo-image";
 import { router } from "expo-router";
@@ -10,6 +10,7 @@ import * as Haptics from "expo-haptics";
 import { initialRecipeData } from "@/contexts/RecipeContext";
 import { GenerationDetailsContext } from "@/contexts/GenerationDetailsContext";
 import icons3d from "@/components/universal/3dIcons";
+import { getTintedBoxShadow } from "@/utils/shadow";
 
 const data = [
   { id: "1", name: "Leftovers", color: "grey", icon: "Pizza" },
@@ -27,6 +28,7 @@ const data = [
 const FeaturedRecipeButton = () => {
   const styles = useStyles();
   const theme = useTheme();
+  const isDark = useIsDarkMode();
   const [recipeData, setRecipeData] = useContext(RecipeContext);
   const [generationDetails, setGenerationDetails] = useContext(
     GenerationDetailsContext,
@@ -42,16 +44,17 @@ const FeaturedRecipeButton = () => {
         overScrollMode="never"
         // @ts-ignore
         estimatedItemSize={30}
-        contentContainerStyle={{ paddingBottom: 15 }}
+        contentContainerStyle={{ paddingBottom: 10 }}
         renderItem={({ item }) => {
+          const itemBackgroundColor =
+            theme[`${item.color}Block` as keyof typeof theme];
           return (
             <Pressable
               key={item.id}
               style={[
                 styles.homeBlock,
                 {
-                  backgroundColor:
-                    theme[`${item.color}Block` as keyof typeof theme],
+                  backgroundColor: itemBackgroundColor,
                   width: 80,
                   height: 100,
                   marginRight: Number(item.id) === data.length ? 0 : 10,
@@ -59,7 +62,7 @@ const FeaturedRecipeButton = () => {
                   alignItems: "center",
                   flexDirection: "column",
                 },
-                styles.basicBoxShadow,
+                getTintedBoxShadow(itemBackgroundColor as string, isDark),
               ]}
               onPress={() => [
                 setGenerationDetails((prev) => ({

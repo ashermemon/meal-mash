@@ -19,6 +19,7 @@ import RecipeContext, { type RecipeData } from "@/contexts/RecipeContext";
 import RecipeInfoTags from "../recipe/RecipeInfoTags";
 import { MEAL_IMAGES } from "@/app/followRecipe";
 import InfoTag from "../recipe/InfoTag";
+import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 
 type SavedProps = {
   SavedRecipe: RecipeData;
@@ -27,6 +28,8 @@ type SavedProps = {
 export default function SavedCard(props: SavedProps) {
   const styles = useStyles();
   const theme = useTheme();
+  const cardShadow = useTintedBoxShadow(theme.greyBlock);
+  const imageGlowShadow = useTintedBoxShadow(theme.backgroundColor, "glow");
   const [saved, setSaved] = useState(true);
   const [savesRecipes, setSavesRecipes] = useContext(SavedRecipesContext);
   const [recipeData, setRecipeData] = useContext(RecipeContext);
@@ -73,7 +76,7 @@ export default function SavedCard(props: SavedProps) {
       <Pressable
         style={[
           styles.homeBlock,
-          styles.basicBoxShadow,
+          cardShadow,
           { backgroundColor: theme.greyBlock, position: "relative" },
         ]}
         onPress={handleCardPress}
@@ -116,7 +119,7 @@ export default function SavedCard(props: SavedProps) {
             >
               <View
                 style={[
-                  styles.imageGlow,
+                  imageGlowShadow,
                   { width: 70, height: 70, borderRadius: 110 },
                 ]}
               >

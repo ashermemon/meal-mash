@@ -4,6 +4,7 @@ import Search from "@/components/features/pantry/Search";
 import { styles, useStyles } from "@/styles/auth.styles";
 import DisplaySaved from "@/components/features/saved/DisplaySaved";
 import { useTheme } from "@/contexts/ColorSchemeContext";
+import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 import * as Haptics from "expo-haptics";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import SavedRecipesContext from "@/contexts/SavedRecipesContext";
@@ -53,6 +54,7 @@ const CategoriesDisplay = () => {
 const SavesHome = () => {
   const styles = useStyles();
   const theme = useTheme();
+  const searchBarShadow = useTintedBoxShadow(theme.greyBlock);
   const [query, setQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const navigation = useNavigation();
@@ -102,7 +104,7 @@ const SavesHome = () => {
           <View
             style={[
               styles.sliderPill,
-              styles.basicBoxShadow,
+              searchBarShadow,
               {
                 flexDirection: "row",
                 justifyContent: "space-between",

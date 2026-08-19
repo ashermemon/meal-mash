@@ -11,6 +11,7 @@ import Carousel, {
   Pagination,
 } from "react-native-reanimated-carousel";
 import InfoTag from "../recipe/InfoTag";
+import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 
 const featuredRecipes = [
   {
@@ -45,6 +46,7 @@ export default function ExploreSection() {
   const styles = useStyles();
   const theme = useTheme();
   const isDark = useIsDarkMode();
+  const featuredCarouselShadow = useTintedBoxShadow(theme.greyBlock);
   const ref = React.useRef<ICarouselInstance>(null);
   const progress = useSharedValue<number>(0);
   const onPressPagination = (index: number) => {
@@ -68,7 +70,9 @@ export default function ExploreSection() {
     link?: string;
     height?: number;
     icon?: string;
-  }) => (
+  }) => {
+    const blockShadow = useTintedBoxShadow(color);
+    return (
     <Pressable
       style={[
         styles.homeBlock,
@@ -79,7 +83,7 @@ export default function ExploreSection() {
 
           paddingHorizontal: 10,
         },
-        styles.basicBoxShadow,
+        blockShadow,
       ]}
       onPress={() => router.navigate(`/${link}` as any)}
     >
@@ -119,7 +123,8 @@ export default function ExploreSection() {
         />
       </View>
     </Pressable>
-  );
+    );
+  };
   const [width, setWidth] = useState(Dimensions.get("window").width - 60);
 
   return (
@@ -127,7 +132,7 @@ export default function ExploreSection() {
       <View
         style={[
           styles.homeBlock,
-          styles.basicBoxShadow,
+          featuredCarouselShadow,
           {
             flex: 1,
             backgroundColor: theme.greyBlock,
