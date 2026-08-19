@@ -91,6 +91,7 @@ const householdEssentialCatalog: Food[] = [
   createFood(73, "Pomegranate", "Produce"),
   createFood(74, "Cherries", "Produce"),
   createFood(75, "Avocado", "Produce"),
+  createFood(119, "Peaches", "Produce"),
   createFood(76, "Beans", "Legumes, Nuts & Seeds"),
   createFood(77, "Black Beans", "Legumes, Nuts & Seeds"),
   createFood(78, "Chickpeas", "Legumes, Nuts & Seeds"),

@@ -251,7 +251,13 @@ export default function Profile() {
               </Text>
               <SwitchToggle
                 value={isDark}
-                onValueChange={toggleColorScheme}
+                onValueChange={() => {
+                  toggleColorScheme();
+
+                  requestAnimationFrame(() => {
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                  });
+                }}
               ></SwitchToggle>
             </View>
 

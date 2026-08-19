@@ -132,6 +132,7 @@ const SetupScreen = (props: Props) => {
       "Pomegranate",
       "Cherries",
       "Avocado",
+      "Peaches",
     ],
     Beans: [
       "Black Beans",

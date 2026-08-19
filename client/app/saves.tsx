@@ -26,31 +26,50 @@ const saves = (props: Props) => {
       <SafeAreaView
         style={{
           flex: 1,
-          backgroundColor: theme.backgroundColor,
+          backgroundColor: theme.nestedBG,
           position: "relative",
         }}
       >
-        <Pressable
-          hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
+        <View
           style={{
-            marginTop: 8,
-            marginLeft: 25,
-            alignSelf: "flex-start",
-            zIndex: 1000,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "flex-start",
+            marginTop: 10,
+            paddingHorizontal: 25,
+            paddingBottom: 10,
           }}
-          onPress={() =>
-            navigation.canGoBack()
-              ? [navigation.goBack(), Haptics.selectionAsync()]
-              : null
-          }
         >
-          <CustomIcon
-            name="arrow-left"
-            filled={false}
-            color={navigation.canGoBack() ? theme.fontColor : theme.addPlusGrey}
-            size={20}
-          />
-        </Pressable>
+          <Pressable
+            hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
+            style={{
+              zIndex: 1000,
+            }}
+            onPress={() =>
+              navigation.canGoBack()
+                ? [navigation.goBack(), Haptics.selectionAsync()]
+                : null
+            }
+          >
+            <CustomIcon
+              name="arrow-left"
+              filled={false}
+              color={
+                navigation.canGoBack() ? theme.fontColor : theme.addPlusGrey
+              }
+              size={20}
+            />
+          </Pressable>
+          <Text
+            style={[
+              styles.textLeftBold,
+              { marginTop: 0, marginLeft: 14, fontSize: 20 },
+            ]}
+          >
+            {filterTitle}
+          </Text>
+        </View>
+
         <ScrollView
           style={{
             flex: 1,
@@ -71,15 +90,6 @@ const saves = (props: Props) => {
             }}
           >
             <View style={styles.container}>
-              <Text
-                style={[
-                  styles.textLeftBold,
-                  { marginTop: 0, marginBottom: 15, fontSize: 20 },
-                ]}
-              >
-                {filterTitle}
-              </Text>
-
               <DisplaySaved filter={filter}></DisplaySaved>
             </View>
           </View>
