@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Pressable } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import React from "react";
 import DisplaySaved from "@/components/features/saved/DisplaySaved";
 import { useStyles } from "@/styles/GlobalStyles";
@@ -37,7 +37,7 @@ const saves = (props: Props) => {
             justifyContent: "flex-start",
             marginTop: 10,
             paddingHorizontal: 25,
-            paddingBottom: 10,
+            paddingBottom: 0,
           }}
         >
           <Pressable
@@ -70,30 +70,16 @@ const saves = (props: Props) => {
           </Text>
         </View>
 
-        <ScrollView
+        <View
           style={{
             flex: 1,
+            position: "relative",
           }}
-          contentContainerStyle={{
-            flexGrow: 1,
-            paddingHorizontal: 25,
-            paddingTop: 0,
-          }}
-          overScrollMode="never"
-          alwaysBounceVertical={false}
-          keyboardShouldPersistTaps="always"
         >
-          <View
-            style={{
-              flex: 1,
-              position: "relative",
-            }}
-          >
-            <View style={styles.container}>
-              <DisplaySaved filter={filter}></DisplaySaved>
-            </View>
+          <View style={styles.container}>
+            <DisplaySaved filter={filter}></DisplaySaved>
           </View>
-        </ScrollView>
+        </View>
         <LinearGradient
           colors={[
             hexToRgba(theme.backgroundColor, 0),
