@@ -150,7 +150,7 @@ export default function Profile() {
         title: "Century",
         description: "Make 100 meals", // MAKE and FOLLOW 100 recipes (go through the steps not just generate it)
         emoji: "Trophy",
-        color: theme.greenBlock,
+        color: theme.orangeBlock,
         unlocked: unlockedIds.includes("century"),
       },
     ];
