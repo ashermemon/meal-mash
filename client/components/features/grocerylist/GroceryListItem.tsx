@@ -3,11 +3,12 @@ import {
   Text,
   Pressable,
   Animated,
+  Easing,
   LayoutAnimation,
   Platform,
   UIManager,
 } from "react-native";
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import CustomCheckbox from "@/components/common/CustomCheckbox";
 import { Food } from "../pantry/Search";
 import * as Haptics from "expo-haptics";
@@ -46,6 +47,16 @@ const GroceryListItem = ({ food, variant = "active" }: Props) => {
 
   const strikeAnim = useRef(new Animated.Value(startsChecked ? 1 : 0)).current;
   const fadeAnim = useRef(new Animated.Value(1)).current;
+  const mountFadeAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(mountFadeAnim, {
+      toValue: 1,
+      duration: 280,
+      easing: Easing.out(Easing.cubic),
+      useNativeDriver: true,
+    }).start();
+  }, [mountFadeAnim]);
 
   const textColorAnim = strikeAnim.interpolate({
     inputRange: [0, 1],
@@ -109,7 +120,7 @@ const GroceryListItem = ({ food, variant = "active" }: Props) => {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        opacity: fadeAnim,
+        opacity: Animated.multiply(fadeAnim, mountFadeAnim),
       }}
     >
       <View style={{ marginRight: 12 }} pointerEvents={busy ? "none" : "auto"}>

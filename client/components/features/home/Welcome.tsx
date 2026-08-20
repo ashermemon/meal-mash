@@ -294,13 +294,13 @@ export default function Welcome() {
                     styles.basicTextLeft,
 
                     {
-                      fontSize: 13,
+                      fontSize: 11,
                       color: theme.basicText,
                       opacity: 0.75,
                     },
                   ]}
                 >
-                  Generate a random recipe
+                  Generate a random recipe (any ingredients)
                 </Text>
               </View>
             </View>

@@ -336,7 +336,7 @@ const Search = forwardRef<SearchHandle, Props>((props, ref) => {
             showsVerticalScrollIndicator={true}
             nestedScrollEnabled={true}
             keyboardShouldPersistTaps="always"
-            contentContainerStyle={{ paddingBottom: 8 }}
+            contentContainerStyle={{ paddingBottom: 4 }}
             bounces={false}
           >
             {results.map((item, index) => {

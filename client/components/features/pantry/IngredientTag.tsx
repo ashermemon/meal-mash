@@ -1,5 +1,11 @@
 import { View, Text, Pressable } from "react-native";
 import React, { useContext } from "react";
+import Animated, {
+  Easing,
+  FadeInDown,
+  FadeOutUp,
+  LinearTransition,
+} from "react-native-reanimated";
 import { useStyles } from "@/styles/GlobalStyles";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import { useTheme } from "@/contexts/ColorSchemeContext";
@@ -28,14 +34,17 @@ const IngredientTag = (props: Props) => {
       setPantryDetails((prev) => ({
         ...prev,
         ingredients: prev.ingredients.filter(
-          (ingredient) => ingredient.name !== props.ingredient.name,
+          (ingredient) => ingredient.id !== props.ingredient.id,
         ),
       }));
     }
   };
 
   return (
-    <View
+    <Animated.View
+      entering={FadeInDown.duration(280).easing(Easing.out(Easing.cubic))}
+      exiting={FadeOutUp.duration(200).easing(Easing.in(Easing.cubic))}
+      layout={LinearTransition.duration(250).easing(Easing.inOut(Easing.ease))}
       style={[
         styles.ingredientPill,
         tagShadow,
@@ -105,7 +114,7 @@ const IngredientTag = (props: Props) => {
           size={18}
         />
       </Pressable>
-    </View>
+    </Animated.View>
   );
 };
 

@@ -1,5 +1,6 @@
-import { Animated, Text, View } from "react-native";
+import { Animated as RNAnimated, Text, View } from "react-native";
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
+import Reanimated, { FadeIn, FadeOut } from "react-native-reanimated";
 import { useStyles } from "@/styles/GlobalStyles";
 import { useTheme } from "@/contexts/ColorSchemeContext";
 import { Image } from "expo-image";
@@ -16,15 +17,16 @@ import IngredientTag from "@/components/features/pantry/IngredientTag";
 import Search, { Food } from "@/components/features/pantry/Search";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import icons3d from "@/components/universal/3dIcons";
+import { getCategoryDisplayLabel } from "@/constants/categoryLabels";
 
 export default function Dashboard() {
   const styles = useStyles();
   const theme = useTheme();
-  const searchOverlayOpacity = useRef(new Animated.Value(0)).current;
+  const searchOverlayOpacity = useRef(new RNAnimated.Value(0)).current;
   const [searchActive, setSearchActive] = useState(false);
 
   useEffect(() => {
-    Animated.timing(searchOverlayOpacity, {
+    RNAnimated.timing(searchOverlayOpacity, {
       toValue: searchActive ? 0.75 : 0,
       duration: 250,
       useNativeDriver: true,
@@ -36,6 +38,16 @@ export default function Dashboard() {
   const pantryIngredientIds = useMemo(
     () => new Set(pantryDetails.ingredients.map((item) => item.id)),
     [pantryDetails.ingredients],
+  );
+  const filteredIngredients = useMemo(
+    () =>
+      pantryDetails.ingredients
+        .toReversed()
+        .filter(
+          (ingredient) =>
+            selectedFilter === "All" || selectedFilter === ingredient.category,
+        ),
+    [pantryDetails.ingredients, selectedFilter],
   );
   const ingredientCategories: string[] = [
     "All",
@@ -149,26 +161,17 @@ export default function Dashboard() {
                   currentSelected={selectedFilter}
                   categories={ingredientCategories}
                 />
-                {pantryDetails.ingredients
-                  .toReversed()
-                  .map((ingredient: Food, index: number) =>
-                    selectedFilter === "All" ? (
-                      <IngredientTag
-                        key={index}
-                        ingredient={ingredient}
-                      ></IngredientTag>
-                    ) : selectedFilter === ingredient.category ? (
-                      <IngredientTag
-                        key={index}
-                        ingredient={ingredient}
-                      ></IngredientTag>
-                    ) : (
-                      <React.Fragment key={index}></React.Fragment>
-                    ),
-                  )}
+                {filteredIngredients.map((ingredient: Food) => (
+                  <IngredientTag
+                    key={ingredient.id}
+                    ingredient={ingredient}
+                  ></IngredientTag>
+                ))}
               </View>
               {pantryDetails.ingredients.length < 1 ? (
-                <View
+                <Reanimated.View
+                  entering={FadeIn.duration(250)}
+                  exiting={FadeOut.duration(150)}
                   style={{
                     flex: 1,
                     alignItems: "center",
@@ -208,7 +211,51 @@ export default function Dashboard() {
                   >
                     Add the ingredients you have at home to get started!
                   </Text>
-                </View>
+                </Reanimated.View>
+              ) : filteredIngredients.length < 1 ? (
+                <Reanimated.View
+                  entering={FadeIn.duration(250)}
+                  exiting={FadeOut.duration(150)}
+                  style={{
+                    flex: 1,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 6,
+                    paddingHorizontal: 20,
+                  }}
+                >
+                  <CustomIcon
+                    name="empty-box-fill"
+                    filled
+                    color={theme.redAccent}
+                    size={36}
+                  />
+                  <Text
+                    style={[
+                      styles.textCenterBold,
+                      {
+                        fontFamily: "Nunito-Bold",
+                        fontSize: 20,
+                        color: theme.basicText,
+                      },
+                    ]}
+                  >
+                    Nothing here yet...
+                  </Text>
+                  <Text
+                    style={[
+                      styles.textCentered,
+                      {
+                        fontFamily: "Nunito-SemiBold",
+                        fontSize: 15,
+                        color: theme.placeholderText,
+                        textAlign: "center",
+                      },
+                    ]}
+                  >
+                    Ingredients you add in this category will show up here
+                  </Text>
+                </Reanimated.View>
               ) : (
                 <></>
               )}

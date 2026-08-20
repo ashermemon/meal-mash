@@ -5,12 +5,6 @@ import { useTheme } from "@/contexts/ColorSchemeContext";
 import { Image } from "expo-image";
 import * as Haptics from "expo-haptics";
 import SavedRecipesContext from "@/contexts/SavedRecipesContext";
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-  runOnJS,
-} from "react-native-reanimated";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import { saveRecipe, equal } from "@/components/features/recipe/SaveRecipe";
@@ -41,6 +35,9 @@ export default function SavedCard(props: SavedProps) {
   const saveCard = () => {
     const wasSaved = saved;
     const recipeToRestore = props.SavedRecipe;
+    const originalIndex = savesRecipes.findIndex((r) =>
+      equal(r, recipeToRestore),
+    );
     saveRecipe(recipeToRestore, setSavesRecipes);
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
 
@@ -53,7 +50,8 @@ export default function SavedCard(props: SavedProps) {
         { text: "OK", style: "cancel" },
         {
           text: "Undo",
-          onPress: () => saveRecipe(recipeToRestore, setSavesRecipes),
+          onPress: () =>
+            saveRecipe(recipeToRestore, setSavesRecipes, originalIndex),
         },
       ]);
     } else {
@@ -64,7 +62,6 @@ export default function SavedCard(props: SavedProps) {
     /\b(min|mins|minute|minutes)\b/gi,
     "m",
   );
-  const pressed = useSharedValue<boolean>(false);
   const handleCardPress = () => {
     Haptics.selectionAsync();
     setRecipeData(props.SavedRecipe);
