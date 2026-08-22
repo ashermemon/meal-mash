@@ -1,5 +1,20 @@
-import { Alert, Pressable, StyleSheet, Text, View } from "react-native";
-import React, { useContext, useEffect, useState } from "react";
+import {
+  Alert,
+  LayoutChangeEvent,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import Animated, {
+  Easing,
+  FadeInDown,
+  runOnJS,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
 import { useStyles } from "@/styles/GlobalStyles";
 import { useTheme } from "@/contexts/ColorSchemeContext";
 import { Image } from "expo-image";
@@ -14,10 +29,30 @@ import RecipeInfoTags from "../recipe/RecipeInfoTags";
 import { MEAL_IMAGES } from "@/app/followRecipe";
 import InfoTag from "../recipe/InfoTag";
 import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
+import {
+  consumePendingRestore,
+  isEntranceWindowOpen,
+  markPendingRestore,
+  recipeKey,
+} from "./savedCardAnimation";
 
 type SavedProps = {
   SavedRecipe: RecipeData;
+
+  gap?: number;
+
+  onBeforeListChange?: () => void;
 };
+
+type CardPhase = "idle" | "removing" | "restoring";
+
+const REMOVE_DURATION = 320;
+const SETTLE_EASING = Easing.out(Easing.poly(4));
+const FADE_OUT_DURATION = 200;
+const RESTORE_DURATION = 320;
+const ENTER_DURATION = 280;
+
+const ALERT_DELAY = 50;
 
 export default function SavedCard(props: SavedProps) {
   const styles = useStyles();
@@ -28,35 +63,152 @@ export default function SavedCard(props: SavedProps) {
   const [savesRecipes, setSavesRecipes] = useContext(SavedRecipesContext);
   const [recipeData, setRecipeData] = useContext(RecipeContext);
 
+  const cardKey = recipeKey(props.SavedRecipe);
+  const gap = props.gap ?? 20;
+
+  const naturalHeight = useRef(0);
+  const isAnimating = useRef(false);
+  const restoreHeight = useRef<number | undefined>(undefined);
+  const pendingRemoval = useRef<{ index: number; height: number } | null>(null);
+
+  const [phase, setPhase] = useState<CardPhase>(() => {
+    if (restoreHeight.current === undefined) {
+      restoreHeight.current = consumePendingRestore(cardKey);
+    }
+    return restoreHeight.current === undefined ? "idle" : "restoring";
+  });
+
+  const [entering] = useState(() =>
+    restoreHeight.current === undefined && isEntranceWindowOpen()
+      ? FadeInDown.duration(ENTER_DURATION).easing(Easing.out(Easing.cubic))
+      : undefined,
+  );
+
+  const cardHeight = useSharedValue(0);
+  const cardOpacity = useSharedValue(
+    restoreHeight.current === undefined ? 1 : 0,
+  );
+  const phaseRef = useRef(phase);
+  phaseRef.current = phase;
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    height: cardHeight.value,
+    opacity: cardOpacity.value,
+  }));
+
   useEffect(() => {
     setSaved(savesRecipes.some((r) => equal(r, props.SavedRecipe)));
   }, [props.SavedRecipe, savesRecipes]);
 
-  const saveCard = () => {
-    const wasSaved = saved;
-    const recipeToRestore = props.SavedRecipe;
-    const originalIndex = savesRecipes.findIndex((r) =>
-      equal(r, recipeToRestore),
-    );
-    saveRecipe(recipeToRestore, setSavesRecipes);
-    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+  useEffect(() => {
+    const height = restoreHeight.current;
+    if (height === undefined) return;
 
-    const title = props.SavedRecipe.title
-      ? props.SavedRecipe.title.trim()
+    naturalHeight.current = height;
+    cardHeight.value = 0;
+    cardOpacity.value = 0;
+    cardHeight.value = withTiming(
+      height,
+      { duration: RESTORE_DURATION, easing: SETTLE_EASING },
+      (finished) => {
+        if (finished) runOnJS(setPhase)("idle");
+      },
+    );
+    cardOpacity.value = withTiming(1, {
+      duration: ENTER_DURATION,
+      easing: Easing.out(Easing.cubic),
+    });
+  }, []);
+
+  const renderedKey = useRef(cardKey);
+  useEffect(() => {
+    if (renderedKey.current === cardKey) return;
+    renderedKey.current = cardKey;
+    isAnimating.current = false;
+    pendingRemoval.current = null;
+    cardHeight.value = 0;
+    cardOpacity.value = 1;
+    setPhase("idle");
+  }, [cardKey, cardHeight, cardOpacity]);
+
+  const handleLayout = (event: LayoutChangeEvent) => {
+    if (phaseRef.current === "idle") {
+      naturalHeight.current = event.nativeEvent.layout.height;
+    }
+  };
+
+  const commitRemoval = (originalIndex: number, height: number) => {
+    const recipeToRestore = props.SavedRecipe;
+    const title = recipeToRestore.title
+      ? recipeToRestore.title.trim()
       : "Recipe";
 
-    if (wasSaved) {
+    props.onBeforeListChange?.();
+    saveRecipe(recipeToRestore, setSavesRecipes);
+
+    setTimeout(() => {
       Alert.alert("Removed from Saves", `${title} was removed from saves.`, [
         { text: "OK", style: "cancel" },
         {
           text: "Undo",
-          onPress: () =>
-            saveRecipe(recipeToRestore, setSavesRecipes, originalIndex),
+          onPress: () => {
+            markPendingRestore(recipeKey(recipeToRestore), height);
+            props.onBeforeListChange?.();
+            saveRecipe(recipeToRestore, setSavesRecipes, originalIndex);
+          },
         },
       ]);
-    } else {
-      Alert.alert("Saved", `${title} was saved.`);
+    }, ALERT_DELAY);
+  };
+
+  const beginRemoval = (originalIndex: number) => {
+    if (isAnimating.current) return;
+    const height = naturalHeight.current;
+    if (height <= 0) {
+      // Never measured (shouldn't happen) - just remove it.
+      commitRemoval(originalIndex, 0);
+      return;
     }
+    isAnimating.current = true;
+    pendingRemoval.current = { index: originalIndex, height };
+    cardHeight.value = height;
+    cardOpacity.value = 1;
+    setPhase("removing");
+  };
+
+  // Started once the collapsing style is actually attached, so the card doesn't
+  // jump a few pixels before it starts shrinking.
+  useEffect(() => {
+    if (phase !== "removing") return;
+    const pending = pendingRemoval.current;
+    if (!pending) return;
+    cardOpacity.value = withTiming(0, {
+      duration: FADE_OUT_DURATION,
+      easing: Easing.in(Easing.cubic),
+    });
+    cardHeight.value = withTiming(
+      0,
+      { duration: REMOVE_DURATION, easing: SETTLE_EASING },
+      (finished) => {
+        if (finished) runOnJS(commitRemoval)(pending.index, pending.height);
+      },
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phase]);
+
+  const saveCard = () => {
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+
+    if (!saved) {
+      const title = props.SavedRecipe.title
+        ? props.SavedRecipe.title.trim()
+        : "Recipe";
+      saveRecipe(props.SavedRecipe, setSavesRecipes);
+      Alert.alert("Saved", `${title} was saved.`);
+      return;
+    }
+
+    beginRemoval(savesRecipes.findIndex((r) => equal(r, props.SavedRecipe)));
   };
   const displayTime = props.SavedRecipe.time.replace(
     /\b(min|mins|minute|minutes)\b/gi,
@@ -69,12 +221,25 @@ export default function SavedCard(props: SavedProps) {
   };
 
   return (
-    <>
+    <Animated.View
+      entering={entering}
+      onLayout={handleLayout}
+      pointerEvents={phase === "removing" ? "none" : "auto"}
+      style={[
+        { paddingBottom: gap },
+        phase !== "idle" && animatedStyle,
+        phase !== "idle" && { overflow: "hidden" as const },
+      ]}
+    >
       <Pressable
         style={[
           styles.homeBlock,
           cardShadow,
           { backgroundColor: theme.greyBlock, position: "relative" },
+          // While the wrapper is collapsing the card is taken out of the flow so
+          // its own height never changes - otherwise the squeezed row would
+          // re-center the meal image while the text stayed put.
+          phase !== "idle" && localStyles.pinnedCard,
         ]}
         onPress={handleCardPress}
       >
@@ -238,6 +403,15 @@ export default function SavedCard(props: SavedProps) {
           </View>
         </View>
       </Pressable>
-    </>
+    </Animated.View>
   );
 }
+
+const localStyles = StyleSheet.create({
+  pinnedCard: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+  },
+});

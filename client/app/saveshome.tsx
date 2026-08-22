@@ -12,6 +12,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "expo-router";
 import SaveCategory from "@/components/features/saved/SaveCategory";
 import SavedCard from "@/components/features/saved/SavedCard";
+import { openEntranceWindow } from "@/components/features/saved/savedCardAnimation";
 
 const CategoriesDisplay = () => {
   const categories = [
@@ -61,7 +62,10 @@ const SavesHome = () => {
   const [savedRecipes] = useContext(SavedRecipesContext);
 
   useEffect(() => {
-    const timeout = setTimeout(() => setDebouncedQuery(query), 300);
+    const timeout = setTimeout(() => {
+      openEntranceWindow();
+      setDebouncedQuery(query);
+    }, 300);
     return () => clearTimeout(timeout);
   }, [query]);
 
@@ -152,7 +156,6 @@ const SavesHome = () => {
               renderItem={({ item }) => (
                 <SavedCard SavedRecipe={item}></SavedCard>
               )}
-              ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
               ListEmptyComponent={
                 <Text
                   style={[

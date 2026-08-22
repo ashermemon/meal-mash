@@ -1,7 +1,7 @@
 import { Text, View } from "react-native";
-import React, { useContext } from "react";
+import React, { useCallback, useContext, useRef } from "react";
 import { useStyles } from "@/styles/GlobalStyles";
-import { FlashList } from "@shopify/flash-list";
+import { FlashList, type FlashListRef } from "@shopify/flash-list";
 
 import SavedRecipesContext from "@/contexts/SavedRecipesContext";
 import SavedCard from "@/components/features/saved/SavedCard";
@@ -21,6 +21,22 @@ export default function DisplaySaved({ filter }: Props) {
 
   const [allSaves, setSaves] = useContext(SavedRecipesContext);
   const theme = useTheme();
+  const listRef = useRef<FlashListRef<RecipeData>>(null);
+
+  // Recycled cells would inherit the collapsed card's animation, so pause
+  // recycling for the render that adds or removes a card.
+  const prepareForListChange = useCallback(() => {
+    listRef.current?.prepareForLayoutAnimationRender();
+  }, []);
+
+  // Stable so cells only re-render when their own item changes - the list
+  // re-renders on every frame of a card's remove/restore animation.
+  const renderItem = useCallback(
+    ({ item }: { item: RecipeData }) => (
+      <SavedCard SavedRecipe={item} onBeforeListChange={prepareForListChange} />
+    ),
+    [prepareForListChange],
+  );
 
   const saves =
     !filter || filter === "all"
@@ -30,13 +46,13 @@ export default function DisplaySaved({ filter }: Props) {
   return (
     <View style={{ width: "100%", paddingBottom: 0, flex: 1 }}>
       <FlashList
+        ref={listRef}
         data={saves}
         keyExtractor={(item: RecipeData, index) => item.id ?? index.toString()}
         contentContainerStyle={{ paddingHorizontal: 25 }}
         keyboardShouldPersistTaps="always"
         overScrollMode="never"
         alwaysBounceVertical={false}
-        ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
         ListHeaderComponent={
           saves.length === 0 ? null : (
             <Text
@@ -101,9 +117,7 @@ export default function DisplaySaved({ filter }: Props) {
             </Text>
           </View>
         }
-        renderItem={({ item }: { item: RecipeData }) => (
-          <SavedCard SavedRecipe={item}></SavedCard>
-        )}
+        renderItem={renderItem}
       />
     </View>
   );
