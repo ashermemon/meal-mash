@@ -46,13 +46,14 @@ type SavedProps = {
 
 type CardPhase = "idle" | "removing" | "restoring";
 
-const REMOVE_DURATION = 320;
-const SETTLE_EASING = Easing.out(Easing.poly(4));
+const REMOVE_DURATION = 300;
+
+const SETTLE_EASING = Easing.bezier(0.4, 0, 0.2, 1);
 const FADE_OUT_DURATION = 200;
-const RESTORE_DURATION = 320;
+const RESTORE_DURATION = 280;
 const ENTER_DURATION = 280;
 
-const ALERT_DELAY = 50;
+const ALERT_DELAY = 10;
 
 export default function SavedCard(props: SavedProps) {
   const styles = useStyles();
@@ -88,12 +89,14 @@ export default function SavedCard(props: SavedProps) {
   const cardOpacity = useSharedValue(
     restoreHeight.current === undefined ? 1 : 0,
   );
+  const cardGap = useSharedValue(restoreHeight.current === undefined ? gap : 0);
   const phaseRef = useRef(phase);
   phaseRef.current = phase;
 
   const animatedStyle = useAnimatedStyle(() => ({
     height: cardHeight.value,
     opacity: cardOpacity.value,
+    paddingBottom: cardGap.value,
   }));
 
   useEffect(() => {
@@ -107,6 +110,11 @@ export default function SavedCard(props: SavedProps) {
     naturalHeight.current = height;
     cardHeight.value = 0;
     cardOpacity.value = 0;
+    cardGap.value = 0;
+    cardGap.value = withTiming(gap, {
+      duration: RESTORE_DURATION,
+      easing: SETTLE_EASING,
+    });
     cardHeight.value = withTiming(
       height,
       { duration: RESTORE_DURATION, easing: SETTLE_EASING },
@@ -128,8 +136,9 @@ export default function SavedCard(props: SavedProps) {
     pendingRemoval.current = null;
     cardHeight.value = 0;
     cardOpacity.value = 1;
+    cardGap.value = gap;
     setPhase("idle");
-  }, [cardKey, cardHeight, cardOpacity]);
+  }, [cardKey, cardHeight, cardOpacity, cardGap, gap]);
 
   const handleLayout = (event: LayoutChangeEvent) => {
     if (phaseRef.current === "idle") {
@@ -173,6 +182,7 @@ export default function SavedCard(props: SavedProps) {
     pendingRemoval.current = { index: originalIndex, height };
     cardHeight.value = height;
     cardOpacity.value = 1;
+    cardGap.value = gap;
     setPhase("removing");
   };
 
@@ -184,7 +194,11 @@ export default function SavedCard(props: SavedProps) {
     if (!pending) return;
     cardOpacity.value = withTiming(0, {
       duration: FADE_OUT_DURATION,
-      easing: Easing.in(Easing.cubic),
+      easing: Easing.out(Easing.quad),
+    });
+    cardGap.value = withTiming(0, {
+      duration: REMOVE_DURATION,
+      easing: SETTLE_EASING,
     });
     cardHeight.value = withTiming(
       0,
