@@ -1,7 +1,7 @@
 import { View, Text } from "react-native";
 import React from "react";
-import { styles } from "@/styles/auth.styles";
-import { COLORS } from "@/constants/Theme";
+import { useStyles } from "@/styles/GlobalStyles";
+import { useTheme } from "@/contexts/ColorSchemeContext";
 
 type Props = {
   sectionTitle?: string;
@@ -11,6 +11,8 @@ type Props = {
 };
 
 const RecipeSection = (props: Props) => {
+  const styles = useStyles();
+  const theme = useTheme();
   return (
     <View
       style={[
@@ -43,7 +45,7 @@ const RecipeSection = (props: Props) => {
           <Text
             style={[
               styles.textRight,
-              { color: COLORS.searchPlaceholder, fontSize: 13, marginTop: 1 },
+              { color: theme.searchPlaceholder, fontSize: 13, marginTop: 1 },
             ]}
           >
             {props.servings === 1

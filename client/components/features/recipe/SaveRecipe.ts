@@ -1,5 +1,6 @@
 import { storage } from "@/utils/storage";
 import { type RecipeData } from "@/contexts/RecipeContext";
+import { trackRecipeSaved } from "@/utils/achievements";
 
 export function equal(r1: RecipeData, r2: RecipeData): boolean {
   if (!r1 || !r2) return false;
@@ -12,6 +13,7 @@ export function equal(r1: RecipeData, r2: RecipeData): boolean {
 export function saveRecipe(
   recipeData: RecipeData,
   setSavedRecipes: React.Dispatch<React.SetStateAction<RecipeData[]>>,
+  restoreIndex?: number,
 ) {
   if (!recipeData || !recipeData.title) {
     console.warn("Cannot save recipe: recipe data or title is missing.");
@@ -27,12 +29,23 @@ export function saveRecipe(
 
     if (isCurrentlyFavorite) {
       updatedSaves = currentSaves.filter((r) => !equal(r, recipeData));
+    } else if (
+      restoreIndex !== undefined &&
+      restoreIndex >= 0 &&
+      restoreIndex <= currentSaves.length
+    ) {
+      updatedSaves = [
+        ...currentSaves.slice(0, restoreIndex),
+        recipeData,
+        ...currentSaves.slice(restoreIndex),
+      ];
     } else {
       updatedSaves = [...currentSaves, recipeData];
     }
 
     storage.set("saves", JSON.stringify(updatedSaves));
     storage.set("savesnumber", updatedSaves.length);
+    trackRecipeSaved(updatedSaves.length);
     return updatedSaves;
   });
 }

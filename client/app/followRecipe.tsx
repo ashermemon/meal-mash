@@ -8,9 +8,9 @@ import RecipeInfoTags from "@/components/features/recipe/RecipeInfoTags";
 import NutrientCircle from "@/components/features/recipe/NutrientCircle";
 import Timer from "@/components/features/recipe/Timer";
 import CustomCheckbox from "@/components/common/CustomCheckbox";
-import { styles } from "@/styles/GlobalStyles";
-import { NEWCOLORS } from "@/constants/NewTheme";
-import { COLORS } from "@/constants/Theme";
+import { useStyles } from "@/styles/GlobalStyles";
+import { useTheme } from "@/contexts/ColorSchemeContext";
+import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 import { useNavigation } from "@react-navigation/native";
 import * as Haptics from "expo-haptics";
 import RecipeSection from "@/components/features/recipe/RecipeSection";
@@ -18,7 +18,7 @@ import Svg, { Path } from "react-native-svg";
 import FollowRecipeHeader from "@/components/features/recipe/FollowRecipeHeader";
 import { router } from "expo-router";
 
-const MEAL_IMAGES: Record<string, any> = {
+export const MEAL_IMAGES: Record<string, any> = {
   burger: require("@/assets/images/meal-images/burger.webp"),
   pizza: require("@/assets/images/meal-images/pizza.webp"),
   pasta: require("@/assets/images/meal-images/pasta.webp"),
@@ -36,6 +36,10 @@ const MEAL_IMAGES: Record<string, any> = {
 };
 
 const followRecipe = () => {
+  const styles = useStyles();
+  const theme = useTheme();
+  const imageGlowShadow = useTintedBoxShadow(theme.backgroundColor, "glow");
+  const returnButtonShadow = useTintedBoxShadow(theme.primary);
   const [contextRecipeData] = useContext(RecipeContext);
   const navigation = useNavigation();
   const bulletMargin = 45; //33
@@ -46,10 +50,17 @@ const followRecipe = () => {
     title: "Recipe Title",
     description:
       "A delicious and easy-to-make meal that is perfect for any occasion. Packed with flavor and nutrients, this recipe is sure to become a family favorite.",
-    difficulty: "Intermediate",
+    difficulty: "Moderate",
     time: "30 min",
     tags: ["Lunch", "Vegetarian"],
     servings: 2,
+    categories: {
+      madeWithLeftovers: false,
+      tastyMeals: true,
+      sweetTreats: false,
+      quickSnacks: false,
+      under15Minutes: false,
+    },
     ingredients: [
       ["1.5 tbsp", "olive oil"],
       ["2 cloves", "garlic, minced"],
@@ -100,7 +111,7 @@ const followRecipe = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: NEWCOLORS.nestedBG }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: theme.nestedBG }}>
       <FollowRecipeHeader
         pageTitle={recipeData.title || "Generated Meal"}
         progress={scrollProgress}
@@ -132,23 +143,25 @@ const followRecipe = () => {
               marginBottom: 20,
             }}
           >
-            <Image
-              source={MEAL_IMAGES[recipeData.imageCategory] || MEAL_IMAGES.bowl}
-              style={{
-                width: 70,
-                height: 70,
-                borderRadius: 110,
-                shadowColor: "black",
-                shadowRadius: 50,
-                shadowOpacity: 1,
-              }}
-              contentFit="cover"
-            />
+            <View
+              style={[
+                imageGlowShadow,
+                { width: 70, height: 70, borderRadius: 110 },
+              ]}
+            >
+              <Image
+                source={
+                  MEAL_IMAGES[recipeData.imageCategory] || MEAL_IMAGES.bowl
+                }
+                style={{ width: "100%", height: "100%", borderRadius: 110 }}
+                contentFit="cover"
+              />
+            </View>
             <View style={{ flex: 1, paddingHorizontal: 18 }}>
               <Text
                 numberOfLines={1}
                 adjustsFontSizeToFit
-                style={[styles.textCenterBold, { fontSize: 23 }]}
+                style={[styles.textLeftBold, { fontSize: 23 }]}
               >
                 {recipeData.title}
               </Text>
@@ -166,7 +179,7 @@ const followRecipe = () => {
               {
                 fontSize: 16,
                 lineHeight: 24,
-                color: COLORS.fontColor,
+                color: theme.fontColor,
                 marginBottom: 10,
               },
             ]}
@@ -243,7 +256,7 @@ const followRecipe = () => {
                           marginLeft: 0,
                           flex: 1,
                           fontSize: 15,
-                          color: COLORS.fontColor,
+                          color: theme.fontColor,
                         },
                       ]}
                     >
@@ -256,7 +269,7 @@ const followRecipe = () => {
                         styles.textRight,
                         {
                           fontSize: 15,
-                          color: COLORS.searchPlaceholder,
+                          color: theme.searchPlaceholder,
                           marginLeft: 12,
                         },
                       ]}
@@ -282,13 +295,13 @@ const followRecipe = () => {
                 <View
                   style={[
                     styles.stepCircle,
-                    { backgroundColor: NEWCOLORS.stepCircle, flexShrink: 0 },
+                    { backgroundColor: theme.greenBlock, flexShrink: 0 },
                   ]}
                 >
                   <Text
                     style={[
                       styles.textLeftSemiBold,
-                      { color: COLORS.fontColor },
+                      { color: theme.fontColor },
                     ]}
                   >
                     {index + 1}
@@ -301,7 +314,7 @@ const followRecipe = () => {
                       flex: 1,
                       fontSize: 15,
                       lineHeight: 22,
-                      marginLeft: 12,
+                      marginLeft: 16,
                       marginTop: 5,
                       marginBottom: bulletMargin,
                     },
@@ -341,14 +354,14 @@ const followRecipe = () => {
                   >
                     <Path
                       d="M11.8307 3.50018C13.1625 -1.16672 19.7764 -1.16672 21.1083 3.50018C21.8228 6.00364 24.3948 7.48858 26.92 6.85558C31.6276 5.67557 34.9346 11.4034 31.5589 14.8903C29.748 16.7607 29.748 19.7306 31.5589 21.6011C34.9346 25.088 31.6276 30.8158 26.92 29.6357C24.3948 29.0028 21.8228 30.4877 21.1083 32.9912C19.7764 37.6581 13.1625 37.6581 11.8307 32.9912C11.1162 30.4877 8.54421 29.0028 6.01892 29.6357C1.31134 30.8158 -1.99562 25.088 1.3801 21.6011C3.19094 19.7306 3.19094 16.7607 1.3801 14.8903C-1.99561 11.4034 1.31134 5.67557 6.01892 6.85559C8.54421 7.48858 11.1162 6.00364 11.8307 3.50018Z"
-                      fill={NEWCOLORS.tipBadgeBg}
+                      fill={theme.yellowBlock}
                     />
                   </Svg>
 
                   <Text
                     style={[
                       styles.textLeftSemiBold,
-                      { color: COLORS.fontColor },
+                      { color: theme.fontColor },
                     ]}
                   >
                     {index + 1}
@@ -361,7 +374,7 @@ const followRecipe = () => {
                       flex: 1,
                       fontSize: 15,
                       lineHeight: 22,
-                      marginLeft: 12,
+                      marginLeft: 16,
                       marginBottom: bulletMargin,
                       marginTop: 5,
                     },
@@ -376,9 +389,9 @@ const followRecipe = () => {
         <RecipeSection titleOff>
           <Pressable
             style={[
-              styles.basicBoxShadow,
+              returnButtonShadow,
               {
-                backgroundColor: NEWCOLORS.primary,
+                backgroundColor: theme.primary,
                 paddingVertical: 14,
                 borderRadius: 15,
                 width: "100%",
@@ -391,9 +404,12 @@ const followRecipe = () => {
             }
           >
             <Text
-              style={[styles.textCenterBold, { color: "white", fontSize: 18 }]}
+              style={[
+                styles.textCenterBold,
+                { color: theme.pureWhite, fontSize: 18 },
+              ]}
             >
-              ← Return to Swiping
+              ← Return
             </Text>
           </Pressable>
         </RecipeSection>

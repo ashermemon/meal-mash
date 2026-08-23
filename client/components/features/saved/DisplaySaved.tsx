@@ -1,91 +1,124 @@
 import { Text, View } from "react-native";
-import React, { useContext } from "react";
-import { styles } from "@/styles/GlobalStyles";
+import React, { useCallback, useContext, useRef } from "react";
+import { useStyles } from "@/styles/GlobalStyles";
+import { FlashList, type FlashListRef } from "@shopify/flash-list";
 
-import FavIngredient from "@/components/features/saved/FavIngredient";
-import FavoritesContext from "@/contexts/FavoritesContext";
-import FavLeftoversContext from "@/contexts/FavLeftoversContext";
 import SavedRecipesContext from "@/contexts/SavedRecipesContext";
 import SavedCard from "@/components/features/saved/SavedCard";
-import { type RecipeData } from "@/contexts/RecipeContext";
+import {
+  type RecipeData,
+  type RecipeCategories,
+} from "@/contexts/RecipeContext";
+import { CustomIcon } from "@/icon-loader/icon-loader";
+import { useTheme } from "@/contexts/ColorSchemeContext";
 
-export default function DisplaySaved() {
-  const [favorites, setFavorites] = useContext(FavoritesContext);
-  const [favoritesL, setFavoritesL] = useContext(FavLeftoversContext);
-  const [saves, setSaves] = useContext(SavedRecipesContext);
+type Props = {
+  filter?: "all" | keyof RecipeCategories;
+};
+
+export default function DisplaySaved({ filter }: Props) {
+  const styles = useStyles();
+
+  const [allSaves, setSaves] = useContext(SavedRecipesContext);
+  const theme = useTheme();
+  const listRef = useRef<FlashListRef<RecipeData>>(null);
+
+  // Recycled cells would inherit the collapsed card's animation, so pause
+  // recycling for the render that adds or removes a card.
+  const prepareForListChange = useCallback(() => {
+    listRef.current?.prepareForLayoutAnimationRender();
+  }, []);
+
+  // Stable so cells only re-render when their own item changes - the list
+  // re-renders on every frame of a card's remove/restore animation.
+  const renderItem = useCallback(
+    ({ item }: { item: RecipeData }) => (
+      <SavedCard SavedRecipe={item} onBeforeListChange={prepareForListChange} />
+    ),
+    [prepareForListChange],
+  );
+
+  const saves =
+    !filter || filter === "all"
+      ? allSaves
+      : allSaves.filter((recipe) => recipe.categories?.[filter]);
 
   return (
-    <View style={{ width: "100%", paddingHorizontal: 20, paddingBottom: 30 }}>
-      {favorites.length === 0 &&
-        favoritesL.length === 0 &&
-        saves.length === 0 ? (
-        <Text style={[styles.textCentered]}>
-          Your saves and favorites will show up here.
-        </Text>
-      ) : (
-        <>
-          <Text style={[styles.textCentered, { marginBottom: 10 }]}>
-            View favorited foods and saved recipes below! {"\n"} Click on a
-            saved recipe to view step-by-step instructions!
-          </Text>
-          {saves.length !== 0 ? (
-            <>
-              <Text
-                style={[
-                  styles.textLeftBold,
-                  { marginTop: 15, marginBottom: 5 },
-                ]}
-              >
-                Saved Recipes:
-              </Text>
-
-              {saves.map((item: RecipeData, index: number) => (
-                <SavedCard SavedRecipe={item} key={index}></SavedCard>
-              ))}
-            </>
-          ) : null}
-          {favoritesL.length !== 0 ? (
-            <>
-              <Text
-                style={[
-                  styles.textLeftBold,
-                  { marginTop: 15, marginBottom: 5 },
-                ]}
-              >
-                Favorite Leftovers:
-              </Text>
-
-              {favoritesL.map((item: string, index: number) => (
-                <FavIngredient
-                  leftover={true}
-                  ingredientName={item}
-                  key={index}
-                ></FavIngredient>
-              ))}
-            </>
-          ) : null}
-          {favorites.length !== 0 ? (
-            <>
-              <Text
-                style={[
-                  styles.textLeftBold,
-                  { marginTop: 15, marginBottom: 5 },
-                ]}
-              >
-                Favorite Ingredients:
-              </Text>
-
-              {favorites.map((item: string, index: number) => (
-                <FavIngredient
-                  leftover={false}
-                  ingredientName={item}
-                  key={index}
-                ></FavIngredient>
-              ))}
-            </>
-          ) : null}
-        </>
-      )}
+    <View style={{ width: "100%", paddingBottom: 0, flex: 1 }}>
+      <FlashList
+        ref={listRef}
+        data={saves}
+        keyExtractor={(item: RecipeData, index) => item.id ?? index.toString()}
+        contentContainerStyle={{ paddingHorizontal: 25 }}
+        keyboardShouldPersistTaps="always"
+        overScrollMode="never"
+        alwaysBounceVertical={false}
+        ListHeaderComponent={
+          saves.length === 0 ? null : (
+            <Text
+              adjustsFontSizeToFit
+              numberOfLines={1}
+              style={[
+                styles.textLeftSemiBold,
+                {
+                  marginTop: 5,
+                  marginBottom: 15,
+                  fontSize: 18,
+                  fontFamily: "Nunito-Medium",
+                },
+              ]}
+            >
+              Click on a saved recipe to make it!
+            </Text>
+          )
+        }
+        ListEmptyComponent={
+          <View
+            style={{
+              alignItems: "center",
+              gap: 13,
+              width: "100%",
+              justifyContent: "center",
+              marginTop: 40,
+            }}
+          >
+            <CustomIcon
+              name="bookmark-add"
+              filled
+              color={theme.orangeAccent}
+              size={36}
+            />
+            <Text
+              style={[
+                styles.textCenterBold,
+                {
+                  fontFamily: "Nunito-Bold",
+                  fontSize: 20,
+                  color: theme.basicText,
+                },
+              ]}
+            >
+              Nothing here yet
+            </Text>
+            <Text
+              style={[
+                styles.textCentered,
+                {
+                  fontFamily: "Nunito-SemiBold",
+                  fontSize: 15,
+                  color: theme.placeholderText,
+                  textAlign: "center",
+                },
+              ]}
+            >
+              {filter && filter !== "all"
+                ? "No saved recipes match this category yet."
+                : "Save some recipes and they'll show up here!"}
+            </Text>
+          </View>
+        }
+        renderItem={renderItem}
+      />
     </View>
   );
 }

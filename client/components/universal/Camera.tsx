@@ -1,12 +1,17 @@
 import { Button, Pressable, StyleSheet, Text, View } from "react-native";
 import React, { useRef, useState } from "react";
 import { CameraView, CameraType, useCameraPermissions } from "expo-camera";
-import { styles } from "@/styles/GlobalStyles";
+import { useStyles } from "@/styles/GlobalStyles";
 import { Image } from "expo-image";
 import { CustomIcon } from "@/icon-loader/icon-loader";
-import { NEWCOLORS } from "@/constants/NewTheme";
+import { useTheme } from "@/contexts/ColorSchemeContext";
+import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 
 export default function Camera() {
+  const styles = useStyles();
+  const theme = useTheme();
+  const circleButtonShadow = useTintedBoxShadow(theme.primary);
+  const generateButtonShadow = useTintedBoxShadow(theme.greenAccent);
   const ref = useRef<CameraView>(null);
   const [facing, setFacing] = useState<CameraType>("back");
 
@@ -41,12 +46,12 @@ export default function Camera() {
           onPress={() => setUri(null)}
           style={[
             styles.circleButton,
-            styles.basicBoxShadow,
+            circleButtonShadow,
             { marginTop: 20, paddingVertical: 10, width: 200 },
           ]}
         >
           <Text
-            style={[styles.basicTextCenter, { color: NEWCOLORS.greyBlock }]}
+            style={[styles.basicTextCenter, { color: theme.pureWhite }]}
           >
             Retake photo?
           </Text>
@@ -55,17 +60,17 @@ export default function Camera() {
           onPress={() => console.log("Generate Meal")}
           style={[
             styles.circleButton,
-            styles.basicBoxShadow,
+            generateButtonShadow,
             {
               marginTop: 10,
               paddingVertical: 10,
               width: 200,
-              backgroundColor: NEWCOLORS.greenAccent,
+              backgroundColor: theme.greenAccent,
             },
           ]}
         >
           <Text
-            style={[styles.basicTextCenter, { color: NEWCOLORS.greyBlock }]}
+            style={[styles.basicTextCenter, { color: theme.pureWhite }]}
           >
             Generate Meal
           </Text>
@@ -114,7 +119,7 @@ export default function Camera() {
                       width: pressed ? 85 : 70,
                       height: pressed ? 85 : 70,
                       borderRadius: 100,
-                      backgroundColor: NEWCOLORS.greyBlock,
+                      backgroundColor: theme.pureWhite,
                     },
                   ]}
                 />
@@ -127,7 +132,7 @@ export default function Camera() {
             <CustomIcon
               name="refresh-3"
               filled={false}
-              color={NEWCOLORS.greyBlock}
+              color={theme.pureWhite}
               size={20}
             ></CustomIcon>
           </Pressable>

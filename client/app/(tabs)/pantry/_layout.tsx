@@ -1,12 +1,13 @@
-import { NEWCOLORS } from "@/constants/NewTheme";
+import { useTheme } from "@/contexts/ColorSchemeContext";
 import { Stack } from "expo-router";
 
 export default function PantryLayout() {
+  const theme = useTheme();
   return (
     <Stack
       screenOptions={{
         headerShown: false,
-        contentStyle: { backgroundColor: NEWCOLORS.backgroundColor },
+        contentStyle: { backgroundColor: theme.backgroundColor },
       }}
     >
       <Stack.Screen name="index" />

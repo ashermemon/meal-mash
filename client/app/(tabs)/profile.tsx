@@ -4,27 +4,195 @@ import {
   Platform,
   ImageBackground,
   ScrollView,
+  Pressable,
+  TextInput,
+  Switch,
+  Alert,
 } from "react-native";
-import React, { useEffect, useState } from "react";
-import { styles } from "@/styles/GlobalStyles";
-import { COLORS } from "@/constants/Theme";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { useStyles } from "@/styles/GlobalStyles";
 import Counter from "@/components/features/profile/Counter";
-import { Pressable, TextInput } from "react-native-gesture-handler";
-
+import * as Haptics from "expo-haptics";
 import { storage } from "@/utils/storage";
 import { CustomIcon } from "@/icon-loader/icon-loader";
-import { NEWCOLORS } from "@/constants/NewTheme";
-import LoginPage from "@/components/features/auth/Login";
+import { hexToRgba } from "@/utils/color";
+// import * as Updates from "expo-updates";
 import { LinearGradient } from "expo-linear-gradient";
 import DisplaySaved from "@/components/features/saved/DisplaySaved";
+import SwitchToggle from "@/components/common/SwitchToggle";
+import {
+  useIsDarkMode,
+  useToggleColorScheme,
+  useTheme,
+} from "@/contexts/ColorSchemeContext";
+import { router } from "expo-router";
+import { useFocusEffect } from "@react-navigation/native";
+import AchievementsContext, {
+  AchievementData,
+} from "@/contexts/AchievementsContext";
+import Achievement from "@/components/features/profile/Achievement";
+import { getUnlockedAchievementIds } from "@/utils/achievements";
+import { Image } from "expo-image";
+import icons3d from "@/components/universal/3dIcons";
+import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 
 export default function Profile() {
+  const styles = useStyles();
+  const theme = useTheme();
   const [editMode, setEditMode] = useState(false);
 
   const [lastSavedName, setLastSavedName] = useState("");
 
   const [nameQ, setNameQ] = useState("");
-  const [loggedIn, setLoggedIn] = useState(false);
+
+  const nameInputRef = useRef<TextInput>(null);
+
+  const isDark = useIsDarkMode();
+  const [achievements, setAchievements] = useContext(AchievementsContext);
+  const { toggleColorScheme } = useToggleColorScheme();
+  const circleButtonShadow = useTintedBoxShadow(theme.primary);
+  const cancelButtonShadow = useTintedBoxShadow(theme.greyBlock);
+  const savesCardShadow = useTintedBoxShadow(theme.blueBlock);
+  const dangerZoneShadow = useTintedBoxShadow(theme.redAccent);
+  const pfpShadow = useTintedBoxShadow(theme.lightGrey);
+
+  const resetData = () => {
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
+    Alert.alert(
+      "Are you sure?",
+      "This removes all data from your account including saved recipes, achievements and pantry items. This action cannot be reversed.",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Reset Data",
+          style: "destructive",
+
+          onPress: async () => {
+            try {
+              storage.clearAll();
+
+              // await Updates.reloadAsync();
+            } catch (error) {
+              console.error("Failed to reload the application safely:", error);
+
+              Alert.alert(
+                "Error",
+                "Please manually restart the app to complete the reset.",
+              );
+            }
+          },
+        },
+      ],
+    );
+  };
+
+  const buildAvailableAchievements = (): AchievementData[] => {
+    const unlockedIds = getUnlockedAchievementIds();
+    return [
+      {
+        id: "first-mash",
+        title: "First Mash",
+        description: "Make your first meal with MealMash", // unlocked when a meal is made for the first time (follow a recipe)
+        emoji: "Medal",
+        color: theme.yellowBlock,
+        unlocked: unlockedIds.includes("first-mash"),
+      },
+      {
+        id: "sweet-tooth",
+        title: "Sweet Tooth",
+        description: "Generate 10 dessert recipes", // unlocked when 10 recipes classified with the category "Sweet Treats" have been generated
+        emoji: "Popsicle",
+        color: theme.orangeBlock,
+        unlocked: unlockedIds.includes("sweet-tooth"),
+      },
+      {
+        id: "world-tour",
+        title: "World Tour",
+        description: "Generate recipes from 5 different cuisines", //Each distinct explicit cuisine in prompt counts. Like if it says Chinese in the constructed prompt."Any" DOES NOT count as a cuisine.
+        emoji: "World",
+        color: theme.blueBlock,
+        unlocked: unlockedIds.includes("world-tour"),
+      },
+      {
+        id: "the-cookbook",
+        title: "The Cookbook",
+        description: "Save 50 generated recipes", // 50 recipes saved
+        emoji: "RecipeBook",
+        color: theme.greenBlock,
+        unlocked: unlockedIds.includes("the-cookbook"),
+      },
+      {
+        id: "late-night-snack",
+        title: "Late-Night Snack",
+        description: "Create a recipe after 10pm", // Generate a recipe after 10pm local time
+        emoji: "Clock",
+        color: theme.purpblueBlock,
+        unlocked: unlockedIds.includes("late-night-snack"),
+      },
+      {
+        id: "leftover-legend",
+        title: "Leftover Legend",
+        description: "Make 25 meals with leftovers", // Unlocked when 25 recipes meals classified with the category "Made With Leftovers" have been made and followed (click follow recpie to count)
+        emoji: "HotDog",
+        color: theme.orangeBlock,
+        unlocked: unlockedIds.includes("leftover-legend"),
+      },
+      {
+        id: "on-fire",
+        title: "On Fire",
+        description: "Generate a recipe 7 days in a row", // Generate a recipe every day for 7 days in a row (streak)
+        emoji: "Fire",
+        color: theme.redBlock,
+        unlocked: unlockedIds.includes("on-fire"),
+      },
+      {
+        id: "century",
+        title: "Century",
+        description: "Make 100 meals", // MAKE and FOLLOW 100 recipes (go through the steps not just generate it)
+        emoji: "Trophy",
+        color: theme.orangeBlock,
+        unlocked: unlockedIds.includes("century"),
+      },
+    ];
+  };
+  const handleEditPress = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    setEditMode(true);
+  };
+
+  const handleCancelPress = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    nameInputRef.current?.blur();
+    setNameQ(lastSavedName);
+    setEditMode(false);
+  };
+
+  const handleSavePress = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    nameInputRef.current?.blur();
+    storage.set("name", nameQ);
+    setLastSavedName(nameQ);
+    setEditMode(false);
+  };
+
+  useEffect(() => {
+    if (editMode) {
+      const frame = requestAnimationFrame(() => {
+        nameInputRef.current?.focus();
+      });
+      return () => cancelAnimationFrame(frame);
+    }
+  }, [editMode]);
+
+  useEffect(() => {
+    setAchievements(buildAvailableAchievements());
+  }, [theme]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      setAchievements(buildAvailableAchievements());
+    }, [theme]),
+  );
 
   useEffect(() => {
     const storedName = storage.getString("name") ?? "";
@@ -39,176 +207,388 @@ export default function Profile() {
     }
   }, []);
 
-  return loggedIn ? (
-    <LoginPage></LoginPage>
-  ) : (
+  return (
     <>
-      <></>
-      <View style={styles.profileHeader}>
-        <View
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: theme.backgroundColor,
+          position: "relative",
+        }}
+      >
+        <ScrollView
           style={{
             flex: 1,
-            alignItems: "center",
-            justifyContent: "center",
           }}
-        >
-          <View style={styles.pfp}></View>
-          {editMode ? (
-            <TextInput
-              style={[styles.nameInput]}
-              autoCorrect={false}
-              maxLength={15}
-              autoCapitalize="none"
-              keyboardType="default"
-              spellCheck={false}
-              value={nameQ}
-              onChangeText={setNameQ}
-              placeholder="Add Name"
-              placeholderTextColor={COLORS.addPlusGrey}
-            ></TextInput>
-          ) : (
-            <Text style={styles.nameInput}>
-              {nameQ == "" ? "Add Name" : nameQ}
-            </Text>
-          )}
-          <Pressable
-            onPress={() => setLoggedIn(true)}
-            style={[
-              styles.circleButton,
-              {
-                width: 100,
-                height: 30,
-                borderRadius: 10,
-                margin: 20,
-                justifyContent: "center",
-              },
-            ]}
-          >
-            <Text
-              style={[styles.basicTextCenter, { color: NEWCOLORS.greyBlock }]}
-            >
-              Log In
-            </Text>
-          </Pressable>
-        </View>
-
-        <Pressable
-          onPress={() => [
-            setEditMode(!editMode),
-            editMode
-              ? [storage.set("name", nameQ), setLastSavedName(nameQ)]
-              : undefined,
-          ]}
-          style={{
-            position: "absolute",
-            top: 0,
-            right: 0,
-            margin: 20,
+          contentContainerStyle={{
+            flexGrow: 1,
+            paddingHorizontal: 25,
+            paddingTop: 20,
+            paddingBottom: 170,
           }}
+          overScrollMode="never"
+          alwaysBounceVertical={false}
+          keyboardShouldPersistTaps="always"
         >
-          {editMode ? (
-            <CustomIcon
-              name="check"
-              filled={true}
-              color={COLORS.fontColor}
-              size={20}
-            />
-          ) : (
-            <CustomIcon
-              name="pencil"
-              filled={true}
-              color={COLORS.fontColor}
-              size={20}
-            />
-          )}
-        </Pressable>
-
-        {editMode ? (
-          <Pressable
-            onPress={() => [setEditMode(!editMode), setNameQ(lastSavedName)]}
+          <View
             style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              margin: 20,
+              flex: 1,
+
+              position: "relative",
             }}
           >
-            <CustomIcon
-              name="close"
-              filled={true}
-              color={COLORS.fontColor}
-              size={20}
-            />
-          </Pressable>
-        ) : (
-          <></>
-        )}
-      </View>
-      <View style={{ flex: 1, position: "relative" }}>
-        <ScrollView
-          contentContainerStyle={{ flexGrow: 1, paddingBottom: 130 }}
-          style={[styles.generatorContainer, { paddingTop: 0, width: "100%" }]}
-        >
-          <View style={[styles.container, { width: "100%", flex: 1 }]}>
-            <Text
-              style={[
-                styles.textCentered,
-                {
-                  fontSize: 20,
-                  fontFamily: "Nunito-Bold",
-                  textDecorationColor: COLORS.fontColor,
-                  textDecorationStyle: "solid",
-                  textDecorationLine: "underline",
-                  marginBottom: 20,
-                  marginTop: 5,
-                },
-              ]}
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
             >
-              Your Statistics
-            </Text>
+              <Text
+                style={[
+                  styles.basicTextLeft,
+                  styles.bold,
+                  {
+                    fontSize: 28,
+                  },
+                ]}
+              >
+                Profile
+              </Text>
+              <SwitchToggle
+                value={isDark}
+                onValueChange={() => {
+                  toggleColorScheme();
 
-            <Counter
-              variable="mealsnumber"
-              text="Lifetime Meals Generated"
-            ></Counter>
-            <Counter
-              variable="savesnumber"
-              text="Recipes in RecipeBook"
-            ></Counter>
-            <Counter
-              variable="favsnumber"
-              text="Favorited Ingredients & Leftovers"
-            ></Counter>
-          </View>
-          <View style={styles.container}>
-            <DisplaySaved></DisplaySaved>
-          </View>
+                  requestAnimationFrame(() => {
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                  });
+                }}
+              ></SwitchToggle>
+            </View>
 
-          <LinearGradient
-            colors={[
-              "rgba(255, 248, 237, 0)",
-              "rgba(255, 248, 237, 0.75)",
-              "rgba(255, 248, 237, 0.98)",
-              NEWCOLORS.backgroundColor,
-            ]}
-            locations={[0, 0.4, 0.75, 1]}
-            style={{
-              position: "absolute",
-              bottom: -40,
-              left: 0,
-              right: 0,
-              height: 160,
-              zIndex: 10,
-            }}
-            pointerEvents="none"
-          />
+            <View style={{ gap: 30 }}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "flex-start",
+                  gap: 25,
+                  marginTop: 15,
+                }}
+              >
+                <Pressable
+                  style={[styles.pfp, pfpShadow]}
+                  onPress={editMode ? () => "" : () => ""}
+                >
+                  <CustomIcon
+                    name={editMode ? "camera-2" : "user-2"}
+                    filled
+                    size={editMode ? 40 : 47}
+                    color={editMode ? theme.pillX : theme.placeholderText}
+                  ></CustomIcon>
+                </Pressable>
+                <View style={{ flex: 1, gap: 10 }}>
+                  <View
+                    style={{ height: 32, justifyContent: "center" }}
+                    pointerEvents={editMode ? "auto" : "none"}
+                  >
+                    <TextInput
+                      ref={nameInputRef}
+                      style={styles.nameInput}
+                      autoCorrect={false}
+                      maxLength={15}
+                      autoCapitalize="none"
+                      keyboardType="default"
+                      spellCheck={false}
+                      value={editMode ? nameQ : nameQ == "" ? "Guest" : nameQ}
+                      onChangeText={setNameQ}
+                      placeholder="Add Name"
+                      placeholderTextColor={theme.addPlusGrey}
+                      cursorColor={theme.basicText}
+                      selectionColor={theme.basicText}
+                    ></TextInput>
+                  </View>
+                  {!editMode ? (
+                    <Pressable
+                      onPress={handleEditPress}
+                      style={[
+                        styles.circleButton,
+                        circleButtonShadow,
+                        {
+                          alignSelf: "flex-start",
+                          height: 28,
+                          gap: 6,
+                          paddingHorizontal: 10,
+                          flexDirection: "row",
+                          alignItems: "center",
+                        },
+                      ]}
+                    >
+                      <CustomIcon
+                        name="pencil"
+                        filled={true}
+                        color={theme.pureWhite}
+                        size={13}
+                      />
+
+                      <Text
+                        style={[
+                          styles.textLeftSemiBold,
+                          { color: theme.pureWhite, fontSize: 13 },
+                        ]}
+                      >
+                        Edit Profile
+                      </Text>
+                    </Pressable>
+                  ) : (
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignSelf: "flex-start",
+                        gap: 10,
+                      }}
+                    >
+                      <Pressable
+                        onPress={handleCancelPress}
+                        style={[
+                          styles.circleButton,
+                          cancelButtonShadow,
+                          {
+                            height: 28,
+                            gap: 6,
+                            paddingHorizontal: 12,
+                            flexDirection: "row",
+                            alignItems: "center",
+                            backgroundColor: theme.greyBlock,
+                          },
+                        ]}
+                      >
+                        <CustomIcon
+                          name="close"
+                          filled={true}
+                          color={theme.fontColor}
+                          size={13}
+                        />
+                        <Text
+                          style={[
+                            styles.textLeftSemiBold,
+                            { color: theme.fontColor, fontSize: 13 },
+                          ]}
+                        >
+                          Cancel
+                        </Text>
+                      </Pressable>
+                      <Pressable
+                        onPress={handleSavePress}
+                        style={[
+                          styles.circleButton,
+                          circleButtonShadow,
+                          {
+                            height: 28,
+                            gap: 6,
+                            paddingHorizontal: 12,
+                            flexDirection: "row",
+                            alignItems: "center",
+                          },
+                        ]}
+                      >
+                        <CustomIcon
+                          name="check"
+                          filled={true}
+                          color={theme.pureWhite}
+                          size={13}
+                        />
+                        <Text
+                          style={[
+                            styles.textLeftSemiBold,
+                            { color: theme.pureWhite, fontSize: 13 },
+                          ]}
+                        >
+                          Save
+                        </Text>
+                      </Pressable>
+                    </View>
+                  )}
+                </View>
+              </View>
+
+              <View style={{ gap: 15 }}>
+                <Text
+                  style={[
+                    styles.basicTextLeft,
+                    styles.bold,
+                    {
+                      fontSize: 28,
+                    },
+                  ]}
+                >
+                  Stats
+                </Text>
+
+                <View
+                  style={{
+                    gap: 12,
+                    flexDirection: "row",
+                    flex: 1,
+                  }}
+                >
+                  <Counter
+                    variable="mealsnumber"
+                    text="Meals Generated"
+                  ></Counter>
+                  <Counter
+                    variable="savesnumber"
+                    text={"Saved\nRecipes"}
+                  ></Counter>
+                  <Counter
+                    variable="pantrynumber"
+                    text={"Ingredients\nin Pantry"}
+                  ></Counter>
+                </View>
+              </View>
+              <View style={{ gap: 15 }}>
+                <Text
+                  style={[
+                    styles.basicTextLeft,
+                    styles.bold,
+                    {
+                      fontSize: 28,
+                    },
+                  ]}
+                >
+                  Saves
+                </Text>
+
+                <Pressable
+                  style={[styles.savesCard, savesCardShadow]}
+                  onPress={() => router.navigate("/saveshome")}
+                >
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      gap: 15,
+                    }}
+                  >
+                    <View style={{ paddingBottom: 2 }}>
+                      <CustomIcon
+                        name="chef-hat"
+                        filled={true}
+                        color={theme.blueAccent}
+                        size={30}
+                      />
+                    </View>
+                    <Text
+                      adjustsFontSizeToFit
+                      numberOfLines={1}
+                      style={[
+                        styles.textLeftBold,
+                        {
+                          fontFamily: "Nunito-Bold",
+
+                          color: theme.basicText,
+                        },
+                      ]}
+                    >
+                      Click to view your saved recipes
+                    </Text>
+                  </View>
+                  <Text
+                    style={[
+                      styles.textLeftBold,
+                      {
+                        fontFamily: "Nunito-SemiBold",
+                        fontSize: 15,
+                        color: theme.placeholderText,
+                      },
+                    ]}
+                  >
+                    Look through bookmarked recipes by category or search and
+                    pick your favorite!
+                  </Text>
+                </Pressable>
+              </View>
+              <View style={{ gap: 15 }}>
+                <Text
+                  style={[
+                    styles.basicTextLeft,
+                    styles.bold,
+                    {
+                      fontSize: 28,
+                    },
+                  ]}
+                >
+                  Achievements
+                </Text>
+
+                <View
+                  style={{
+                    gap: 12,
+
+                    flex: 1,
+                  }}
+                >
+                  {achievements.map(
+                    (achievement: AchievementData, index: number) => (
+                      <Achievement
+                        title={achievement.title}
+                        description={achievement.description}
+                        emoji={achievement.emoji}
+                        unlocked={achievement.unlocked}
+                        color={achievement.color}
+                        key={index}
+                      ></Achievement>
+                    ),
+                  )}
+                </View>
+              </View>
+              <View style={{ gap: 15 }}>
+                <Text
+                  style={[
+                    styles.basicTextLeft,
+                    styles.bold,
+                    {
+                      fontSize: 28,
+                    },
+                  ]}
+                >
+                  Danger Zone
+                </Text>
+
+                <Pressable
+                  style={[
+                    styles.savesCard,
+                    dangerZoneShadow,
+
+                    { backgroundColor: theme.redAccent },
+                  ]}
+                  onPress={resetData}
+                >
+                  <Text
+                    style={[
+                      styles.textCenterBold,
+
+                      {
+                        color: theme.pureWhite,
+                        fontSize: 16,
+                      },
+                    ]}
+                  >
+                    Reset App & Delete All Data
+                  </Text>
+                </Pressable>
+              </View>
+            </View>
+          </View>
         </ScrollView>
+
         <LinearGradient
           colors={[
-            "rgba(255, 248, 237, 0)",
-            "rgba(255, 248, 237, 0.75)",
-            "rgba(255, 248, 237, 0.98)",
-            NEWCOLORS.backgroundColor,
+            hexToRgba(theme.backgroundColor, 0),
+            hexToRgba(theme.backgroundColor, 0.75),
+            hexToRgba(theme.backgroundColor, 0.98),
+            theme.backgroundColor,
           ]}
           locations={[0, 0.4, 0.75, 1]}
           style={{

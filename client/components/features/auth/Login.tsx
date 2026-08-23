@@ -14,11 +14,13 @@ import { useFocusEffect } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import httpClient from "@/app/httpClient";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { NEWCOLORS } from "@/constants/NewTheme";
+import { useTheme, Theme } from "@/contexts/ColorSchemeContext";
 
 type UserState = { email: string } | "none";
 
 export default function LoginPage() {
+  const theme = useTheme();
+  const styles = createStyles(theme);
   const [isLogin, setIsLogin] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
   const [email, setEmail] = useState("");
@@ -129,7 +131,7 @@ export default function LoginPage() {
 
         <TouchableHighlight
           onPress={() => logoutUser()}
-          underlayColor={NEWCOLORS.primaryDark}
+          underlayColor={theme.primaryDark}
           style={styles.button}
         >
           <Text style={styles.buttonText}>Logout</Text>
@@ -143,7 +145,7 @@ export default function LoginPage() {
       <View style={styles.container}>
         <TouchableHighlight
           onPress={() => backButton()}
-          underlayColor={NEWCOLORS.primaryDark}
+          underlayColor={theme.primaryDark}
           style={styles.backButton}
         >
           <Ionicons name="arrow-back" size={24} color="#fff" />
@@ -191,7 +193,7 @@ export default function LoginPage() {
       <View style={styles.container}>
         <TouchableHighlight
           onPress={() => backButton()}
-          underlayColor={NEWCOLORS.primaryDark}
+          underlayColor={theme.primaryDark}
           style={styles.backButton}
         >
           <Ionicons name="arrow-back" size={24} color="#fff" />
@@ -239,7 +241,7 @@ export default function LoginPage() {
       <View style={styles.container}>
         <TouchableHighlight
           onPress={() => setIsLogin(true)}
-          underlayColor={NEWCOLORS.primaryDark}
+          underlayColor={theme.primaryDark}
           style={styles.button}
         >
           <Text style={styles.buttonText}>Login</Text>
@@ -247,7 +249,7 @@ export default function LoginPage() {
 
         <TouchableHighlight
           onPress={() => setIsSignup(true)}
-          underlayColor={NEWCOLORS.primaryDark}
+          underlayColor={theme.primaryDark}
           style={styles.button}
         >
           <Text style={styles.buttonText}>Sign Up</Text>
@@ -260,58 +262,59 @@ export default function LoginPage() {
 const { width } = Dimensions.get("window");
 const isMobile = width < 500;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: isMobile ? 20 : 40,
-  },
-  button: {
-    padding: 10,
-    backgroundColor: NEWCOLORS.primary,
-    borderRadius: 5,
-    width: 150,
-    alignItems: "center",
-    marginVertical: 5,
-  },
-  disabledButton: {
-    backgroundColor: NEWCOLORS.unselectedShape,
-  },
-  buttonText: {
-    fontSize: 18,
-    color: "#fff",
-  },
-  backButton: {
-    padding: 10,
-    backgroundColor: NEWCOLORS.primary,
-    borderRadius: 50,
-    width: 48,
-    height: 48,
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  input: {
-    width: "100%",
-    maxWidth: 400,
-    padding: 15,
-    backgroundColor: NEWCOLORS.darkButton,
-    color: "#fff",
-    borderRadius: 5,
-    marginBottom: 15,
-  },
-  toggleContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 15,
-  },
-  toggleLabel: {
-    fontSize: 16,
-    marginRight: 10,
-  },
-  errorText: {
-    color: NEWCOLORS.redAccent,
-    marginBottom: 10,
-  },
-});
+const createStyles = (theme: Theme) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "center",
+      padding: isMobile ? 20 : 40,
+    },
+    button: {
+      padding: 10,
+      backgroundColor: theme.primary,
+      borderRadius: 5,
+      width: 150,
+      alignItems: "center",
+      marginVertical: 5,
+    },
+    disabledButton: {
+      backgroundColor: theme.unselectedShape,
+    },
+    buttonText: {
+      fontSize: 18,
+      color: theme.pureWhite,
+    },
+    backButton: {
+      padding: 10,
+      backgroundColor: theme.primary,
+      borderRadius: 50,
+      width: 48,
+      height: 48,
+      justifyContent: "center",
+      alignItems: "center",
+      marginBottom: 20,
+    },
+    input: {
+      width: "100%",
+      maxWidth: 400,
+      padding: 15,
+      backgroundColor: theme.darkButton,
+      color: theme.pureWhite,
+      borderRadius: 5,
+      marginBottom: 15,
+    },
+    toggleContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      marginBottom: 15,
+    },
+    toggleLabel: {
+      fontSize: 16,
+      marginRight: 10,
+    },
+    errorText: {
+      color: theme.redAccent,
+      marginBottom: 10,
+    },
+  });

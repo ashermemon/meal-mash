@@ -23,7 +23,7 @@ export const RecipeSchema = {
     description: { type: Type.STRING },
     difficulty: {
       type: Type.STRING,
-      enum: ["Easy", "Intermediate", "Expert"],
+      enum: ["Easy", "Moderate", "Expert"],
     },
     time: { type: Type.STRING },
     servings: { type: Type.NUMBER },
@@ -36,6 +36,40 @@ export const RecipeSchema = {
         carbs: { type: Type.INTEGER },
       },
       required: ["protein", "fat", "carbs"],
+    },
+    categories: {
+      type: Type.OBJECT,
+      properties: {
+        madeWithLeftovers: {
+          type: Type.BOOLEAN,
+          description:
+            "True if the recipe uses any leftovers (leftover/prepared ingredients).",
+        },
+        tastyMeals: {
+          type: Type.BOOLEAN,
+          description:
+            "True if the recipe is a full meal (breakfast, lunch, or dinner).",
+        },
+        sweetTreats: {
+          type: Type.BOOLEAN,
+          description: "True if the recipe is a sweet dish or a dessert.",
+        },
+        quickSnacks: {
+          type: Type.BOOLEAN,
+          description: "True if the recipe is a quick snack or side",
+        },
+        under15Minutes: {
+          type: Type.BOOLEAN,
+          description: "True if the recipe's total time is 15 minutes or less.",
+        },
+      },
+      required: [
+        "madeWithLeftovers",
+        "tastyMeals",
+        "sweetTreats",
+        "quickSnacks",
+        "under15Minutes",
+      ],
     },
     ingredients: {
       type: Type.ARRAY,
@@ -81,6 +115,7 @@ export const RecipeSchema = {
     "servings",
     "tags",
     "nutrients",
+    "categories",
     "ingredients",
     "instructions",
     "tips",

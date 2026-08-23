@@ -1,5 +1,6 @@
-import { Text, Pressable, StyleProp, ViewStyle } from "react-native";
+import { Pressable, StyleProp, ViewStyle } from "react-native";
 import React from "react";
+import { Image } from "expo-image";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -7,75 +8,46 @@ import Animated, {
 } from "react-native-reanimated";
 import * as Haptics from "expo-haptics";
 import { CustomIcon } from "@/icon-loader/icon-loader";
-import { NEWCOLORS } from "@/constants/NewTheme";
+import { useTheme } from "@/contexts/ColorSchemeContext";
+import icons3d from "@/components/universal/3dIcons";
 
-export const EMOJIS = [
-  "🍄",
-  "🥑",
-  "🥔",
-  "🥕",
-  "🌽",
-  "🌶️",
-  "🫑",
-  "🥒",
-  "🥬",
-  "🥦",
-  "🧄",
-  "🧅",
-  "🥜",
-  "🫛",
-  "🍄‍🟫",
-  "🫜",
-  "🍞",
-  "🥐",
-  "🥖",
-  "🥨",
-  "🥯",
-  "🧇",
-  "🧀",
-  "🍔",
-  "🍟",
-  "🍕",
-  "🌭",
-  "🥪",
-  "🌮",
-  "🌯",
-  "🥙",
-  "🍳",
-  "🥣",
-  "🥗",
-  "🍿",
-  "🍱",
-  "🍛",
-  "🍜",
-  "🍝",
-  "🥟",
-  "🦀",
-  "🦞",
-  "🦐",
-  "🦑",
-  "🍦",
-  "🍧",
-  "🍨",
-  "🍩",
-  "🍪",
-  "🎂",
-  "🍰",
-  "🧁",
-  "🥧",
-  "🍫",
-  "🍬",
-  "🍭",
-  "🍽️",
-  "🍴",
-  "🥄",
+// Food-appropriate subset of the 3D icon set (excludes generic app icons
+// like Clock, Lock, Medal, RecipeBook, Trophy, World, Fire, Float, Default).
+export const PANTRY_ICONS = [
+  "Burger",
+  "Burrito",
+  "Cake",
+
+  "Coffee",
+  "Cookies",
+  "Croissant",
+  "Donut",
+  "EggAndBacon",
+  "Eggplant",
+  "Fries",
+  "HotDog",
+  "IceCream",
+  "Lollipop",
+  "Macaroon",
+  "Meat",
+  "Pancake",
+  "Peach",
+  "Pizza",
+  "Popsicle",
+  "Pretzel",
+  "Rice",
+  "Salad",
+  "Steak",
+  "SushiCaviar",
+  "Taco",
+  "Cheese",
+  "Chicken",
 ];
 
 type Props = {
   emoji: string;
-  onEmojiChange?: (newEmoji: string) => void;
+  onEmojiChange?: (nextIcon: string) => void;
   editable?: boolean;
-  fontSize?: number;
   iconSize?: number;
   style?: StyleProp<ViewStyle>;
 };
@@ -84,10 +56,10 @@ const EmojiButton = ({
   emoji,
   onEmojiChange,
   editable = true,
-  fontSize = 18,
   iconSize = 22,
   style,
 }: Props) => {
+  const theme = useTheme();
   const pressed = useSharedValue<boolean>(false);
 
   const animatedStyle = useAnimatedStyle(() => {
@@ -101,26 +73,29 @@ const EmojiButton = ({
   const handlePress = () => {
     if (!editable || !onEmojiChange) return;
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
-    const randomIndex = Math.floor(Math.random() * EMOJIS.length);
-    const nextEmoji = EMOJIS[randomIndex];
-    onEmojiChange(nextEmoji);
+    const randomIndex = Math.floor(Math.random() * PANTRY_ICONS.length);
+    const nextIcon = PANTRY_ICONS[randomIndex];
+    onEmojiChange(nextIcon);
   };
 
-  if (!editable) {
-    return (
-      <Animated.View style={style}>
-        {emoji === "" ? (
-          <CustomIcon
-            size={iconSize}
-            name={"emoji"}
-            filled={false}
-            color={NEWCOLORS.unselectedShape}
-          />
-        ) : (
-          <Text style={{ fontSize }}>{emoji}</Text>
-        )}
-      </Animated.View>
+  const iconContent =
+    emoji === "" ? (
+      <CustomIcon
+        size={iconSize === 32 ? iconSize * 0.7 : iconSize * 0.9}
+        name={"emoji"}
+        filled={false}
+        color={theme.placeholderText}
+      />
+    ) : (
+      <Image
+        source={icons3d[emoji] || icons3d.Default}
+        style={{ width: iconSize, height: iconSize }}
+        contentFit="contain"
+      />
     );
+
+  if (!editable) {
+    return <Animated.View style={style}>{iconContent}</Animated.View>;
   }
 
   return (
@@ -131,16 +106,7 @@ const EmojiButton = ({
       hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
     >
       <Animated.View style={[style, animatedStyle]}>
-        {emoji === "" ? (
-          <CustomIcon
-            size={iconSize}
-            name={"emoji"}
-            filled={false}
-            color={NEWCOLORS.unselectedShape}
-          />
-        ) : (
-          <Text style={{ fontSize }}>{emoji}</Text>
-        )}
+        {iconContent}
       </Animated.View>
     </Pressable>
   );

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Pressable, StyleSheet, Animated } from "react-native";
 import Svg, { Path } from "react-native-svg";
-import { NEWCOLORS } from "@/constants/NewTheme";
+import { useTheme } from "@/contexts/ColorSchemeContext";
 
 interface CustomCheckboxProps {
   checked?: boolean;
@@ -20,6 +20,7 @@ export default function CustomCheckbox({
   borderRadius = 7,
   grocery,
 }: CustomCheckboxProps) {
+  const theme = useTheme();
   const [internalChecked, setInternalChecked] = useState(initialValue);
   const isChecked = checked !== undefined ? checked : internalChecked;
 
@@ -77,8 +78,8 @@ export default function CustomCheckbox({
           {
             borderRadius,
             opacity: uncheckedOpacity,
-            borderColor: grocery ? NEWCOLORS.blueAccent : "#C4C4C6",
-            backgroundColor: grocery ? "white" : "#F2F2F5",
+            borderColor: grocery ? theme.blueAccent : "#C4C4C6",
+            backgroundColor: grocery ? theme.cardWhite : theme.unselectedGrey,
           },
         ]}
       />
@@ -90,6 +91,8 @@ export default function CustomCheckbox({
             borderRadius,
             opacity: checkedOpacity,
             transform: [{ scale: checkedScale }],
+            backgroundColor: theme.greenAccent,
+            borderColor: theme.greenAccent,
           },
         ]}
       >
@@ -101,7 +104,7 @@ export default function CustomCheckbox({
         >
           <Path
             d="M20 6L9 17L4 12"
-            stroke="white"
+            stroke={theme.pureWhite}
             strokeWidth={3}
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -126,9 +129,7 @@ const styles = StyleSheet.create({
   },
   checkedLayer: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: NEWCOLORS.greenAccent,
     borderWidth: 1.5,
-    borderColor: NEWCOLORS.greenAccent,
     justifyContent: "center",
     alignItems: "center",
   },

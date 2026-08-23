@@ -9,7 +9,7 @@ import Animated, {
   runOnJS,
   Easing,
 } from "react-native-reanimated";
-
+import * as Haptics from "expo-haptics";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import GenerationCardPreview from "./GenerationCardPreview";
 import SavedRecipesContext from "@/contexts/SavedRecipesContext";
@@ -26,6 +26,7 @@ import { storage } from "@/utils/storage";
 import { router } from "expo-router";
 import { PantryDetailsContext } from "@/contexts/PantryDetails";
 import { BrowseIngredientsContext } from "@/contexts/BrowseIngredientsContext";
+import { trackRecipeGenerated, trackMealMade } from "@/utils/achievements";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
@@ -66,19 +67,18 @@ const SwipableCard = ({
 
   const makeRecipe = () => {
     if (!isSwipingRef.current) {
-      router.push("/followRecipe");
+      if (recipe) trackMealMade(recipe);
+      router.navigate("/followRecipe");
     }
   };
 
-  const saveRecipe = () => {
-    "worklet";
-    if (onSwipeRightStart) {
-      runOnJS(onSwipeRightStart)();
-    }
-    runOnJS(markSwiping)();
+  const saveRecipe = (duration: number = 800) => {
+    markSwiping();
+    onSwipeRightStart?.();
+    Haptics.selectionAsync();
     translateX.value = withTiming(
       SCREEN_WIDTH + 100,
-      { duration: 400, easing: Easing.inOut(Easing.cubic) },
+      { duration, easing: Easing.inOut(Easing.cubic) },
       (finished) => {
         if (finished) {
           runOnJS(onSwipeRight)();
@@ -87,12 +87,12 @@ const SwipableCard = ({
     );
   };
 
-  const skipRecipe = () => {
-    "worklet";
-    runOnJS(markSwiping)();
+  const skipRecipe = (duration: number = 800) => {
+    markSwiping();
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     translateX.value = withTiming(
       -SCREEN_WIDTH - 100,
-      { duration: 600, easing: Easing.inOut(Easing.cubic) },
+      { duration, easing: Easing.inOut(Easing.cubic) },
       (finished) => {
         if (finished) {
           runOnJS(onSwipeLeft)();
@@ -101,6 +101,9 @@ const SwipableCard = ({
     );
   };
 
+  const saveRecipeFromSwipe = () => saveRecipe(600);
+  const skipRecipeFromSwipe = () => skipRecipe(600);
+
   const pan = Gesture.Pan()
     .enabled(isTop && !isLoading)
     .onUpdate((event) => {
@@ -108,9 +111,9 @@ const SwipableCard = ({
     })
     .onEnd(() => {
       if (translateX.value > 120) {
-        saveRecipe();
+        runOnJS(saveRecipeFromSwipe)();
       } else if (translateX.value < -120) {
-        skipRecipe();
+        runOnJS(skipRecipeFromSwipe)();
       } else {
         translateX.value = withSpring(0, {
           damping: 20,
@@ -211,6 +214,12 @@ const PreviewAnimatedWrapper = (props: Props) => {
     setIsPreFetching(true);
     try {
       const nextConstraints = generateConstraints();
+      const pickedCuisine =
+        generationDetails.cuisine.length > 0
+          ? generationDetails.cuisine[
+              Math.floor(Math.random() * generationDetails.cuisine.length)
+            ]
+          : "Any";
       const nextPrompt = Prompt({
         pantryDetails: pantryDetails,
         browseIngredients: browseIngredients,
@@ -225,7 +234,7 @@ const PreviewAnimatedWrapper = (props: Props) => {
         recipeTime: generationDetails.recipeTime,
         numberOfServings: generationDetails.numberOfServings,
         mealType: generationDetails.mealType,
-        cuisine: generationDetails.cuisine,
+        cuisine: [pickedCuisine],
         dietaryPreference: generationDetails.dietaryPreference,
         portalCategory: generationDetails.portalCategory || undefined,
       });
@@ -259,6 +268,13 @@ const PreviewAnimatedWrapper = (props: Props) => {
             Number(parsedRecipe.nutrients?.carbs) || 0,
           ],
           tags: parsedRecipe.tags,
+          categories: {
+            madeWithLeftovers: !!parsedRecipe.categories?.madeWithLeftovers,
+            tastyMeals: !!parsedRecipe.categories?.tastyMeals,
+            sweetTreats: !!parsedRecipe.categories?.sweetTreats,
+            quickSnacks: !!parsedRecipe.categories?.quickSnacks,
+            under15Minutes: !!parsedRecipe.categories?.under15Minutes,
+          },
           ingredients: parsedRecipe.ingredients,
           instructions: parsedRecipe.instructions,
           tips: parsedRecipe.tips,
@@ -267,6 +283,7 @@ const PreviewAnimatedWrapper = (props: Props) => {
 
         const totalMeals = storage.getNumber("mealsnumber") ?? 0;
         storage.set("mealsnumber", totalMeals + 1);
+        trackRecipeGenerated(newRecipe, pickedCuisine);
 
         setRecipeQueue((prevQueue) => {
           if (

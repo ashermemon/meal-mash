@@ -3,16 +3,17 @@ import {
   Text,
   Pressable,
   Animated,
+  Easing,
   LayoutAnimation,
   Platform,
   UIManager,
 } from "react-native";
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import CustomCheckbox from "@/components/common/CustomCheckbox";
 import { Food } from "../pantry/Search";
 import * as Haptics from "expo-haptics";
-import { styles } from "@/styles/auth.styles";
-import { COLORS } from "@/constants/Theme";
+import { useStyles } from "@/styles/GlobalStyles";
+import { useTheme } from "@/contexts/ColorSchemeContext";
 import GroceryListContext from "@/contexts/GroceryListContext";
 import CheckedGroceryListContext from "@/contexts/CheckedGroceryListContext";
 import { PantryDetailsContext } from "@/contexts/PantryDetails";
@@ -32,6 +33,8 @@ type Props = {
 };
 
 const GroceryListItem = ({ food, variant = "active" }: Props) => {
+  const styles = useStyles();
+  const theme = useTheme();
   const [groceryList, setGroceryList] = useContext(GroceryListContext);
   const [checkedList, setCheckedList] = useContext(CheckedGroceryListContext);
   const [pantryDetails, setPantryDetails] = useContext(PantryDetailsContext);
@@ -44,10 +47,20 @@ const GroceryListItem = ({ food, variant = "active" }: Props) => {
 
   const strikeAnim = useRef(new Animated.Value(startsChecked ? 1 : 0)).current;
   const fadeAnim = useRef(new Animated.Value(1)).current;
+  const mountFadeAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(mountFadeAnim, {
+      toValue: 1,
+      duration: 280,
+      easing: Easing.out(Easing.cubic),
+      useNativeDriver: true,
+    }).start();
+  }, [mountFadeAnim]);
 
   const textColorAnim = strikeAnim.interpolate({
     inputRange: [0, 1],
-    outputRange: [COLORS.fontColor, COLORS.searchPlaceholder],
+    outputRange: [theme.fontColor, theme.searchPlaceholder],
   });
 
   const toggle = () => {
@@ -107,7 +120,7 @@ const GroceryListItem = ({ food, variant = "active" }: Props) => {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        opacity: fadeAnim,
+        opacity: Animated.multiply(fadeAnim, mountFadeAnim),
       }}
     >
       <View style={{ marginRight: 12 }} pointerEvents={busy ? "none" : "auto"}>
@@ -153,7 +166,7 @@ const GroceryListItem = ({ food, variant = "active" }: Props) => {
             styles.textRight,
             {
               fontSize: 15,
-              color: COLORS.searchPlaceholder,
+              color: theme.searchPlaceholder,
               marginLeft: 12,
             },
           ]}
@@ -170,7 +183,7 @@ const GroceryListItem = ({ food, variant = "active" }: Props) => {
             marginTop: -1,
             height: 1.5,
             borderRadius: 1,
-            backgroundColor: COLORS.searchPlaceholder,
+            backgroundColor: theme.searchPlaceholder,
             width: strikeAnim.interpolate({
               inputRange: [0, 1],
               outputRange: [0, rowWidth],

@@ -1,12 +1,21 @@
-import { View, Text, Pressable, Dimensions, InteractionManager, Image } from "react-native";
+import {
+  View,
+  Text,
+  Pressable,
+  Dimensions,
+  InteractionManager,
+  Image,
+} from "react-native";
 import React, { useEffect } from "react";
 import NutrientCircle from "@/components/features/recipe/NutrientCircle";
-import { styles } from "@/styles/GlobalStyles";
+import { useStyles } from "@/styles/GlobalStyles";
 import RecipeInfoTags from "../recipe/RecipeInfoTags";
 import NutrientsContext from "@/contexts/NutrientsContext";
-import { NEWCOLORS } from "@/constants/NewTheme";
+import { useTheme, useColorScheme } from "@/contexts/ColorSchemeContext";
+import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 import { router } from "expo-router";
 import { Skeleton } from "moti/skeleton";
+import * as Haptics from "expo-haptics";
 import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
@@ -30,12 +39,9 @@ type Props = {
   makeRecipe: () => void;
 };
 
-const SkeletonSettings = {
-  colorMode: "light",
-  transition: {
-    type: "timing",
-    duration: 2000,
-  },
+const SKELETON_TRANSITION = {
+  type: "timing",
+  duration: 2000,
 } as const;
 
 const MEAL_IMAGES: Record<string, any> = {
@@ -56,12 +62,21 @@ const MEAL_IMAGES: Record<string, any> = {
 };
 
 export const GenerationCardPreview = (props: Props) => {
+  const styles = useStyles();
+  const theme = useTheme();
+  const colorScheme = useColorScheme();
+  const makeRecipeShadow = useTintedBoxShadow(theme.primary);
+  const skipShadow = useTintedBoxShadow(theme.redBlock);
+  const saveShadow = useTintedBoxShadow(theme.greenBlock);
+  const SkeletonSettings = {
+    colorMode: colorScheme === "dark" ? "dark" : "light",
+    transition: SKELETON_TRANSITION,
+  } as const;
 
   // useEffect(() => {
 
   //   router.prefetch("/followRecipe");
   // }, [])
-
 
   if (props.isLoading) {
     return (
@@ -75,7 +90,7 @@ export const GenerationCardPreview = (props: Props) => {
           paddingHorizontal: 15,
           paddingTop: 10,
           paddingBottom: 8,
-          backgroundColor: NEWCOLORS.nestedBG,
+          backgroundColor: theme.nestedBG,
           borderRadius: 5,
           overflow: "hidden",
         }}
@@ -190,9 +205,9 @@ export const GenerationCardPreview = (props: Props) => {
             >
               <Pressable
                 style={[
-                  styles.basicBoxShadow,
+                  makeRecipeShadow,
                   {
-                    backgroundColor: NEWCOLORS.primary,
+                    backgroundColor: theme.primary,
                     paddingVertical: 14,
                     borderRadius: 15,
                     width: "100%",
@@ -203,7 +218,7 @@ export const GenerationCardPreview = (props: Props) => {
                 <Text
                   style={[
                     styles.textCenterBold,
-                    { color: "white", fontSize: 18 },
+                    { color: theme.pureWhite, fontSize: 18 },
                   ]}
                 >
                   Make Recipe
@@ -221,9 +236,9 @@ export const GenerationCardPreview = (props: Props) => {
               >
                 <Pressable
                   style={[
-                    styles.basicBoxShadow,
+                    skipShadow,
                     {
-                      backgroundColor: NEWCOLORS.redBlock,
+                      backgroundColor: theme.redBlock,
                       paddingVertical: 14,
                       borderRadius: 15,
                       width: "48%",
@@ -234,7 +249,7 @@ export const GenerationCardPreview = (props: Props) => {
                   <Text
                     style={[
                       styles.textCenterBold,
-                      { fontSize: 17, color: "white" },
+                      { fontSize: 17, color: theme.pureWhite },
                     ]}
                   >
                     ← Skip
@@ -243,9 +258,9 @@ export const GenerationCardPreview = (props: Props) => {
 
                 <Pressable
                   style={[
-                    styles.basicBoxShadow,
+                    saveShadow,
                     {
-                      backgroundColor: NEWCOLORS.greenBlock,
+                      backgroundColor: theme.greenBlock,
                       paddingVertical: 14,
                       borderRadius: 15,
                       width: "48%",
@@ -256,7 +271,7 @@ export const GenerationCardPreview = (props: Props) => {
                   <Text
                     style={[
                       styles.textCenterBold,
-                      { fontSize: 17, color: "white" },
+                      { fontSize: 17, color: theme.pureWhite },
                     ]}
                   >
                     Save →
@@ -281,7 +296,7 @@ export const GenerationCardPreview = (props: Props) => {
         paddingHorizontal: 15,
         paddingTop: 10,
         paddingBottom: 8,
-        backgroundColor: NEWCOLORS.nestedBG,
+        backgroundColor: theme.nestedBG,
         borderRadius: 5,
         overflow: "hidden",
       }}
@@ -290,9 +305,10 @@ export const GenerationCardPreview = (props: Props) => {
         <Text
           style={[
             styles.textCentered,
-            { fontFamily: "Nunito-Bold", fontSize: 30 },
+            { fontFamily: "Nunito-Bold", fontSize: 31 },
           ]}
           numberOfLines={1}
+          adjustsFontSizeToFit
         >
           {props.title}
         </Text>
@@ -340,27 +356,35 @@ export const GenerationCardPreview = (props: Props) => {
           {props.description}
         </Text>
 
-        <NutrientsContext.Provider value={[props.nutrients || [0, 0, 0], () => { }]}>
+        <NutrientsContext.Provider
+          value={[props.nutrients || [0, 0, 0], () => {}]}
+        >
           <NutrientCircle textInBox={false} />
         </NutrientsContext.Provider>
 
         <View style={{ width: "100%", alignItems: "center", marginTop: 10 }}>
           <Pressable
             style={[
-              styles.basicBoxShadow,
+              makeRecipeShadow,
               {
-                backgroundColor: NEWCOLORS.primary,
+                backgroundColor: theme.primary,
                 paddingVertical: 14,
                 borderRadius: 15,
                 width: "100%",
               },
             ]}
-            onPress={props.makeRecipe}
+            onPress={() => {
+              Haptics.selectionAsync();
+              props.makeRecipe();
+            }}
 
-          //more laggy: InteractionManager.runAfterInteractions(() => { router.navigate("/followRecipe") })
+            //more laggy: InteractionManager.runAfterInteractions(() => { router.navigate("/followRecipe") })
           >
             <Text
-              style={[styles.textCenterBold, { color: "white", fontSize: 18 }]}
+              style={[
+                styles.textCenterBold,
+                { color: theme.pureWhite, fontSize: 18 },
+              ]}
             >
               Make Recipe
             </Text>
@@ -377,15 +401,17 @@ export const GenerationCardPreview = (props: Props) => {
           >
             <Pressable
               style={[
-                styles.basicBoxShadow,
+                skipShadow,
                 {
-                  backgroundColor: NEWCOLORS.redBlock,
+                  backgroundColor: theme.redBlock,
                   paddingVertical: 14,
                   borderRadius: 15,
                   width: "48%",
                 },
               ]}
-              onPress={props.skipRecipe}
+              onPress={() => {
+                props.skipRecipe();
+              }}
             >
               <Text style={[styles.textCenterBold, { fontSize: 17 }]}>
                 ← Skip
@@ -394,15 +420,17 @@ export const GenerationCardPreview = (props: Props) => {
 
             <Pressable
               style={[
-                styles.basicBoxShadow,
+                saveShadow,
                 {
-                  backgroundColor: NEWCOLORS.greenBlock,
+                  backgroundColor: theme.greenBlock,
                   paddingVertical: 14,
                   borderRadius: 15,
                   width: "48%",
                 },
               ]}
-              onPress={props.saveRecipe}
+              onPress={() => {
+                props.saveRecipe();
+              }}
             >
               <Text style={[styles.textCenterBold, { fontSize: 17 }]}>
                 Save →

@@ -5,13 +5,13 @@ import { Button, Platform, StatusBar, Text } from "react-native";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { COLORS } from "@/constants/Theme";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { storage } from "@/utils/storage";
-import FavoritesContext from "@/contexts/FavoritesContext";
-import FavLeftoversContext from "@/contexts/FavLeftoversContext";
 import SavedRecipesContext from "@/contexts/SavedRecipesContext";
 import MealsLeftContext from "@/contexts/MealsLeftContext";
+import AchievementsContext, {
+  type AchievementData,
+} from "@/contexts/AchievementsContext";
 import { PantryDetailsContext, PantryDetails } from "@/contexts/PantryDetails";
 import GroceryListContext from "@/contexts/GroceryListContext";
 import CheckedGroceryListContext from "@/contexts/CheckedGroceryListContext";
@@ -28,13 +28,27 @@ import { RecipeProvider, type RecipeData } from "@/contexts/RecipeContext";
 import { TrueSheetProvider } from "@/contexts/TrueSheetContext";
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
 import TrueSheetContent from "@/components/common/TrueSheetContent";
-import { NEWCOLORS } from "@/constants/NewTheme";
+import {
+  ColorSchemeProvider,
+  useTheme,
+  useColorScheme,
+} from "@/contexts/ColorSchemeContext";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const [favorites, setFavorites] = useState<string[]>([]);
-  const [favoritesL, setFavoritesL] = useState<string[]>([]);
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <ColorSchemeProvider>
+        <RootLayoutContent />
+      </ColorSchemeProvider>
+    </GestureHandlerRootView>
+  );
+}
+
+function RootLayoutContent() {
+  const theme = useTheme();
+  const colorScheme = useColorScheme();
   const [savedRecipes, setSavedRecipes] = useState<RecipeData[]>([]);
   const [generationDetails, setGenerationDetails] = useState<GenerationDetails>(
     {
@@ -50,6 +64,7 @@ export default function RootLayout() {
     },
   );
   const [mealsLeft, setMealsLeft] = useState<number>(500);
+  const [achievements, setAchievements] = useState<AchievementData[]>([]);
   const [pantryDetails, setPantryDetails] = useState<PantryDetails>({
     name: "Your Pantry",
     icon: "",
@@ -108,8 +123,7 @@ export default function RootLayout() {
   });
 
   useEffect(() => {
-    const totalSaves = storage.getNumber("favsnumber") ?? 0;
-    storage.set("favsnumber", favorites.length + favoritesL.length);
+    storage.set("pantrynumber", pantryDetails.ingredients.length);
   });
 
   useEffect(() => {
@@ -130,30 +144,17 @@ export default function RootLayout() {
   }, []);
 
   useEffect(() => {
-    const storedFavoritesString = storage.getString("favorites");
-    const storedFavoritesStringL = storage.getString("favoritesL");
     const storedSaved = storage.getString("saves");
-    if (storedFavoritesString) {
-      try {
-        const storedFavoritesArray = JSON.parse(storedFavoritesString);
-        setFavorites(storedFavoritesArray);
-      } catch (e) {
-        console.error("Failed to parse favorites from storage:", e);
-        setFavorites([]);
-      }
-    }
-    if (storedFavoritesStringL) {
-      try {
-        const storedFavoritesArray = JSON.parse(storedFavoritesStringL);
-        setFavoritesL(storedFavoritesArray);
-      } catch (e) {
-        console.error("Failed to parse favorites from storage:", e);
-        setFavoritesL([]);
-      }
-    }
     if (storedSaved) {
       try {
         const storedSavedArray = JSON.parse(storedSaved);
+        const defaultCategories = {
+          madeWithLeftovers: false,
+          tastyMeals: false,
+          sweetTreats: false,
+          quickSnacks: false,
+          under15Minutes: false,
+        };
         const normalizedSaves = storedSavedArray.map((item: any) => {
           if (typeof item === "string") {
             return {
@@ -165,12 +166,13 @@ export default function RootLayout() {
               servings: null,
               nutrients: [0, 0, 0],
               tags: [],
+              categories: defaultCategories,
               ingredients: [],
               instructions: [],
               tips: [],
             };
           }
-          return item;
+          return { categories: defaultCategories, ...item };
         });
         setSavedRecipes(normalizedSaves);
       } catch (e) {
@@ -184,7 +186,6 @@ export default function RootLayout() {
   }
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
       <BrowseIngredientsContext.Provider
         value={[browseIngredients, setBrowseIngredients]}
       >
@@ -209,27 +210,30 @@ export default function RootLayout() {
               <CheckedGroceryListContext.Provider
                 value={[checkedGroceryList, setCheckedGroceryList]}
               >
-                <FavoritesContext.Provider value={[favorites, setFavorites]}>
-                  <FavLeftoversContext.Provider
-                    value={[favoritesL, setFavoritesL]}
+                <SavedRecipesContext.Provider
+                  value={[savedRecipes, setSavedRecipes]}
+                >
+                  <MealsLeftContext.Provider
+                    value={[mealsLeft, setMealsLeft]}
                   >
-                    <SavedRecipesContext.Provider
-                      value={[savedRecipes, setSavedRecipes]}
-                    >
-                      <MealsLeftContext.Provider
-                        value={[mealsLeft, setMealsLeft]}
-                      >
-                        <RecipeProvider>
+                  <AchievementsContext.Provider
+                    value={[achievements, setAchievements]}
+                  >
+                    <RecipeProvider>
                           <StatusBar
-                            barStyle="dark-content"
-                            backgroundColor={COLORS.newHeader}
+                            barStyle={
+                              colorScheme === "dark"
+                                ? "light-content"
+                                : "dark-content"
+                            }
+                            backgroundColor={theme.newHeader}
                           />
 
                           <Stack
                             screenOptions={{
                               headerShown: false,
                               contentStyle: {
-                                backgroundColor: NEWCOLORS.backgroundColor,
+                                backgroundColor: theme.backgroundColor,
                               },
                             }}
                           />
@@ -237,6 +241,7 @@ export default function RootLayout() {
                             detents={[0.6, 1]}
                             ref={sheetRef}
                             scrollable
+                            grabber={false}
                             header={
                               <>
                                 <View
@@ -245,7 +250,7 @@ export default function RootLayout() {
                                     width: 44,
                                     height: 4,
                                     borderRadius: 999,
-                                    backgroundColor: NEWCOLORS.unselectedShape,
+                                    backgroundColor: theme.unselectedShape,
                                     marginTop: 6,
                                     marginBottom: 15,
                                   }}
@@ -256,7 +261,7 @@ export default function RootLayout() {
                                     fontFamily: "Nunito-SemiBold",
                                     marginTop: 4,
                                     marginBottom: 15,
-                                    color: NEWCOLORS.basicText,
+                                    color: theme.basicText,
                                   }}
                                 >
                                   {currentTitle}
@@ -265,7 +270,7 @@ export default function RootLayout() {
                                   style={{
                                     height: 2.5,
                                     borderRadius: 1000,
-                                    backgroundColor: NEWCOLORS.placeholderText,
+                                    backgroundColor: theme.placeholderText,
                                   }}
                                 ></View>
                               </>
@@ -274,7 +279,7 @@ export default function RootLayout() {
                               paddingHorizontal: 20,
                               paddingTop: 16,
                             }}
-                            backgroundColor={NEWCOLORS.sheetBackgroundColor}
+                            backgroundColor={theme.sheetBackgroundColor}
                           >
                             <TrueSheetContent
                               currentOnSelect={currentOnSelect}
@@ -282,11 +287,10 @@ export default function RootLayout() {
                               currentOptions={currentOptions}
                             ></TrueSheetContent>
                           </TrueSheet>
-                        </RecipeProvider>
-                      </MealsLeftContext.Provider>
-                    </SavedRecipesContext.Provider>
-                  </FavLeftoversContext.Provider>
-                </FavoritesContext.Provider>
+                    </RecipeProvider>
+                  </AchievementsContext.Provider>
+                  </MealsLeftContext.Provider>
+                </SavedRecipesContext.Provider>
               </CheckedGroceryListContext.Provider>
               </GroceryListContext.Provider>
               </PantryDetailsContext.Provider>
@@ -294,6 +298,5 @@ export default function RootLayout() {
           </TrueSheetProvider>
         </NotificationProvider>
       </BrowseIngredientsContext.Provider>
-    </GestureHandlerRootView>
   );
 }

@@ -7,12 +7,13 @@ import React, {
   useState,
 } from "react";
 import { ScrollView } from "react-native-gesture-handler";
-import { styles } from "@/styles/auth.styles";
+import { useStyles } from "@/styles/GlobalStyles";
 import SliderField from "@/components/common/SliderField";
 import MultiSelectPills from "@/components/common/MultiSelectPills";
 import CountFieldPill from "@/components/common/CountFieldPill";
 import DropDownPill from "@/components/common/DropDownPill";
-import { NEWCOLORS } from "@/constants/NewTheme";
+import { useTheme } from "@/contexts/ColorSchemeContext";
+import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 import { GenerationDetailsContext } from "@/contexts/GenerationDetailsContext";
 import { router } from "expo-router";
 import * as Haptics from "expo-haptics";
@@ -31,10 +32,16 @@ type Props = {};
 const MAX_VISIBLE_SEARCH_RESULTS = 5;
 
 const GeneratorDetails = (props: Props) => {
+  const styles = useStyles();
+  const theme = useTheme();
+  const browseIngredientsShadow = useTintedBoxShadow(theme.unselectedGrey);
+  const generateButtonShadow = useTintedBoxShadow(theme.primary);
+  const searchResultsShadow = useTintedBoxShadow(theme.cardWhite);
   const browseIngredientsSheetRef = useRef<TrueSheet>(null);
   const searchRef = useRef<SearchHandle>(null);
 
   const openBrowseIngredients = useCallback(() => {
+    Haptics.selectionAsync();
     browseIngredientsSheetRef.current?.present();
   }, []);
   const modes: string[] = [
@@ -42,7 +49,7 @@ const GeneratorDetails = (props: Props) => {
     "Select Specific Ingredients",
     "Any Ingredients",
   ];
-  const difficultyLabels = ["Easy", "Intermediate", "Expert"];
+  const difficultyLabels = ["Easy", "Moderate", "Expert"];
   const timeLabels = ["<15m", "~30m", "1hr+"];
   const [recipeData, setRecipeData] = useContext(RecipeContext);
 
@@ -156,12 +163,12 @@ const GeneratorDetails = (props: Props) => {
                       onPress={openBrowseIngredients}
                       style={[
                         styles.sliderPill,
-                        styles.basicBoxShadow,
+                        browseIngredientsShadow,
                         {
                           flexDirection: "row",
                           justifyContent: "center",
                           alignItems: "center",
-                          backgroundColor: NEWCOLORS.unselectedGrey,
+                          backgroundColor: theme.unselectedGrey,
                         },
                       ]}
                     >
@@ -170,7 +177,7 @@ const GeneratorDetails = (props: Props) => {
                           styles.textCentered,
                           {
                             fontSize: 18,
-                            color: NEWCOLORS.basicText,
+                            color: theme.basicText,
                             fontFamily: "Nunito-SemiBold",
                           },
                         ]}
@@ -232,9 +239,9 @@ const GeneratorDetails = (props: Props) => {
           <View>
             <Pressable
               style={[
-                styles.basicBoxShadow,
+                generateButtonShadow,
                 {
-                  backgroundColor: NEWCOLORS.primary,
+                  backgroundColor: theme.primary,
                   paddingVertical: 20,
                   borderRadius: 15,
                   width: "100%",
@@ -273,7 +280,7 @@ const GeneratorDetails = (props: Props) => {
               <Text
                 style={[
                   styles.textCenterBold,
-                  { color: "white", fontSize: 18 },
+                  { color: theme.pureWhite, fontSize: 18 },
                 ]}
               >
                 Generate Recipes →
@@ -287,6 +294,7 @@ const GeneratorDetails = (props: Props) => {
         detents={[0.6, 1]}
         ref={browseIngredientsSheetRef}
         scrollable
+        grabber={false}
         header={
           <>
             <View
@@ -295,7 +303,7 @@ const GeneratorDetails = (props: Props) => {
                 width: 44,
                 height: 4,
                 borderRadius: 999,
-                backgroundColor: NEWCOLORS.unselectedShape,
+                backgroundColor: theme.unselectedShape,
                 marginTop: 6,
                 marginBottom: 15,
               }}
@@ -315,18 +323,23 @@ const GeneratorDetails = (props: Props) => {
                   fontSize: 22,
                   fontFamily: "Nunito-SemiBold",
 
-                  color: NEWCOLORS.basicText,
+                  color: theme.basicText,
                 }}
               >
                 Add Ingredients
               </Text>
-              <Pressable onPress={() => setBrowseIngredients([])}>
+              <Pressable
+                onPress={() => {
+                  setBrowseIngredients([]);
+                  Haptics.notificationAsync();
+                }}
+              >
                 <Text
                   style={{
                     fontSize: 14,
                     fontFamily: "Nunito-SemiBold",
 
-                    color: NEWCOLORS.redAccent,
+                    color: theme.redAccent,
                   }}
                 >
                   Remove All
@@ -358,7 +371,7 @@ const GeneratorDetails = (props: Props) => {
               style={{
                 marginTop: 20,
                 borderBottomWidth: 1.5,
-                borderColor: NEWCOLORS.dividerGrey,
+                borderColor: theme.dividerGrey,
               }}
             ></View>
           </>
@@ -367,7 +380,7 @@ const GeneratorDetails = (props: Props) => {
           paddingHorizontal: 20,
           paddingTop: 16,
         }}
-        backgroundColor={NEWCOLORS.sheetBackgroundColor}
+        backgroundColor={theme.sheetBackgroundColor}
       >
         <View style={{ flex: 1, position: "relative" }}>
           <ScrollView
@@ -403,7 +416,7 @@ const GeneratorDetails = (props: Props) => {
                     fontFamily: "Nunito-SemiBold",
                     fontSize: 18,
 
-                    color: NEWCOLORS.unselectedShape,
+                    color: theme.unselectedShape,
                   },
                 ]}
               >
@@ -415,7 +428,7 @@ const GeneratorDetails = (props: Props) => {
           {searchResultsVisible && (
             <View
               style={[
-                styles.basicBoxShadow,
+                searchResultsShadow,
                 {
                   position: "absolute",
                   top: 0,
@@ -423,7 +436,7 @@ const GeneratorDetails = (props: Props) => {
                   right: 20,
                   borderRadius: 30,
                   overflow: "hidden",
-                  backgroundColor: NEWCOLORS.cardWhite,
+                  backgroundColor: theme.cardWhite,
                   paddingHorizontal: 12,
                   paddingVertical: 4,
                 },

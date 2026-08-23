@@ -1,10 +1,11 @@
 import { View, Text, Pressable } from "react-native";
 import React, { useState } from "react";
-import { styles } from "@/styles/GlobalStyles";
+import { useStyles } from "@/styles/GlobalStyles";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import { TextInput } from "react-native-gesture-handler";
 import * as Haptics from "expo-haptics";
-import { NEWCOLORS } from "@/constants/NewTheme";
+import { useTheme } from "@/contexts/ColorSchemeContext";
+import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 
 type Props = {
   title: string;
@@ -14,6 +15,9 @@ type Props = {
 };
 
 const CountFieldPill = (props: Props) => {
+  const styles = useStyles();
+  const theme = useTheme();
+  const selectPillShadow = useTintedBoxShadow(theme.unselectedGrey);
   return (
     <View
       style={{
@@ -35,7 +39,7 @@ const CountFieldPill = (props: Props) => {
         <View
           style={[
             styles.selectPill,
-            styles.basicBoxShadow,
+            selectPillShadow,
             {
               flexDirection: "row",
               alignItems: "center",
@@ -59,7 +63,7 @@ const CountFieldPill = (props: Props) => {
               hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
               style={{
                 borderRadius: 10,
-                backgroundColor: "white",
+                backgroundColor: theme.cardWhite,
                 padding: 3,
               }}
               onPress={() => {
@@ -99,7 +103,7 @@ const CountFieldPill = (props: Props) => {
               hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
               style={{
                 borderRadius: 10,
-                backgroundColor: "white",
+                backgroundColor: theme.cardWhite,
                 padding: 3,
               }}
               onPress={() => {

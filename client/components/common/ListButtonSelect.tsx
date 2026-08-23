@@ -1,8 +1,10 @@
 import { View, Text, Pressable } from "react-native";
 import React, { Dispatch, useState } from "react";
-import { styles } from "@/styles/auth.styles";
-import { NEWCOLORS } from "@/constants/NewTheme";
+import { useStyles } from "@/styles/GlobalStyles";
+import { useTheme, useIsDarkMode } from "@/contexts/ColorSchemeContext";
 import { CustomIcon } from "@/icon-loader/icon-loader";
+import * as Haptics from "expo-haptics";
+import { getTintedBoxShadow } from "@/utils/shadow";
 
 type Props = {
   options: string[];
@@ -12,18 +14,21 @@ type Props = {
 };
 
 const ListButtonSelect = (props: Props) => {
+  const styles = useStyles();
+  const theme = useTheme();
+  const isDark = useIsDarkMode();
   return (
     <View style={{ gap: 25 }}>
-      {props.options.map((option: string, index: number) => (
+      {props.options.map((option: string, index: number) => {
+        const buttonBackgroundColor =
+          index === props.selected ? theme.greenAccent : theme.unselectedGrey;
+        return (
         <Pressable
           style={[
             styles.selectButton,
-            styles.basicBoxShadow,
+            getTintedBoxShadow(buttonBackgroundColor, isDark),
             {
-              backgroundColor:
-                index === props.selected
-                  ? NEWCOLORS.greenBlock
-                  : NEWCOLORS.unselectedGrey,
+              backgroundColor: buttonBackgroundColor,
               paddingHorizontal: 30,
               flexDirection: "row",
               position: "relative",
@@ -31,7 +36,10 @@ const ListButtonSelect = (props: Props) => {
               alignItems: "center",
             },
           ]}
-          onPress={() => props.setSelected(index)}
+          onPress={() => {
+            props.setSelected(index);
+            Haptics.selectionAsync();
+          }}
           key={index}
         >
           {index === props.selected && (
@@ -43,19 +51,26 @@ const ListButtonSelect = (props: Props) => {
                 width: 30,
                 height: 30,
                 borderRadius: 17,
-                backgroundColor: NEWCOLORS.greenAccent,
+                backgroundColor: theme.greenBlock,
                 justifyContent: "center",
                 alignItems: "center",
               }}
             >
-              <CustomIcon name="check" filled color="white" size={15} />
+              <CustomIcon
+                name="check"
+                filled
+                color={theme.greenAccent}
+                size={15}
+              />
             </View>
           )}
           <View>
             <CustomIcon
               name={props.icons[index]}
               filled
-              color={index === props.selected ? "white" : NEWCOLORS.basicText}
+              color={
+                index === props.selected ? theme.pureWhite : theme.basicText
+              }
               size={30}
             ></CustomIcon>
           </View>
@@ -66,7 +81,7 @@ const ListButtonSelect = (props: Props) => {
                 fontSize: 24,
                 flex: 1,
                 color:
-                  index === props.selected ? "white" : NEWCOLORS.basicText,
+                  index === props.selected ? theme.pureWhite : theme.basicText,
                 fontFamily: "Nunito-Medium",
               },
             ]}
@@ -74,7 +89,8 @@ const ListButtonSelect = (props: Props) => {
             {option}
           </Text>
         </Pressable>
-      ))}
+        );
+      })}
     </View>
   );
 };

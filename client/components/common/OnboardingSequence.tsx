@@ -1,6 +1,6 @@
 import { View, Text, Pressable } from "react-native";
 import React, { createContext, useState } from "react";
-import { styles } from "@/styles/auth.styles";
+import { useStyles } from "@/styles/GlobalStyles";
 import ProgressBar from "../features/recipe/ProgressBar";
 import { useRouter } from "expo-router";
 
@@ -23,6 +23,7 @@ type Props = {
 };
 
 const OnboardingSequence = (props: Props) => {
+  const styles = useStyles();
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
 

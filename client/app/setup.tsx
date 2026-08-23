@@ -12,8 +12,9 @@ import {
 import React, { useState, useEffect, useCallback, useContext } from "react";
 import { useFocusEffect, useRouter } from "expo-router";
 import { storage } from "@/utils/storage";
-import { styles } from "@/styles/auth.styles";
-import { NEWCOLORS } from "@/constants/NewTheme";
+import { useStyles } from "@/styles/GlobalStyles";
+import { useTheme } from "@/contexts/ColorSchemeContext";
+import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 import OnboardingSequence from "@/components/common/OnboardingSequence";
 import OnboardingStep from "@/components/common/OnboardingStep";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -40,6 +41,9 @@ import EmojiButton from "@/components/universal/EmojiButton";
 type Props = {};
 
 const SetupScreen = (props: Props) => {
+  const styles = useStyles();
+  const theme = useTheme();
+  const emojiCircleShadow = useTintedBoxShadow(theme.unselectedGrey);
   const router = useRouter();
   const [pantryDetails, setPantryDetails] = useContext(PantryDetailsContext);
   const [pantryName, setPantryName] = useState(
@@ -130,6 +134,7 @@ const SetupScreen = (props: Props) => {
       "Pomegranate",
       "Cherries",
       "Avocado",
+      "Peaches",
     ],
     Beans: [
       "Black Beans",
@@ -260,7 +265,7 @@ const SetupScreen = (props: Props) => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: NEWCOLORS.nestedBG }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: theme.nestedBG }}>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
@@ -291,11 +296,10 @@ const SetupScreen = (props: Props) => {
                 <EmojiButton
                   emoji={currentEmojiText}
                   onEmojiChange={setCurrentEmojiText}
-                  fontSize={keyboardOpen ? 70 : 100}
                   iconSize={keyboardOpen ? 100 : 140}
                   style={[
                     styles.emojiCircle,
-                    styles.basicBoxShadow,
+                    emojiCircleShadow,
                     {
                       height: keyboardOpen ? 150 : 220,
                       width: keyboardOpen ? 150 : 220,
@@ -311,7 +315,7 @@ const SetupScreen = (props: Props) => {
                 value={pantryName}
                 onChangeText={setPantryName}
                 placeholder="Your Pantry"
-                placeholderTextColor={NEWCOLORS.placeholderText}
+                placeholderTextColor={theme.placeholderText}
               />
             </OnboardingStep>,
             <OnboardingStep

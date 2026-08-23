@@ -1,7 +1,9 @@
 import { Tabs, useRouter, useSegments } from "expo-router";
 import { Platform, View } from "react-native";
 import { CustomIcon } from "@/icon-loader/icon-loader";
-import { NEWCOLORS } from "@/constants/NewTheme";
+import { useTheme } from "@/contexts/ColorSchemeContext";
+import { useStyles } from "@/styles/GlobalStyles";
+import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import * as Haptics from "expo-haptics";
@@ -18,6 +20,9 @@ const TAB_ROUTES = [
 ];
 
 export default function TabsLayout() {
+  const theme = useTheme();
+  const styles = useStyles();
+  const tabBarShadow = useTintedBoxShadow(theme.greyBlock, "elevated");
   const iconSizeMobile = 30;
   const router = useRouter();
   const segments = useSegments();
@@ -83,22 +88,21 @@ export default function TabsLayout() {
                   headerShown: false,
                   tabBarPosition: Platform.OS == "web" ? "left" : "bottom",
 
-                  tabBarStyle: {
-                    position: "absolute",
+                  tabBarStyle: [
+                    tabBarShadow,
+                    {
+                      position: "absolute",
 
-                    height: 65,
-                    marginHorizontal: 20,
-                    borderRadius: 100,
-                    backgroundColor: NEWCOLORS.greyBlock,
+                      height: 65,
+                      marginHorizontal: 20,
+                      borderRadius: 100,
+                      backgroundColor: theme.greyBlock,
 
-                    shadowColor: "#000",
-                    shadowOffset: { width: 0, height: 10 },
-                    shadowOpacity: 0.1,
-                    shadowRadius: 5,
-                    paddingBottom: 0,
-                    marginBottom: 10,
-                    borderTopWidth: 0,
-                  },
+                      paddingBottom: 0,
+                      marginBottom: 10,
+                      borderTopWidth: 0,
+                    },
+                  ],
 
                   tabBarItemStyle: {
                     paddingVertical: 10,
@@ -110,8 +114,8 @@ export default function TabsLayout() {
                   },
 
                   tabBarLabelPosition: "beside-icon",
-                  tabBarActiveTintColor: NEWCOLORS.greyBlock,
-                  tabBarInactiveTintColor: NEWCOLORS.darkButton,
+                  tabBarActiveTintColor: theme.pureWhite,
+                  tabBarInactiveTintColor: theme.basicText,
                   headerShadowVisible: false,
                   tabBarActiveBackgroundColor: "transparent",
                   tabBarInactiveBackgroundColor: "transparent",
@@ -130,7 +134,7 @@ export default function TabsLayout() {
                           justifyContent: "center",
                           alignItems: "center",
                           backgroundColor: focused
-                            ? NEWCOLORS.primary
+                            ? theme.primary
                             : "transparent",
                         }}
                       >
@@ -158,7 +162,7 @@ export default function TabsLayout() {
                           justifyContent: "center",
                           alignItems: "center",
                           backgroundColor: focused
-                            ? NEWCOLORS.primary
+                            ? theme.primary
                             : "transparent",
                         }}
                       >
@@ -186,7 +190,7 @@ export default function TabsLayout() {
                           justifyContent: "center",
                           alignItems: "center",
                           backgroundColor: focused
-                            ? NEWCOLORS.primary
+                            ? theme.primary
                             : "transparent",
                         }}
                       >
@@ -213,7 +217,7 @@ export default function TabsLayout() {
                           justifyContent: "center",
                           alignItems: "center",
                           backgroundColor: focused
-                            ? NEWCOLORS.primary
+                            ? theme.primary
                             : "transparent",
                         }}
                       >
@@ -241,7 +245,7 @@ export default function TabsLayout() {
                           justifyContent: "center",
                           alignItems: "center",
                           backgroundColor: focused
-                            ? NEWCOLORS.primary
+                            ? theme.primary
                             : "transparent",
                         }}
                       >

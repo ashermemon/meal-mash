@@ -1,11 +1,12 @@
 import { View, Text, Pressable, TextInput } from "react-native";
 import React, { useContext, useRef, useState } from "react";
-import { styles } from "@/styles/auth.styles";
-import { NEWCOLORS } from "@/constants/NewTheme";
+import { useStyles } from "@/styles/GlobalStyles";
+import { useIsDarkMode, useTheme } from "@/contexts/ColorSchemeContext";
 import { router } from "expo-router";
 import * as Haptics from "expo-haptics";
 import { PantryDetailsContext } from "@/contexts/PantryDetails";
 import EmojiButton from "@/components/universal/EmojiButton";
+import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 
 type Props = {
   pantryName: string;
@@ -13,9 +14,13 @@ type Props = {
 };
 
 const PantryPill = (props: Props) => {
+  const styles = useStyles();
+  const theme = useTheme();
+  const isDark = useIsDarkMode();
   const [pantryDetails, setPantryDetails] = useContext(PantryDetailsContext);
   const [rename, setRename] = useState(false);
   const inputRef = useRef<TextInput>(null);
+  const pillShadow = useTintedBoxShadow(theme.greyBlock);
 
   const handleRenamePress = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -40,7 +45,7 @@ const PantryPill = (props: Props) => {
       <View
         style={[
           styles.sliderPill,
-          styles.basicBoxShadow,
+          pillShadow,
           {
             flexDirection: "row",
             justifyContent: "space-between",
@@ -60,10 +65,9 @@ const PantryPill = (props: Props) => {
           <EmojiButton
             emoji={pantryDetails.icon}
             editable={rename}
-            fontSize={18}
-            iconSize={22}
-            onEmojiChange={(newEmoji) =>
-              setPantryDetails((prev) => ({ ...prev, icon: newEmoji }))
+            iconSize={32}
+            onEmojiChange={(newIcon) =>
+              setPantryDetails((prev) => ({ ...prev, icon: newIcon }))
             }
           />
 
@@ -83,7 +87,7 @@ const PantryPill = (props: Props) => {
                 {
                   flex: 1,
                   fontSize: 18,
-                  color: NEWCOLORS.placeholderText,
+                  color: theme.placeholderText,
                   fontFamily: "Nunito-SemiBold",
                   paddingVertical: 0,
                   paddingHorizontal: 0,
@@ -99,7 +103,7 @@ const PantryPill = (props: Props) => {
                 {
                   flex: 1,
                   fontSize: 18,
-                  color: NEWCOLORS.placeholderText,
+                  color: theme.placeholderText,
                   fontFamily: "Nunito-SemiBold",
                 },
               ]}
@@ -116,6 +120,7 @@ const PantryPill = (props: Props) => {
               width: 100,
               justifyContent: "center",
               alignItems: "center",
+              backgroundColor: isDark ? theme.lightGrey : theme.unselectedGrey,
             },
           ]}
           onPress={handleRenamePress}
@@ -125,7 +130,7 @@ const PantryPill = (props: Props) => {
               styles.textCentered,
               {
                 fontSize: 13,
-                color: NEWCOLORS.placeholderText,
+                color: theme.placeholderText,
                 fontFamily: "Nunito-SemiBold",
               },
             ]}

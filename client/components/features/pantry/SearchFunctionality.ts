@@ -91,6 +91,7 @@ const householdEssentialCatalog: Food[] = [
   createFood(73, "Pomegranate", "Produce"),
   createFood(74, "Cherries", "Produce"),
   createFood(75, "Avocado", "Produce"),
+  createFood(119, "Peaches", "Produce"),
   createFood(76, "Beans", "Legumes, Nuts & Seeds"),
   createFood(77, "Black Beans", "Legumes, Nuts & Seeds"),
   createFood(78, "Chickpeas", "Legumes, Nuts & Seeds"),
@@ -168,17 +169,16 @@ function normalizeText(value: string): string {
 
 function getMatchPriority(food: Food, query: string): number {
   const normalizedQuery = normalizeText(query);
-  const normalizedDisplay = normalizeText(food.displayName ?? food.name);
-  const allCandidates = [food.name, ...parseAlternates(food.alternate_names)].map(
-    normalizeText,
-  );
+  const allCandidates = [
+    food.name,
+    food.displayName ?? food.name,
+    ...parseAlternates(food.alternate_names),
+  ].map(normalizeText);
 
   if (allCandidates.some((candidate) => candidate === normalizedQuery))
     return 0;
 
-  if (normalizedDisplay.startsWith(normalizedQuery)) return 1;
-
-  return 2;
+  return 1;
 }
 
 export async function searchIngredients(query: string): Promise<Food[]> {

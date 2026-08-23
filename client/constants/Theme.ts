@@ -1,7 +1,5 @@
 export const COLORS = {
-  blueHeader: "#DCEFFF",
-
-  newHeader: "#F6F6F6",
+  newHeader: "#FBF5EA",
 
   fontColor: "#3A3532",
   searchPlaceholder: "#8A8378",
@@ -9,15 +7,17 @@ export const COLORS = {
 
   addPlusGrey: "#A39A89",
 
-  greenButtonColorOuline: "#8FDD9E",
-  greenButtonColor: "#DFF6DA",
-
-  saveBorder: "#7EC1FF",
-  saveFill: "#DCEFFF",
-  genBorder: "#C79EEA",
-  genFill: "#F0D9FF",
-
-  favoriteColor: "#FFC22E",
-
   greyBtns: "#8A8378",
 } as const;
+
+export const DARK_COLORS: Record<keyof typeof COLORS, string> = {
+  newHeader: "#242424",
+
+  fontColor: "#F2ECE0",
+  searchPlaceholder: "#A79F92",
+  addButtonStroke: "#4A453D",
+
+  addPlusGrey: "#8A8378",
+
+  greyBtns: "#A79F92",
+};

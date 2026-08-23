@@ -1,17 +1,13 @@
-import { Animated, Text, View } from "react-native";
-import React, {
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import { styles } from "@/styles/GlobalStyles";
-import { NEWCOLORS } from "@/constants/NewTheme";
+import { Animated as RNAnimated, Text, View } from "react-native";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
+import Reanimated, { FadeIn, FadeOut } from "react-native-reanimated";
+import { useStyles } from "@/styles/GlobalStyles";
+import { useTheme } from "@/contexts/ColorSchemeContext";
 import { Image } from "expo-image";
 import { useNavigation } from "@react-navigation/native";
 import PantryPill from "@/components/features/pantry/PantryPill";
 import { ScrollView } from "react-native-gesture-handler";
+import { hexToRgba } from "@/utils/color";
 
 import { LinearGradient } from "expo-linear-gradient";
 
@@ -20,13 +16,17 @@ import FilterIngredients from "@/components/features/pantry/FilterIngredients";
 import IngredientTag from "@/components/features/pantry/IngredientTag";
 import Search, { Food } from "@/components/features/pantry/Search";
 import { CustomIcon } from "@/icon-loader/icon-loader";
+import icons3d from "@/components/universal/3dIcons";
+import { getCategoryDisplayLabel } from "@/constants/categoryLabels";
 
 export default function Dashboard() {
-  const searchOverlayOpacity = useRef(new Animated.Value(0)).current;
+  const styles = useStyles();
+  const theme = useTheme();
+  const searchOverlayOpacity = useRef(new RNAnimated.Value(0)).current;
   const [searchActive, setSearchActive] = useState(false);
 
   useEffect(() => {
-    Animated.timing(searchOverlayOpacity, {
+    RNAnimated.timing(searchOverlayOpacity, {
       toValue: searchActive ? 0.75 : 0,
       duration: 250,
       useNativeDriver: true,
@@ -38,6 +38,16 @@ export default function Dashboard() {
   const pantryIngredientIds = useMemo(
     () => new Set(pantryDetails.ingredients.map((item) => item.id)),
     [pantryDetails.ingredients],
+  );
+  const filteredIngredients = useMemo(
+    () =>
+      pantryDetails.ingredients
+        .toReversed()
+        .filter(
+          (ingredient) =>
+            selectedFilter === "All" || selectedFilter === ingredient.category,
+        ),
+    [pantryDetails.ingredients, selectedFilter],
   );
   const ingredientCategories: string[] = [
     "All",
@@ -56,7 +66,7 @@ export default function Dashboard() {
     <View
       style={{
         flex: 1,
-        backgroundColor: NEWCOLORS.backgroundColor,
+        backgroundColor: theme.backgroundColor,
         position: "relative",
       }}
     >
@@ -130,7 +140,7 @@ export default function Dashboard() {
 
               <View style={styles.pantryTip}>
                 <Text
-                  style={[styles.textLeft, { color: "white" }]}
+                  style={[styles.textLeft, { color: theme.fontColor }]}
                   numberOfLines={2}
                   adjustsFontSizeToFit
                 >
@@ -138,16 +148,10 @@ export default function Dashboard() {
                   Be sure to add any leftover dishes you have at home and want
                   to use in recipes!
                 </Text>
+
                 <Image
-                  source={require("@/assets/images/leftover.webp")}
-                  style={{
-                    width: 50,
-                    height: 50,
-                    borderRadius: 110,
-                    shadowColor: "black",
-                    shadowRadius: 50,
-                    shadowOpacity: 1,
-                  }}
+                  source={icons3d["Pizza"]}
+                  style={{ width: 60, height: 60, marginBottom: 4 }}
                 />
               </View>
 
@@ -157,26 +161,17 @@ export default function Dashboard() {
                   currentSelected={selectedFilter}
                   categories={ingredientCategories}
                 />
-                {pantryDetails.ingredients
-                  .toReversed()
-                  .map((ingredient: Food, index: number) =>
-                    selectedFilter === "All" ? (
-                      <IngredientTag
-                        key={index}
-                        ingredient={ingredient}
-                      ></IngredientTag>
-                    ) : selectedFilter === ingredient.category ? (
-                      <IngredientTag
-                        key={index}
-                        ingredient={ingredient}
-                      ></IngredientTag>
-                    ) : (
-                      <React.Fragment key={index}></React.Fragment>
-                    ),
-                  )}
+                {filteredIngredients.map((ingredient: Food) => (
+                  <IngredientTag
+                    key={ingredient.id}
+                    ingredient={ingredient}
+                  ></IngredientTag>
+                ))}
               </View>
               {pantryDetails.ingredients.length < 1 ? (
-                <View
+                <Reanimated.View
+                  entering={FadeIn.duration(250)}
+                  exiting={FadeOut.duration(150)}
                   style={{
                     flex: 1,
                     alignItems: "center",
@@ -188,7 +183,7 @@ export default function Dashboard() {
                   <CustomIcon
                     name="apple-fruit"
                     filled
-                    color={NEWCOLORS.redAccent}
+                    color={theme.redAccent}
                     size={36}
                   />
                   <Text
@@ -197,7 +192,7 @@ export default function Dashboard() {
                       {
                         fontFamily: "Nunito-Bold",
                         fontSize: 20,
-                        color: NEWCOLORS.basicText,
+                        color: theme.basicText,
                       },
                     ]}
                   >
@@ -209,14 +204,58 @@ export default function Dashboard() {
                       {
                         fontFamily: "Nunito-SemiBold",
                         fontSize: 15,
-                        color: NEWCOLORS.placeholderText,
+                        color: theme.placeholderText,
                         textAlign: "center",
                       },
                     ]}
                   >
                     Add the ingredients you have at home to get started!
                   </Text>
-                </View>
+                </Reanimated.View>
+              ) : filteredIngredients.length < 1 ? (
+                <Reanimated.View
+                  entering={FadeIn.duration(250)}
+                  exiting={FadeOut.duration(150)}
+                  style={{
+                    flex: 1,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 6,
+                    paddingHorizontal: 20,
+                  }}
+                >
+                  <CustomIcon
+                    name="empty-box-fill"
+                    filled
+                    color={theme.redAccent}
+                    size={36}
+                  />
+                  <Text
+                    style={[
+                      styles.textCenterBold,
+                      {
+                        fontFamily: "Nunito-Bold",
+                        fontSize: 20,
+                        color: theme.basicText,
+                      },
+                    ]}
+                  >
+                    Nothing here yet...
+                  </Text>
+                  <Text
+                    style={[
+                      styles.textCentered,
+                      {
+                        fontFamily: "Nunito-SemiBold",
+                        fontSize: 15,
+                        color: theme.placeholderText,
+                        textAlign: "center",
+                      },
+                    ]}
+                  >
+                    Ingredients you add in this category will show up here
+                  </Text>
+                </Reanimated.View>
               ) : (
                 <></>
               )}
@@ -226,10 +265,10 @@ export default function Dashboard() {
       </ScrollView>
       <LinearGradient
         colors={[
-          "rgba(255, 248, 237, 0)",
-          "rgba(255, 248, 237, 0.75)",
-          "rgba(255, 248, 237, 0.98)",
-          NEWCOLORS.backgroundColor,
+          hexToRgba(theme.backgroundColor, 0),
+          hexToRgba(theme.backgroundColor, 0.75),
+          hexToRgba(theme.backgroundColor, 0.98),
+          theme.backgroundColor,
         ]}
         locations={[0, 0.4, 0.75, 1]}
         style={{

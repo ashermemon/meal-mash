@@ -1,11 +1,19 @@
 import { View, Text, Pressable } from "react-native";
 import React, { useContext } from "react";
-import { styles } from "@/styles/auth.styles";
+import Animated, {
+  Easing,
+  FadeInDown,
+  FadeOutUp,
+  LinearTransition,
+} from "react-native-reanimated";
+import { useStyles } from "@/styles/GlobalStyles";
 import { CustomIcon } from "@/icon-loader/icon-loader";
-import { NEWCOLORS } from "@/constants/NewTheme";
+import { useTheme } from "@/contexts/ColorSchemeContext";
 import { getCategoryDisplayLabel } from "@/constants/categoryLabels";
 import { PantryDetailsContext } from "@/contexts/PantryDetails";
 import { Food } from "./Search";
+import * as Haptics from "expo-haptics";
+import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 
 type Props = {
   ingredient: Food;
@@ -13,26 +21,33 @@ type Props = {
 };
 
 const IngredientTag = (props: Props) => {
+  const styles = useStyles();
+  const theme = useTheme();
   const [pantryDetails, setPantryDetails] = useContext(PantryDetailsContext);
+  const tagShadow = useTintedBoxShadow(theme.greyBlock);
 
   const handleRemoveIngredient = () => {
+    Haptics.selectionAsync();
     if (props.onRemove) {
       props.onRemove();
     } else {
       setPantryDetails((prev) => ({
         ...prev,
         ingredients: prev.ingredients.filter(
-          (ingredient) => ingredient.name !== props.ingredient.name,
+          (ingredient) => ingredient.id !== props.ingredient.id,
         ),
       }));
     }
   };
 
   return (
-    <View
+    <Animated.View
+      entering={FadeInDown.duration(280).easing(Easing.out(Easing.cubic))}
+      exiting={FadeOutUp.duration(200).easing(Easing.in(Easing.cubic))}
+      layout={LinearTransition.duration(250).easing(Easing.inOut(Easing.ease))}
       style={[
         styles.ingredientPill,
-        styles.basicBoxShadow,
+        tagShadow,
         {
           justifyContent: "space-between",
           alignItems: "center",
@@ -76,7 +91,7 @@ const IngredientTag = (props: Props) => {
               fontSize: 13,
               marginLeft: 5,
               fontFamily: "Nunito-Regular",
-              color: NEWCOLORS.pillX,
+              color: theme.pillX,
             },
           ]}
         >
@@ -87,14 +102,19 @@ const IngredientTag = (props: Props) => {
         onPress={handleRemoveIngredient}
         style={{
           marginRight: 20,
-          backgroundColor: NEWCOLORS.redAccent,
+          backgroundColor: theme.redAccent,
           padding: 10,
           borderRadius: 1000,
         }}
       >
-        <CustomIcon name="close" filled={true} color="white" size={18} />
+        <CustomIcon
+          name="close"
+          filled={true}
+          color={theme.pureWhite}
+          size={18}
+        />
       </Pressable>
-    </View>
+    </Animated.View>
   );
 };
 

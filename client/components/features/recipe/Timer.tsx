@@ -1,13 +1,14 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
 import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
-import { styles } from "@/styles/GlobalStyles";
+import { useStyles } from "@/styles/GlobalStyles";
 import { timedBuzz } from "@/components/universal/CustomBuzz";
 
-import { COLORS } from "@/constants/Theme";
+import { useTheme } from "@/contexts/ColorSchemeContext";
 
 import * as Haptics from "expo-haptics";
 import { CustomIcon } from "@/icon-loader/icon-loader";
+import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 
 type TimerProps = {
   time: number;
@@ -21,6 +22,9 @@ type TimerProps = {
 
 
 export default function Timer(props: TimerProps) {
+  const styles = useStyles();
+  const theme = useTheme();
+  const timerShadow = useTintedBoxShadow(theme.secondaryBoxGrey);
   const [isPlaying, setIsPlaying] = useState(false);
   const [timerKey, setTimerKey] = useState(0);
   const [timerFinished, setTimerFinished] = useState(false);
@@ -38,7 +42,7 @@ export default function Timer(props: TimerProps) {
   });
 
   return (
-    <View style={[styles.timer, styles.basicBoxShadow]}>
+    <View style={[styles.timer, timerShadow]}>
       <View
         style={{
           flexDirection: "row",
@@ -107,7 +111,7 @@ export default function Timer(props: TimerProps) {
           }}
         >
           <CustomIcon
-            color={COLORS.greyBtns}
+            color={theme.greyBtns}
             name={"refresh-1"}
             size={30}
             filled={true}
@@ -130,14 +134,14 @@ export default function Timer(props: TimerProps) {
         >
           {isPlaying && !timerFinished ? (
             <CustomIcon
-              color={COLORS.greyBtns}
+              color={theme.greyBtns}
               name={"pause"}
               size={30}
               filled={true}
             ></CustomIcon>
           ) : (
             <CustomIcon
-              color={COLORS.greyBtns}
+              color={theme.greyBtns}
               name={"play"}
               size={30}
               filled={true}

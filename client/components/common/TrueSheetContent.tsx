@@ -2,7 +2,7 @@ import { View, Text, Pressable } from "react-native";
 import React, { useState, useEffect } from "react";
 import { ScrollView } from "react-native-gesture-handler";
 import { TrueSheet } from "@lodev09/react-native-true-sheet";
-import { NEWCOLORS } from "@/constants/NewTheme";
+import { useTheme } from "@/contexts/ColorSchemeContext";
 import * as Haptics from "expo-haptics";
 import CustomCheckbox from "./CustomCheckbox";
 import { useTrueSheet } from "@/contexts/TrueSheetContext";
@@ -15,6 +15,7 @@ type Props = {
 };
 
 const TrueSheetContent = (props: Props) => {
+  const theme = useTheme();
   const { currentSelected } = useTrueSheet();
   const [selected, setSelected] = useState<string[]>([]);
 
@@ -55,14 +56,16 @@ const TrueSheetContent = (props: Props) => {
                 paddingVertical: 15,
                 paddingHorizontal: 20,
                 borderRadius: 1000,
-                backgroundColor: NEWCOLORS.unselectedGrey,
+                backgroundColor: theme.unselectedGrey,
                 marginBottom: 10,
                 flexDirection: "row",
                 justifyContent: "space-between",
                 alignItems: "center",
               }}
             >
-              <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
+              <View
+                style={{ flex: 1, flexDirection: "row", alignItems: "center" }}
+              >
                 {emoji ? (
                   <Text
                     style={{
@@ -78,6 +81,7 @@ const TrueSheetContent = (props: Props) => {
                     fontSize: 16,
                     fontFamily: "Nunito-Regular",
                     flex: 1,
+                    color: theme.basicText,
                   }}
                   numberOfLines={1}
                 >
