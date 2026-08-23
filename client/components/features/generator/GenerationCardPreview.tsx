@@ -13,6 +13,8 @@ import RecipeInfoTags from "../recipe/RecipeInfoTags";
 import NutrientsContext from "@/contexts/NutrientsContext";
 import { useTheme, useColorScheme } from "@/contexts/ColorSchemeContext";
 import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
+import { useMealImages } from "@/contexts/MealImageContext";
+import { getMealImageSource } from "@/utils/mealImageSource";
 import { router } from "expo-router";
 import { Skeleton } from "moti/skeleton";
 import * as Haptics from "expo-haptics";
@@ -44,23 +46,6 @@ const SKELETON_TRANSITION = {
   duration: 2000,
 } as const;
 
-const MEAL_IMAGES: Record<string, any> = {
-  burger: require("@/assets/images/meal-images/burger.webp"),
-  pizza: require("@/assets/images/meal-images/pizza.webp"),
-  pasta: require("@/assets/images/meal-images/pasta.webp"),
-  salad: require("@/assets/images/meal-images/salad.webp"),
-  curry: require("@/assets/images/meal-images/curry.webp"),
-  "fried-rice": require("@/assets/images/meal-images/fried-rice.webp"),
-  sandwich: require("@/assets/images/meal-images/sandwich.webp"),
-  taco: require("@/assets/images/meal-images/taco.webp"),
-  soup: require("@/assets/images/meal-images/soup.webp"),
-  dessert: require("@/assets/images/meal-images/dessert.webp"),
-  breakfast: require("@/assets/images/meal-images/breakfast.webp"),
-  seafood: require("@/assets/images/meal-images/seafood.webp"),
-  steak: require("@/assets/images/meal-images/steak.webp"),
-  bowl: require("@/assets/images/meal-images/bowl.webp"),
-};
-
 export const GenerationCardPreview = (props: Props) => {
   const styles = useStyles();
   const theme = useTheme();
@@ -68,6 +53,12 @@ export const GenerationCardPreview = (props: Props) => {
   const makeRecipeShadow = useTintedBoxShadow(theme.primary);
   const skipShadow = useTintedBoxShadow(theme.redBlock);
   const saveShadow = useTintedBoxShadow(theme.greenBlock);
+  const { mealImages } = useMealImages();
+  const imageSource = React.useMemo(
+    () => getMealImageSource(mealImages, props.imageCategory),
+    [mealImages, props.imageCategory],
+  );
+
   const SkeletonSettings = {
     colorMode: colorScheme === "dark" ? "dark" : "light",
     transition: SKELETON_TRANSITION,
@@ -331,7 +322,7 @@ export const GenerationCardPreview = (props: Props) => {
         }}
       >
         <Image
-          source={MEAL_IMAGES[props.imageCategory] || MEAL_IMAGES.bowl}
+          source={imageSource}
           style={{
             width: "70%",
             aspectRatio: 1,

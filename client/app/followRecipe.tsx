@@ -17,23 +17,8 @@ import RecipeSection from "@/components/features/recipe/RecipeSection";
 import Svg, { Path } from "react-native-svg";
 import FollowRecipeHeader from "@/components/features/recipe/FollowRecipeHeader";
 import { router } from "expo-router";
-
-export const MEAL_IMAGES: Record<string, any> = {
-  burger: require("@/assets/images/meal-images/burger.webp"),
-  pizza: require("@/assets/images/meal-images/pizza.webp"),
-  pasta: require("@/assets/images/meal-images/pasta.webp"),
-  salad: require("@/assets/images/meal-images/salad.webp"),
-  curry: require("@/assets/images/meal-images/curry.webp"),
-  "fried-rice": require("@/assets/images/meal-images/fried-rice.webp"),
-  sandwich: require("@/assets/images/meal-images/sandwich.webp"),
-  taco: require("@/assets/images/meal-images/taco.webp"),
-  soup: require("@/assets/images/meal-images/soup.webp"),
-  dessert: require("@/assets/images/meal-images/dessert.webp"),
-  breakfast: require("@/assets/images/meal-images/breakfast.webp"),
-  seafood: require("@/assets/images/meal-images/seafood.webp"),
-  steak: require("@/assets/images/meal-images/steak.webp"),
-  bowl: require("@/assets/images/meal-images/bowl.webp"),
-};
+import { useMealImages } from "@/contexts/MealImageContext";
+import { getMealImageSource } from "@/utils/mealImageSource";
 
 const followRecipe = () => {
   const styles = useStyles();
@@ -41,6 +26,7 @@ const followRecipe = () => {
   const imageGlowShadow = useTintedBoxShadow(theme.backgroundColor, "glow");
   const returnButtonShadow = useTintedBoxShadow(theme.primary);
   const [contextRecipeData] = useContext(RecipeContext);
+  const { mealImages } = useMealImages();
   const navigation = useNavigation();
   const bulletMargin = 45; //33
 
@@ -101,6 +87,11 @@ const followRecipe = () => {
     ? contextRecipeData
     : defaultRecipeData;
 
+  const imageSource = useMemo(
+    () => getMealImageSource(mealImages, recipeData.imageCategory),
+    [mealImages, recipeData.imageCategory],
+  );
+
   const [checked, setChecked] = useState<boolean[]>(
     (recipeData?.ingredients || []).map(() => false),
   );
@@ -150,9 +141,7 @@ const followRecipe = () => {
               ]}
             >
               <Image
-                source={
-                  MEAL_IMAGES[recipeData.imageCategory] || MEAL_IMAGES.bowl
-                }
+                source={imageSource}
                 style={{ width: "100%", height: "100%", borderRadius: 110 }}
                 contentFit="cover"
               />

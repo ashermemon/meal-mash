@@ -12,6 +12,8 @@ import Carousel, {
 } from "react-native-reanimated-carousel";
 import InfoTag from "../recipe/InfoTag";
 import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
+import { useMealImages } from "@/contexts/MealImageContext";
+import { getMealImageSource } from "@/utils/mealImageSource";
 
 const featuredRecipes = [
   {
@@ -20,7 +22,7 @@ const featuredRecipes = [
     tag: "Lunch",
     time: "25 m",
     difficulty: "Moderate",
-    icon: require("@/assets/images/meal-images/salad.webp"),
+    imageCategory: "salad",
   },
   {
     id: "2",
@@ -29,7 +31,7 @@ const featuredRecipes = [
     time: "55 m",
 
     difficulty: "Expert",
-    icon: require("@/assets/images/meal-images/taco.webp"),
+    imageCategory: "taco",
   },
   {
     id: "3",
@@ -38,7 +40,7 @@ const featuredRecipes = [
     time: "1 hr 30 m",
 
     difficulty: "Easy",
-    icon: require("@/assets/images/meal-images/burger.webp"),
+    imageCategory: "burger",
   },
 ];
 
@@ -47,6 +49,15 @@ export default function ExploreSection() {
   const theme = useTheme();
   const isDark = useIsDarkMode();
   const featuredCarouselShadow = useTintedBoxShadow(theme.greyBlock);
+  const { mealImages } = useMealImages();
+  const featuredRecipesWithIcons = React.useMemo(
+    () =>
+      featuredRecipes.map((recipe) => ({
+        ...recipe,
+        icon: getMealImageSource(mealImages, recipe.imageCategory),
+      })),
+    [mealImages],
+  );
   const ref = React.useRef<ICarouselInstance>(null);
   const progress = useSharedValue<number>(0);
   const onPressPagination = (index: number) => {
@@ -172,7 +183,7 @@ export default function ExploreSection() {
             scrollAnimationDuration={1500}
             ref={ref}
             width={width}
-            data={featuredRecipes}
+            data={featuredRecipesWithIcons}
             height={110}
             onProgressChange={progress}
             renderItem={({ item }) => (
@@ -227,7 +238,7 @@ export default function ExploreSection() {
 
         <Pagination.Basic
           progress={progress}
-          data={featuredRecipes}
+          data={featuredRecipesWithIcons}
           size={7}
           dotStyle={{
             backgroundColor: isDark

@@ -6,7 +6,7 @@ import {
   Text,
   View,
 } from "react-native";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import Animated, {
   Easing,
   FadeInDown,
@@ -26,7 +26,8 @@ import { saveRecipe, equal } from "@/components/features/recipe/SaveRecipe";
 import { router } from "expo-router";
 import RecipeContext, { type RecipeData } from "@/contexts/RecipeContext";
 import RecipeInfoTags from "../recipe/RecipeInfoTags";
-import { MEAL_IMAGES } from "@/app/followRecipe";
+import { useMealImages } from "@/contexts/MealImageContext";
+import { getMealImageSource } from "@/utils/mealImageSource";
 import InfoTag from "../recipe/InfoTag";
 import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 import {
@@ -63,6 +64,11 @@ export default function SavedCard(props: SavedProps) {
   const [saved, setSaved] = useState(true);
   const [savesRecipes, setSavesRecipes] = useContext(SavedRecipesContext);
   const [recipeData, setRecipeData] = useContext(RecipeContext);
+  const { mealImages } = useMealImages();
+  const imageSource = useMemo(
+    () => getMealImageSource(mealImages, props.SavedRecipe.imageCategory),
+    [mealImages, props.SavedRecipe.imageCategory],
+  );
 
   const cardKey = recipeKey(props.SavedRecipe);
   const gap = props.gap ?? 20;
@@ -300,10 +306,7 @@ export default function SavedCard(props: SavedProps) {
                 ]}
               >
                 <Image
-                  source={
-                    MEAL_IMAGES[props.SavedRecipe.imageCategory] ||
-                    MEAL_IMAGES.bowl
-                  }
+                  source={imageSource}
                   style={{ width: "100%", height: "100%", borderRadius: 110 }}
                   contentFit="cover"
                 />
