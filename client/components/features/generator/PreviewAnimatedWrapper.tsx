@@ -27,6 +27,7 @@ import { router } from "expo-router";
 import { PantryDetailsContext } from "@/contexts/PantryDetails";
 import { BrowseIngredientsContext } from "@/contexts/BrowseIngredientsContext";
 import { trackRecipeGenerated, trackMealMade } from "@/utils/achievements";
+import { useMealImages } from "@/contexts/MealImageContext";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
@@ -184,6 +185,24 @@ const PreviewAnimatedWrapper = (props: Props) => {
     GenerationDetailsContext,
   );
 
+  const { imageIds, loading } = useMealImages();
+  const IMAGE_CATEGORIES_BACKUP = [
+    "burger",
+    "pizza",
+    "pasta",
+    "salad",
+    "curry",
+    "fried-rice",
+    "sandwich",
+    "taco",
+    "soup",
+    "dessert",
+    "breakfast",
+    "seafood",
+    "steak",
+    //"bowl"
+  ] as const;
+
   const [browseIngredients, setBrowseIngredients] = useContext(
     BrowseIngredientsContext,
   );
@@ -246,7 +265,7 @@ const PreviewAnimatedWrapper = (props: Props) => {
         contents: nextPrompt,
         config: {
           responseMimeType: "application/json",
-          responseSchema: RecipeSchema,
+          responseSchema: RecipeSchema(imageIds || IMAGE_CATEGORIES_BACKUP),
         },
       });
 
