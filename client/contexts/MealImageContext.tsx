@@ -1,39 +1,46 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { supabase } from "@/utils/supabase";
 
+export type MealImage = {
+  id: string;
+  url: string;
+};
+
 type MealImageContextType = {
-  imageIds: string[];
+  mealImages: MealImage[];
   loading: boolean;
 };
 
 const MealImageContext = createContext<MealImageContextType>({
-  imageIds: [],
+  mealImages: [],
   loading: true,
 });
 
 export function MealImageProvider({ children }: { children: React.ReactNode }) {
-  const [imageIds, setImageIds] = useState<string[]>([]);
+  const [mealImages, setMealImages] = useState<MealImage[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function loadImageIds() {
-      const { data, error } = await supabase.from("meal_images").select("id");
+    async function loadMealImages() {
+      const { data, error } = await supabase
+        .from("meal_images")
+        .select("id, url");
 
       if (error) {
-        console.error("Failed to load meal image IDs:", error);
+        console.error("Failed to load meal images:", error);
         setLoading(false);
         return;
       }
 
-      setImageIds(data.map((item) => item.id));
+      setMealImages(data ?? []);
       setLoading(false);
     }
 
-    loadImageIds();
+    loadMealImages();
   }, []);
 
   return (
-    <MealImageContext.Provider value={{ imageIds, loading }}>
+    <MealImageContext.Provider value={{ mealImages, loading }}>
       {children}
     </MealImageContext.Provider>
   );

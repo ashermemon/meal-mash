@@ -185,23 +185,7 @@ const PreviewAnimatedWrapper = (props: Props) => {
     GenerationDetailsContext,
   );
 
-  const { imageIds, loading } = useMealImages();
-  const IMAGE_CATEGORIES_BACKUP = [
-    "burger",
-    "pizza",
-    "pasta",
-    "salad",
-    "curry",
-    "fried-rice",
-    "sandwich",
-    "taco",
-    "soup",
-    "dessert",
-    "breakfast",
-    "seafood",
-    "steak",
-    //"bowl"
-  ] as const;
+  const { mealImages, loading } = useMealImages();
 
   const [browseIngredients, setBrowseIngredients] = useContext(
     BrowseIngredientsContext,
@@ -265,7 +249,11 @@ const PreviewAnimatedWrapper = (props: Props) => {
         contents: nextPrompt,
         config: {
           responseMimeType: "application/json",
-          responseSchema: RecipeSchema(imageIds || IMAGE_CATEGORIES_BACKUP),
+          responseSchema: RecipeSchema(
+            mealImages.length > 0
+              ? mealImages.map((image) => image.id)
+              : ["bowl"],
+          ),
         },
       });
 
