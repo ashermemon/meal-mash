@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { View, ActivityIndicator } from "react-native";
 import { useRouter } from "expo-router";
 import { useFocusEffect } from "@react-navigation/native";
-import { storage } from "@/utils/storage";
+import { hasCompletedPantrySetup } from "@/utils/storage";
 import { useTheme } from "@/contexts/ColorSchemeContext";
 
 type Props = {};
@@ -20,9 +20,7 @@ const PantryIndex = (props: Props) => {
         return;
       }
 
-      const isSetupComplete = storage.getBoolean("IS_PANTRY_SETUP") === true;
-
-      if (isSetupComplete) {
+      if (hasCompletedPantrySetup()) {
         router.replace("/(tabs)/pantry/dashboard");
       } else {
         didPushSetup.current = true;

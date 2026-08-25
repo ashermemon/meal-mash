@@ -8,6 +8,7 @@ import { useTrueSheet } from "@/contexts/TrueSheetContext";
 import { openDropDown } from "@/components/common/DropDownPill";
 import { PantryDetailsContext } from "@/contexts/PantryDetails";
 import { Food } from "./Search";
+import { dedupeFoods } from "@/utils/storage";
 import icons3d from "@/components/universal/3dIcons";
 import * as Haptics from "expo-haptics";
 import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
@@ -75,7 +76,10 @@ const IngredientPickerCard = (props: Props) => {
 
       return {
         ...prev,
-        ingredients: [...filteredIngredients, ...cleanSelectedOptions],
+        ingredients: dedupeFoods([
+          ...filteredIngredients,
+          ...cleanSelectedOptions,
+        ]),
       };
     });
   }, [
@@ -132,10 +136,17 @@ const IngredientPickerCard = (props: Props) => {
                 typeof nextValue === "function"
                   ? nextValue(selectedOptions.map((option) => option.name))
                   : nextValue;
-              const nextFoods = resolvedOptions.map((name: string) => ({
-                ...ingredientValue,
-                name,
-              }));
+              const nextFoods = resolvedOptions.map((name: string) => {
+                const option = props.selectionMenuOptions.find(
+                  (candidate) =>
+                    (typeof candidate === "string"
+                      ? candidate
+                      : candidate.name) === name,
+                );
+                return option && typeof option !== "string"
+                  ? option
+                  : { ...ingredientValue, name };
+              });
               setSelectedOptions(nextFoods);
             }) as React.Dispatch<React.SetStateAction<string[]>>,
             true,

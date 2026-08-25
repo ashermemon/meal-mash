@@ -17,7 +17,6 @@ import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 import { GenerationDetailsContext } from "@/contexts/GenerationDetailsContext";
 import { router } from "expo-router";
 import * as Haptics from "expo-haptics";
-import MealsLeftContext from "@/contexts/MealsLeftContext";
 import RecipeContext from "@/contexts/RecipeContext";
 import { initialRecipeData } from "@/contexts/RecipeContext";
 import PantryPill from "../pantry/PantryPill";
@@ -67,7 +66,6 @@ const GeneratorDetails = (props: Props) => {
   const [generationDetails, setGenerationDetails] = useContext(
     GenerationDetailsContext,
   );
-  const [mealsLeft, setMealsLeft] = useContext(MealsLeftContext);
   const [browseIngredients, setBrowseIngredients] = useContext(
     BrowseIngredientsContext,
   );
@@ -153,10 +151,7 @@ const GeneratorDetails = (props: Props) => {
                   setSelected={setGenMode}
                 ></SliderField>
                 {genMode === 0 ? (
-                  <PantryPill
-                    pantryName={pantryDetails.name}
-                    pantryPage={false}
-                  ></PantryPill>
+                  <PantryPill pantryPage={false}></PantryPill>
                 ) : genMode === 1 ? (
                   <View style={{ gap: 12 }}>
                     <Pressable
@@ -247,35 +242,28 @@ const GeneratorDetails = (props: Props) => {
                   width: "100%",
                 },
               ]}
-              onPress={
-                mealsLeft > 0
-                  ? () => [
-                      setGenerationDetails((prev) => ({
-                        ...prev,
-                        generationType: genMode,
-                        difficulties:
-                          diffciulties.length === 0
-                            ? difficultyLabels
-                            : diffciulties.map((idx) => difficultyLabels[idx]),
-                        recipeTime:
-                          times.length === 0
-                            ? timeLabels
-                            : times.map((idx) => timeLabels[idx]),
-                        numberOfServings: num,
-                        mealType: mealType,
-                        cuisine: cuisine,
-                        dietaryPreference: dietaryRestrictions,
-                        portalCategory: undefined,
-                      })),
-                      router.navigate("/recipe"),
-                      setRecipeData(initialRecipeData),
-                      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light),
-                    ]
-                  : () =>
-                      alert(
-                        "You have run out of meal generations today. Come again tomorrow!",
-                      )
-              }
+              onPress={() => [
+                setGenerationDetails((prev) => ({
+                  ...prev,
+                  generationType: genMode,
+                  difficulties:
+                    diffciulties.length === 0
+                      ? difficultyLabels
+                      : diffciulties.map((idx) => difficultyLabels[idx]),
+                  recipeTime:
+                    times.length === 0
+                      ? timeLabels
+                      : times.map((idx) => timeLabels[idx]),
+                  numberOfServings: num,
+                  mealType: mealType,
+                  cuisine: cuisine,
+                  dietaryPreference: dietaryRestrictions,
+                  portalCategory: undefined,
+                })),
+                router.navigate("/recipe"),
+                setRecipeData(initialRecipeData),
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light),
+              ]}
             >
               <Text
                 style={[

@@ -13,7 +13,13 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { useStyles } from "@/styles/GlobalStyles";
 import Counter from "@/components/features/profile/Counter";
 import * as Haptics from "expo-haptics";
-import { storage } from "@/utils/storage";
+import {
+  readProfileName,
+  writeProfileName,
+  resetAllData,
+  useStats,
+  defaultPantry,
+} from "@/utils/storage";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import { hexToRgba } from "@/utils/color";
 // import * as Updates from "expo-updates";
@@ -30,6 +36,10 @@ import { useFocusEffect } from "@react-navigation/native";
 import AchievementsContext, {
   AchievementData,
 } from "@/contexts/AchievementsContext";
+import SavedRecipesContext from "@/contexts/SavedRecipesContext";
+import { PantryDetailsContext } from "@/contexts/PantryDetails";
+import GroceryListContext from "@/contexts/GroceryListContext";
+import CheckedGroceryListContext from "@/contexts/CheckedGroceryListContext";
 import Achievement from "@/components/features/profile/Achievement";
 import { getUnlockedAchievementIds } from "@/utils/achievements";
 import { Image } from "expo-image";
@@ -49,6 +59,11 @@ export default function Profile() {
 
   const isDark = useIsDarkMode();
   const [achievements, setAchievements] = useContext(AchievementsContext);
+  const [savedRecipes, setSavedRecipes] = useContext(SavedRecipesContext);
+  const [pantryDetails, setPantryDetails] = useContext(PantryDetailsContext);
+  const [, setGroceryList] = useContext(GroceryListContext);
+  const [, setCheckedGroceryList] = useContext(CheckedGroceryListContext);
+  const stats = useStats();
   const { toggleColorScheme } = useToggleColorScheme();
   const circleButtonShadow = useTintedBoxShadow(theme.primary);
   const cancelButtonShadow = useTintedBoxShadow(theme.greyBlock);
@@ -69,7 +84,15 @@ export default function Profile() {
 
           onPress: async () => {
             try {
-              storage.clearAll();
+              resetAllData();
+
+              setSavedRecipes([]);
+              setPantryDetails({ ...defaultPantry, ingredients: [] });
+              setGroceryList([]);
+              setCheckedGroceryList([]);
+              setNameQ("");
+              setLastSavedName("");
+              setAchievements(buildAvailableAchievements());
 
               // await Updates.reloadAsync();
             } catch (error) {
@@ -170,7 +193,7 @@ export default function Profile() {
   const handleSavePress = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     nameInputRef.current?.blur();
-    storage.set("name", nameQ);
+    writeProfileName(nameQ);
     setLastSavedName(nameQ);
     setEditMode(false);
   };
@@ -195,15 +218,10 @@ export default function Profile() {
   );
 
   useEffect(() => {
-    const storedName = storage.getString("name") ?? "";
-
+    const storedName = readProfileName();
     if (storedName) {
-      try {
-        setNameQ(storedName);
-        setLastSavedName(storedName);
-      } catch (e) {
-        console.error("Failed to get name:", e);
-      }
+      setNameQ(storedName);
+      setLastSavedName(storedName);
     }
   }, []);
 
@@ -434,15 +452,15 @@ export default function Profile() {
                   }}
                 >
                   <Counter
-                    variable="mealsnumber"
+                    value={stats.mealsGenerated}
                     text="Meals Generated"
                   ></Counter>
                   <Counter
-                    variable="savesnumber"
+                    value={savedRecipes.length}
                     text={"Saved\nRecipes"}
                   ></Counter>
                   <Counter
-                    variable="pantrynumber"
+                    value={pantryDetails.ingredients.length}
                     text={"Ingredients\nin Pantry"}
                   ></Counter>
                 </View>

@@ -6,9 +6,18 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { storage } from "@/utils/storage";
+import {
+  readSavedRecipes,
+  writeSavedRecipes,
+  readPantry,
+  writePantry,
+  readGroceryList,
+  writeGroceryList,
+  readCheckedGroceryList,
+  writeCheckedGroceryList,
+} from "@/utils/storage";
+import { usePersistentState } from "@/hooks/usePersistentState";
 import SavedRecipesContext from "@/contexts/SavedRecipesContext";
-import MealsLeftContext from "@/contexts/MealsLeftContext";
 import AchievementsContext, {
   type AchievementData,
 } from "@/contexts/AchievementsContext";
@@ -50,7 +59,10 @@ export default function RootLayout() {
 function RootLayoutContent() {
   const theme = useTheme();
   const colorScheme = useColorScheme();
-  const [savedRecipes, setSavedRecipes] = useState<RecipeData[]>([]);
+  const [savedRecipes, setSavedRecipes] = usePersistentState<RecipeData[]>(
+    readSavedRecipes,
+    writeSavedRecipes,
+  );
   const [generationDetails, setGenerationDetails] = useState<GenerationDetails>(
     {
       ingredients: [],
@@ -64,16 +76,20 @@ function RootLayoutContent() {
       dietaryPreference: [],
     },
   );
-  const [mealsLeft, setMealsLeft] = useState<number>(500);
   const [achievements, setAchievements] = useState<AchievementData[]>([]);
-  const [pantryDetails, setPantryDetails] = useState<PantryDetails>({
-    name: "Your Pantry",
-    icon: "",
-    ingredients: [],
-  });
+  const [pantryDetails, setPantryDetails] = usePersistentState<PantryDetails>(
+    readPantry,
+    writePantry,
+  );
+  // Browse results are transient search state, so they stay in memory only.
   const [browseIngredients, setBrowseIngredients] = useState<Food[]>([]);
-  const [groceryList, setGroceryList] = useState<Food[]>([]);
-  const [checkedGroceryList, setCheckedGroceryList] = useState<Food[]>([]);
+  const [groceryList, setGroceryList] = usePersistentState<Food[]>(
+    readGroceryList,
+    writeGroceryList,
+  );
+  const [checkedGroceryList, setCheckedGroceryList] = usePersistentState<
+    Food[]
+  >(readCheckedGroceryList, writeCheckedGroceryList);
 
   const sheetRef = useRef<TrueSheet>(null);
   const [currentOptions, setCurrentOptions] = useState<string[]>([]);
@@ -124,10 +140,6 @@ function RootLayoutContent() {
   });
 
   useEffect(() => {
-    storage.set("pantrynumber", pantryDetails.ingredients.length);
-  });
-
-  useEffect(() => {
     if (loaded || error) {
       SplashScreen.hideAsync();
     }
@@ -144,44 +156,6 @@ function RootLayoutContent() {
     });
   }, []);
 
-  useEffect(() => {
-    const storedSaved = storage.getString("saves");
-    if (storedSaved) {
-      try {
-        const storedSavedArray = JSON.parse(storedSaved);
-        const defaultCategories = {
-          madeWithLeftovers: false,
-          tastyMeals: false,
-          sweetTreats: false,
-          quickSnacks: false,
-          under15Minutes: false,
-        };
-        const normalizedSaves = storedSavedArray.map((item: any) => {
-          if (typeof item === "string") {
-            return {
-              responseRecipe: "",
-              title: item,
-              description: "",
-              difficulty: "",
-              time: "",
-              servings: null,
-              nutrients: [0, 0, 0],
-              tags: [],
-              categories: defaultCategories,
-              ingredients: [],
-              instructions: [],
-              tips: [],
-            };
-          }
-          return { categories: defaultCategories, ...item };
-        });
-        setSavedRecipes(normalizedSaves);
-      } catch (e) {
-        console.error("Failed to parse favorites from storage:", e);
-        setSavedRecipes([]);
-      }
-    }
-  }, []);
   if (!loaded && !error) {
     return null;
   }
@@ -215,83 +189,79 @@ function RootLayoutContent() {
                     <SavedRecipesContext.Provider
                       value={[savedRecipes, setSavedRecipes]}
                     >
-                      <MealsLeftContext.Provider
-                        value={[mealsLeft, setMealsLeft]}
+                      <AchievementsContext.Provider
+                        value={[achievements, setAchievements]}
                       >
-                        <AchievementsContext.Provider
-                          value={[achievements, setAchievements]}
-                        >
-                          <RecipeProvider>
-                            <StatusBar
-                              barStyle={
-                                colorScheme === "dark"
-                                  ? "light-content"
-                                  : "dark-content"
-                              }
-                              backgroundColor={theme.newHeader}
-                            />
+                        <RecipeProvider>
+                          <StatusBar
+                            barStyle={
+                              colorScheme === "dark"
+                                ? "light-content"
+                                : "dark-content"
+                            }
+                            backgroundColor={theme.newHeader}
+                          />
 
-                            <Stack
-                              screenOptions={{
-                                headerShown: false,
-                                contentStyle: {
-                                  backgroundColor: theme.backgroundColor,
-                                },
-                              }}
-                            />
-                            <TrueSheet
-                              detents={[0.6, 1]}
-                              ref={sheetRef}
-                              scrollable
-                              grabber={false}
-                              header={
-                                <>
-                                  <View
-                                    style={{
-                                      alignSelf: "center",
-                                      width: 44,
-                                      height: 4,
-                                      borderRadius: 999,
-                                      backgroundColor: theme.unselectedShape,
-                                      marginTop: 6,
-                                      marginBottom: 15,
-                                    }}
-                                  />
-                                  <Text
-                                    style={{
-                                      fontSize: 22,
-                                      fontFamily: "Nunito-SemiBold",
-                                      marginTop: 4,
-                                      marginBottom: 15,
-                                      color: theme.basicText,
-                                    }}
-                                  >
-                                    {currentTitle}
-                                  </Text>
-                                  <View
-                                    style={{
-                                      height: 2.5,
-                                      borderRadius: 1000,
-                                      backgroundColor: theme.placeholderText,
-                                    }}
-                                  ></View>
-                                </>
-                              }
-                              headerStyle={{
-                                paddingHorizontal: 20,
-                                paddingTop: 16,
-                              }}
-                              backgroundColor={theme.sheetBackgroundColor}
-                            >
-                              <TrueSheetContent
-                                currentOnSelect={currentOnSelect}
-                                sheetRef={sheetRef}
-                                currentOptions={currentOptions}
-                              ></TrueSheetContent>
-                            </TrueSheet>
-                          </RecipeProvider>
-                        </AchievementsContext.Provider>
-                      </MealsLeftContext.Provider>
+                          <Stack
+                            screenOptions={{
+                              headerShown: false,
+                              contentStyle: {
+                                backgroundColor: theme.backgroundColor,
+                              },
+                            }}
+                          />
+                          <TrueSheet
+                            detents={[0.6, 1]}
+                            ref={sheetRef}
+                            scrollable
+                            grabber={false}
+                            header={
+                              <>
+                                <View
+                                  style={{
+                                    alignSelf: "center",
+                                    width: 44,
+                                    height: 4,
+                                    borderRadius: 999,
+                                    backgroundColor: theme.unselectedShape,
+                                    marginTop: 6,
+                                    marginBottom: 15,
+                                  }}
+                                />
+                                <Text
+                                  style={{
+                                    fontSize: 22,
+                                    fontFamily: "Nunito-SemiBold",
+                                    marginTop: 4,
+                                    marginBottom: 15,
+                                    color: theme.basicText,
+                                  }}
+                                >
+                                  {currentTitle}
+                                </Text>
+                                <View
+                                  style={{
+                                    height: 2.5,
+                                    borderRadius: 1000,
+                                    backgroundColor: theme.placeholderText,
+                                  }}
+                                ></View>
+                              </>
+                            }
+                            headerStyle={{
+                              paddingHorizontal: 20,
+                              paddingTop: 16,
+                            }}
+                            backgroundColor={theme.sheetBackgroundColor}
+                          >
+                            <TrueSheetContent
+                              currentOnSelect={currentOnSelect}
+                              sheetRef={sheetRef}
+                              currentOptions={currentOptions}
+                            ></TrueSheetContent>
+                          </TrueSheet>
+                        </RecipeProvider>
+                      </AchievementsContext.Provider>
                     </SavedRecipesContext.Provider>
                   </CheckedGroceryListContext.Provider>
                 </GroceryListContext.Provider>

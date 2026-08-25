@@ -34,7 +34,6 @@ import { useIsDarkMode } from "@/contexts/ColorSchemeContext";
 import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 import { GenerationDetailsContext } from "@/contexts/GenerationDetailsContext";
 import RecipeContext, { initialRecipeData } from "@/contexts/RecipeContext";
-import MealsLeftContext from "@/contexts/MealsLeftContext";
 
 const IRIDESCENT_COLORS_LIGHT = [
   "#FDF3F8",
@@ -162,7 +161,6 @@ export default function Welcome() {
   const [generationDetails, setGenerationDetails] = useContext(
     GenerationDetailsContext,
   );
-  const [mealsLeft] = useContext(MealsLeftContext);
 
   useFocusEffect(
     useCallback(() => {
@@ -241,29 +239,22 @@ export default function Welcome() {
               height: "100%",
               paddingHorizontal: 13,
             }}
-            onPress={
-              mealsLeft > 0
-                ? () => [
-                    setGenerationDetails((prev) => ({
-                      ...prev,
-                      generationType: 2,
-                      difficulties: ["Easy", "Moderate", "Expert"],
-                      recipeTime: ["<15m", "~30m", "1hr+"],
-                      numberOfServings: 1,
-                      mealType: ["Any"],
-                      cuisine: ["Any"],
-                      dietaryPreference: ["None"],
-                      portalCategory: undefined,
-                    })),
-                    router.navigate("/recipe"),
-                    setRecipeData(initialRecipeData),
-                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium),
-                  ]
-                : () =>
-                    alert(
-                      "You have run out of meal generations today. Come again tomorrow!",
-                    )
-            }
+            onPress={() => [
+              setGenerationDetails((prev) => ({
+                ...prev,
+                generationType: 2,
+                difficulties: ["Easy", "Moderate", "Expert"],
+                recipeTime: ["<15m", "~30m", "1hr+"],
+                numberOfServings: 1,
+                mealType: ["Any"],
+                cuisine: ["Any"],
+                dietaryPreference: ["None"],
+                portalCategory: undefined,
+              })),
+              router.navigate("/recipe"),
+              setRecipeData(initialRecipeData),
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium),
+            ]}
           >
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Image

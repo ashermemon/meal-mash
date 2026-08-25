@@ -5,11 +5,14 @@ import { useIsDarkMode, useTheme } from "@/contexts/ColorSchemeContext";
 import { router } from "expo-router";
 import * as Haptics from "expo-haptics";
 import { PantryDetailsContext } from "@/contexts/PantryDetails";
+import {
+  useDefaultPantryName,
+  usePantryDisplayName,
+} from "@/utils/storage";
 import EmojiButton from "@/components/universal/EmojiButton";
 import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 
 type Props = {
-  pantryName: string;
   pantryPage?: boolean;
 };
 
@@ -18,9 +21,16 @@ const PantryPill = (props: Props) => {
   const theme = useTheme();
   const isDark = useIsDarkMode();
   const [pantryDetails, setPantryDetails] = useContext(PantryDetailsContext);
+  const displayName = usePantryDisplayName(pantryDetails.name);
+  const defaultPantryName = useDefaultPantryName();
   const [rename, setRename] = useState(false);
   const inputRef = useRef<TextInput>(null);
   const pillShadow = useTintedBoxShadow(theme.greyBlock);
+
+  const commitRename = () => {
+    setPantryDetails((prev) => ({ ...prev, name: prev.name.trim() }));
+    setRename(false);
+  };
 
   const handleRenamePress = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -33,7 +43,7 @@ const PantryPill = (props: Props) => {
           inputRef.current?.focus();
         }, 50);
       } else {
-        setRename(false);
+        commitRename();
       }
     } else {
       router.navigate("/pantry");
@@ -78,8 +88,10 @@ const PantryPill = (props: Props) => {
               onChangeText={(text) =>
                 setPantryDetails((prev) => ({ ...prev, name: text }))
               }
-              onBlur={() => setRename(false)}
-              onSubmitEditing={() => setRename(false)}
+              placeholder={defaultPantryName}
+              placeholderTextColor={theme.placeholderText}
+              onBlur={commitRename}
+              onSubmitEditing={commitRename}
               returnKeyType="done"
               maxLength={24}
               style={[
@@ -108,7 +120,7 @@ const PantryPill = (props: Props) => {
                 },
               ]}
             >
-              {pantryDetails.name}
+              {displayName}
             </Text>
           )}
         </View>

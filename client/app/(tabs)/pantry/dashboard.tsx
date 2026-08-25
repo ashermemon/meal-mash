@@ -12,6 +12,7 @@ import { hexToRgba } from "@/utils/color";
 import { LinearGradient } from "expo-linear-gradient";
 
 import { PantryDetailsContext } from "@/contexts/PantryDetails";
+import { ingredientKey, usePantryDisplayName } from "@/utils/storage";
 import FilterIngredients from "@/components/features/pantry/FilterIngredients";
 import IngredientTag from "@/components/features/pantry/IngredientTag";
 import Search, { Food } from "@/components/features/pantry/Search";
@@ -34,6 +35,7 @@ export default function Dashboard() {
   }, [searchActive, searchOverlayOpacity]);
   const navigation = useNavigation();
   const [pantryDetails, setPantryDetails] = useContext(PantryDetailsContext);
+  const pantryDisplayName = usePantryDisplayName(pantryDetails.name);
   const [selectedFilter, setSelectedFilter] = useState("All");
   const pantryIngredientIds = useMemo(
     () => new Set(pantryDetails.ingredients.map((item) => item.id)),
@@ -106,10 +108,7 @@ export default function Dashboard() {
           </Text>
 
           <View style={{ gap: 25, flex: 1 }}>
-            <PantryPill
-              pantryName={pantryDetails.name}
-              pantryPage={true}
-            ></PantryPill>
+            <PantryPill pantryPage={true}></PantryPill>
             <View style={{ gap: 20, flex: 1 }}>
               <Search
                 addedIds={pantryIngredientIds}
@@ -163,7 +162,7 @@ export default function Dashboard() {
                 />
                 {filteredIngredients.map((ingredient: Food) => (
                   <IngredientTag
-                    key={ingredient.id}
+                    key={ingredientKey(ingredient)}
                     ingredient={ingredient}
                   ></IngredientTag>
                 ))}
@@ -196,7 +195,7 @@ export default function Dashboard() {
                       },
                     ]}
                   >
-                    {pantryDetails.name} is empty
+                    {pantryDisplayName} is empty
                   </Text>
                   <Text
                     style={[

@@ -1,4 +1,3 @@
-import { storage } from "@/utils/storage";
 import { type RecipeData } from "@/contexts/RecipeContext";
 import { trackRecipeSaved } from "@/utils/achievements";
 
@@ -43,8 +42,6 @@ export function saveRecipe(
       updatedSaves = [...currentSaves, recipeData];
     }
 
-    storage.set("saves", JSON.stringify(updatedSaves));
-    storage.set("savesnumber", updatedSaves.length);
     trackRecipeSaved(updatedSaves.length);
     return updatedSaves;
   });
