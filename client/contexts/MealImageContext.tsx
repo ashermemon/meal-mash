@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { Image } from "expo-image";
 import { supabase } from "@/utils/supabase";
 
 export type MealImage = {
@@ -34,6 +35,7 @@ export function MealImageProvider({ children }: { children: React.ReactNode }) {
 
       setMealImages(data ?? []);
       setLoading(false);
+      Image.prefetch((data ?? []).map((image) => image.url));
     }
 
     loadMealImages();

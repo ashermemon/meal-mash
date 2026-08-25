@@ -144,6 +144,7 @@ const followRecipe = () => {
                 source={imageSource}
                 style={{ width: "100%", height: "100%", borderRadius: 110 }}
                 contentFit="cover"
+                transition={300}
               />
             </View>
             <View style={{ flex: 1, paddingHorizontal: 18 }}>

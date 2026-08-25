@@ -204,6 +204,7 @@ export default function ExploreSection() {
                       height: 80,
                     }}
                     contentFit="contain"
+                    transition={300}
                   />
                 </View>
                 <View style={{ flex: 1, gap: 7 }}>

@@ -4,8 +4,8 @@ import {
   Pressable,
   Dimensions,
   InteractionManager,
-  Image,
 } from "react-native";
+import { Image } from "expo-image";
 import React, { useEffect } from "react";
 import NutrientCircle from "@/components/features/recipe/NutrientCircle";
 import { useStyles } from "@/styles/GlobalStyles";
@@ -331,7 +331,8 @@ export const GenerationCardPreview = (props: Props) => {
             alignSelf: "center",
             borderRadius: 12,
           }}
-          resizeMode="cover"
+          contentFit="cover"
+          transition={300}
         />
 
         <Text
