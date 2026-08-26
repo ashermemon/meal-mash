@@ -8,7 +8,7 @@ import React, {
   useState,
 } from "react";
 import { useStyles } from "@/styles/GlobalStyles";
-import { Image } from "expo-image";
+import AppImage from "@/components/universal/AppImage";
 import { ScrollView } from "react-native-gesture-handler";
 import { useFocusEffect, useRouter } from "expo-router";
 import { useTheme } from "@/contexts/ColorSchemeContext";
@@ -257,7 +257,7 @@ export default function Welcome() {
             ]}
           >
             <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Image
+              <AppImage
                 source={icons3d.Gift}
                 style={{
                   width: 37,

@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import Reanimated, { FadeIn, FadeOut } from "react-native-reanimated";
 import { useStyles } from "@/styles/GlobalStyles";
 import { useTheme } from "@/contexts/ColorSchemeContext";
-import { Image } from "expo-image";
+import AppImage from "@/components/universal/AppImage";
 import { useNavigation } from "@react-navigation/native";
 import PantryPill from "@/components/features/pantry/PantryPill";
 import { ScrollView } from "react-native-gesture-handler";
@@ -148,7 +148,7 @@ export default function Dashboard() {
                   to use in recipes!
                 </Text>
 
-                <Image
+                <AppImage
                   source={icons3d["Pizza"]}
                   style={{ width: 60, height: 60, marginBottom: 4 }}
                 />

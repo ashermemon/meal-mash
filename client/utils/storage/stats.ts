@@ -62,5 +62,3 @@ export const useStats = (): StoredStats => {
   const [raw] = useMMKVString(StorageKeys.stats, storage);
   return useMemo(() => decodeStats(safeParse(raw)), [raw]);
 };
-
-//use the image fade in transition on all images including 3d icons, just so when they load in, they do so with a brief fade in. Or like preload them idk something like that.

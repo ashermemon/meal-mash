@@ -4,7 +4,7 @@ import { useStyles } from "@/styles/GlobalStyles";
 import { useTheme, useIsDarkMode } from "@/contexts/ColorSchemeContext";
 import { router } from "expo-router";
 import icons3d from "@/components/universal/3dIcons";
-import { Image } from "expo-image";
+import AppImage from "@/components/universal/AppImage";
 import { useSharedValue } from "react-native-reanimated";
 import Carousel, {
   ICarouselInstance,
@@ -123,7 +123,7 @@ export default function ExploreSection() {
           flex: 1,
         }}
       >
-        <Image
+        <AppImage
           source={(icon ? icons3d[icon] : icons3d.Default) || icons3d.Default}
           contentFit="contain"
           style={{
@@ -197,14 +197,13 @@ export default function ExploreSection() {
                 }}
               >
                 <View style={{ flex: 0, marginRight: 25 }}>
-                  <Image
+                  <AppImage
                     source={item.icon}
                     style={{
                       width: 80,
                       height: 80,
                     }}
                     contentFit="contain"
-                    transition={300}
                   />
                 </View>
                 <View style={{ flex: 1, gap: 7 }}>

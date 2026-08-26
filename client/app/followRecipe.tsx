@@ -1,7 +1,7 @@
 import React, { useContext, useMemo, useState } from "react";
 import { View, Text, ScrollView, Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Image } from "expo-image";
+import AppImage from "@/components/universal/AppImage";
 import RecipeContext, { type RecipeData } from "@/contexts/RecipeContext";
 import NutrientsContext from "@/contexts/NutrientsContext";
 import RecipeInfoTags from "@/components/features/recipe/RecipeInfoTags";
@@ -140,11 +140,10 @@ const followRecipe = () => {
                 { width: 70, height: 70, borderRadius: 110 },
               ]}
             >
-              <Image
+              <AppImage
                 source={imageSource}
                 style={{ width: "100%", height: "100%", borderRadius: 110 }}
                 contentFit="cover"
-                transition={300}
               />
             </View>
             <View style={{ flex: 1, paddingHorizontal: 18 }}>

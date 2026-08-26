@@ -17,7 +17,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { useStyles } from "@/styles/GlobalStyles";
 import { useTheme } from "@/contexts/ColorSchemeContext";
-import { Image } from "expo-image";
+import AppImage from "@/components/universal/AppImage";
 import * as Haptics from "expo-haptics";
 import SavedRecipesContext from "@/contexts/SavedRecipesContext";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
@@ -305,11 +305,10 @@ export default function SavedCard(props: SavedProps) {
                   { width: 70, height: 70, borderRadius: 110 },
                 ]}
               >
-                <Image
+                <AppImage
                   source={imageSource}
                   style={{ width: "100%", height: "100%", borderRadius: 110 }}
                   contentFit="cover"
-                  transition={300}
                 />
               </View>
               <View style={{ flex: 1, paddingHorizontal: 20, gap: 7 }}>

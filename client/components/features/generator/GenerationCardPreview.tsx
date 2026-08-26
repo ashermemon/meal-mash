@@ -5,7 +5,7 @@ import {
   Dimensions,
   InteractionManager,
 } from "react-native";
-import { Image } from "expo-image";
+import AppImage from "@/components/universal/AppImage";
 import React, { useEffect } from "react";
 import NutrientCircle from "@/components/features/recipe/NutrientCircle";
 import { useStyles } from "@/styles/GlobalStyles";
@@ -321,7 +321,7 @@ export const GenerationCardPreview = (props: Props) => {
           paddingHorizontal: 10,
         }}
       >
-        <Image
+        <AppImage
           source={imageSource}
           style={{
             width: "70%",
@@ -332,7 +332,6 @@ export const GenerationCardPreview = (props: Props) => {
             borderRadius: 12,
           }}
           contentFit="cover"
-          transition={300}
         />
 
         <Text

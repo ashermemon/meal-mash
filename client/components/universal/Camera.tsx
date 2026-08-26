@@ -2,7 +2,7 @@ import { Button, Pressable, StyleSheet, Text, View } from "react-native";
 import React, { useRef, useState } from "react";
 import { CameraView, CameraType, useCameraPermissions } from "expo-camera";
 import { useStyles } from "@/styles/GlobalStyles";
-import { Image } from "expo-image";
+import AppImage from "@/components/universal/AppImage";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import { useTheme } from "@/contexts/ColorSchemeContext";
 import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
@@ -35,7 +35,7 @@ export default function Camera() {
             marginHorizontal: 20,
           }}
         >
-          <Image
+          <AppImage
             source={{ uri }}
             contentFit="cover"
             style={{ width: "100%", aspectRatio: 1 }}

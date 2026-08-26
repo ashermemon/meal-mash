@@ -1,7 +1,7 @@
 import { View, Text, ViewStyle, Pressable } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { useStyles } from "@/styles/GlobalStyles";
-import { Image } from "expo-image";
+import AppImage from "@/components/universal/AppImage";
 import { useTheme } from "@/contexts/ColorSchemeContext";
 import { IosAllowsPreviews } from "expo-notifications";
 import { useTrueSheet } from "@/contexts/TrueSheetContext";
@@ -155,7 +155,7 @@ const IngredientPickerCard = (props: Props) => {
       }}
     >
       <View style={[{ width: 40, height: 40, borderRadius: 110 }]}>
-        <Image
+        <AppImage
           source={
             (props.ingredient?.name && icons3d[props.ingredient?.name]) ||
             (props.ingredientName && icons3d[props.ingredientName]) ||
