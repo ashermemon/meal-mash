@@ -26,7 +26,6 @@ export const readUnlockedAchievementIds = (): string[] =>
 export const writeUnlockedAchievementIds = (unlockedIds: string[]): void =>
   writeAchievements({ unlockedIds });
 
-/** Reactive unlocked ids for UI. */
 export const useUnlockedAchievementIds = (): string[] => {
   const [raw] = useMMKVString(StorageKeys.achievements, storage);
   return useMemo(() => decodeAchievements(safeParse(raw)).unlockedIds, [raw]);

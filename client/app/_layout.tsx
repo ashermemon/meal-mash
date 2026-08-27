@@ -43,6 +43,8 @@ import {
   useColorScheme,
 } from "@/contexts/ColorSchemeContext";
 import { MealImageProvider } from "@/contexts/MealImageContext";
+import Toast from "react-native-toast-message";
+import { toastConfig } from "@/components/common/toastConfig";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -260,6 +262,7 @@ function RootLayoutContent() {
                               currentOptions={currentOptions}
                             ></TrueSheetContent>
                           </TrueSheet>
+                          <Toast config={toastConfig}></Toast>
                         </RecipeProvider>
                       </AchievementsContext.Provider>
                     </SavedRecipesContext.Provider>

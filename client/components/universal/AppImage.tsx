@@ -1,7 +1,7 @@
 import React from "react";
 import { Image, type ImageProps } from "expo-image";
 
-export const IMAGE_FADE_DURATION = 150;
+export const IMAGE_FADE_DURATION = 200;
 
 const AppImage = React.forwardRef<Image, ImageProps>(
   (

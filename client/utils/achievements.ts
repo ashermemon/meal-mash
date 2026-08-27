@@ -4,11 +4,7 @@ import {
   writeUnlockedAchievementIds,
   updateStats,
 } from "@/utils/storage";
-
-/**
- * Achievement rules. All persistence goes through the stats/achievements
- * stores — this module only owns the thresholds and the tracking logic.
- */
+import { showAchievementToast } from "@/utils/achievementToast";
 
 export const getUnlockedAchievementIds = (): string[] =>
   readUnlockedAchievementIds();
@@ -22,6 +18,7 @@ export const unlockAchievement = (id: string): string[] => {
 
   const updated = [...unlockedIds, id];
   writeUnlockedAchievementIds(updated);
+  showAchievementToast(id);
   return updated;
 };
 
@@ -59,7 +56,10 @@ export const trackRecipeGenerated = (
       normalizedCuisine !== "any" &&
       !current.cuisinesGenerated.includes(normalizedCuisine)
     ) {
-      next.cuisinesGenerated = [...current.cuisinesGenerated, normalizedCuisine];
+      next.cuisinesGenerated = [
+        ...current.cuisinesGenerated,
+        normalizedCuisine,
+      ];
     }
 
     if (current.generationStreakLastDate !== todayKey) {
