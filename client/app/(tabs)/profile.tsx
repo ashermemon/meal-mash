@@ -1,13 +1,13 @@
 import {
   View,
   Text,
-  Platform,
   ImageBackground,
   ScrollView,
   Pressable,
   TextInput,
   Switch,
   Alert,
+  StyleSheet,
 } from "react-native";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useStyles } from "@/styles/GlobalStyles";
@@ -16,10 +16,17 @@ import * as Haptics from "expo-haptics";
 import {
   readProfileName,
   writeProfileName,
+  readProfilePictureFile,
+  writeProfilePictureFile,
   resetAllData,
   useStats,
   defaultPantry,
 } from "@/utils/storage";
+import {
+  clearProfilePictures,
+  persistProfilePicture,
+  readProfilePictureUri,
+} from "@/utils/profilePicture";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import { hexToRgba } from "@/utils/color";
 // import * as Updates from "expo-updates";
@@ -46,6 +53,7 @@ import { ACHIEVEMENTS } from "@/constants/Achievements";
 import { Image } from "expo-image";
 import icons3d from "@/components/universal/3dIcons";
 import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
+import * as ImagePicker from "expo-image-picker";
 
 export default function Profile() {
   const styles = useStyles();
@@ -72,6 +80,57 @@ export default function Profile() {
   const dangerZoneShadow = useTintedBoxShadow(theme.redAccent);
   const pfpShadow = useTintedBoxShadow(theme.lightGrey);
 
+  const [imageUri, setImageUri] = useState<string | null>(() =>
+    readProfilePictureUri(readProfilePictureFile()),
+  );
+
+  const handlePickImage = async () => {
+    const permissionResult =
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (!permissionResult.granted) {
+      Alert.alert(
+        "Permission required",
+        "Permission to access the camera roll is required!",
+      );
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images"],
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 0.8,
+    });
+
+    if (result.canceled) return;
+
+    saveProfilePicture(result.assets[0].uri);
+  };
+
+  const saveProfilePicture = (pickedUri: string) => {
+    try {
+      const previousFile = readProfilePictureFile();
+      const fileName = persistProfilePicture(pickedUri, previousFile);
+
+      writeProfilePictureFile(fileName);
+      setImageUri(readProfilePictureUri(fileName));
+
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    } catch (error) {
+      console.error("Failed to save profile picture:", error);
+
+      Alert.alert(
+        "Couldn't Save Picture",
+        "That image could not be saved to your profile. Please try another one.",
+      );
+    }
+  };
+
+  const handleImageError = () => {
+    writeProfilePictureFile("");
+    setImageUri(null);
+  };
+
   const resetData = () => {
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
     Alert.alert(
@@ -86,6 +145,8 @@ export default function Profile() {
           onPress: async () => {
             try {
               resetAllData();
+              clearProfilePictures();
+              setImageUri(null);
 
               setSavedRecipes([]);
               setPantryDetails({ ...defaultPantry, ingredients: [] });
@@ -240,14 +301,50 @@ export default function Profile() {
               >
                 <Pressable
                   style={[styles.pfp, pfpShadow]}
-                  onPress={editMode ? () => "" : () => ""}
+                  onPress={handlePickImage}
+                  disabled={!editMode}
                 >
-                  <CustomIcon
-                    name={editMode ? "camera-2" : "user-2"}
-                    filled
-                    size={editMode ? 40 : 47}
-                    color={editMode ? theme.pillX : theme.placeholderText}
-                  ></CustomIcon>
+                  {imageUri ? (
+                    <>
+                      <Image
+                        source={{ uri: imageUri }}
+                        style={[
+                          StyleSheet.absoluteFillObject,
+                          { borderRadius: 200 },
+                        ]}
+                        contentFit="cover"
+                        transition={200}
+                        onError={handleImageError}
+                      />
+                      {editMode ? (
+                        <View
+                          style={[
+                            StyleSheet.absoluteFillObject,
+                            {
+                              borderRadius: 200,
+                              alignItems: "center",
+                              justifyContent: "center",
+                              backgroundColor: "rgba(0, 0, 0, 0.4)",
+                            },
+                          ]}
+                        >
+                          <CustomIcon
+                            name="camera-2"
+                            filled
+                            size={34}
+                            color={theme.pureWhite}
+                          ></CustomIcon>
+                        </View>
+                      ) : null}
+                    </>
+                  ) : (
+                    <CustomIcon
+                      name={editMode ? "camera-2" : "user-2"}
+                      filled
+                      size={editMode ? 40 : 47}
+                      color={editMode ? theme.pillX : theme.placeholderText}
+                    ></CustomIcon>
+                  )}
                 </Pressable>
                 <View style={{ flex: 1, gap: 10 }}>
                   <View

@@ -15,6 +15,9 @@ export {
   readProfileName,
   writeProfileName,
   useProfileName,
+  readProfilePictureFile,
+  writeProfilePictureFile,
+  useProfilePictureFile,
   defaultProfile,
   type StoredProfile,
 } from "./profile";
