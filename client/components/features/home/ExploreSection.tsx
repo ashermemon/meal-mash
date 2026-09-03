@@ -84,68 +84,69 @@ export default function ExploreSection() {
   }) => {
     const blockShadow = useTintedBoxShadow(color);
     return (
-    <Pressable
-      style={[
-        styles.homeBlock,
-        {
-          flex: 1,
-          backgroundColor: color,
-          height: height ? height : undefined,
-
-          paddingHorizontal: 10,
-        },
-        blockShadow,
-      ]}
-      onPress={() => router.navigate(`/${link}` as any)}
-    >
-      <></>
-
-      <Text
+      <Pressable
         style={[
-          styles.basicTextLeft,
-
+          styles.homeBlock,
           {
-            fontFamily: "Nunito-SemiBold",
-            fontSize: 20,
-            textAlign: "center",
-            color: theme.pureWhite,
-          },
-        ]}
-        adjustsFontSizeToFit
-      >
-        {title}
-      </Text>
-      {children}
-
-      <View
-        style={{
-          justifyContent: "flex-end",
-          flex: 1,
-        }}
-      >
-        <AppImage
-          source={(icon ? icons3d[icon] : icons3d.Default) || icons3d.Default}
-          contentFit="contain"
-          style={{
-            alignSelf: "center",
             flex: 1,
-            aspectRatio: 1,
+            backgroundColor: color,
+            height: height ? height : undefined,
+
+            paddingHorizontal: 10,
+          },
+          blockShadow,
+        ]}
+        onPress={() => router.navigate(`/${link}` as any)}
+      >
+        <></>
+
+        <Text
+          style={[
+            styles.basicTextLeft,
+
+            {
+              fontFamily: "Nunito-SemiBold",
+              fontSize: 20,
+              textAlign: "center",
+              color: theme.pureWhite,
+            },
+          ]}
+          adjustsFontSizeToFit
+        >
+          {title}
+        </Text>
+        {children}
+
+        <View
+          style={{
+            justifyContent: "flex-end",
+            flex: 1,
           }}
-        />
-      </View>
-    </Pressable>
+        >
+          <AppImage
+            source={(icon ? icons3d[icon] : icons3d.Default) || icons3d.Default}
+            contentFit="contain"
+            style={{
+              alignSelf: "center",
+              flex: 1,
+              aspectRatio: 1,
+            }}
+          />
+        </View>
+      </Pressable>
     );
   };
   const [width, setWidth] = useState(Dimensions.get("window").width - 60);
 
   return (
-    <View style={{ flexDirection: "column", gap: 10, width: "100%" }}>
+    <View style={{ flexDirection: "column", gap: 10, width: "100%", flex: 1 }}>
       <View
         style={[
           styles.homeBlock,
           featuredCarouselShadow,
           {
-            flex: 1,
+            flexGrow: 0,
+            flexShrink: 0,
             backgroundColor: theme.greyBlock,
 
             flexDirection: "column",
@@ -184,7 +185,7 @@ export default function ExploreSection() {
             ref={ref}
             width={width}
             data={featuredRecipesWithIcons}
-            height={110}
+            height={105}
             onProgressChange={progress}
             renderItem={({ item }) => (
               <View
@@ -250,14 +251,13 @@ export default function ExploreSection() {
             backgroundColor: isDark ? "white" : "black",
             borderRadius: 999,
           }}
-          containerStyle={{ gap: 6, marginTop: 9 }}
+          containerStyle={{ gap: 6, marginTop: 6 }}
           onPress={onPressPagination}
         />
       </View>
 
-      <View style={{ flexDirection: "row", gap: 10, width: "100%" }}>
+      <View style={{ flexDirection: "row", gap: 10, width: "100%", flex: 1 }}>
         <Block
-          height={200}
           title="Meal Generator"
           color={isDark ? theme.blueBlock : theme.blueAccent}
           link="(tabs)/generationpage"

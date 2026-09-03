@@ -1,5 +1,3 @@
-# Meal Mash App - Created by Asher Memon
+# MealMash App - Created by Asher Memon
 
 ## Download coming soon!
-
-

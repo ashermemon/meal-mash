@@ -195,10 +195,10 @@ export default function TabsLayout() {
                         }}
                       >
                         <CustomIcon
-                          name="sparkles"
+                          name="chef-hat"
                           filled={focused}
                           color={color}
-                          size={iconSizeMobile}
+                          size={iconSizeMobile * 1.05}
                         />
                       </View>
                     ),
