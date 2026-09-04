@@ -14,6 +14,7 @@ export default {
       supportsTablet: true,
       infoPlist: {
         CFBundleDisplayName: "MealMash",
+        ITSAppUsesNonExemptEncryption: false,
       },
       bundleIdentifier: "com.sdsecureapp.neverleftovernew",
       icon: {

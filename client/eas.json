@@ -24,6 +24,11 @@
     }
   },
   "submit": {
-    "preview": {}
+    "preview": {},
+    "production": {
+      "android": {
+        "track": "internal"
+      }
+    }
   }
 }
