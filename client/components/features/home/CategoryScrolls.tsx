@@ -40,6 +40,7 @@ const FeaturedRecipeButton = () => {
         keyExtractor={(item) => item.id}
         horizontal
         bounces={false}
+        showsHorizontalScrollIndicator={false}
         decelerationRate={0.85}
         overScrollMode="never"
         // @ts-ignore

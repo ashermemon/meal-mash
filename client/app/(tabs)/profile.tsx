@@ -12,6 +12,7 @@ import {
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useStyles } from "@/styles/GlobalStyles";
 import Counter from "@/components/features/profile/Counter";
+import * as Updates from "expo-updates";
 import * as Haptics from "expo-haptics";
 import {
   readProfileName,
@@ -144,19 +145,19 @@ export default function Profile() {
 
           onPress: async () => {
             try {
-              resetAllData();
-              clearProfilePictures();
-              setImageUri(null);
+              await resetAllData();
+              await clearProfilePictures();
+              // setImageUri(null);
 
-              setSavedRecipes([]);
-              setPantryDetails({ ...defaultPantry, ingredients: [] });
-              setGroceryList([]);
-              setCheckedGroceryList([]);
-              setNameQ("");
-              setLastSavedName("");
-              setAchievements(buildAvailableAchievements());
+              // setSavedRecipes([]);
+              // setPantryDetails({ ...defaultPantry, ingredients: [] });
+              // setGroceryList([]);
+              // setCheckedGroceryList([]);
+              // setNameQ("");
+              // setLastSavedName("");
+              // setAchievements(buildAvailableAchievements());
 
-              // await Updates.reloadAsync();
+              await Updates.reloadAsync();
             } catch (error) {
               console.error("Failed to reload the application safely:", error);
 
