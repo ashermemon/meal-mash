@@ -244,10 +244,9 @@ export default function Profile() {
             flex: 1,
           }}
           contentContainerStyle={{
-            flexGrow: 1,
             paddingHorizontal: 25,
             paddingTop: 20,
-            paddingBottom: 170,
+            paddingBottom: 100,
           }}
           overScrollMode="never"
           alwaysBounceVertical={false}
@@ -255,8 +254,6 @@ export default function Profile() {
         >
           <View
             style={{
-              flex: 1,
-
               position: "relative",
             }}
           >
@@ -612,9 +609,31 @@ export default function Profile() {
                     },
                   ]}
                 >
-                  Danger Zone
+                  More
                 </Text>
 
+                <Pressable
+                  style={[
+                    styles.savesCard,
+                    circleButtonShadow,
+
+                    { backgroundColor: theme.primary },
+                  ]}
+                  onPress={() => router.navigate("/about")}
+                >
+                  <Text
+                    style={[
+                      styles.textCenterBold,
+
+                      {
+                        color: theme.pureWhite,
+                        fontSize: 16,
+                      },
+                    ]}
+                  >
+                    About MealMash
+                  </Text>
+                </Pressable>
                 <Pressable
                   style={[
                     styles.savesCard,
@@ -634,7 +653,7 @@ export default function Profile() {
                       },
                     ]}
                   >
-                    Reset App & Delete All Data
+                    Delete All Data
                   </Text>
                 </Pressable>
               </View>

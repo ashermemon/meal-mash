@@ -64,6 +64,14 @@ export default {
         },
       ],
 
+      [
+        "expo-image-picker",
+        {
+          photosPermission:
+            "Allow $(PRODUCT_NAME) to access your photos so you can set a profile picture.",
+        },
+      ],
+
       "expo-font",
       "expo-notifications",
     ],
