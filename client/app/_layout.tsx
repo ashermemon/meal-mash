@@ -1,4 +1,4 @@
-import { View, Pressable, ScrollView } from "react-native";
+import { View, Pressable, ScrollView, TextInput } from "react-native";
 import { Stack } from "expo-router";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { Button, Platform, StatusBar, Text } from "react-native";
@@ -47,6 +47,22 @@ import Toast from "react-native-toast-message";
 import { toastConfig } from "@/components/common/toastConfig";
 
 SplashScreen.preventAutoHideAsync();
+
+// Layouts across the app assume a fairly fixed text size. Left unbounded,
+// a device's system font-size accessibility setting can scale text well
+// beyond what the fixed-size cards/buttons around it were built for,
+// producing the "text too tiny" / "everything's out of proportion" effect
+// on devices with non-default font scale settings. Capping (rather than
+// disabling) scaling keeps some accessibility benefit without breaking
+// layouts at the extremes.
+// @ts-expect-error - defaultProps exists on the RN component but isn't in the public types
+Text.defaultProps = Text.defaultProps || {};
+// @ts-expect-error
+Text.defaultProps.maxFontSizeMultiplier = 1.3;
+// @ts-expect-error
+TextInput.defaultProps = TextInput.defaultProps || {};
+// @ts-expect-error
+TextInput.defaultProps.maxFontSizeMultiplier = 1.3;
 
 export default function RootLayout() {
   return (

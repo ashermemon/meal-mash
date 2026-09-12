@@ -76,8 +76,10 @@ const FeaturedRecipeButton = () => {
               ]}
             >
               <Text
-                style={[styles.textCentered, { fontFamily: "Nunito-SemiBold" }]}
-                adjustsFontSizeToFit={true}
+                style={[
+                  styles.textCentered,
+                  { fontFamily: "Nunito-SemiBold", fontSize: 13 },
+                ]}
                 numberOfLines={1}
               >
                 {item.name}

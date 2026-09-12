@@ -2,13 +2,14 @@ import { NEWCOLORS, DARK_NEWCOLORS } from "@/constants/NewTheme";
 import { COLORS, DARK_COLORS } from "@/constants/Theme";
 import { StyleSheet } from "react-native";
 import { useColorScheme } from "@/contexts/ColorSchemeContext";
+import { scale, moderateScale } from "@/utils/responsive";
 
 const createStyles = (NEWCOLORS, COLORS) =>
   StyleSheet.create({
     container: {
       flex: 1,
       alignItems: "center",
-      marginTop: 15,
+      marginTop: moderateScale(15),
     },
     textCentered: {
       fontFamily: "Nunito-Regular",
@@ -19,9 +20,9 @@ const createStyles = (NEWCOLORS, COLORS) =>
       fontWeight: 500,
     },
     nameInput: {
-      fontSize: 26,
-      lineHeight: 32,
-      height: 32,
+      fontSize: moderateScale(26),
+      lineHeight: moderateScale(32),
+      height: moderateScale(32),
       padding: 0,
       margin: 0,
       textAlignVertical: "center",
@@ -46,13 +47,13 @@ const createStyles = (NEWCOLORS, COLORS) =>
       fontFamily: "Nunito-Bold",
       textAlign: "left",
       color: NEWCOLORS.basicText,
-      fontSize: 17,
+      fontSize: moderateScale(17),
     },
     textCenterBold: {
       fontFamily: "Nunito-Bold",
       textAlign: "center",
       color: NEWCOLORS.basicText,
-      fontSize: 17,
+      fontSize: moderateScale(17),
     },
     errorText: {
       color: NEWCOLORS.redAccent,
@@ -63,14 +64,14 @@ const createStyles = (NEWCOLORS, COLORS) =>
       //backgroundColor: "white",
     },
     timer: {
-      paddingVertical: 15,
-      paddingHorizontal: 20,
-      marginBottom: 30,
-      marginHorizontal: 25,
+      paddingVertical: moderateScale(15),
+      paddingHorizontal: moderateScale(20),
+      marginBottom: moderateScale(30),
+      marginHorizontal: moderateScale(25),
       backgroundColor: NEWCOLORS.secondaryBoxGrey,
       flex: 1,
       width: "100%",
-      borderRadius: 15,
+      borderRadius: moderateScale(15),
       alignItems: "center",
       justifyContent: "space-between",
       alignSelf: "center",
@@ -85,12 +86,12 @@ const createStyles = (NEWCOLORS, COLORS) =>
     timerButton: {
       alignItems: "flex-end",
       justifyContent: "center",
-      marginHorizontal: 10,
+      marginHorizontal: moderateScale(10),
     },
 
     favFlex: {
       flex: 1,
-      paddingRight: 25,
+      paddingRight: moderateScale(25),
       alignItems: "flex-end",
       justifyContent: "center",
     },
@@ -98,20 +99,20 @@ const createStyles = (NEWCOLORS, COLORS) =>
       alignItems: "center",
       justifyContent: "space-around",
       flexDirection: "row",
-      marginVertical: 10,
-      marginHorizontal: 8,
+      marginVertical: moderateScale(10),
+      marginHorizontal: moderateScale(8),
     },
     legendBox: {
-      height: 18,
-      width: 18,
-      marginRight: 10,
-      borderRadius: 4,
+      height: scale(18),
+      width: scale(18),
+      marginRight: moderateScale(10),
+      borderRadius: moderateScale(4),
       alignItems: "center",
     },
     textLegend: {
       fontFamily: "Nunito-SemiBold",
       color: NEWCOLORS.basicText,
-      fontSize: 16,
+      fontSize: moderateScale(16),
       alignItems: "center",
     },
     textRight: {
@@ -124,17 +125,17 @@ const createStyles = (NEWCOLORS, COLORS) =>
       borderTopWidth: 3,
     },
     stepCircle: {
-      width: 32,
-      height: 32,
-      borderRadius: 18,
+      width: scale(32),
+      height: scale(32),
+      borderRadius: scale(18),
       backgroundColor: NEWCOLORS.stepCircle,
       alignItems: "center",
       justifyContent: "center",
     },
 
     pfp: {
-      height: 80,
-      width: 80,
+      height: scale(80),
+      width: scale(80),
       backgroundColor: NEWCOLORS.lightGrey,
       justifyContent: "center",
       alignItems: "center",
@@ -146,8 +147,8 @@ const createStyles = (NEWCOLORS, COLORS) =>
     // New Styles Below
     homeBlock: {
       backgroundColor: NEWCOLORS.greyBlock,
-      padding: 10,
-      borderRadius: 10,
+      padding: moderateScale(10),
+      borderRadius: moderateScale(10),
       justifyContent: "flex-start",
     },
     circleButton: {
@@ -155,12 +156,12 @@ const createStyles = (NEWCOLORS, COLORS) =>
       borderRadius: 100,
     },
     recipeBar: {
-      height: 66,
-      borderRadius: 15,
-      padding: 5,
+      height: scale(66),
+      borderRadius: moderateScale(15),
+      padding: moderateScale(5),
       width: "100%",
-      marginTop: 4,
-      marginBottom: 3,
+      marginTop: moderateScale(4),
+      marginBottom: moderateScale(3),
       overflow: "hidden",
 
       alignItems: "center",
@@ -184,14 +185,14 @@ const createStyles = (NEWCOLORS, COLORS) =>
       fontFamily: "Nunito-Bold",
     },
     categoriesSlider: {
-      marginVertical: 5,
+      marginVertical: moderateScale(5),
     },
     paddingOnlyWrapper: {
-      marginVertical: 10,
+      marginVertical: moderateScale(10),
     },
     shutterContainer: {
       position: "absolute",
-      bottom: 15,
+      bottom: moderateScale(15),
 
       width: "100%",
       alignItems: "center",
@@ -200,7 +201,7 @@ const createStyles = (NEWCOLORS, COLORS) =>
     },
     flipContainer: {
       position: "absolute",
-      top: 15,
+      top: moderateScale(15),
 
       width: "100%",
       alignItems: "center",
@@ -212,23 +213,23 @@ const createStyles = (NEWCOLORS, COLORS) =>
       borderWidth: 5,
       borderColor: NEWCOLORS.lightGrey,
 
-      borderRadius: 45,
+      borderRadius: scale(45),
       alignItems: "center",
       justifyContent: "center",
     },
     infoTag: {
       backgroundColor: NEWCOLORS.greyBlock,
-      paddingHorizontal: 10,
-      paddingVertical: 5,
-      borderRadius: 10,
+      paddingHorizontal: moderateScale(10),
+      paddingVertical: moderateScale(5),
+      borderRadius: moderateScale(10),
       flexDirection: "row",
       alignItems: "center",
-      gap: 7,
+      gap: moderateScale(7),
     },
 
     tipBadgeContainer: {
-      height: 37,
-      width: 32.7, //33
+      height: scale(37),
+      width: scale(32.7), //33
       alignItems: "center",
       justifyContent: "center",
     },
@@ -243,46 +244,46 @@ const createStyles = (NEWCOLORS, COLORS) =>
       width: "100%",
       borderRadius: 1000,
       backgroundColor: NEWCOLORS.greyBlock,
-      height: 55,
-      paddingHorizontal: 15,
+      height: scale(55),
+      paddingHorizontal: moderateScale(15),
 
-      paddingVertical: 5,
+      paddingVertical: moderateScale(5),
     },
     selectPill: {
       flex: 1,
       borderRadius: 1000,
       backgroundColor: NEWCOLORS.unselectedGrey,
-      height: 35,
+      height: scale(35),
     },
     verticalLine: {
       width: 2,
-      marginLeft: 10,
+      marginLeft: moderateScale(10),
       alignSelf: "stretch",
       backgroundColor: NEWCOLORS.unselectedShape,
     },
     ingredientPill: {
       flex: 1,
-      borderRadius: 15,
+      borderRadius: moderateScale(15),
       backgroundColor: NEWCOLORS.greyBlock,
-      height: 70,
+      height: scale(70),
     },
 
     setupContainer: {
       flex: 1,
 
       // alignItems: "center",
-      padding: 25,
+      padding: moderateScale(25),
     },
 
     setupTitle: {
-      fontSize: 30,
+      fontSize: moderateScale(30),
       fontFamily: "Nunito-Bold",
       textAlign: "center",
-      marginBottom: 20,
+      marginBottom: moderateScale(20),
       color: NEWCOLORS.basicText,
     },
     setupInput: {
-      fontSize: 27,
+      fontSize: moderateScale(27),
 
       color: NEWCOLORS.placeholderText,
       fontFamily: "Nunito-Medium",
@@ -293,14 +294,14 @@ const createStyles = (NEWCOLORS, COLORS) =>
     },
     setupButton: {
       backgroundColor: NEWCOLORS.greenAccent,
-      height: 56,
-      borderRadius: 28,
+      height: scale(56),
+      borderRadius: scale(28),
       justifyContent: "center",
       alignItems: "center",
     },
 
     progressFragment: {
-      borderRadius: 10,
+      borderRadius: moderateScale(10),
       flex: 1,
     },
     emojiCircle: {
@@ -308,64 +309,64 @@ const createStyles = (NEWCOLORS, COLORS) =>
       alignItems: "center",
       justifyContent: "center",
       borderRadius: 1000,
-      height: 220,
-      width: 220,
+      height: scale(220),
+      width: scale(220),
     },
     selectButton: {
       backgroundColor: NEWCOLORS.unselectedGrey,
-      height: 84,
-      borderRadius: 15,
+      height: scale(84),
+      borderRadius: moderateScale(15),
       justifyContent: "center",
       alignItems: "center",
     },
     ingredientPickerCard: {
       backgroundColor: NEWCOLORS.unselectedGrey,
-      borderRadius: 15,
+      borderRadius: moderateScale(15),
       flex: 1,
       // marginHorizontal: 9,
       justifyContent: "center",
       alignItems: "center",
-      paddingVertical: 10,
+      paddingVertical: moderateScale(10),
     },
     pantryTip: {
-      gap: 10,
-      paddingVertical: 9,
-      paddingHorizontal: 15,
-      borderRadius: 15,
+      gap: moderateScale(10),
+      paddingVertical: moderateScale(9),
+      paddingHorizontal: moderateScale(15),
+      borderRadius: moderateScale(15),
       backgroundColor: NEWCOLORS.yellowBlock,
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
     },
     track: {
-      height: 32,
-      borderRadius: 16,
+      height: scale(32),
+      borderRadius: scale(16),
       justifyContent: "center",
-      paddingHorizontal: 2,
+      paddingHorizontal: moderateScale(2),
     },
     thumb: {
-      width: 24,
-      height: 24,
+      width: scale(24),
+      height: scale(24),
       borderRadius: 100,
       backgroundColor: NEWCOLORS.cardWhite,
     },
     savesCard: {
-      gap: 15,
-      padding: 20,
-      paddingVertical: 23,
+      gap: moderateScale(15),
+      padding: moderateScale(20),
+      paddingVertical: moderateScale(23),
 
       flex: 1,
-      borderRadius: 15,
+      borderRadius: moderateScale(15),
       backgroundColor: NEWCOLORS.blueBlock,
     },
     saveTag: {
-      borderTopLeftRadius: 10,
-      borderBottomLeftRadius: 10,
-      padding: 2,
+      borderTopLeftRadius: moderateScale(10),
+      borderBottomLeftRadius: moderateScale(10),
+      padding: moderateScale(2),
       justifyContent: "center",
-      height: 19,
-      width: 60,
-      paddingLeft: 4,
+      height: scale(19),
+      width: scale(60),
+      paddingLeft: moderateScale(4),
     },
   });
 

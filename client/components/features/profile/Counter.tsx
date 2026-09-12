@@ -32,7 +32,6 @@ export default function Counter(props: counterProps) {
     >
       <Text
         numberOfLines={1}
-        adjustsFontSizeToFit
         style={[
           styles.textCentered,
           { fontSize: 42, fontFamily: "Nunito-Bold" },

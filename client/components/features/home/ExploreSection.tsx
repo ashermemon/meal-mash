@@ -14,6 +14,7 @@ import InfoTag from "../recipe/InfoTag";
 import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 import { useMealImages } from "@/contexts/MealImageContext";
 import { getMealImageSource } from "@/utils/mealImageSource";
+import { moderateScale, scale } from "@/utils/responsive";
 
 const featuredRecipes = [
   {
@@ -111,7 +112,7 @@ export default function ExploreSection() {
               color: theme.pureWhite,
             },
           ]}
-          adjustsFontSizeToFit
+          numberOfLines={1}
         >
           {title}
         </Text>
@@ -185,7 +186,7 @@ export default function ExploreSection() {
             ref={ref}
             width={width}
             data={featuredRecipesWithIcons}
-            height={105}
+            height={scale(105)}
             onProgressChange={progress}
             renderItem={({ item }) => (
               <View
@@ -194,34 +195,34 @@ export default function ExploreSection() {
                   flexDirection: "row",
                   justifyContent: "space-between",
                   alignItems: "center",
-                  paddingHorizontal: 16,
+                  paddingHorizontal: moderateScale(16),
                 }}
               >
-                <View style={{ flex: 0, marginRight: 25 }}>
+                <View style={{ flex: 0, marginRight: moderateScale(16) }}>
                   <AppImage
                     source={item.icon}
                     style={{
-                      width: 80,
-                      height: 80,
+                      width: scale(64),
+                      height: scale(64),
                     }}
                     contentFit="contain"
                   />
                 </View>
-                <View style={{ flex: 1, gap: 7 }}>
+                <View style={{ flex: 1, gap: moderateScale(7) }}>
                   <Text
                     style={[
                       styles.basicTextLeft,
 
                       {
                         fontFamily: "Nunito-SemiBold",
-                        fontSize: 22,
+                        fontSize: moderateScale(18),
                       },
                     ]}
                     numberOfLines={1}
                   >
                     {item.title}
                   </Text>
-                  <View style={{ flexDirection: "row", gap: 7 }}>
+                  <View style={{ flexDirection: "row", gap: moderateScale(7) }}>
                     <InfoTag
                       type="difficulty"
                       data={item.difficulty}

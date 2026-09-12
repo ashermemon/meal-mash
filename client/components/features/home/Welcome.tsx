@@ -40,6 +40,7 @@ import { useIsDarkMode } from "@/contexts/ColorSchemeContext";
 import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 import { GenerationDetailsContext } from "@/contexts/GenerationDetailsContext";
 import RecipeContext, { initialRecipeData } from "@/contexts/RecipeContext";
+import { moderateScale, scale, verticalScale } from "@/utils/responsive";
 
 const IRIDESCENT_COLORS_LIGHT = [
   "#FDF3F8",
@@ -171,11 +172,11 @@ const FeedbackBanner = () => {
       style={({ pressed }) => ({
         flexDirection: "row",
         alignItems: "center",
-        gap: 7,
-        paddingVertical: 6,
-        paddingHorizontal: 11,
-        borderRadius: 10,
-        marginBottom: 10,
+        gap: moderateScale(7),
+        paddingVertical: moderateScale(6),
+        paddingHorizontal: moderateScale(11),
+        borderRadius: moderateScale(10),
+        marginBottom: moderateScale(10),
         backgroundColor: theme.secondaryBoxGrey,
         borderWidth: 1,
         borderColor: theme.dividerGrey2,
@@ -186,7 +187,7 @@ const FeedbackBanner = () => {
           styles.basicTextLeft,
           {
             flex: 1,
-            fontSize: 11.5,
+            fontSize: moderateScale(11.5),
             color: theme.placeholderText,
           },
         ]}
@@ -241,9 +242,9 @@ export default function Welcome() {
       style={{
         flex: 1,
         width: "100%",
-        paddingHorizontal: 25,
-        paddingTop: 20,
-        paddingBottom: 85,
+        paddingHorizontal: moderateScale(25),
+        paddingTop: verticalScale(20),
+        paddingBottom: verticalScale(100),
       }}
     >
       <View style={{ width: "100%", flex: 1 }}>
@@ -253,8 +254,8 @@ export default function Welcome() {
             styles.basicTextLeft,
             styles.bold,
             {
-              fontSize: 28,
-              marginBottom: 5,
+              fontSize: moderateScale(28),
+              marginBottom: moderateScale(5),
             },
           ]}
         >
@@ -289,7 +290,7 @@ export default function Welcome() {
               alignItems: "center",
               justifyContent: "space-between",
               height: "100%",
-              paddingHorizontal: 13,
+              paddingHorizontal: moderateScale(13),
             }}
             onPress={() => [
               setGenerationDetails((prev) => ({
@@ -312,10 +313,10 @@ export default function Welcome() {
               <AppImage
                 source={icons3d.Gift}
                 style={{
-                  width: 37,
-                  height: 37,
+                  width: scale(37),
+                  height: scale(37),
 
-                  marginRight: 17,
+                  marginRight: moderateScale(17),
                 }}
                 contentFit="contain"
               />
@@ -325,7 +326,7 @@ export default function Welcome() {
                     styles.basicTextLeft,
                     styles.bold,
                     {
-                      fontSize: 16,
+                      fontSize: moderateScale(16),
                       color: theme.basicText,
                     },
                   ]}
@@ -337,7 +338,7 @@ export default function Welcome() {
                     styles.basicTextLeft,
 
                     {
-                      fontSize: 11,
+                      fontSize: moderateScale(11),
                       color: theme.basicText,
                       opacity: 0.75,
                     },
@@ -362,15 +363,17 @@ export default function Welcome() {
             styles.basicTextLeft,
             styles.bold,
             {
-              fontSize: 28,
-              marginBottom: 10,
+              fontSize: moderateScale(28),
+              marginBottom: moderateScale(10),
             },
           ]}
         >
           Explore
         </Text>
 
-        <ExploreSection></ExploreSection>
+        <View style={{ flex: 1, minHeight: verticalScale(140) }}>
+          <ExploreSection></ExploreSection>
+        </View>
       </View>
     </View>
   );

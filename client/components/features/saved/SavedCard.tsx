@@ -313,9 +313,8 @@ export default function SavedCard(props: SavedProps) {
               </View>
               <View style={{ flex: 1, paddingHorizontal: 20, gap: 7 }}>
                 <Text
-                  adjustsFontSizeToFit
-                  numberOfLines={1}
-                  style={[styles.textLeftBold, { fontSize: 17 }]}
+                  numberOfLines={2}
+                  style={[styles.textLeftBold, { fontSize: 17, lineHeight: 20 }]}
                 >
                   {props.SavedRecipe.title}
                 </Text>
@@ -360,7 +359,6 @@ export default function SavedCard(props: SavedProps) {
                   >
                     <Text
                       numberOfLines={1}
-                      adjustsFontSizeToFit
                       style={[
                         styles.textCenterBold,
                         { fontSize: 11, fontFamily: "Nunito-SemiBold" },
@@ -380,7 +378,6 @@ export default function SavedCard(props: SavedProps) {
                   >
                     <Text
                       numberOfLines={1}
-                      adjustsFontSizeToFit
                       style={[
                         styles.textCenterBold,
                         { fontSize: 11, fontFamily: "Nunito-SemiBold" },
@@ -399,7 +396,6 @@ export default function SavedCard(props: SavedProps) {
                   >
                     <Text
                       numberOfLines={1}
-                      adjustsFontSizeToFit
                       style={[
                         styles.textCenterBold,
                         { fontSize: 11, fontFamily: "Nunito-SemiBold" },

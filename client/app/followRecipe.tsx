@@ -148,9 +148,8 @@ const followRecipe = () => {
             </View>
             <View style={{ flex: 1, paddingHorizontal: 18 }}>
               <Text
-                numberOfLines={1}
-                adjustsFontSizeToFit
-                style={[styles.textLeftBold, { fontSize: 23 }]}
+                numberOfLines={2}
+                style={[styles.textLeftBold, { fontSize: 23, lineHeight: 27 }]}
               >
                 {recipeData.title}
               </Text>
@@ -305,7 +304,7 @@ const followRecipe = () => {
                       lineHeight: 22,
                       marginLeft: 16,
                       marginTop: 5,
-                      marginBottom: bulletMargin,
+                      marginBottom: instruction.timerMinutes ? 10 : bulletMargin,
                     },
                   ]}
                 >
@@ -313,7 +312,7 @@ const followRecipe = () => {
                 </Text>
               </View>
               {instruction.timerMinutes ? (
-                <View style={{ marginTop: -20, marginBottom: 5 }}>
+                <View style={{ marginBottom: bulletMargin - 10 }}>
                   <Timer
                     time={instruction.timerMinutes * 60}
                     taskDescription={instruction.timerTask}

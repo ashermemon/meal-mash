@@ -74,6 +74,7 @@ const Achievement = (props: Props) => {
         <View style={{ gap: 3, flex: 1 }}>
           <Text
             adjustsFontSizeToFit
+            minimumFontScale={0.8}
             style={[
               styles.textLeftBold,
               {

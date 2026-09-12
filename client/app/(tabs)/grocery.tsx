@@ -19,6 +19,7 @@ import GroceryListContext from "@/contexts/GroceryListContext";
 import CheckedGroceryListContext from "@/contexts/CheckedGroceryListContext";
 import GroceryListItem from "@/components/features/grocerylist/GroceryListItem";
 import CheckedGroceryList from "@/components/features/grocerylist/CheckedGroceryList";
+import { moderateScale } from "@/utils/responsive";
 
 export default function Dashboard() {
   const styles = useStyles();
@@ -92,10 +93,9 @@ export default function Dashboard() {
           flex: 1,
         }}
         contentContainerStyle={{
-          flexGrow: 1,
-          paddingHorizontal: 25,
-          paddingTop: 20,
-          paddingBottom: 170,
+          paddingHorizontal: moderateScale(25),
+          paddingTop: moderateScale(20),
+          paddingBottom: moderateScale(130),
         }}
         overScrollMode="never"
         alwaysBounceVertical={false}
@@ -103,11 +103,9 @@ export default function Dashboard() {
       >
         <View
           style={{
-            flex: 1,
-
             position: "relative",
 
-            gap: 10,
+            gap: moderateScale(10),
           }}
         >
           <View
@@ -122,7 +120,7 @@ export default function Dashboard() {
                 styles.basicTextLeft,
                 styles.bold,
                 {
-                  fontSize: 28,
+                  fontSize: moderateScale(28),
                 },
               ]}
             >
@@ -162,16 +160,14 @@ export default function Dashboard() {
             ) : null}
           </View>
 
-          <View style={{ gap: 25, flex: 1 }}>
-            <View style={{ gap: 20, flex: 1 }}>
+          <View style={{ gap: moderateScale(25), flex: 1 }}>
+            <View style={{ gap: moderateScale(20), flex: 1 }}>
               <Text
-                adjustsFontSizeToFit
-                numberOfLines={1}
                 style={[
                   styles.textLeftBold,
                   {
                     fontFamily: "Nunito-SemiBold",
-                    fontSize: 17,
+                    fontSize: 15,
 
                     color: theme.placeholderText,
                   },
@@ -248,7 +244,7 @@ export default function Dashboard() {
                         styles.textCenterBold,
                         {
                           fontFamily: "Nunito-Bold",
-                          fontSize: 20,
+                          fontSize: moderateScale(20),
                           color: theme.basicText,
                         },
                       ]}
@@ -260,7 +256,7 @@ export default function Dashboard() {
                         styles.textCentered,
                         {
                           fontFamily: "Nunito-SemiBold",
-                          fontSize: 15,
+                          fontSize: moderateScale(15),
                           color: theme.placeholderText,
                           textAlign: "center",
                         },
@@ -291,7 +287,7 @@ export default function Dashboard() {
                         styles.textCenterBold,
                         {
                           fontFamily: "Nunito-Bold",
-                          fontSize: 20,
+                          fontSize: moderateScale(20),
                           color: theme.basicText,
                         },
                       ]}
@@ -303,7 +299,7 @@ export default function Dashboard() {
                         styles.textCentered,
                         {
                           fontFamily: "Nunito-SemiBold",
-                          fontSize: 15,
+                          fontSize: moderateScale(15),
                           color: theme.placeholderText,
                           textAlign: "center",
                         },

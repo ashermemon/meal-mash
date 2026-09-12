@@ -112,8 +112,6 @@ export default function InfoTag(props: Props) {
           { flexShrink: 1, fontSize: props.fontSize || 15 },
         ]}
         numberOfLines={1}
-        adjustsFontSizeToFit
-        minimumFontScale={0.85}
       >
         {displayData}
       </Text>

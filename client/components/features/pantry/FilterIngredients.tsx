@@ -66,7 +66,6 @@ const FilterIngredients = (props: Props) => {
                 },
               ]}
               numberOfLines={1}
-              adjustsFontSizeToFit
             >
               {label}
             </Text>

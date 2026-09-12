@@ -55,6 +55,7 @@ import { Image } from "expo-image";
 import icons3d from "@/components/universal/3dIcons";
 import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 import * as ImagePicker from "expo-image-picker";
+import { moderateScale } from "@/utils/responsive";
 
 export default function Profile() {
   const styles = useStyles();
@@ -244,9 +245,9 @@ export default function Profile() {
             flex: 1,
           }}
           contentContainerStyle={{
-            paddingHorizontal: 25,
-            paddingTop: 20,
-            paddingBottom: 100,
+            paddingHorizontal: moderateScale(25),
+            paddingTop: moderateScale(20),
+            paddingBottom: moderateScale(100),
           }}
           overScrollMode="never"
           alwaysBounceVertical={false}
@@ -269,7 +270,7 @@ export default function Profile() {
                   styles.basicTextLeft,
                   styles.bold,
                   {
-                    fontSize: 28,
+                    fontSize: moderateScale(28),
                   },
                 ]}
               >
@@ -287,7 +288,7 @@ export default function Profile() {
               ></SwitchToggle>
             </View>
 
-            <View style={{ gap: 30 }}>
+            <View style={{ gap: moderateScale(30) }}>
               <View
                 style={{
                   flexDirection: "row",
@@ -469,13 +470,13 @@ export default function Profile() {
                 </View>
               </View>
 
-              <View style={{ gap: 15 }}>
+              <View style={{ gap: moderateScale(15) }}>
                 <Text
                   style={[
                     styles.basicTextLeft,
                     styles.bold,
                     {
-                      fontSize: 28,
+                      fontSize: moderateScale(28),
                     },
                   ]}
                 >
@@ -503,13 +504,13 @@ export default function Profile() {
                   ></Counter>
                 </View>
               </View>
-              <View style={{ gap: 15 }}>
+              <View style={{ gap: moderateScale(15) }}>
                 <Text
                   style={[
                     styles.basicTextLeft,
                     styles.bold,
                     {
-                      fontSize: 28,
+                      fontSize: moderateScale(28),
                     },
                   ]}
                 >
@@ -536,7 +537,6 @@ export default function Profile() {
                       />
                     </View>
                     <Text
-                      adjustsFontSizeToFit
                       numberOfLines={1}
                       style={[
                         styles.textLeftBold,
@@ -565,13 +565,13 @@ export default function Profile() {
                   </Text>
                 </Pressable>
               </View>
-              <View style={{ gap: 15 }}>
+              <View style={{ gap: moderateScale(15) }}>
                 <Text
                   style={[
                     styles.basicTextLeft,
                     styles.bold,
                     {
-                      fontSize: 28,
+                      fontSize: moderateScale(28),
                     },
                   ]}
                 >
@@ -599,13 +599,13 @@ export default function Profile() {
                   )}
                 </View>
               </View>
-              <View style={{ gap: 15 }}>
+              <View style={{ gap: moderateScale(15) }}>
                 <Text
                   style={[
                     styles.basicTextLeft,
                     styles.bold,
                     {
-                      fontSize: 28,
+                      fontSize: moderateScale(28),
                     },
                   ]}
                 >

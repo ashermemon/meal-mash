@@ -296,10 +296,9 @@ export const GenerationCardPreview = (props: Props) => {
         <Text
           style={[
             styles.textCentered,
-            { fontFamily: "Nunito-Bold", fontSize: 31 },
+            { fontFamily: "Nunito-Bold", fontSize: 28, lineHeight: 32 },
           ]}
-          numberOfLines={1}
-          adjustsFontSizeToFit
+          numberOfLines={2}
         >
           {props.title}
         </Text>

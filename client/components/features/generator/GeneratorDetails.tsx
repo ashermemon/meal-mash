@@ -8,6 +8,7 @@ import React, {
 } from "react";
 import { ScrollView } from "react-native-gesture-handler";
 import { useStyles } from "@/styles/GlobalStyles";
+import { moderateScale, verticalScale } from "@/utils/responsive";
 import SliderField from "@/components/common/SliderField";
 import MultiSelectPills from "@/components/common/MultiSelectPills";
 import CountFieldPill from "@/components/common/CountFieldPill";
@@ -112,18 +113,12 @@ const GeneratorDetails = (props: Props) => {
 
   return (
     <>
-      <ScrollView
-        contentContainerStyle={{ flexGrow: 1 }}
-        overScrollMode="never"
-        alwaysBounceVertical={false}
-        keyboardShouldPersistTaps="handled"
-        style={styles.generatorContainer}
-      >
+      <View style={[styles.generatorContainer]}>
         <View
           style={{
-            paddingHorizontal: 25,
-            paddingTop: 20,
-            paddingBottom: 100,
+            paddingHorizontal: moderateScale(25),
+            paddingTop: verticalScale(20),
+            paddingBottom: verticalScale(100),
             flex: 1,
 
             justifyContent: "space-between",
@@ -135,16 +130,16 @@ const GeneratorDetails = (props: Props) => {
                 styles.basicTextLeft,
                 styles.bold,
                 {
-                  fontSize: 28,
-                  marginBottom: 15,
+                  fontSize: moderateScale(28),
+                  marginBottom: verticalScale(15),
                 },
               ]}
             >
               Generate recipes
             </Text>
 
-            <View style={{ flexDirection: "column", gap: 36 }}>
-              <View style={{ flexDirection: "column", gap: 20 }}>
+            <View style={{ flexDirection: "column", gap: verticalScale(28) }}>
+              <View style={{ flexDirection: "column", gap: verticalScale(16) }}>
                 <SliderField
                   options={modes}
                   selected={genMode}
@@ -153,7 +148,7 @@ const GeneratorDetails = (props: Props) => {
                 {genMode === 0 ? (
                   <PantryPill pantryPage={false}></PantryPill>
                 ) : genMode === 1 ? (
-                  <View style={{ gap: 12 }}>
+                  <View style={{ gap: verticalScale(12) }}>
                     <Pressable
                       onPress={openBrowseIngredients}
                       style={[
@@ -171,7 +166,7 @@ const GeneratorDetails = (props: Props) => {
                         style={[
                           styles.textCentered,
                           {
-                            fontSize: 18,
+                            fontSize: moderateScale(18),
                             color: theme.basicText,
                             fontFamily: "Nunito-SemiBold",
                           },
@@ -237,8 +232,8 @@ const GeneratorDetails = (props: Props) => {
                 generateButtonShadow,
                 {
                   backgroundColor: theme.primary,
-                  paddingVertical: 20,
-                  borderRadius: 15,
+                  paddingVertical: verticalScale(20),
+                  borderRadius: moderateScale(15),
                   width: "100%",
                 },
               ]}
@@ -268,7 +263,7 @@ const GeneratorDetails = (props: Props) => {
               <Text
                 style={[
                   styles.textCenterBold,
-                  { color: theme.pureWhite, fontSize: 18 },
+                  { color: theme.pureWhite, fontSize: moderateScale(18) },
                 ]}
               >
                 Generate Recipes →
@@ -276,7 +271,7 @@ const GeneratorDetails = (props: Props) => {
             </Pressable>
           </View>
         </View>
-      </ScrollView>
+      </View>
 
       <TrueSheet
         detents={[0.6, 1]}

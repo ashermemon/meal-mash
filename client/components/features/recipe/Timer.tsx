@@ -82,7 +82,6 @@ export default function Timer(props: TimerProps) {
           <Text
             style={[styles.textLeftBold, { fontSize: 16 }]}
             numberOfLines={1}
-            adjustsFontSizeToFit
           >
             {props.taskDescription || "Timer"}
           </Text>
