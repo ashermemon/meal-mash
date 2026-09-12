@@ -1,6 +1,6 @@
 import { Pressable, StyleProp, ViewStyle } from "react-native";
 import React from "react";
-import { Image } from "expo-image";
+import AppImage from "@/components/universal/AppImage";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -87,7 +87,7 @@ const EmojiButton = ({
         color={theme.placeholderText}
       />
     ) : (
-      <Image
+      <AppImage
         source={icons3d[emoji] || icons3d.Default}
         style={{ width: iconSize, height: iconSize }}
         contentFit="contain"

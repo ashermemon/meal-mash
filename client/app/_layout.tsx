@@ -6,9 +6,18 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { storage } from "@/utils/storage";
+import {
+  readSavedRecipes,
+  writeSavedRecipes,
+  readPantry,
+  writePantry,
+  readGroceryList,
+  writeGroceryList,
+  readCheckedGroceryList,
+  writeCheckedGroceryList,
+} from "@/utils/storage";
+import { usePersistentState } from "@/hooks/usePersistentState";
 import SavedRecipesContext from "@/contexts/SavedRecipesContext";
-import MealsLeftContext from "@/contexts/MealsLeftContext";
 import AchievementsContext, {
   type AchievementData,
 } from "@/contexts/AchievementsContext";
@@ -33,6 +42,9 @@ import {
   useTheme,
   useColorScheme,
 } from "@/contexts/ColorSchemeContext";
+import { MealImageProvider } from "@/contexts/MealImageContext";
+import Toast from "react-native-toast-message";
+import { toastConfig } from "@/components/common/toastConfig";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -49,7 +61,10 @@ export default function RootLayout() {
 function RootLayoutContent() {
   const theme = useTheme();
   const colorScheme = useColorScheme();
-  const [savedRecipes, setSavedRecipes] = useState<RecipeData[]>([]);
+  const [savedRecipes, setSavedRecipes] = usePersistentState<RecipeData[]>(
+    readSavedRecipes,
+    writeSavedRecipes,
+  );
   const [generationDetails, setGenerationDetails] = useState<GenerationDetails>(
     {
       ingredients: [],
@@ -63,16 +78,20 @@ function RootLayoutContent() {
       dietaryPreference: [],
     },
   );
-  const [mealsLeft, setMealsLeft] = useState<number>(500);
   const [achievements, setAchievements] = useState<AchievementData[]>([]);
-  const [pantryDetails, setPantryDetails] = useState<PantryDetails>({
-    name: "Your Pantry",
-    icon: "",
-    ingredients: [],
-  });
+  const [pantryDetails, setPantryDetails] = usePersistentState<PantryDetails>(
+    readPantry,
+    writePantry,
+  );
+  // Browse results are transient search state, so they stay in memory only.
   const [browseIngredients, setBrowseIngredients] = useState<Food[]>([]);
-  const [groceryList, setGroceryList] = useState<Food[]>([]);
-  const [checkedGroceryList, setCheckedGroceryList] = useState<Food[]>([]);
+  const [groceryList, setGroceryList] = usePersistentState<Food[]>(
+    readGroceryList,
+    writeGroceryList,
+  );
+  const [checkedGroceryList, setCheckedGroceryList] = usePersistentState<
+    Food[]
+  >(readCheckedGroceryList, writeCheckedGroceryList);
 
   const sheetRef = useRef<TrueSheet>(null);
   const [currentOptions, setCurrentOptions] = useState<string[]>([]);
@@ -123,10 +142,6 @@ function RootLayoutContent() {
   });
 
   useEffect(() => {
-    storage.set("pantrynumber", pantryDetails.ingredients.length);
-  });
-
-  useEffect(() => {
     if (loaded || error) {
       SplashScreen.hideAsync();
     }
@@ -143,49 +158,12 @@ function RootLayoutContent() {
     });
   }, []);
 
-  useEffect(() => {
-    const storedSaved = storage.getString("saves");
-    if (storedSaved) {
-      try {
-        const storedSavedArray = JSON.parse(storedSaved);
-        const defaultCategories = {
-          madeWithLeftovers: false,
-          tastyMeals: false,
-          sweetTreats: false,
-          quickSnacks: false,
-          under15Minutes: false,
-        };
-        const normalizedSaves = storedSavedArray.map((item: any) => {
-          if (typeof item === "string") {
-            return {
-              responseRecipe: "",
-              title: item,
-              description: "",
-              difficulty: "",
-              time: "",
-              servings: null,
-              nutrients: [0, 0, 0],
-              tags: [],
-              categories: defaultCategories,
-              ingredients: [],
-              instructions: [],
-              tips: [],
-            };
-          }
-          return { categories: defaultCategories, ...item };
-        });
-        setSavedRecipes(normalizedSaves);
-      } catch (e) {
-        console.error("Failed to parse favorites from storage:", e);
-        setSavedRecipes([]);
-      }
-    }
-  }, []);
   if (!loaded && !error) {
     return null;
   }
 
   return (
+    <MealImageProvider>
       <BrowseIngredientsContext.Provider
         value={[browseIngredients, setBrowseIngredients]}
       >
@@ -204,22 +182,19 @@ function RootLayoutContent() {
               <PantryDetailsContext.Provider
                 value={[pantryDetails, setPantryDetails]}
               >
-              <GroceryListContext.Provider
-                value={[groceryList, setGroceryList]}
-              >
-              <CheckedGroceryListContext.Provider
-                value={[checkedGroceryList, setCheckedGroceryList]}
-              >
-                <SavedRecipesContext.Provider
-                  value={[savedRecipes, setSavedRecipes]}
+                <GroceryListContext.Provider
+                  value={[groceryList, setGroceryList]}
                 >
-                  <MealsLeftContext.Provider
-                    value={[mealsLeft, setMealsLeft]}
+                  <CheckedGroceryListContext.Provider
+                    value={[checkedGroceryList, setCheckedGroceryList]}
                   >
-                  <AchievementsContext.Provider
-                    value={[achievements, setAchievements]}
-                  >
-                    <RecipeProvider>
+                    <SavedRecipesContext.Provider
+                      value={[savedRecipes, setSavedRecipes]}
+                    >
+                      <AchievementsContext.Provider
+                        value={[achievements, setAchievements]}
+                      >
+                        <RecipeProvider>
                           <StatusBar
                             barStyle={
                               colorScheme === "dark"
@@ -287,16 +262,17 @@ function RootLayoutContent() {
                               currentOptions={currentOptions}
                             ></TrueSheetContent>
                           </TrueSheet>
-                    </RecipeProvider>
-                  </AchievementsContext.Provider>
-                  </MealsLeftContext.Provider>
-                </SavedRecipesContext.Provider>
-              </CheckedGroceryListContext.Provider>
-              </GroceryListContext.Provider>
+                          <Toast config={toastConfig}></Toast>
+                        </RecipeProvider>
+                      </AchievementsContext.Provider>
+                    </SavedRecipesContext.Provider>
+                  </CheckedGroceryListContext.Provider>
+                </GroceryListContext.Provider>
               </PantryDetailsContext.Provider>
             </GenerationDetailsContext.Provider>
           </TrueSheetProvider>
         </NotificationProvider>
       </BrowseIngredientsContext.Provider>
+    </MealImageProvider>
   );
 }

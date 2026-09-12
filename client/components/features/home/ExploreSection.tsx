@@ -4,7 +4,7 @@ import { useStyles } from "@/styles/GlobalStyles";
 import { useTheme, useIsDarkMode } from "@/contexts/ColorSchemeContext";
 import { router } from "expo-router";
 import icons3d from "@/components/universal/3dIcons";
-import { Image } from "expo-image";
+import AppImage from "@/components/universal/AppImage";
 import { useSharedValue } from "react-native-reanimated";
 import Carousel, {
   ICarouselInstance,
@@ -12,6 +12,8 @@ import Carousel, {
 } from "react-native-reanimated-carousel";
 import InfoTag from "../recipe/InfoTag";
 import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
+import { useMealImages } from "@/contexts/MealImageContext";
+import { getMealImageSource } from "@/utils/mealImageSource";
 
 const featuredRecipes = [
   {
@@ -20,7 +22,7 @@ const featuredRecipes = [
     tag: "Lunch",
     time: "25 m",
     difficulty: "Moderate",
-    icon: require("@/assets/images/meal-images/salad.webp"),
+    imageCategory: "salad",
   },
   {
     id: "2",
@@ -29,7 +31,7 @@ const featuredRecipes = [
     time: "55 m",
 
     difficulty: "Expert",
-    icon: require("@/assets/images/meal-images/taco.webp"),
+    imageCategory: "taco",
   },
   {
     id: "3",
@@ -38,7 +40,7 @@ const featuredRecipes = [
     time: "1 hr 30 m",
 
     difficulty: "Easy",
-    icon: require("@/assets/images/meal-images/burger.webp"),
+    imageCategory: "burger",
   },
 ];
 
@@ -47,6 +49,15 @@ export default function ExploreSection() {
   const theme = useTheme();
   const isDark = useIsDarkMode();
   const featuredCarouselShadow = useTintedBoxShadow(theme.greyBlock);
+  const { mealImages } = useMealImages();
+  const featuredRecipesWithIcons = React.useMemo(
+    () =>
+      featuredRecipes.map((recipe) => ({
+        ...recipe,
+        icon: getMealImageSource(mealImages, recipe.imageCategory),
+      })),
+    [mealImages],
+  );
   const ref = React.useRef<ICarouselInstance>(null);
   const progress = useSharedValue<number>(0);
   const onPressPagination = (index: number) => {
@@ -73,68 +84,69 @@ export default function ExploreSection() {
   }) => {
     const blockShadow = useTintedBoxShadow(color);
     return (
-    <Pressable
-      style={[
-        styles.homeBlock,
-        {
-          flex: 1,
-          backgroundColor: color,
-          height: height ? height : undefined,
-
-          paddingHorizontal: 10,
-        },
-        blockShadow,
-      ]}
-      onPress={() => router.navigate(`/${link}` as any)}
-    >
-      <></>
-
-      <Text
+      <Pressable
         style={[
-          styles.basicTextLeft,
-
+          styles.homeBlock,
           {
-            fontFamily: "Nunito-SemiBold",
-            fontSize: 20,
-            textAlign: "center",
-            color: theme.pureWhite,
-          },
-        ]}
-        adjustsFontSizeToFit
-      >
-        {title}
-      </Text>
-      {children}
-
-      <View
-        style={{
-          justifyContent: "flex-end",
-          flex: 1,
-        }}
-      >
-        <Image
-          source={(icon ? icons3d[icon] : icons3d.Default) || icons3d.Default}
-          contentFit="contain"
-          style={{
-            alignSelf: "center",
             flex: 1,
-            aspectRatio: 1,
+            backgroundColor: color,
+            height: height ? height : undefined,
+
+            paddingHorizontal: 10,
+          },
+          blockShadow,
+        ]}
+        onPress={() => router.navigate(`/${link}` as any)}
+      >
+        <></>
+
+        <Text
+          style={[
+            styles.basicTextLeft,
+
+            {
+              fontFamily: "Nunito-SemiBold",
+              fontSize: 20,
+              textAlign: "center",
+              color: theme.pureWhite,
+            },
+          ]}
+          adjustsFontSizeToFit
+        >
+          {title}
+        </Text>
+        {children}
+
+        <View
+          style={{
+            justifyContent: "flex-end",
+            flex: 1,
           }}
-        />
-      </View>
-    </Pressable>
+        >
+          <AppImage
+            source={(icon ? icons3d[icon] : icons3d.Default) || icons3d.Default}
+            contentFit="contain"
+            style={{
+              alignSelf: "center",
+              flex: 1,
+              aspectRatio: 1,
+            }}
+          />
+        </View>
+      </Pressable>
     );
   };
   const [width, setWidth] = useState(Dimensions.get("window").width - 60);
 
   return (
-    <View style={{ flexDirection: "column", gap: 10, width: "100%" }}>
+    <View style={{ flexDirection: "column", gap: 10, width: "100%", flex: 1 }}>
       <View
         style={[
           styles.homeBlock,
           featuredCarouselShadow,
           {
-            flex: 1,
+            flexGrow: 0,
+            flexShrink: 0,
             backgroundColor: theme.greyBlock,
 
             flexDirection: "column",
@@ -172,8 +184,8 @@ export default function ExploreSection() {
             scrollAnimationDuration={1500}
             ref={ref}
             width={width}
-            data={featuredRecipes}
-            height={110}
+            data={featuredRecipesWithIcons}
+            height={105}
             onProgressChange={progress}
             renderItem={({ item }) => (
               <View
@@ -186,7 +198,7 @@ export default function ExploreSection() {
                 }}
               >
                 <View style={{ flex: 0, marginRight: 25 }}>
-                  <Image
+                  <AppImage
                     source={item.icon}
                     style={{
                       width: 80,
@@ -227,7 +239,7 @@ export default function ExploreSection() {
 
         <Pagination.Basic
           progress={progress}
-          data={featuredRecipes}
+          data={featuredRecipesWithIcons}
           size={7}
           dotStyle={{
             backgroundColor: isDark
@@ -239,14 +251,13 @@ export default function ExploreSection() {
             backgroundColor: isDark ? "white" : "black",
             borderRadius: 999,
           }}
-          containerStyle={{ gap: 6, marginTop: 9 }}
+          containerStyle={{ gap: 6, marginTop: 6 }}
           onPress={onPressPagination}
         />
       </View>
 
-      <View style={{ flexDirection: "row", gap: 10, width: "100%" }}>
+      <View style={{ flexDirection: "row", gap: 10, width: "100%", flex: 1 }}>
         <Block
-          height={200}
           title="Meal Generator"
           color={isDark ? theme.blueBlock : theme.blueAccent}
           link="(tabs)/generationpage"

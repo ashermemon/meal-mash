@@ -1,4 +1,11 @@
-import { Button, Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  Button,
+  Linking,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import React, {
   Dispatch,
   SetStateAction,
@@ -8,8 +15,7 @@ import React, {
   useState,
 } from "react";
 import { useStyles } from "@/styles/GlobalStyles";
-import { Image } from "expo-image";
-import { ScrollView } from "react-native-gesture-handler";
+import AppImage from "@/components/universal/AppImage";
 import { useFocusEffect, useRouter } from "expo-router";
 import { useTheme } from "@/contexts/ColorSchemeContext";
 import { CustomIcon } from "@/icon-loader/icon-loader";
@@ -34,7 +40,6 @@ import { useIsDarkMode } from "@/contexts/ColorSchemeContext";
 import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 import { GenerationDetailsContext } from "@/contexts/GenerationDetailsContext";
 import RecipeContext, { initialRecipeData } from "@/contexts/RecipeContext";
-import MealsLeftContext from "@/contexts/MealsLeftContext";
 
 const IRIDESCENT_COLORS_LIGHT = [
   "#FDF3F8",
@@ -53,6 +58,8 @@ const IRIDESCENT_COLORS_DARK = [
   "#2A2A1C",
   "#2B2530",
 ] as const;
+
+const FEEDBACK_FORM_URL = "https://forms.gle/Uxzrkfzvk7tFAFRW9";
 
 const SHEEN_BAND_WIDTH = 60;
 const SHEEN_MARGIN = 60;
@@ -151,6 +158,50 @@ const IridescentBackground = () => {
   );
 };
 
+const FeedbackBanner = () => {
+  const styles = useStyles();
+  const theme = useTheme();
+
+  return (
+    <Pressable
+      onPress={() => {
+        Haptics.selectionAsync();
+        Linking.openURL(FEEDBACK_FORM_URL);
+      }}
+      style={({ pressed }) => ({
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 7,
+        paddingVertical: 6,
+        paddingHorizontal: 11,
+        borderRadius: 10,
+        marginBottom: 10,
+        backgroundColor: theme.secondaryBoxGrey,
+        borderWidth: 1,
+        borderColor: theme.dividerGrey2,
+      })}
+    >
+      <Text
+        style={[
+          styles.basicTextLeft,
+          {
+            flex: 1,
+            fontSize: 11.5,
+            color: theme.placeholderText,
+          },
+        ]}
+      >
+        MealMash is in beta! Please leave feedback!
+      </Text>
+      <CustomIcon
+        name="arrow-right-up"
+        size={13}
+        color={theme.placeholderText}
+      />
+    </Pressable>
+  );
+};
+
 export default function Welcome() {
   const styles = useStyles();
   const theme = useTheme();
@@ -162,7 +213,6 @@ export default function Welcome() {
   const [generationDetails, setGenerationDetails] = useContext(
     GenerationDetailsContext,
   );
-  const [mealsLeft] = useContext(MealsLeftContext);
 
   useFocusEffect(
     useCallback(() => {
@@ -187,17 +237,17 @@ export default function Welcome() {
       <Camera></Camera>
     </View>
   ) : (
-    <ScrollView
-      contentContainerStyle={{ flexGrow: 1 }}
-      overScrollMode="never"
-      alwaysBounceVertical={false}
+    <View
       style={{
+        flex: 1,
         width: "100%",
         paddingHorizontal: 25,
-        paddingVertical: 20,
+        paddingTop: 20,
+        paddingBottom: 85,
       }}
     >
-      <View style={{ width: "100%", marginBottom: 30 }}>
+      <View style={{ width: "100%", flex: 1 }}>
+        <FeedbackBanner />
         <Text
           style={[
             styles.basicTextLeft,
@@ -241,32 +291,25 @@ export default function Welcome() {
               height: "100%",
               paddingHorizontal: 13,
             }}
-            onPress={
-              mealsLeft > 0
-                ? () => [
-                    setGenerationDetails((prev) => ({
-                      ...prev,
-                      generationType: 2,
-                      difficulties: ["Easy", "Moderate", "Expert"],
-                      recipeTime: ["<15m", "~30m", "1hr+"],
-                      numberOfServings: 1,
-                      mealType: ["Any"],
-                      cuisine: ["Any"],
-                      dietaryPreference: ["None"],
-                      portalCategory: undefined,
-                    })),
-                    router.navigate("/recipe"),
-                    setRecipeData(initialRecipeData),
-                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium),
-                  ]
-                : () =>
-                    alert(
-                      "You have run out of meal generations today. Come again tomorrow!",
-                    )
-            }
+            onPress={() => [
+              setGenerationDetails((prev) => ({
+                ...prev,
+                generationType: 2,
+                difficulties: ["Easy", "Moderate", "Expert"],
+                recipeTime: ["<15m", "~30m", "1hr+"],
+                numberOfServings: 1,
+                mealType: ["Any"],
+                cuisine: ["Any"],
+                dietaryPreference: ["None"],
+                portalCategory: undefined,
+              })),
+              router.navigate("/recipe"),
+              setRecipeData(initialRecipeData),
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium),
+            ]}
           >
             <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Image
+              <AppImage
                 source={icons3d.Gift}
                 style={{
                   width: 37,
@@ -328,9 +371,8 @@ export default function Welcome() {
         </Text>
 
         <ExploreSection></ExploreSection>
-        <View style={{ paddingVertical: 25 }}></View>
       </View>
-    </ScrollView>
+    </View>
   );
 }
 //<CustomIcon name="heart" filled={true} color="red" size={24} />
