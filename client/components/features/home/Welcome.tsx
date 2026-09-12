@@ -2,7 +2,6 @@ import {
   Button,
   Linking,
   Pressable,
-  ScrollView,
   StyleSheet,
   Text,
   View,
