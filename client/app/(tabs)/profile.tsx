@@ -1,19 +1,33 @@
 import {
   View,
   Text,
-  Platform,
   ImageBackground,
   ScrollView,
   Pressable,
   TextInput,
   Switch,
   Alert,
+  StyleSheet,
 } from "react-native";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useStyles } from "@/styles/GlobalStyles";
 import Counter from "@/components/features/profile/Counter";
+import * as Updates from "expo-updates";
 import * as Haptics from "expo-haptics";
-import { storage } from "@/utils/storage";
+import {
+  readProfileName,
+  writeProfileName,
+  readProfilePictureFile,
+  writeProfilePictureFile,
+  resetAllData,
+  useStats,
+  defaultPantry,
+} from "@/utils/storage";
+import {
+  clearProfilePictures,
+  persistProfilePicture,
+  readProfilePictureUri,
+} from "@/utils/profilePicture";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import { hexToRgba } from "@/utils/color";
 // import * as Updates from "expo-updates";
@@ -30,11 +44,18 @@ import { useFocusEffect } from "@react-navigation/native";
 import AchievementsContext, {
   AchievementData,
 } from "@/contexts/AchievementsContext";
+import SavedRecipesContext from "@/contexts/SavedRecipesContext";
+import { PantryDetailsContext } from "@/contexts/PantryDetails";
+import GroceryListContext from "@/contexts/GroceryListContext";
+import CheckedGroceryListContext from "@/contexts/CheckedGroceryListContext";
 import Achievement from "@/components/features/profile/Achievement";
 import { getUnlockedAchievementIds } from "@/utils/achievements";
+import { ACHIEVEMENTS } from "@/constants/Achievements";
 import { Image } from "expo-image";
 import icons3d from "@/components/universal/3dIcons";
 import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
+import * as ImagePicker from "expo-image-picker";
+import { moderateScale } from "@/utils/responsive";
 
 export default function Profile() {
   const styles = useStyles();
@@ -49,12 +70,68 @@ export default function Profile() {
 
   const isDark = useIsDarkMode();
   const [achievements, setAchievements] = useContext(AchievementsContext);
+  const [savedRecipes, setSavedRecipes] = useContext(SavedRecipesContext);
+  const [pantryDetails, setPantryDetails] = useContext(PantryDetailsContext);
+  const [, setGroceryList] = useContext(GroceryListContext);
+  const [, setCheckedGroceryList] = useContext(CheckedGroceryListContext);
+  const stats = useStats();
   const { toggleColorScheme } = useToggleColorScheme();
   const circleButtonShadow = useTintedBoxShadow(theme.primary);
   const cancelButtonShadow = useTintedBoxShadow(theme.greyBlock);
   const savesCardShadow = useTintedBoxShadow(theme.blueBlock);
   const dangerZoneShadow = useTintedBoxShadow(theme.redAccent);
   const pfpShadow = useTintedBoxShadow(theme.lightGrey);
+
+  const [imageUri, setImageUri] = useState<string | null>(() =>
+    readProfilePictureUri(readProfilePictureFile()),
+  );
+
+  const handlePickImage = async () => {
+    const permissionResult =
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (!permissionResult.granted) {
+      Alert.alert(
+        "Permission required",
+        "Permission to access the camera roll is required!",
+      );
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images"],
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 0.8,
+    });
+
+    if (result.canceled) return;
+
+    saveProfilePicture(result.assets[0].uri);
+  };
+
+  const saveProfilePicture = (pickedUri: string) => {
+    try {
+      const previousFile = readProfilePictureFile();
+      const fileName = persistProfilePicture(pickedUri, previousFile);
+
+      writeProfilePictureFile(fileName);
+      setImageUri(readProfilePictureUri(fileName));
+
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    } catch (error) {
+      console.error("Failed to save profile picture:", error);
+
+      Alert.alert(
+        "Couldn't Save Picture",
+        "That image could not be saved to your profile. Please try another one.",
+      );
+    }
+  };
+
+  const handleImageError = () => {
+    writeProfilePictureFile("");
+    setImageUri(null);
+  };
 
   const resetData = () => {
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
@@ -69,9 +146,19 @@ export default function Profile() {
 
           onPress: async () => {
             try {
-              storage.clearAll();
+              await resetAllData();
+              await clearProfilePictures();
+              // setImageUri(null);
 
-              // await Updates.reloadAsync();
+              // setSavedRecipes([]);
+              // setPantryDetails({ ...defaultPantry, ingredients: [] });
+              // setGroceryList([]);
+              // setCheckedGroceryList([]);
+              // setNameQ("");
+              // setLastSavedName("");
+              // setAchievements(buildAvailableAchievements());
+
+              await Updates.reloadAsync();
             } catch (error) {
               console.error("Failed to reload the application safely:", error);
 
@@ -88,72 +175,14 @@ export default function Profile() {
 
   const buildAvailableAchievements = (): AchievementData[] => {
     const unlockedIds = getUnlockedAchievementIds();
-    return [
-      {
-        id: "first-mash",
-        title: "First Mash",
-        description: "Make your first meal with MealMash", // unlocked when a meal is made for the first time (follow a recipe)
-        emoji: "Medal",
-        color: theme.yellowBlock,
-        unlocked: unlockedIds.includes("first-mash"),
-      },
-      {
-        id: "sweet-tooth",
-        title: "Sweet Tooth",
-        description: "Generate 10 dessert recipes", // unlocked when 10 recipes classified with the category "Sweet Treats" have been generated
-        emoji: "Popsicle",
-        color: theme.orangeBlock,
-        unlocked: unlockedIds.includes("sweet-tooth"),
-      },
-      {
-        id: "world-tour",
-        title: "World Tour",
-        description: "Generate recipes from 5 different cuisines", //Each distinct explicit cuisine in prompt counts. Like if it says Chinese in the constructed prompt."Any" DOES NOT count as a cuisine.
-        emoji: "World",
-        color: theme.blueBlock,
-        unlocked: unlockedIds.includes("world-tour"),
-      },
-      {
-        id: "the-cookbook",
-        title: "The Cookbook",
-        description: "Save 50 generated recipes", // 50 recipes saved
-        emoji: "RecipeBook",
-        color: theme.greenBlock,
-        unlocked: unlockedIds.includes("the-cookbook"),
-      },
-      {
-        id: "late-night-snack",
-        title: "Late-Night Snack",
-        description: "Create a recipe after 10pm", // Generate a recipe after 10pm local time
-        emoji: "Clock",
-        color: theme.purpblueBlock,
-        unlocked: unlockedIds.includes("late-night-snack"),
-      },
-      {
-        id: "leftover-legend",
-        title: "Leftover Legend",
-        description: "Make 25 meals with leftovers", // Unlocked when 25 recipes meals classified with the category "Made With Leftovers" have been made and followed (click follow recpie to count)
-        emoji: "HotDog",
-        color: theme.orangeBlock,
-        unlocked: unlockedIds.includes("leftover-legend"),
-      },
-      {
-        id: "on-fire",
-        title: "On Fire",
-        description: "Generate a recipe 7 days in a row", // Generate a recipe every day for 7 days in a row (streak)
-        emoji: "Fire",
-        color: theme.redBlock,
-        unlocked: unlockedIds.includes("on-fire"),
-      },
-      {
-        id: "century",
-        title: "Century",
-        description: "Make 100 meals", // MAKE and FOLLOW 100 recipes (go through the steps not just generate it)
-        emoji: "Trophy",
-        color: theme.orangeBlock,
-        unlocked: unlockedIds.includes("century"),
-      },
-    ];
+    return ACHIEVEMENTS.map(({ id, title, description, emoji, colorKey }) => ({
+      id,
+      title,
+      description,
+      emoji,
+      color: theme[colorKey],
+      unlocked: unlockedIds.includes(id),
+    }));
   };
   const handleEditPress = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -170,7 +199,7 @@ export default function Profile() {
   const handleSavePress = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     nameInputRef.current?.blur();
-    storage.set("name", nameQ);
+    writeProfileName(nameQ);
     setLastSavedName(nameQ);
     setEditMode(false);
   };
@@ -195,15 +224,10 @@ export default function Profile() {
   );
 
   useEffect(() => {
-    const storedName = storage.getString("name") ?? "";
-
+    const storedName = readProfileName();
     if (storedName) {
-      try {
-        setNameQ(storedName);
-        setLastSavedName(storedName);
-      } catch (e) {
-        console.error("Failed to get name:", e);
-      }
+      setNameQ(storedName);
+      setLastSavedName(storedName);
     }
   }, []);
 
@@ -221,10 +245,9 @@ export default function Profile() {
             flex: 1,
           }}
           contentContainerStyle={{
-            flexGrow: 1,
-            paddingHorizontal: 25,
-            paddingTop: 20,
-            paddingBottom: 170,
+            paddingHorizontal: moderateScale(25),
+            paddingTop: moderateScale(20),
+            paddingBottom: moderateScale(100),
           }}
           overScrollMode="never"
           alwaysBounceVertical={false}
@@ -232,8 +255,6 @@ export default function Profile() {
         >
           <View
             style={{
-              flex: 1,
-
               position: "relative",
             }}
           >
@@ -249,7 +270,7 @@ export default function Profile() {
                   styles.basicTextLeft,
                   styles.bold,
                   {
-                    fontSize: 28,
+                    fontSize: moderateScale(28),
                   },
                 ]}
               >
@@ -267,7 +288,7 @@ export default function Profile() {
               ></SwitchToggle>
             </View>
 
-            <View style={{ gap: 30 }}>
+            <View style={{ gap: moderateScale(30) }}>
               <View
                 style={{
                   flexDirection: "row",
@@ -279,14 +300,50 @@ export default function Profile() {
               >
                 <Pressable
                   style={[styles.pfp, pfpShadow]}
-                  onPress={editMode ? () => "" : () => ""}
+                  onPress={handlePickImage}
+                  disabled={!editMode}
                 >
-                  <CustomIcon
-                    name={editMode ? "camera-2" : "user-2"}
-                    filled
-                    size={editMode ? 40 : 47}
-                    color={editMode ? theme.pillX : theme.placeholderText}
-                  ></CustomIcon>
+                  {imageUri ? (
+                    <>
+                      <Image
+                        source={{ uri: imageUri }}
+                        style={[
+                          StyleSheet.absoluteFillObject,
+                          { borderRadius: 200 },
+                        ]}
+                        contentFit="cover"
+                        transition={200}
+                        onError={handleImageError}
+                      />
+                      {editMode ? (
+                        <View
+                          style={[
+                            StyleSheet.absoluteFillObject,
+                            {
+                              borderRadius: 200,
+                              alignItems: "center",
+                              justifyContent: "center",
+                              backgroundColor: "rgba(0, 0, 0, 0.4)",
+                            },
+                          ]}
+                        >
+                          <CustomIcon
+                            name="camera-2"
+                            filled
+                            size={34}
+                            color={theme.pureWhite}
+                          ></CustomIcon>
+                        </View>
+                      ) : null}
+                    </>
+                  ) : (
+                    <CustomIcon
+                      name={editMode ? "camera-2" : "user-2"}
+                      filled
+                      size={editMode ? 40 : 47}
+                      color={editMode ? theme.pillX : theme.placeholderText}
+                    ></CustomIcon>
+                  )}
                 </Pressable>
                 <View style={{ flex: 1, gap: 10 }}>
                   <View
@@ -413,13 +470,13 @@ export default function Profile() {
                 </View>
               </View>
 
-              <View style={{ gap: 15 }}>
+              <View style={{ gap: moderateScale(15) }}>
                 <Text
                   style={[
                     styles.basicTextLeft,
                     styles.bold,
                     {
-                      fontSize: 28,
+                      fontSize: moderateScale(28),
                     },
                   ]}
                 >
@@ -434,26 +491,26 @@ export default function Profile() {
                   }}
                 >
                   <Counter
-                    variable="mealsnumber"
+                    value={stats.mealsGenerated}
                     text="Meals Generated"
                   ></Counter>
                   <Counter
-                    variable="savesnumber"
+                    value={savedRecipes.length}
                     text={"Saved\nRecipes"}
                   ></Counter>
                   <Counter
-                    variable="pantrynumber"
+                    value={pantryDetails.ingredients.length}
                     text={"Ingredients\nin Pantry"}
                   ></Counter>
                 </View>
               </View>
-              <View style={{ gap: 15 }}>
+              <View style={{ gap: moderateScale(15) }}>
                 <Text
                   style={[
                     styles.basicTextLeft,
                     styles.bold,
                     {
-                      fontSize: 28,
+                      fontSize: moderateScale(28),
                     },
                   ]}
                 >
@@ -480,7 +537,6 @@ export default function Profile() {
                       />
                     </View>
                     <Text
-                      adjustsFontSizeToFit
                       numberOfLines={1}
                       style={[
                         styles.textLeftBold,
@@ -509,13 +565,13 @@ export default function Profile() {
                   </Text>
                 </Pressable>
               </View>
-              <View style={{ gap: 15 }}>
+              <View style={{ gap: moderateScale(15) }}>
                 <Text
                   style={[
                     styles.basicTextLeft,
                     styles.bold,
                     {
-                      fontSize: 28,
+                      fontSize: moderateScale(28),
                     },
                   ]}
                 >
@@ -543,19 +599,41 @@ export default function Profile() {
                   )}
                 </View>
               </View>
-              <View style={{ gap: 15 }}>
+              <View style={{ gap: moderateScale(15) }}>
                 <Text
                   style={[
                     styles.basicTextLeft,
                     styles.bold,
                     {
-                      fontSize: 28,
+                      fontSize: moderateScale(28),
                     },
                   ]}
                 >
-                  Danger Zone
+                  More
                 </Text>
 
+                <Pressable
+                  style={[
+                    styles.savesCard,
+                    circleButtonShadow,
+
+                    { backgroundColor: theme.primary },
+                  ]}
+                  onPress={() => router.navigate("/about")}
+                >
+                  <Text
+                    style={[
+                      styles.textCenterBold,
+
+                      {
+                        color: theme.pureWhite,
+                        fontSize: 16,
+                      },
+                    ]}
+                  >
+                    About MealMash
+                  </Text>
+                </Pressable>
                 <Pressable
                   style={[
                     styles.savesCard,
@@ -575,7 +653,7 @@ export default function Profile() {
                       },
                     ]}
                   >
-                    Reset App & Delete All Data
+                    Delete All Data
                   </Text>
                 </Pressable>
               </View>

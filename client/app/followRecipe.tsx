@@ -1,7 +1,7 @@
 import React, { useContext, useMemo, useState } from "react";
 import { View, Text, ScrollView, Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Image } from "expo-image";
+import AppImage from "@/components/universal/AppImage";
 import RecipeContext, { type RecipeData } from "@/contexts/RecipeContext";
 import NutrientsContext from "@/contexts/NutrientsContext";
 import RecipeInfoTags from "@/components/features/recipe/RecipeInfoTags";
@@ -17,23 +17,8 @@ import RecipeSection from "@/components/features/recipe/RecipeSection";
 import Svg, { Path } from "react-native-svg";
 import FollowRecipeHeader from "@/components/features/recipe/FollowRecipeHeader";
 import { router } from "expo-router";
-
-export const MEAL_IMAGES: Record<string, any> = {
-  burger: require("@/assets/images/meal-images/burger.webp"),
-  pizza: require("@/assets/images/meal-images/pizza.webp"),
-  pasta: require("@/assets/images/meal-images/pasta.webp"),
-  salad: require("@/assets/images/meal-images/salad.webp"),
-  curry: require("@/assets/images/meal-images/curry.webp"),
-  "fried-rice": require("@/assets/images/meal-images/fried-rice.webp"),
-  sandwich: require("@/assets/images/meal-images/sandwich.webp"),
-  taco: require("@/assets/images/meal-images/taco.webp"),
-  soup: require("@/assets/images/meal-images/soup.webp"),
-  dessert: require("@/assets/images/meal-images/dessert.webp"),
-  breakfast: require("@/assets/images/meal-images/breakfast.webp"),
-  seafood: require("@/assets/images/meal-images/seafood.webp"),
-  steak: require("@/assets/images/meal-images/steak.webp"),
-  bowl: require("@/assets/images/meal-images/bowl.webp"),
-};
+import { useMealImages } from "@/contexts/MealImageContext";
+import { getMealImageSource } from "@/utils/mealImageSource";
 
 const followRecipe = () => {
   const styles = useStyles();
@@ -41,6 +26,7 @@ const followRecipe = () => {
   const imageGlowShadow = useTintedBoxShadow(theme.backgroundColor, "glow");
   const returnButtonShadow = useTintedBoxShadow(theme.primary);
   const [contextRecipeData] = useContext(RecipeContext);
+  const { mealImages } = useMealImages();
   const navigation = useNavigation();
   const bulletMargin = 45; //33
 
@@ -101,6 +87,11 @@ const followRecipe = () => {
     ? contextRecipeData
     : defaultRecipeData;
 
+  const imageSource = useMemo(
+    () => getMealImageSource(mealImages, recipeData.imageCategory),
+    [mealImages, recipeData.imageCategory],
+  );
+
   const [checked, setChecked] = useState<boolean[]>(
     (recipeData?.ingredients || []).map(() => false),
   );
@@ -149,19 +140,16 @@ const followRecipe = () => {
                 { width: 70, height: 70, borderRadius: 110 },
               ]}
             >
-              <Image
-                source={
-                  MEAL_IMAGES[recipeData.imageCategory] || MEAL_IMAGES.bowl
-                }
+              <AppImage
+                source={imageSource}
                 style={{ width: "100%", height: "100%", borderRadius: 110 }}
                 contentFit="cover"
               />
             </View>
             <View style={{ flex: 1, paddingHorizontal: 18 }}>
               <Text
-                numberOfLines={1}
-                adjustsFontSizeToFit
-                style={[styles.textLeftBold, { fontSize: 23 }]}
+                numberOfLines={2}
+                style={[styles.textLeftBold, { fontSize: 23, lineHeight: 27 }]}
               >
                 {recipeData.title}
               </Text>
@@ -316,7 +304,7 @@ const followRecipe = () => {
                       lineHeight: 22,
                       marginLeft: 16,
                       marginTop: 5,
-                      marginBottom: bulletMargin,
+                      marginBottom: instruction.timerMinutes ? 10 : bulletMargin,
                     },
                   ]}
                 >
@@ -324,7 +312,7 @@ const followRecipe = () => {
                 </Text>
               </View>
               {instruction.timerMinutes ? (
-                <View style={{ marginTop: -20, marginBottom: 5 }}>
+                <View style={{ marginBottom: bulletMargin - 10 }}>
                   <Timer
                     time={instruction.timerMinutes * 60}
                     taskDescription={instruction.timerTask}

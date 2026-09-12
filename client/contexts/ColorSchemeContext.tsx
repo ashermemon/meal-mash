@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
 import { Appearance, ColorSchemeName } from "react-native";
-import { storage } from "@/utils/storage";
+import { readColorScheme, writeColorScheme } from "@/utils/storage";
 import { NEWCOLORS, DARK_NEWCOLORS } from "@/constants/NewTheme";
 import { COLORS, DARK_COLORS } from "@/constants/Theme";
 
@@ -21,17 +21,14 @@ interface ColorSchemeContextType {
   toggleColorScheme: () => void;
 }
 
-const STORAGE_KEY = "colorScheme";
-
 const ColorSchemeContext = createContext<ColorSchemeContextType | undefined>(
   undefined,
 );
 
 const getInitialColorScheme = (): ColorScheme => {
-  const stored = storage.getString(STORAGE_KEY);
-  if (stored === "light" || stored === "dark") {
-    return stored;
-  }
+  const stored = readColorScheme();
+  if (stored) return stored;
+
   const system: ColorSchemeName = Appearance.getColorScheme();
   return system === "dark" ? "dark" : "light";
 };
@@ -42,7 +39,7 @@ export const ColorSchemeProvider = ({ children }: { children: ReactNode }) => {
   );
 
   const setColorScheme = (scheme: ColorScheme) => {
-    storage.set(STORAGE_KEY, scheme);
+    writeColorScheme(scheme);
     setColorSchemeState(scheme);
   };
 

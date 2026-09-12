@@ -6,7 +6,7 @@ import {
   Text,
   View,
 } from "react-native";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import Animated, {
   Easing,
   FadeInDown,
@@ -17,7 +17,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { useStyles } from "@/styles/GlobalStyles";
 import { useTheme } from "@/contexts/ColorSchemeContext";
-import { Image } from "expo-image";
+import AppImage from "@/components/universal/AppImage";
 import * as Haptics from "expo-haptics";
 import SavedRecipesContext from "@/contexts/SavedRecipesContext";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
@@ -26,7 +26,8 @@ import { saveRecipe, equal } from "@/components/features/recipe/SaveRecipe";
 import { router } from "expo-router";
 import RecipeContext, { type RecipeData } from "@/contexts/RecipeContext";
 import RecipeInfoTags from "../recipe/RecipeInfoTags";
-import { MEAL_IMAGES } from "@/app/followRecipe";
+import { useMealImages } from "@/contexts/MealImageContext";
+import { getMealImageSource } from "@/utils/mealImageSource";
 import InfoTag from "../recipe/InfoTag";
 import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 import {
@@ -63,6 +64,11 @@ export default function SavedCard(props: SavedProps) {
   const [saved, setSaved] = useState(true);
   const [savesRecipes, setSavesRecipes] = useContext(SavedRecipesContext);
   const [recipeData, setRecipeData] = useContext(RecipeContext);
+  const { mealImages } = useMealImages();
+  const imageSource = useMemo(
+    () => getMealImageSource(mealImages, props.SavedRecipe.imageCategory),
+    [mealImages, props.SavedRecipe.imageCategory],
+  );
 
   const cardKey = recipeKey(props.SavedRecipe);
   const gap = props.gap ?? 20;
@@ -299,20 +305,16 @@ export default function SavedCard(props: SavedProps) {
                   { width: 70, height: 70, borderRadius: 110 },
                 ]}
               >
-                <Image
-                  source={
-                    MEAL_IMAGES[props.SavedRecipe.imageCategory] ||
-                    MEAL_IMAGES.bowl
-                  }
+                <AppImage
+                  source={imageSource}
                   style={{ width: "100%", height: "100%", borderRadius: 110 }}
                   contentFit="cover"
                 />
               </View>
               <View style={{ flex: 1, paddingHorizontal: 20, gap: 7 }}>
                 <Text
-                  adjustsFontSizeToFit
-                  numberOfLines={1}
-                  style={[styles.textLeftBold, { fontSize: 17 }]}
+                  numberOfLines={2}
+                  style={[styles.textLeftBold, { fontSize: 17, lineHeight: 20 }]}
                 >
                   {props.SavedRecipe.title}
                 </Text>
@@ -357,7 +359,6 @@ export default function SavedCard(props: SavedProps) {
                   >
                     <Text
                       numberOfLines={1}
-                      adjustsFontSizeToFit
                       style={[
                         styles.textCenterBold,
                         { fontSize: 11, fontFamily: "Nunito-SemiBold" },
@@ -377,7 +378,6 @@ export default function SavedCard(props: SavedProps) {
                   >
                     <Text
                       numberOfLines={1}
-                      adjustsFontSizeToFit
                       style={[
                         styles.textCenterBold,
                         { fontSize: 11, fontFamily: "Nunito-SemiBold" },
@@ -396,7 +396,6 @@ export default function SavedCard(props: SavedProps) {
                   >
                     <Text
                       numberOfLines={1}
-                      adjustsFontSizeToFit
                       style={[
                         styles.textCenterBold,
                         { fontSize: 11, fontFamily: "Nunito-SemiBold" },

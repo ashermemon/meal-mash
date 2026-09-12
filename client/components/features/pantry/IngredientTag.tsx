@@ -66,8 +66,6 @@ const IngredientTag = (props: Props) => {
       >
         <Text
           numberOfLines={1}
-          minimumFontScale={0.5}
-          adjustsFontSizeToFit
           style={[
             styles.textLeftSemiBold,
             {

@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import Reanimated, { FadeIn, FadeOut } from "react-native-reanimated";
 import { useStyles } from "@/styles/GlobalStyles";
 import { useTheme } from "@/contexts/ColorSchemeContext";
-import { Image } from "expo-image";
+import AppImage from "@/components/universal/AppImage";
 import { useNavigation } from "@react-navigation/native";
 import PantryPill from "@/components/features/pantry/PantryPill";
 import { ScrollView } from "react-native-gesture-handler";
@@ -12,12 +12,14 @@ import { hexToRgba } from "@/utils/color";
 import { LinearGradient } from "expo-linear-gradient";
 
 import { PantryDetailsContext } from "@/contexts/PantryDetails";
+import { ingredientKey, usePantryDisplayName } from "@/utils/storage";
 import FilterIngredients from "@/components/features/pantry/FilterIngredients";
 import IngredientTag from "@/components/features/pantry/IngredientTag";
 import Search, { Food } from "@/components/features/pantry/Search";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import icons3d from "@/components/universal/3dIcons";
 import { getCategoryDisplayLabel } from "@/constants/categoryLabels";
+import { moderateScale, scale } from "@/utils/responsive";
 
 export default function Dashboard() {
   const styles = useStyles();
@@ -34,6 +36,7 @@ export default function Dashboard() {
   }, [searchActive, searchOverlayOpacity]);
   const navigation = useNavigation();
   const [pantryDetails, setPantryDetails] = useContext(PantryDetailsContext);
+  const pantryDisplayName = usePantryDisplayName(pantryDetails.name);
   const [selectedFilter, setSelectedFilter] = useState("All");
   const pantryIngredientIds = useMemo(
     () => new Set(pantryDetails.ingredients.map((item) => item.id)),
@@ -75,10 +78,9 @@ export default function Dashboard() {
           flex: 1,
         }}
         contentContainerStyle={{
-          flexGrow: 1,
-          paddingHorizontal: 25,
-          paddingTop: 20,
-          paddingBottom: 130,
+          paddingHorizontal: moderateScale(25),
+          paddingTop: moderateScale(20),
+          paddingBottom: moderateScale(130),
         }}
         overScrollMode="never"
         alwaysBounceVertical={false}
@@ -86,11 +88,9 @@ export default function Dashboard() {
       >
         <View
           style={{
-            flex: 1,
-
             position: "relative",
 
-            gap: 20,
+            gap: moderateScale(20),
           }}
         >
           <Text
@@ -98,19 +98,16 @@ export default function Dashboard() {
               styles.basicTextLeft,
               styles.bold,
               {
-                fontSize: 28,
+                fontSize: moderateScale(28),
               },
             ]}
           >
             Pantry
           </Text>
 
-          <View style={{ gap: 25, flex: 1 }}>
-            <PantryPill
-              pantryName={pantryDetails.name}
-              pantryPage={true}
-            ></PantryPill>
-            <View style={{ gap: 20, flex: 1 }}>
+          <View style={{ gap: moderateScale(25), flex: 1 }}>
+            <PantryPill pantryPage={true}></PantryPill>
+            <View style={{ gap: moderateScale(20), flex: 1 }}>
               <Search
                 addedIds={pantryIngredientIds}
                 onSelectIngredient={(item: Food) =>
@@ -140,18 +137,26 @@ export default function Dashboard() {
 
               <View style={styles.pantryTip}>
                 <Text
-                  style={[styles.textLeft, { color: theme.fontColor }]}
-                  numberOfLines={2}
-                  adjustsFontSizeToFit
+                  style={[
+                    styles.textLeft,
+                    {
+                      color: theme.fontColor,
+                      fontSize: moderateScale(13),
+                    },
+                  ]}
                 >
                   <Text style={{ fontFamily: "Nunito-SemiBold" }}>Tip: </Text>
                   Be sure to add any leftover dishes you have at home and want
                   to use in recipes!
                 </Text>
 
-                <Image
+                <AppImage
                   source={icons3d["Pizza"]}
-                  style={{ width: 60, height: 60, marginBottom: 4 }}
+                  style={{
+                    width: scale(60),
+                    height: scale(60),
+                    marginBottom: moderateScale(4),
+                  }}
                 />
               </View>
 
@@ -163,7 +168,7 @@ export default function Dashboard() {
                 />
                 {filteredIngredients.map((ingredient: Food) => (
                   <IngredientTag
-                    key={ingredient.id}
+                    key={ingredientKey(ingredient)}
                     ingredient={ingredient}
                   ></IngredientTag>
                 ))}
@@ -196,7 +201,7 @@ export default function Dashboard() {
                       },
                     ]}
                   >
-                    {pantryDetails.name} is empty
+                    {pantryDisplayName} is empty
                   </Text>
                   <Text
                     style={[

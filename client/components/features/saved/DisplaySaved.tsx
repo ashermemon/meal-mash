@@ -56,14 +56,12 @@ export default function DisplaySaved({ filter }: Props) {
         ListHeaderComponent={
           saves.length === 0 ? null : (
             <Text
-              adjustsFontSizeToFit
-              numberOfLines={1}
               style={[
                 styles.textLeftSemiBold,
                 {
                   marginTop: 5,
                   marginBottom: 15,
-                  fontSize: 18,
+                  fontSize: 16,
                   fontFamily: "Nunito-Medium",
                 },
               ]}

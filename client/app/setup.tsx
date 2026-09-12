@@ -11,7 +11,10 @@ import {
 } from "react-native";
 import React, { useState, useEffect, useCallback, useContext } from "react";
 import { useFocusEffect, useRouter } from "expo-router";
-import { storage } from "@/utils/storage";
+import {
+  setPantrySetupComplete,
+  useDefaultPantryName,
+} from "@/utils/storage";
 import { useStyles } from "@/styles/GlobalStyles";
 import { useTheme } from "@/contexts/ColorSchemeContext";
 import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
@@ -46,9 +49,8 @@ const SetupScreen = (props: Props) => {
   const emojiCircleShadow = useTintedBoxShadow(theme.unselectedGrey);
   const router = useRouter();
   const [pantryDetails, setPantryDetails] = useContext(PantryDetailsContext);
-  const [pantryName, setPantryName] = useState(
-    pantryDetails.name === "Your Pantry" ? "" : pantryDetails.name,
-  );
+  const defaultPantryName = useDefaultPantryName();
+  const [pantryName, setPantryName] = useState(pantryDetails.name);
   const [keyboardOpen, setKeyboardOpen] = useState(false);
   const [selected, setSelected] = useState(-1);
   const [cameraNext, setCameraNext] = useState(false);
@@ -260,7 +262,7 @@ const SetupScreen = (props: Props) => {
   }, []);
 
   const handleFinishSteps = () => {
-    storage.set("IS_PANTRY_SETUP", true);
+    setPantrySetupComplete();
     router.replace("/(tabs)/pantry/dashboard");
   };
 
@@ -280,7 +282,9 @@ const SetupScreen = (props: Props) => {
               onPress={() =>
                 setPantryDetails((prev) => ({
                   ...prev,
-                  name: pantryName.length > 0 ? pantryName : "Your Pantry",
+                  // Left empty on purpose when blank, so the name keeps
+                  // following the profile name.
+                  name: pantryName.trim(),
                   icon: currentEmojiText,
                 }))
               }
@@ -314,7 +318,7 @@ const SetupScreen = (props: Props) => {
                 ]}
                 value={pantryName}
                 onChangeText={setPantryName}
-                placeholder="Your Pantry"
+                placeholder={defaultPantryName}
                 placeholderTextColor={theme.placeholderText}
               />
             </OnboardingStep>,

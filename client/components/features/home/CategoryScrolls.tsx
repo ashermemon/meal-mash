@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 import { useStyles } from "@/styles/GlobalStyles";
 import { useTheme, useIsDarkMode } from "@/contexts/ColorSchemeContext";
 import { FlashList } from "@shopify/flash-list";
-import { Image } from "expo-image";
+import AppImage from "@/components/universal/AppImage";
 import { router } from "expo-router";
 import RecipeContext from "@/contexts/RecipeContext";
 import * as Haptics from "expo-haptics";
@@ -40,6 +40,7 @@ const FeaturedRecipeButton = () => {
         keyExtractor={(item) => item.id}
         horizontal
         bounces={false}
+        showsHorizontalScrollIndicator={false}
         decelerationRate={0.85}
         overScrollMode="never"
         // @ts-ignore
@@ -75,13 +76,15 @@ const FeaturedRecipeButton = () => {
               ]}
             >
               <Text
-                style={[styles.textCentered, { fontFamily: "Nunito-SemiBold" }]}
-                adjustsFontSizeToFit={true}
+                style={[
+                  styles.textCentered,
+                  { fontFamily: "Nunito-SemiBold", fontSize: 13 },
+                ]}
                 numberOfLines={1}
               >
                 {item.name}
               </Text>
-              <Image
+              <AppImage
                 source={
                   item.icon
                     ? icons3d[item.icon] || icons3d.Default
@@ -93,7 +96,7 @@ const FeaturedRecipeButton = () => {
 
                   alignSelf: "center",
                 }}
-              ></Image>
+              ></AppImage>
             </Pressable>
           );
         }}

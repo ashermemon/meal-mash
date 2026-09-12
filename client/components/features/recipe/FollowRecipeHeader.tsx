@@ -61,7 +61,6 @@ const FollowRecipeHeader = (props: HeaderProps) => {
           <View style={{ flex: 1, alignItems: "center" }}>
             <Text
               numberOfLines={1}
-              adjustsFontSizeToFit
               style={[
                 styles.textCenterBold,
                 { fontSize: 18, fontFamily: "Nunito-SemiBold" },

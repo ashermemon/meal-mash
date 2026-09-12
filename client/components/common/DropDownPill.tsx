@@ -162,6 +162,7 @@ const DropDownPill = (props: Props) => {
                 { fontSize: 16, paddingHorizontal: 3 },
               ]}
               adjustsFontSizeToFit
+              minimumFontScale={0.75}
               numberOfLines={1}
             >
               {getDisplayLabel(props.selections, props.title)}

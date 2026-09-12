@@ -16,8 +16,7 @@
         "buildType": "apk"
       },
       "ios": {
-        "simulator": false,
-        "enterpriseProvisioning": "universal"
+        "simulator": false
       }
     },
     "production": {
@@ -25,6 +24,11 @@
     }
   },
   "submit": {
-    "preview": {}
+    "preview": {},
+    "production": {
+      "android": {
+        "track": "internal"
+      }
+    }
   }
 }

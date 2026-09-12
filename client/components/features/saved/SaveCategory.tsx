@@ -2,7 +2,7 @@ import { View, Text, Pressable } from "react-native";
 import React, { useContext } from "react";
 import { useStyles } from "@/styles/auth.styles";
 import { useTheme } from "@/contexts/ColorSchemeContext";
-import { Image } from "expo-image";
+import AppImage from "@/components/universal/AppImage";
 import icons3d from "@/components/universal/3dIcons";
 import { router } from "expo-router";
 import SavedRecipesContext from "@/contexts/SavedRecipesContext";
@@ -51,7 +51,7 @@ const SaveCategory = (props: Props) => {
           homeBlockShadow,
         ]}
       >
-        <Image style={{ flex: 1 }} source={icons3d[props.image]}></Image>
+        <AppImage style={{ flex: 1 }} source={icons3d[props.image]}></AppImage>
       </View>
       <Text style={[styles.textLeftBold, { fontSize: 15, marginTop: 7 }]}>
         {props.title}

@@ -3,7 +3,7 @@ import React, { ReactNode } from "react";
 import { useStyles } from "@/styles/auth.styles";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import { useTheme, useIsDarkMode } from "@/contexts/ColorSchemeContext";
-import { Image } from "expo-image";
+import AppImage from "@/components/universal/AppImage";
 import icons3d from "@/components/universal/3dIcons";
 import { FilterImage } from "react-native-svg/filter-image";
 import { lightenColor, hexToRgba } from "@/utils/color";
@@ -39,7 +39,7 @@ const Achievement = (props: Props) => {
       ]}
     >
       {!props.unlocked && (
-        <Image
+        <AppImage
           source={icons3d["Lock"]}
           style={{
             width: 30,
@@ -48,7 +48,7 @@ const Achievement = (props: Props) => {
             top: 15,
             right: 15,
           }}
-        ></Image>
+        ></AppImage>
       )}
       <View
         style={{
@@ -74,6 +74,7 @@ const Achievement = (props: Props) => {
         <View style={{ gap: 3, flex: 1 }}>
           <Text
             adjustsFontSizeToFit
+            minimumFontScale={0.8}
             style={[
               styles.textLeftBold,
               {
