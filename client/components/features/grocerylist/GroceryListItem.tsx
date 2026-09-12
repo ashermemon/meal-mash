@@ -17,6 +17,7 @@ import { useTheme } from "@/contexts/ColorSchemeContext";
 import GroceryListContext from "@/contexts/GroceryListContext";
 import CheckedGroceryListContext from "@/contexts/CheckedGroceryListContext";
 import { PantryDetailsContext } from "@/contexts/PantryDetails";
+import { moderateScale } from "@/utils/responsive";
 
 if (
   Platform.OS === "android" &&
@@ -123,7 +124,10 @@ const GroceryListItem = ({ food, variant = "active" }: Props) => {
         opacity: Animated.multiply(fadeAnim, mountFadeAnim),
       }}
     >
-      <View style={{ marginRight: 12 }} pointerEvents={busy ? "none" : "auto"}>
+      <View
+        style={{ marginRight: moderateScale(12) }}
+        pointerEvents={busy ? "none" : "auto"}
+      >
         <CustomCheckbox
           checked={checked}
           onChange={toggle}
@@ -152,7 +156,7 @@ const GroceryListItem = ({ food, variant = "active" }: Props) => {
               {
                 marginLeft: 0,
                 flex: 1,
-                fontSize: 15,
+                fontSize: moderateScale(15),
                 color: textColorAnim,
               },
             ]}
@@ -165,9 +169,9 @@ const GroceryListItem = ({ food, variant = "active" }: Props) => {
           style={[
             styles.textRight,
             {
-              fontSize: 15,
+              fontSize: moderateScale(15),
               color: theme.searchPlaceholder,
-              marginLeft: 12,
+              marginLeft: moderateScale(12),
             },
           ]}
         >

@@ -4,6 +4,7 @@ import { useStyles } from "@/styles/GlobalStyles";
 import { ColorProperties } from "react-native-reanimated/lib/typescript/Colors";
 import { useTheme } from "@/contexts/ColorSchemeContext";
 import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
+import { moderateScale } from "@/utils/responsive";
 
 type counterProps = {
   value: number;
@@ -22,11 +23,11 @@ export default function Counter(props: counterProps) {
           backgroundColor: theme.cardWhite,
           alignItems: "center",
           justifyContent: "center",
-          borderRadius: 15,
+          borderRadius: moderateScale(15),
           flex: 1,
 
-          paddingVertical: 20,
-          paddingHorizontal: 5,
+          paddingVertical: moderateScale(20),
+          paddingHorizontal: moderateScale(5),
         },
       ]}
     >
@@ -34,7 +35,7 @@ export default function Counter(props: counterProps) {
         numberOfLines={1}
         style={[
           styles.textCentered,
-          { fontSize: 42, fontFamily: "Nunito-Bold" },
+          { fontSize: moderateScale(42), fontFamily: "Nunito-Bold" },
         ]}
       >
         {props.value}
@@ -44,8 +45,8 @@ export default function Counter(props: counterProps) {
         style={[
           styles.textCentered,
           {
-            fontSize: 14,
-            paddingBottom: 5,
+            fontSize: moderateScale(14),
+            paddingBottom: moderateScale(5),
             fontFamily: "Nunito-Medium",
           },
         ]}

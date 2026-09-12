@@ -9,6 +9,7 @@ import { useTheme } from "@/contexts/ColorSchemeContext";
 import * as Haptics from "expo-haptics";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
+import { moderateScale, scale } from "@/utils/responsive";
 
 type TimerProps = {
   time: number;
@@ -48,12 +49,12 @@ export default function Timer(props: TimerProps) {
           flexDirection: "row",
           alignItems: "center",
           flex: 1,
-          marginRight: 16,
+          marginRight: moderateScale(16),
         }}
       >
         <CountdownCircleTimer
           key={timerKey}
-          size={60}
+          size={scale(60)}
           isPlaying={isPlaying}
           duration={props.time}
           colors={[
@@ -78,14 +79,20 @@ export default function Timer(props: TimerProps) {
         >
           {() => null}
         </CountdownCircleTimer>
-        <View style={{ marginLeft: 22, flex: 1, justifyContent: "center" }}>
+        <View
+          style={{
+            marginLeft: moderateScale(22),
+            flex: 1,
+            justifyContent: "center",
+          }}
+        >
           <Text
-            style={[styles.textLeftBold, { fontSize: 16 }]}
+            style={[styles.textLeftBold, { fontSize: moderateScale(16) }]}
             numberOfLines={1}
           >
             {props.taskDescription || "Timer"}
           </Text>
-          <Text style={[styles.textLeftBold, { fontSize: 27 }]}>
+          <Text style={[styles.textLeftBold, { fontSize: moderateScale(27) }]}>
             {`${Math.floor(remainingTime / 60)}:${String(
               remainingTime % 60,
             ).padStart(2, "0")}`}

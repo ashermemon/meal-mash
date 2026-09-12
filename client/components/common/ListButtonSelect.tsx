@@ -5,6 +5,7 @@ import { useTheme, useIsDarkMode } from "@/contexts/ColorSchemeContext";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import * as Haptics from "expo-haptics";
 import { getTintedBoxShadow } from "@/utils/shadow";
+import { moderateScale, scale } from "@/utils/responsive";
 
 type Props = {
   options: string[];
@@ -18,7 +19,7 @@ const ListButtonSelect = (props: Props) => {
   const theme = useTheme();
   const isDark = useIsDarkMode();
   return (
-    <View style={{ gap: 25 }}>
+    <View style={{ gap: moderateScale(25) }}>
       {props.options.map((option: string, index: number) => {
         const buttonBackgroundColor =
           index === props.selected ? theme.greenAccent : theme.unselectedGrey;
@@ -29,7 +30,7 @@ const ListButtonSelect = (props: Props) => {
             getTintedBoxShadow(buttonBackgroundColor, isDark),
             {
               backgroundColor: buttonBackgroundColor,
-              paddingHorizontal: 30,
+              paddingHorizontal: moderateScale(30),
               flexDirection: "row",
               position: "relative",
               justifyContent: "space-around",
@@ -46,11 +47,11 @@ const ListButtonSelect = (props: Props) => {
             <View
               style={{
                 position: "absolute",
-                top: -10,
-                right: -10,
-                width: 30,
-                height: 30,
-                borderRadius: 17,
+                top: moderateScale(-10),
+                right: moderateScale(-10),
+                width: scale(30),
+                height: scale(30),
+                borderRadius: scale(17),
                 backgroundColor: theme.greenBlock,
                 justifyContent: "center",
                 alignItems: "center",
@@ -78,7 +79,7 @@ const ListButtonSelect = (props: Props) => {
             style={[
               styles.textCentered,
               {
-                fontSize: 24,
+                fontSize: moderateScale(24),
                 flex: 1,
                 color:
                   index === props.selected ? theme.pureWhite : theme.basicText,

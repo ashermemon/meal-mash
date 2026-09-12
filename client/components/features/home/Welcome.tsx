@@ -344,7 +344,7 @@ export default function Welcome() {
                     },
                   ]}
                 >
-                  Generate a random recipe (any ingredients)
+                  Generate a random recipe
                 </Text>
               </View>
             </View>

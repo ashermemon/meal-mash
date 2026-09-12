@@ -6,6 +6,7 @@ import { OnboardingContext } from "./OnboardingSequence";
 import { useTheme } from "@/contexts/ColorSchemeContext";
 import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 import * as Haptics from "expo-haptics";
+import { moderateScale, scale } from "@/utils/responsive";
 
 type Props = {
   children: React.ReactNode;
@@ -52,14 +53,20 @@ const OnboardingStep = (props: Props) => {
         <>{props.children}</>
       </View>
       <View>
-        <View style={{ flexDirection: "row", gap: 20, paddingTop: 40 }}>
+        <View
+          style={{
+            flexDirection: "row",
+            gap: moderateScale(20),
+            paddingTop: moderateScale(40),
+          }}
+        >
           <Pressable
             style={[
               styles.setupButton,
               backButtonShadow,
               {
-                height: 56,
-                width: 56,
+                height: scale(56),
+                width: scale(56),
                 backgroundColor: theme.placeholderText,
               },
             ]}

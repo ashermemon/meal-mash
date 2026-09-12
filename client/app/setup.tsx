@@ -40,6 +40,7 @@ import Animated, {
 import { Food } from "@/components/features/pantry/Search";
 import { searchHouseholdEssentials } from "@/components/features/pantry/SearchFunctionality";
 import EmojiButton from "@/components/universal/EmojiButton";
+import { moderateScale, scale } from "@/utils/responsive";
 
 type Props = {};
 
@@ -293,20 +294,20 @@ const SetupScreen = (props: Props) => {
                 style={{
                   justifyContent: "center",
                   alignItems: "center",
-                  marginTop: keyboardOpen ? 10 : 20,
-                  marginBottom: keyboardOpen ? 30 : 40,
+                  marginTop: moderateScale(keyboardOpen ? 10 : 20),
+                  marginBottom: moderateScale(keyboardOpen ? 30 : 40),
                 }}
               >
                 <EmojiButton
                   emoji={currentEmojiText}
                   onEmojiChange={setCurrentEmojiText}
-                  iconSize={keyboardOpen ? 100 : 140}
+                  iconSize={scale(keyboardOpen ? 100 : 140)}
                   style={[
                     styles.emojiCircle,
                     emojiCircleShadow,
                     {
-                      height: keyboardOpen ? 150 : 220,
-                      width: keyboardOpen ? 150 : 220,
+                      height: scale(keyboardOpen ? 150 : 220),
+                      width: scale(keyboardOpen ? 150 : 220),
                     },
                   ]}
                 />
@@ -314,7 +315,7 @@ const SetupScreen = (props: Props) => {
               <TextInput
                 style={[
                   styles.setupInput,
-                  { marginBottom: keyboardOpen ? 120 : 0 },
+                  { marginBottom: moderateScale(keyboardOpen ? 120 : 0) },
                 ]}
                 value={pantryName}
                 onChangeText={setPantryName}
@@ -326,7 +327,7 @@ const SetupScreen = (props: Props) => {
               stepTitle="How would you like to add your ingredients?"
               disableNext={selected === -1}
             >
-              <View style={{ marginVertical: 10 }}></View>
+              <View style={{ marginVertical: moderateScale(10) }}></View>
               <ListButtonSelect
                 options={["Snap a photo", "Add manually"]}
                 icons={["camera-2", "add"]}
@@ -356,7 +357,10 @@ const SetupScreen = (props: Props) => {
                   <Text
                     style={[
                       styles.textLeftBold,
-                      { fontSize: 20, marginBottom: 7 },
+                      {
+                        fontSize: moderateScale(20),
+                        marginBottom: moderateScale(7),
+                      },
                     ]}
                   >
                     Household Essentials:
@@ -365,7 +369,10 @@ const SetupScreen = (props: Props) => {
                   <Text
                     style={[
                       styles.textLeft,
-                      { fontSize: 15, marginBottom: 10 },
+                      {
+                        fontSize: moderateScale(15),
+                        marginBottom: moderateScale(10),
+                      },
                     ]}
                   >
                     Select ingredients to add to pantry
@@ -377,9 +384,9 @@ const SetupScreen = (props: Props) => {
                       numColumns={3}
                       columnWrapperStyle={{
                         justifyContent: "space-between",
-                        marginTop: 9,
-                        marginBottom: 9,
-                        gap: 18,
+                        marginTop: moderateScale(9),
+                        marginBottom: moderateScale(9),
+                        gap: moderateScale(18),
                       }}
                       keyExtractor={(item) => item.key}
                       renderItem={({ item }) => (

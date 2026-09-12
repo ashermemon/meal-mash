@@ -11,6 +11,7 @@ import { initialRecipeData } from "@/contexts/RecipeContext";
 import { GenerationDetailsContext } from "@/contexts/GenerationDetailsContext";
 import icons3d from "@/components/universal/3dIcons";
 import { getTintedBoxShadow } from "@/utils/shadow";
+import { moderateScale, scale } from "@/utils/responsive";
 
 const data = [
   { id: "1", name: "Leftovers", color: "grey", icon: "Pizza" },
@@ -45,7 +46,7 @@ const FeaturedRecipeButton = () => {
         overScrollMode="never"
         // @ts-ignore
         estimatedItemSize={30}
-        contentContainerStyle={{ paddingBottom: 10 }}
+        contentContainerStyle={{ paddingBottom: moderateScale(10) }}
         renderItem={({ item }) => {
           const itemBackgroundColor =
             theme[`${item.color}Block` as keyof typeof theme];
@@ -56,9 +57,11 @@ const FeaturedRecipeButton = () => {
                 styles.homeBlock,
                 {
                   backgroundColor: itemBackgroundColor,
-                  width: 80,
-                  height: 100,
-                  marginRight: Number(item.id) === data.length ? 0 : 10,
+                  width: scale(80),
+                  height: scale(100),
+                  marginRight: Number(item.id) === data.length
+                    ? 0
+                    : moderateScale(10),
                   justifyContent: "space-between",
                   alignItems: "center",
                   flexDirection: "column",
@@ -78,7 +81,7 @@ const FeaturedRecipeButton = () => {
               <Text
                 style={[
                   styles.textCentered,
-                  { fontFamily: "Nunito-SemiBold", fontSize: 13 },
+                  { fontFamily: "Nunito-SemiBold", fontSize: moderateScale(13) },
                 ]}
                 numberOfLines={1}
               >
@@ -91,8 +94,8 @@ const FeaturedRecipeButton = () => {
                     : icons3d.Default
                 }
                 style={{
-                  width: 57,
-                  height: 57,
+                  width: scale(57),
+                  height: scale(57),
 
                   alignSelf: "center",
                 }}
@@ -109,7 +112,12 @@ const FeaturedRecipes = () => {
   const styles = useStyles();
   return (
     <View style={styles.paddingOnlyWrapper}>
-      <Text style={[styles.basicTextLeft, { fontSize: 20, marginVertical: 5 }]}>
+      <Text
+        style={[
+          styles.basicTextLeft,
+          { fontSize: moderateScale(20), marginVertical: moderateScale(5) },
+        ]}
+      >
         Browse Recipes
       </Text>
       <FeaturedRecipeButton></FeaturedRecipeButton>

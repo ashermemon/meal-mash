@@ -55,7 +55,7 @@ import { Image } from "expo-image";
 import icons3d from "@/components/universal/3dIcons";
 import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 import * as ImagePicker from "expo-image-picker";
-import { moderateScale } from "@/utils/responsive";
+import { moderateScale, scale } from "@/utils/responsive";
 
 export default function Profile() {
   const styles = useStyles();
@@ -294,8 +294,8 @@ export default function Profile() {
                   flexDirection: "row",
                   alignItems: "center",
                   justifyContent: "flex-start",
-                  gap: 25,
-                  marginTop: 15,
+                  gap: moderateScale(25),
+                  marginTop: moderateScale(15),
                 }}
               >
                 <Pressable
@@ -345,9 +345,9 @@ export default function Profile() {
                     ></CustomIcon>
                   )}
                 </Pressable>
-                <View style={{ flex: 1, gap: 10 }}>
+                <View style={{ flex: 1, gap: moderateScale(10) }}>
                   <View
-                    style={{ height: 32, justifyContent: "center" }}
+                    style={{ height: moderateScale(32), justifyContent: "center" }}
                     pointerEvents={editMode ? "auto" : "none"}
                   >
                     <TextInput
@@ -374,9 +374,9 @@ export default function Profile() {
                         circleButtonShadow,
                         {
                           alignSelf: "flex-start",
-                          height: 28,
-                          gap: 6,
-                          paddingHorizontal: 10,
+                          height: moderateScale(28),
+                          gap: moderateScale(6),
+                          paddingHorizontal: moderateScale(10),
                           flexDirection: "row",
                           alignItems: "center",
                         },
@@ -392,7 +392,7 @@ export default function Profile() {
                       <Text
                         style={[
                           styles.textLeftSemiBold,
-                          { color: theme.pureWhite, fontSize: 13 },
+                          { color: theme.pureWhite, fontSize: moderateScale(13) },
                         ]}
                       >
                         Edit Profile
@@ -403,7 +403,7 @@ export default function Profile() {
                       style={{
                         flexDirection: "row",
                         alignSelf: "flex-start",
-                        gap: 10,
+                        gap: moderateScale(10),
                       }}
                     >
                       <Pressable
@@ -412,9 +412,9 @@ export default function Profile() {
                           styles.circleButton,
                           cancelButtonShadow,
                           {
-                            height: 28,
-                            gap: 6,
-                            paddingHorizontal: 12,
+                            height: moderateScale(28),
+                            gap: moderateScale(6),
+                            paddingHorizontal: moderateScale(12),
                             flexDirection: "row",
                             alignItems: "center",
                             backgroundColor: theme.greyBlock,
@@ -430,7 +430,7 @@ export default function Profile() {
                         <Text
                           style={[
                             styles.textLeftSemiBold,
-                            { color: theme.fontColor, fontSize: 13 },
+                            { color: theme.fontColor, fontSize: moderateScale(13) },
                           ]}
                         >
                           Cancel
@@ -442,9 +442,9 @@ export default function Profile() {
                           styles.circleButton,
                           circleButtonShadow,
                           {
-                            height: 28,
-                            gap: 6,
-                            paddingHorizontal: 12,
+                            height: moderateScale(28),
+                            gap: moderateScale(6),
+                            paddingHorizontal: moderateScale(12),
                             flexDirection: "row",
                             alignItems: "center",
                           },
@@ -459,7 +459,7 @@ export default function Profile() {
                         <Text
                           style={[
                             styles.textLeftSemiBold,
-                            { color: theme.pureWhite, fontSize: 13 },
+                            { color: theme.pureWhite, fontSize: moderateScale(13) },
                           ]}
                         >
                           Save
@@ -485,7 +485,7 @@ export default function Profile() {
 
                 <View
                   style={{
-                    gap: 12,
+                    gap: moderateScale(12),
                     flexDirection: "row",
                     flex: 1,
                   }}
@@ -525,10 +525,10 @@ export default function Profile() {
                     style={{
                       flexDirection: "row",
                       alignItems: "center",
-                      gap: 15,
+                      gap: moderateScale(15),
                     }}
                   >
-                    <View style={{ paddingBottom: 2 }}>
+                    <View style={{ paddingBottom: moderateScale(2) }}>
                       <CustomIcon
                         name="chef-hat"
                         filled={true}
@@ -555,7 +555,7 @@ export default function Profile() {
                       styles.textLeftBold,
                       {
                         fontFamily: "Nunito-SemiBold",
-                        fontSize: 15,
+                        fontSize: moderateScale(15),
                         color: theme.placeholderText,
                       },
                     ]}
@@ -580,7 +580,7 @@ export default function Profile() {
 
                 <View
                   style={{
-                    gap: 12,
+                    gap: moderateScale(12),
 
                     flex: 1,
                   }}
@@ -627,7 +627,7 @@ export default function Profile() {
 
                       {
                         color: theme.pureWhite,
-                        fontSize: 16,
+                        fontSize: moderateScale(16),
                       },
                     ]}
                   >
@@ -649,7 +649,7 @@ export default function Profile() {
 
                       {
                         color: theme.pureWhite,
-                        fontSize: 16,
+                        fontSize: moderateScale(16),
                       },
                     ]}
                   >
@@ -671,10 +671,10 @@ export default function Profile() {
           locations={[0, 0.4, 0.75, 1]}
           style={{
             position: "absolute",
-            bottom: -40,
+            bottom: moderateScale(-40),
             left: 0,
             right: 0,
-            height: 160,
+            height: scale(160),
             zIndex: 10,
           }}
           pointerEvents="none"

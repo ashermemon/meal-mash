@@ -16,6 +16,7 @@ import { useIsDarkMode, useTheme } from "@/contexts/ColorSchemeContext";
 import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 import { hexToRgba, lightenColor } from "@/utils/color";
 import { Image } from "expo-image";
+import { moderateScale, scale } from "@/utils/responsive";
 
 export type AchievementToastProps = {
   achievementId: string;
@@ -52,10 +53,10 @@ const AchievementToast = ({ achievementId, onPress }: Props) => {
           alignSelf: "center",
           flexDirection: "row",
           alignItems: "center",
-          gap: 18,
-          paddingVertical: 12,
-          paddingHorizontal: 14,
-          borderRadius: 22,
+          gap: moderateScale(18),
+          paddingVertical: moderateScale(12),
+          paddingHorizontal: moderateScale(14),
+          borderRadius: moderateScale(22),
           borderWidth: 1,
           borderColor: hexToRgba(accent, isDark ? 0.55 : 0.9),
           backgroundColor: theme.cardWhite,
@@ -64,9 +65,9 @@ const AchievementToast = ({ achievementId, onPress }: Props) => {
     >
       <View
         style={{
-          width: 54,
-          height: 54,
-          borderRadius: 17,
+          width: scale(54),
+          height: scale(54),
+          borderRadius: scale(17),
           alignItems: "center",
           justifyContent: "center",
           backgroundColor: isDark
@@ -77,18 +78,24 @@ const AchievementToast = ({ achievementId, onPress }: Props) => {
         <Animated.View style={iconStyle}>
           <Image
             source={icons3d[achievement.emoji] ?? icons3d.Default}
-            style={{ width: 34, height: 34 }}
+            style={{ width: scale(34), height: scale(34) }}
           />
         </Animated.View>
       </View>
 
-      <View style={{ flex: 1, gap: 1 }}>
-        <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
+      <View style={{ flex: 1, gap: moderateScale(1) }}>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            gap: moderateScale(5),
+          }}
+        >
           <Text
             numberOfLines={1}
             style={{
               fontFamily: "Nunito-Bold",
-              fontSize: 12,
+              fontSize: moderateScale(12),
               letterSpacing: 1.6,
               color: theme.yellowAccent,
             }}
@@ -101,7 +108,7 @@ const AchievementToast = ({ achievementId, onPress }: Props) => {
           numberOfLines={1}
           style={{
             fontFamily: "Nunito-Bold",
-            fontSize: 19,
+            fontSize: moderateScale(19),
             color: theme.basicText,
           }}
         >
@@ -109,7 +116,7 @@ const AchievementToast = ({ achievementId, onPress }: Props) => {
         </Text>
       </View>
 
-      <View style={{ paddingRight: 4 }}>
+      <View style={{ paddingRight: moderateScale(4) }}>
         <CustomIcon
           name="arrow-right"
           size={24}

@@ -1,5 +1,6 @@
 import { Text, View } from "react-native";
 import InfoTag from "@/components/features/recipe/InfoTag";
+import { moderateScale } from "@/utils/responsive";
 
 interface Props {
   difficulty: string;
@@ -14,14 +15,14 @@ export default function RecipeInfoTags(props: Props) {
     <View
       style={{
         width: "100%",
-        marginTop: props.marginTop || 13,
+        marginTop: moderateScale(props.marginTop || 13),
         alignItems: "center",
         justifyContent: props.justifyContent || "center",
         flexDirection: "row",
         flexWrap: "nowrap",
         flexShrink: 1,
         minWidth: 0,
-        gap: 8,
+        gap: moderateScale(8),
       }}
     >
       <InfoTag type="difficulty" data={props.difficulty} />

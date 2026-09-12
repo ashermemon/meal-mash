@@ -17,6 +17,7 @@ import { PantryDetailsContext } from "@/contexts/PantryDetails";
 import { Food } from "@/components/features/pantry/Search";
 import GroceryListItem from "./GroceryListItem";
 import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
+import { moderateScale } from "@/utils/responsive";
 
 if (
   Platform.OS === "android" &&
@@ -64,9 +65,9 @@ const CheckedGroceryList = () => {
     <View
       style={{
         position: "absolute",
-        left: 20,
-        right: 20,
-        bottom: 90,
+        left: moderateScale(20),
+        right: moderateScale(20),
+        bottom: moderateScale(90),
         zIndex: 30,
       }}
       pointerEvents="box-none"
@@ -76,10 +77,10 @@ const CheckedGroceryList = () => {
           listShadow,
           {
             backgroundColor: theme.cardWhite,
-            borderRadius: 26,
-            paddingHorizontal: 18,
-            paddingVertical: 16,
-            gap: 14,
+            borderRadius: moderateScale(26),
+            paddingHorizontal: moderateScale(18),
+            paddingVertical: moderateScale(16),
+            gap: moderateScale(14),
           },
         ]}
       >
@@ -92,7 +93,11 @@ const CheckedGroceryList = () => {
         >
           <Pressable
             onPress={toggleExpanded}
-            style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              gap: moderateScale(4),
+            }}
             hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
           >
             <CustomIcon
@@ -106,7 +111,7 @@ const CheckedGroceryList = () => {
                 styles.textLeftBold,
                 {
                   fontFamily: "Nunito-SemiBold",
-                  fontSize: 16,
+                  fontSize: moderateScale(16),
                   color: theme.basicText,
                 },
               ]}
@@ -124,7 +129,7 @@ const CheckedGroceryList = () => {
                 styles.textLeftBold,
                 {
                   fontFamily: "Nunito-SemiBold",
-                  fontSize: 14,
+                  fontSize: moderateScale(14),
                   color: theme.blueAccent,
                 },
               ]}
@@ -136,11 +141,11 @@ const CheckedGroceryList = () => {
 
         {expanded && (
           <ScrollView
-            style={{ maxHeight: 200 }}
+            style={{ maxHeight: moderateScale(200) }}
             showsVerticalScrollIndicator={true}
             bounces={false}
           >
-            <View style={{ gap: 25 }}>
+            <View style={{ gap: moderateScale(25) }}>
               {checkedList.map((food: Food) => (
                 <GroceryListItem key={food.id} food={food} variant="checked" />
               ))}

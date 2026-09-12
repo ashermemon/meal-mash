@@ -8,10 +8,6 @@ import { writeProfileName } from "./profile";
 import { decodeSavedRecipes, writeSavedRecipes } from "./savedRecipes";
 import { defaultStats, writeStats } from "./stats";
 
-/**
- * Pre-v1 the app wrote a loose set of top-level keys. Fold whatever an existing
- * install has into the structured records, then drop the old keys.
- */
 const migrateToV1 = (): void => {
   const legacySaves = storage.getString(LegacyKeys.saves);
   if (legacySaves) {
@@ -58,16 +54,9 @@ const migrateToV1 = (): void => {
     stats.generationStreak > 0;
   if (hasStats) writeStats(stats);
 
-  // `savesnumber` / `pantrynumber` are intentionally not carried over: they are
-  // derived from the saved-recipe and pantry records now.
   Object.values(LegacyKeys).forEach((key) => storage.delete(key));
 };
 
-/**
- * v1 stored the literal "Your Pantry" as the pantry name. v2 stores an empty
- * name for a pantry the user never renamed, so the display name can fall back
- * to the profile name instead.
- */
 const migrateToV2 = (): void => {
   if (!storage.contains(StorageKeys.pantry)) return;
 
@@ -77,10 +66,6 @@ const migrateToV2 = (): void => {
   }
 };
 
-/**
- * Runs synchronously on first import of the storage module, before any screen
- * reads state, so consumers only ever see current-schema records.
- */
 export const runMigrations = (): void => {
   const version = storage.getNumber(StorageKeys.schemaVersion) ?? 0;
   if (version >= SCHEMA_VERSION) return;

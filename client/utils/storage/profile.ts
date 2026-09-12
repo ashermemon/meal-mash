@@ -32,7 +32,6 @@ export const readProfilePictureFile = (): string => readProfile().pictureFile;
 export const writeProfilePictureFile = (pictureFile: string): void =>
   writeProfile({ ...readProfile(), pictureFile });
 
-/** Reactive profile name — re-renders anywhere the name is written. */
 export const useProfileName = (): string => {
   const [raw] = useMMKVString(StorageKeys.profile, storage);
   return useMemo(() => decodeProfile(safeParse(raw)).name, [raw]);

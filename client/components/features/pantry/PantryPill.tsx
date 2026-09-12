@@ -11,6 +11,7 @@ import {
 } from "@/utils/storage";
 import EmojiButton from "@/components/universal/EmojiButton";
 import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
+import { moderateScale, scale } from "@/utils/responsive";
 
 type Props = {
   pantryPage?: boolean;
@@ -68,14 +69,14 @@ const PantryPill = (props: Props) => {
             flex: 1,
             flexDirection: "row",
             alignItems: "center",
-            gap: 12,
-            marginRight: 10,
+            gap: moderateScale(12),
+            marginRight: moderateScale(10),
           }}
         >
           <EmojiButton
             emoji={pantryDetails.icon}
             editable={rename}
-            iconSize={32}
+            iconSize={scale(32)}
             onEmojiChange={(newIcon) =>
               setPantryDetails((prev) => ({ ...prev, icon: newIcon }))
             }
@@ -98,7 +99,7 @@ const PantryPill = (props: Props) => {
                 styles.basicTextLeft,
                 {
                   flex: 1,
-                  fontSize: 18,
+                  fontSize: moderateScale(18),
                   color: theme.placeholderText,
                   fontFamily: "Nunito-SemiBold",
                   paddingVertical: 0,
@@ -114,7 +115,7 @@ const PantryPill = (props: Props) => {
                 styles.basicTextLeft,
                 {
                   flex: 1,
-                  fontSize: 18,
+                  fontSize: moderateScale(18),
                   color: theme.placeholderText,
                   fontFamily: "Nunito-SemiBold",
                 },
@@ -129,7 +130,7 @@ const PantryPill = (props: Props) => {
             styles.selectPill,
             {
               flex: 0,
-              width: 100,
+              width: scale(100),
               justifyContent: "center",
               alignItems: "center",
               backgroundColor: isDark ? theme.lightGrey : theme.unselectedGrey,
@@ -141,7 +142,7 @@ const PantryPill = (props: Props) => {
             style={[
               styles.textCentered,
               {
-                fontSize: 13,
+                fontSize: moderateScale(13),
                 color: theme.placeholderText,
                 fontFamily: "Nunito-SemiBold",
               },

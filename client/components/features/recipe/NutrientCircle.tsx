@@ -5,6 +5,7 @@ import Svg, { Path, Circle, G } from "react-native-svg";
 import NutrientsContext from "@/contexts/NutrientsContext";
 import { useTheme } from "@/contexts/ColorSchemeContext";
 import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
+import { moderateScale, scale } from "@/utils/responsive";
 
 interface Props {
   textInBox?: boolean;
@@ -64,7 +65,7 @@ export default function NutrientCircle({ textInBox }: Props) {
       <View
         style={{
           flexDirection: "row",
-          marginVertical: 8,
+          marginVertical: moderateScale(8),
           alignItems: "center",
         }}
       >
@@ -74,17 +75,18 @@ export default function NutrientCircle({ textInBox }: Props) {
     );
   };
 
-  const cx = 68;
-  const cy = 68;
-  const rOuter = 60;
-  const rOuterInvis = 75;
-  const rInner = 43;
-  const rInnerInvis = 20;
+  const cx = scale(68);
+  const cy = scale(68);
+  const rOuter = scale(60);
+  const rOuterInvis = scale(75);
+  const rInner = scale(43);
+  const rInnerInvis = scale(20);
+  const svgSize = scale(136);
 
   const renderChart = () => {
     if (total === 0) {
       return (
-        <Svg width={136} height={136}>
+        <Svg width={svgSize} height={svgSize}>
           <Circle
             cx={cx}
             cy={cy}
@@ -130,12 +132,16 @@ export default function NutrientCircle({ textInBox }: Props) {
       .filter((s): s is NonNullable<typeof s> => s !== null);
 
     return (
-      <Svg width={136} height={136}>
+      <Svg width={svgSize} height={svgSize}>
         {slices.map((slice) => {
           const isFocused = focusedIndex === slice.index;
 
-          const currentOuterRadius = isFocused ? rOuter + 6 : rOuter;
-          const invisOuterRadius = isFocused ? rOuterInvis + 6 : rOuterInvis;
+          const currentOuterRadius = isFocused
+            ? rOuter + scale(6)
+            : rOuter;
+          const invisOuterRadius = isFocused
+            ? rOuterInvis + scale(6)
+            : rOuterInvis;
           const pathD = getSlicePath(
             slice.startAngle,
             slice.endAngle,
@@ -185,7 +191,7 @@ export default function NutrientCircle({ textInBox }: Props) {
         circleShadow,
         {
           backgroundColor: theme.secondaryBoxGrey,
-          borderRadius: 15,
+          borderRadius: moderateScale(15),
           alignItems: "center",
         },
       ]}
@@ -194,15 +200,27 @@ export default function NutrientCircle({ textInBox }: Props) {
         <Text
           style={[
             styles.textLeftSemiBold,
-            { fontSize: 18, marginTop: 15, textAlign: "center" },
+            {
+              fontSize: moderateScale(18),
+              marginTop: moderateScale(15),
+              textAlign: "center",
+            },
           ]}
         >
           Nutrition Facts
         </Text>
       ) : null}
       <View style={styles.nutrientCircle}>
-        <View style={{ alignItems: "flex-start", flex: 1, marginLeft: 10 }}>
-          <View style={{ width: 136, height: 136, position: "relative" }}>
+        <View
+          style={{
+            alignItems: "flex-start",
+            flex: 1,
+            marginLeft: moderateScale(10),
+          }}
+        >
+          <View
+            style={{ width: svgSize, height: svgSize, position: "relative" }}
+          >
             {renderChart()}
             <View
               pointerEvents="none"
@@ -214,14 +232,14 @@ export default function NutrientCircle({ textInBox }: Props) {
                 bottom: 0,
                 justifyContent: "center",
                 alignItems: "center",
-                marginTop: -5,
+                marginTop: moderateScale(-5),
               }}
             >
               <Text
                 style={{
                   color: textColor,
-                  fontSize: 29,
-                  lineHeight: 33,
+                  fontSize: moderateScale(29),
+                  lineHeight: moderateScale(33),
                   fontFamily: "Nunito-SemiBold",
                 }}
               >
@@ -230,7 +248,7 @@ export default function NutrientCircle({ textInBox }: Props) {
               <Text
                 style={{
                   color: theme.basicText,
-                  fontSize: 11,
+                  fontSize: moderateScale(11),
                   fontFamily: "Nunito-Medium",
                 }}
               >
@@ -239,7 +257,9 @@ export default function NutrientCircle({ textInBox }: Props) {
             </View>
           </View>
         </View>
-        <View style={{ marginRight: 26, justifyContent: "flex-end" }}>
+        <View
+          style={{ marginRight: moderateScale(26), justifyContent: "flex-end" }}
+        >
           {renderLegend(`Protein (${nutrients[0]}g)`, NUTRIENT_COLORS[0])}
           {renderLegend(`Fat (${nutrients[1]}g)`, NUTRIENT_COLORS[1])}
           {renderLegend(`Carbs (${nutrients[2]}g)`, NUTRIENT_COLORS[2])}

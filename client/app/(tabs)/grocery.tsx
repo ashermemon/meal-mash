@@ -19,7 +19,7 @@ import GroceryListContext from "@/contexts/GroceryListContext";
 import CheckedGroceryListContext from "@/contexts/CheckedGroceryListContext";
 import GroceryListItem from "@/components/features/grocerylist/GroceryListItem";
 import CheckedGroceryList from "@/components/features/grocerylist/CheckedGroceryList";
-import { moderateScale } from "@/utils/responsive";
+import { moderateScale, scale } from "@/utils/responsive";
 
 export default function Dashboard() {
   const styles = useStyles();
@@ -134,7 +134,7 @@ export default function Dashboard() {
                   flexDirection: "row",
                   alignItems: "center",
                   justifyContent: "center",
-                  gap: 4,
+                  gap: moderateScale(4),
                 }}
                 hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
               >
@@ -149,7 +149,7 @@ export default function Dashboard() {
                     styles.textLeftBold,
                     {
                       fontFamily: "Nunito-SemiBold",
-                      fontSize: 14,
+                      fontSize: moderateScale(14),
                       color: theme.placeholderText,
                     },
                   ]}
@@ -167,7 +167,7 @@ export default function Dashboard() {
                   styles.textLeftBold,
                   {
                     fontFamily: "Nunito-SemiBold",
-                    fontSize: 15,
+                    fontSize: moderateScale(15),
 
                     color: theme.placeholderText,
                   },
@@ -213,7 +213,13 @@ export default function Dashboard() {
                 }}
               />
 
-              <View style={{ gap: 35, paddingHorizontal: 10, marginTop: 10 }}>
+              <View
+                style={{
+                  gap: moderateScale(35),
+                  paddingHorizontal: moderateScale(10),
+                  marginTop: moderateScale(10),
+                }}
+              >
                 {groceryList.map((ingredient: Food) => (
                   <GroceryListItem
                     key={ingredient.id}
@@ -228,9 +234,9 @@ export default function Dashboard() {
                       flex: 1,
                       alignItems: "center",
                       justifyContent: "center",
-                      gap: 6,
-                      paddingHorizontal: 20,
-                      transform: [{ translateY: -50 }],
+                      gap: moderateScale(6),
+                      paddingHorizontal: moderateScale(20),
+                      transform: [{ translateY: moderateScale(-50) }],
                     }}
                   >
                     <CustomIcon
@@ -271,9 +277,9 @@ export default function Dashboard() {
                       flex: 1,
                       alignItems: "center",
                       justifyContent: "center",
-                      gap: 6,
-                      paddingHorizontal: 20,
-                      transform: [{ translateY: -50 }],
+                      gap: moderateScale(6),
+                      paddingHorizontal: moderateScale(20),
+                      transform: [{ translateY: moderateScale(-50) }],
                     }}
                   >
                     <CustomIcon
@@ -329,10 +335,10 @@ export default function Dashboard() {
         locations={[0, 0.4, 0.75, 1]}
         style={{
           position: "absolute",
-          bottom: -40,
+          bottom: moderateScale(-40),
           left: 0,
           right: 0,
-          height: 160,
+          height: scale(160),
           zIndex: 10,
         }}
         pointerEvents="none"

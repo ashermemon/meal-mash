@@ -5,6 +5,7 @@ import { useTheme, useIsDarkMode } from "@/contexts/ColorSchemeContext";
 import { difficultyShape } from "../features/recipe/InfoTag";
 import * as Haptics from "expo-haptics";
 import { getTintedBoxShadow } from "@/utils/shadow";
+import { moderateScale } from "@/utils/responsive";
 
 type Props = {
   title: string;
@@ -21,16 +22,16 @@ const MultiSelectPills = (props: Props) => {
   return (
     <View
       style={{
-        gap: 12,
+        gap: moderateScale(12),
         flexDirection: "row",
         alignItems: "center",
       }}
     >
-      <Text style={[styles.textLeftSemiBold, { fontSize: 17 }]}>
+      <Text style={[styles.textLeftSemiBold, { fontSize: moderateScale(17) }]}>
         {props.title}
       </Text>
 
-      <View style={{ flex: 1, flexDirection: "row", gap: 8 }}>
+      <View style={{ flex: 1, flexDirection: "row", gap: moderateScale(8) }}>
         {props.labels.map((label, index) => {
           const pillBackgroundColor = props.selected.includes(index)
             ? props.diff
@@ -58,7 +59,7 @@ const MultiSelectPills = (props: Props) => {
                 {
                   flexDirection: "row",
                   alignItems: "center",
-                  paddingHorizontal: 9,
+                  paddingHorizontal: moderateScale(9),
                   ...(props.diff
                     ? { flex: undefined, flexGrow: 1, flexBasis: "auto" }
                     : { flex: 1 }),
@@ -80,7 +81,11 @@ const MultiSelectPills = (props: Props) => {
               <Text
                 style={[
                   styles.textCentered,
-                  { flexGrow: 1, fontSize: 12.5, textAlign: "center" },
+                  {
+                    flexGrow: 1,
+                    fontSize: moderateScale(12.5),
+                    textAlign: "center",
+                  },
                   props.selected.includes(index)
                     ? props.diff
                       ? { color: theme.basicText }

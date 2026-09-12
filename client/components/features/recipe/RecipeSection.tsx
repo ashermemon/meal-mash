@@ -2,6 +2,7 @@ import { View, Text } from "react-native";
 import React from "react";
 import { useStyles } from "@/styles/GlobalStyles";
 import { useTheme } from "@/contexts/ColorSchemeContext";
+import { moderateScale } from "@/utils/responsive";
 
 type Props = {
   sectionTitle?: string;
@@ -18,10 +19,10 @@ const RecipeSection = (props: Props) => {
       style={[
         styles.card,
         {
-          marginBottom: props.titleOff ? 0 : 20,
-          paddingHorizontal: 10,
-          paddingBottom: props.titleOff ? 0 : 15,
-          paddingTop: props.titleOff ? 5 : 30,
+          marginBottom: moderateScale(props.titleOff ? 0 : 20),
+          paddingHorizontal: moderateScale(10),
+          paddingBottom: moderateScale(props.titleOff ? 0 : 15),
+          paddingTop: moderateScale(props.titleOff ? 5 : 30),
         },
       ]}
     >
@@ -30,13 +31,13 @@ const RecipeSection = (props: Props) => {
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center",
-          marginBottom: 40,
+          marginBottom: moderateScale(40),
         }}
       >
         {props.titleOff ? (
           <></>
         ) : (
-          <Text style={[styles.textLeftBold, { fontSize: 18 }]}>
+          <Text style={[styles.textLeftBold, { fontSize: moderateScale(18) }]}>
             {props.sectionTitle}
           </Text>
         )}
@@ -45,7 +46,11 @@ const RecipeSection = (props: Props) => {
           <Text
             style={[
               styles.textRight,
-              { color: theme.searchPlaceholder, fontSize: 13, marginTop: 1 },
+              {
+                color: theme.searchPlaceholder,
+                fontSize: moderateScale(13),
+                marginTop: moderateScale(1),
+              },
             ]}
           >
             {props.servings === 1

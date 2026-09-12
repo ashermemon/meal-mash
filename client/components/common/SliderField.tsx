@@ -21,6 +21,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { useTheme } from "@/contexts/ColorSchemeContext";
 import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
+import { moderateScale } from "@/utils/responsive";
 type Props = {
   setSelected: React.Dispatch<React.SetStateAction<number>>;
   selected: number;
@@ -89,7 +90,7 @@ const SliderField = (props: Props) => {
     });
   return (
     <GestureDetector gesture={swipe}>
-      <View style={{ gap: 33, flexDirection: "column" }}>
+      <View>
         <Animated.View
           style={[
             styles.sliderPill,

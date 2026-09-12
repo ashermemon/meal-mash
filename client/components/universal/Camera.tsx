@@ -6,6 +6,7 @@ import AppImage from "@/components/universal/AppImage";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import { useTheme } from "@/contexts/ColorSchemeContext";
 import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
+import { moderateScale, scale } from "@/utils/responsive";
 
 export default function Camera() {
   const styles = useStyles();
@@ -30,9 +31,9 @@ export default function Camera() {
       <View style={{ alignItems: "center" }}>
         <View
           style={{
-            borderRadius: 10,
+            borderRadius: moderateScale(10),
             overflow: "hidden",
-            marginHorizontal: 20,
+            marginHorizontal: moderateScale(20),
           }}
         >
           <AppImage
@@ -47,7 +48,11 @@ export default function Camera() {
           style={[
             styles.circleButton,
             circleButtonShadow,
-            { marginTop: 20, paddingVertical: 10, width: 200 },
+            {
+              marginTop: moderateScale(20),
+              paddingVertical: moderateScale(10),
+              width: scale(200),
+            },
           ]}
         >
           <Text
@@ -62,9 +67,9 @@ export default function Camera() {
             styles.circleButton,
             generateButtonShadow,
             {
-              marginTop: 10,
-              paddingVertical: 10,
-              width: 200,
+              marginTop: moderateScale(10),
+              paddingVertical: moderateScale(10),
+              width: scale(200),
               backgroundColor: theme.greenAccent,
             },
           ]}
@@ -84,14 +89,14 @@ export default function Camera() {
       <View
         style={{
           ...StyleSheet.absoluteFillObject,
-          marginHorizontal: 20,
-          marginBottom: 80,
+          marginHorizontal: moderateScale(20),
+          marginBottom: moderateScale(80),
         }}
       >
         <CameraView
           style={{
             flex: 1,
-            borderRadius: 10,
+            borderRadius: moderateScale(10),
           }}
           ref={ref}
           mode={"picture"}
@@ -108,16 +113,16 @@ export default function Camera() {
                   styles.shutterBtn,
                   {
                     opacity: pressed ? 0.851 : 1,
-                    width: pressed ? 90 : 85,
-                    height: pressed ? 90 : 85,
+                    width: scale(pressed ? 90 : 85),
+                    height: scale(pressed ? 90 : 85),
                   },
                 ]}
               >
                 <View
                   style={[
                     {
-                      width: pressed ? 85 : 70,
-                      height: pressed ? 85 : 70,
+                      width: scale(pressed ? 85 : 70),
+                      height: scale(pressed ? 85 : 70),
                       borderRadius: 100,
                       backgroundColor: theme.pureWhite,
                     },

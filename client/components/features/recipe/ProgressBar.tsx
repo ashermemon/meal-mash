@@ -5,6 +5,7 @@ import * as Progress from "react-native-progress";
 import { Dimensions } from "react-native";
 import { useTheme } from "@/contexts/ColorSchemeContext";
 import { useStyles } from "@/styles/GlobalStyles";
+import { moderateScale, scale } from "@/utils/responsive";
 
 interface ProgressProps {
   progress: number;
@@ -35,7 +36,7 @@ export default function ProgressBar(props: ProgressProps) {
         alignItems: "center",
         justifyContent: props.fragmented ? "space-between" : "center",
         flexDirection: "row",
-        gap: 10,
+        gap: moderateScale(10),
       }}
       onLayout={onLayout}
     >
@@ -63,7 +64,7 @@ export default function ProgressBar(props: ProgressProps) {
               progress={props.progress}
               width={containerWidth}
               color={theme.greenAccent}
-              height={props.height ?? 4}
+              height={props.height ?? scale(4)}
               borderRadius={0}
               unfilledColor={theme.dividerGrey2}
               borderWidth={0}

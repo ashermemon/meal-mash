@@ -13,6 +13,7 @@ import { useNavigation } from "expo-router";
 import SaveCategory from "@/components/features/saved/SaveCategory";
 import SavedCard from "@/components/features/saved/SavedCard";
 import { openEntranceWindow } from "@/components/features/saved/savedCardAnimation";
+import { moderateScale, scale } from "@/utils/responsive";
 
 const CategoriesDisplay = () => {
   const categories = [
@@ -37,7 +38,7 @@ const CategoriesDisplay = () => {
         flexWrap: "wrap",
         justifyContent: "space-between",
         alignContent: "space-between",
-        paddingBottom: 20,
+        paddingBottom: moderateScale(20),
       }}
     >
       {categories.map((item, index: number) => (
@@ -81,11 +82,11 @@ const SavesHome = () => {
   return (
     <>
       <SafeAreaView style={{ flex: 1, backgroundColor: theme.nestedBG }}>
-        <View style={{ paddingHorizontal: 25, flex: 1 }}>
+        <View style={{ paddingHorizontal: moderateScale(25), flex: 1 }}>
           <Pressable
             hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
             style={{
-              marginTop: 8,
+              marginTop: moderateScale(8),
               marginLeft: 0,
               alignSelf: "flex-start",
               zIndex: 1000,
@@ -114,8 +115,8 @@ const SavesHome = () => {
                 justifyContent: "space-between",
                 alignItems: "center",
                 backgroundColor: theme.greyBlock,
-                marginTop: 15,
-                marginBottom: 30,
+                marginTop: moderateScale(15),
+                marginBottom: moderateScale(30),
               },
             ]}
           >
@@ -138,12 +139,12 @@ const SavesHome = () => {
                 {
                   flex: 1,
                   zIndex: 9999,
-                  fontSize: 18,
-                  marginLeft: 12,
+                  fontSize: moderateScale(18),
+                  marginLeft: moderateScale(12),
                   color: theme.basicText,
                   fontFamily: "Nunito-Medium",
-                  height: 48,
-                  minHeight: 48,
+                  height: scale(48),
+                  minHeight: scale(48),
                 },
               ]}
             />

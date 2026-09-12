@@ -8,6 +8,7 @@ import { router } from "expo-router";
 import SavedRecipesContext from "@/contexts/SavedRecipesContext";
 import { type RecipeCategories } from "@/contexts/RecipeContext";
 import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
+import { moderateScale } from "@/utils/responsive";
 
 type Props = {
   title: string;
@@ -53,10 +54,20 @@ const SaveCategory = (props: Props) => {
       >
         <AppImage style={{ flex: 1 }} source={icons3d[props.image]}></AppImage>
       </View>
-      <Text style={[styles.textLeftBold, { fontSize: 15, marginTop: 7 }]}>
+      <Text
+        style={[
+          styles.textLeftBold,
+          { fontSize: moderateScale(15), marginTop: moderateScale(7) },
+        ]}
+      >
         {props.title}
       </Text>
-      <Text style={[styles.basicTextLeft, { fontSize: 12, marginTop: 1 }]}>
+      <Text
+        style={[
+          styles.basicTextLeft,
+          { fontSize: moderateScale(12), marginTop: moderateScale(1) },
+        ]}
+      >
         {savedCount} Saved
       </Text>
     </Pressable>

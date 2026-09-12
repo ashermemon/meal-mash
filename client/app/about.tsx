@@ -9,6 +9,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "expo-router";
 import Constants from "expo-constants";
 import { Image } from "expo-image";
+import { moderateScale, scale } from "@/utils/responsive";
 
 const APP_NAME = "MealMash";
 const SUPPORT_EMAIL = "mealmashapp@gmail.com";
@@ -35,10 +36,14 @@ const AboutPage = () => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: theme.nestedBG }}>
-      <View style={{ paddingHorizontal: 25, flex: 1 }}>
+      <View style={{ paddingHorizontal: moderateScale(25), flex: 1 }}>
         <Pressable
           hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
-          style={{ marginTop: 8, marginBottom: 15, alignSelf: "flex-start" }}
+          style={{
+            marginTop: moderateScale(8),
+            marginBottom: moderateScale(15),
+            alignSelf: "flex-start",
+          }}
           onPress={() =>
             navigation.canGoBack()
               ? [navigation.goBack(), Haptics.selectionAsync()]
@@ -53,18 +58,22 @@ const AboutPage = () => {
           />
         </Pressable>
 
-        <View style={{ flex: 1, gap: 20 }}>
-          <View style={{ alignItems: "center", gap: 8 }}>
+        <View style={{ flex: 1, gap: moderateScale(20) }}>
+          <View style={{ alignItems: "center", gap: moderateScale(8) }}>
             <Image
               source={require("@/assets/images/iconround.png")}
-              style={{ width: 64, height: 64, borderRadius: 16 }}
+              style={{
+                width: scale(64),
+                height: scale(64),
+                borderRadius: moderateScale(16),
+              }}
               contentFit="cover"
             />
             <Text
               style={[
                 styles.basicTextLeft,
                 styles.bold,
-                { fontSize: 22, textAlign: "center" },
+                { fontSize: moderateScale(22), textAlign: "center" },
               ]}
             >
               {APP_NAME}
@@ -88,7 +97,7 @@ const AboutPage = () => {
               <Text
                 style={[
                   styles.textLeftBold,
-                  { color: theme.basicText, fontSize: 16 },
+                  { color: theme.basicText, fontSize: moderateScale(16) },
                 ]}
               >
                 {section.title}
@@ -98,9 +107,9 @@ const AboutPage = () => {
                   styles.textLeftSemiBold,
                   {
                     fontFamily: "Nunito-SemiBold",
-                    fontSize: 14,
+                    fontSize: moderateScale(14),
                     color: theme.placeholderText,
-                    lineHeight: 20,
+                    lineHeight: moderateScale(20),
                   },
                 ]}
               >
@@ -124,7 +133,7 @@ const AboutPage = () => {
             <Text
               style={[
                 styles.textCenterBold,
-                { color: theme.pureWhite, fontSize: 16 },
+                { color: theme.pureWhite, fontSize: moderateScale(16) },
               ]}
             >
               Contact Support
@@ -134,7 +143,7 @@ const AboutPage = () => {
           <Text
             style={[
               styles.textCentered,
-              { color: theme.placeholderText, fontSize: 12 },
+              { color: theme.placeholderText, fontSize: moderateScale(12) },
             ]}
           >
             © {CURRENT_YEAR} {APP_NAME}

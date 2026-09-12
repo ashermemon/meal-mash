@@ -21,6 +21,7 @@ import { useStyles } from "@/styles/GlobalStyles";
 import * as Haptics from "expo-haptics";
 import { ScrollView } from "react-native-gesture-handler";
 import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
+import { moderateScale, scale } from "@/utils/responsive";
 
 type Props = {
   onSelectIngredient?: (item: Food) => void;
@@ -90,15 +91,15 @@ export const SearchResultItem = ({
           alignItems: "center",
           borderBottomWidth: isLast ? 0 : 1,
           borderColor: theme.unselectedGrey,
-          paddingVertical: 18,
-          paddingHorizontal: 12,
+          paddingVertical: moderateScale(18),
+          paddingHorizontal: moderateScale(12),
         }}
       >
-        <View style={{ paddingRight: 10, flex: 1 }}>
+        <View style={{ paddingRight: moderateScale(10), flex: 1 }}>
           <View
             style={{
               flexDirection: "row",
-              gap: 10,
+              gap: moderateScale(10),
               alignItems: "center",
               justifyContent: "flex-start",
             }}
@@ -119,7 +120,7 @@ export const SearchResultItem = ({
               numberOfLines={1}
               style={[
                 styles.basicTextLeft,
-                { fontSize: 15, fontFamily: "Nunito-SemiBold" },
+                { fontSize: moderateScale(15), fontFamily: "Nunito-SemiBold" },
               ]}
             >
               {item.displayName}
@@ -127,12 +128,18 @@ export const SearchResultItem = ({
           </View>
         </View>
         {added ? (
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              gap: moderateScale(6),
+            }}
+          >
             <Text
               style={[
                 styles.basicTextLeft,
                 {
-                  fontSize: 13,
+                  fontSize: moderateScale(13),
                   fontFamily: "Nunito-SemiBold",
                   color: addedColor,
                 },
@@ -147,7 +154,7 @@ export const SearchResultItem = ({
               style={[
                 styles.basicTextLeft,
                 {
-                  fontSize: 13,
+                  fontSize: moderateScale(13),
                   flex: 1,
                   fontFamily: "Nunito-Regular",
                   color: isDark ? theme.placeholderText : theme.addPlusGrey,
@@ -289,12 +296,12 @@ const Search = forwardRef<SearchHandle, Props>((props, ref) => {
               {
                 flex: 1,
                 zIndex: 9999,
-                fontSize: 18,
-                marginLeft: 12,
+                fontSize: moderateScale(18),
+                marginLeft: moderateScale(12),
                 color: theme.basicText,
                 fontFamily: "Nunito-Medium",
-                height: 48,
-                minHeight: 48,
+                height: scale(48),
+                minHeight: scale(48),
               },
             ]}
           />
@@ -306,7 +313,11 @@ const Search = forwardRef<SearchHandle, Props>((props, ref) => {
             <View style={styles.verticalLine}></View>
 
             <Pressable
-              style={{ paddingRight: 15, paddingLeft: 10, zIndex: 9999 }}
+              style={{
+                paddingRight: moderateScale(15),
+                paddingLeft: moderateScale(10),
+                zIndex: 9999,
+              }}
               onPress={(event) => {
                 event.stopPropagation();
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -333,11 +344,11 @@ const Search = forwardRef<SearchHandle, Props>((props, ref) => {
           ]}
         >
           <ScrollView
-            style={{ maxHeight: 240 }}
+            style={{ maxHeight: scale(240) }}
             showsVerticalScrollIndicator={true}
             nestedScrollEnabled={true}
             keyboardShouldPersistTaps="always"
-            contentContainerStyle={{ paddingBottom: 4 }}
+            contentContainerStyle={{ paddingBottom: moderateScale(4) }}
             bounces={false}
           >
             {results.map((item, index) => {
@@ -379,24 +390,24 @@ const localStyles = StyleSheet.create({
     justifyContent: "flex-end",
     alignItems: "center",
     flexDirection: "row",
-    gap: 12,
+    gap: moderateScale(12),
   },
 
   resultsOverlay: {
     position: "absolute",
     width: "100%",
-    top: 65,
-    maxHeight: 240,
-    borderRadius: 30,
-    paddingVertical: 4,
-    paddingHorizontal: 12,
+    top: scale(65),
+    maxHeight: scale(240),
+    borderRadius: moderateScale(30),
+    paddingVertical: moderateScale(4),
+    paddingHorizontal: moderateScale(12),
     borderWidth: 0,
     zIndex: 9999,
     overflow: "hidden",
   },
 
   resultItem: {
-    borderRadius: 22,
+    borderRadius: moderateScale(22),
     zIndex: 9999,
     justifyContent: "center",
     alignItems: "center",

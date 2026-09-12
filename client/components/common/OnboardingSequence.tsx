@@ -3,6 +3,7 @@ import React, { createContext, useState } from "react";
 import { useStyles } from "@/styles/GlobalStyles";
 import ProgressBar from "../features/recipe/ProgressBar";
 import { useRouter } from "expo-router";
+import { moderateScale, scale } from "@/utils/responsive";
 
 export type OnboardingContextType = {
   currentStep: number;
@@ -55,15 +56,14 @@ const OnboardingSequence = (props: Props) => {
       }}
     >
       <View style={styles.setupContainer}>
-        <Text style={[styles.textLeftSemiBold, { fontSize: 18 }]}>
+        <Text style={[styles.textLeftSemiBold, { fontSize: moderateScale(18) }]}>
           {props.setupTitle}
         </Text>
-        {/* prog bar*/}
         <View>
-          <View style={{ marginVertical: 20 }}>
+          <View style={{ marginVertical: moderateScale(20) }}>
             <ProgressBar
               progress={0}
-              height={10}
+              height={scale(10)}
               fragmented
               currentStep={currentStep}
               steps={props.stepsContent.length}

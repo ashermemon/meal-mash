@@ -10,6 +10,7 @@ import { useNavigation, useLocalSearchParams } from "expo-router";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { type RecipeCategories } from "@/contexts/RecipeContext";
+import { moderateScale, scale } from "@/utils/responsive";
 
 type Props = {};
 
@@ -35,8 +36,8 @@ const saves = (props: Props) => {
             flexDirection: "row",
             alignItems: "center",
             justifyContent: "flex-start",
-            marginTop: 10,
-            paddingHorizontal: 25,
+            marginTop: moderateScale(10),
+            paddingHorizontal: moderateScale(25),
             paddingBottom: 0,
           }}
         >
@@ -63,7 +64,11 @@ const saves = (props: Props) => {
           <Text
             style={[
               styles.textLeftBold,
-              { marginTop: 0, marginLeft: 14, fontSize: 20 },
+              {
+                marginTop: 0,
+                marginLeft: moderateScale(14),
+                fontSize: moderateScale(20),
+              },
             ]}
           >
             {filterTitle}
@@ -90,10 +95,10 @@ const saves = (props: Props) => {
           locations={[0, 0.4, 0.75, 1]}
           style={{
             position: "absolute",
-            bottom: -40,
+            bottom: moderateScale(-40),
             left: 0,
             right: 0,
-            height: 160,
+            height: scale(160),
             zIndex: 99990,
           }}
           pointerEvents="none"

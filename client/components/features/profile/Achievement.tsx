@@ -8,6 +8,7 @@ import icons3d from "@/components/universal/3dIcons";
 import { FilterImage } from "react-native-svg/filter-image";
 import { lightenColor, hexToRgba } from "@/utils/color";
 import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
+import { moderateScale, scale } from "@/utils/responsive";
 
 type Props = {
   title: string;
@@ -42,11 +43,11 @@ const Achievement = (props: Props) => {
         <AppImage
           source={icons3d["Lock"]}
           style={{
-            width: 30,
-            height: 30,
+            width: scale(30),
+            height: scale(30),
             position: "absolute",
-            top: 15,
-            right: 15,
+            top: moderateScale(15),
+            right: moderateScale(15),
           }}
         ></AppImage>
       )}
@@ -55,8 +56,8 @@ const Achievement = (props: Props) => {
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "flex-start",
-          gap: 20,
-          paddingRight: props.unlocked ? 10 : 40,
+          gap: moderateScale(20),
+          paddingRight: moderateScale(props.unlocked ? 10 : 40),
         }}
       >
         <View>
@@ -64,14 +65,14 @@ const Achievement = (props: Props) => {
             source={icons3d[props.emoji]}
             style={[
               {
-                width: 45,
-                height: 45,
+                width: scale(45),
+                height: scale(45),
               },
               !props.unlocked ? ({ filter: "grayscale(100%)" } as any) : {},
             ]}
           ></FilterImage>
         </View>
-        <View style={{ gap: 3, flex: 1 }}>
+        <View style={{ gap: moderateScale(3), flex: 1 }}>
           <Text
             adjustsFontSizeToFit
             minimumFontScale={0.8}
@@ -92,7 +93,7 @@ const Achievement = (props: Props) => {
               styles.textLeftBold,
               {
                 fontFamily: "Nunito-SemiBold",
-                fontSize: 13,
+                fontSize: moderateScale(13),
                 color: theme.placeholderText,
                 flexWrap: "wrap",
               },

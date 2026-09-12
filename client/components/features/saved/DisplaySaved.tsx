@@ -11,6 +11,7 @@ import {
 } from "@/contexts/RecipeContext";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import { useTheme } from "@/contexts/ColorSchemeContext";
+import { moderateScale } from "@/utils/responsive";
 
 type Props = {
   filter?: "all" | keyof RecipeCategories;
@@ -49,7 +50,7 @@ export default function DisplaySaved({ filter }: Props) {
         ref={listRef}
         data={saves}
         keyExtractor={(item: RecipeData, index) => item.id ?? index.toString()}
-        contentContainerStyle={{ paddingHorizontal: 25 }}
+        contentContainerStyle={{ paddingHorizontal: moderateScale(25) }}
         keyboardShouldPersistTaps="always"
         overScrollMode="never"
         alwaysBounceVertical={false}
@@ -59,9 +60,9 @@ export default function DisplaySaved({ filter }: Props) {
               style={[
                 styles.textLeftSemiBold,
                 {
-                  marginTop: 5,
-                  marginBottom: 15,
-                  fontSize: 16,
+                  marginTop: moderateScale(5),
+                  marginBottom: moderateScale(15),
+                  fontSize: moderateScale(16),
                   fontFamily: "Nunito-Medium",
                 },
               ]}
@@ -74,10 +75,10 @@ export default function DisplaySaved({ filter }: Props) {
           <View
             style={{
               alignItems: "center",
-              gap: 13,
+              gap: moderateScale(13),
               width: "100%",
               justifyContent: "center",
-              marginTop: 40,
+              marginTop: moderateScale(40),
             }}
           >
             <CustomIcon
@@ -91,7 +92,7 @@ export default function DisplaySaved({ filter }: Props) {
                 styles.textCenterBold,
                 {
                   fontFamily: "Nunito-Bold",
-                  fontSize: 20,
+                  fontSize: moderateScale(20),
                   color: theme.basicText,
                 },
               ]}
@@ -103,7 +104,7 @@ export default function DisplaySaved({ filter }: Props) {
                 styles.textCentered,
                 {
                   fontFamily: "Nunito-SemiBold",
-                  fontSize: 15,
+                  fontSize: moderateScale(15),
                   color: theme.placeholderText,
                   textAlign: "center",
                 },

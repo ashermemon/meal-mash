@@ -2,6 +2,7 @@ import { NEWCOLORS } from "@/constants/NewTheme";
 import { useStyles } from "@/styles/GlobalStyles";
 import { useTheme, type Theme } from "@/contexts/ColorSchemeContext";
 import { Text, View } from "react-native";
+import { moderateScale } from "@/utils/responsive";
 
 interface Props {
   type: "difficulty" | "time" | "tags";
@@ -89,8 +90,8 @@ export default function InfoTag(props: Props) {
                 : theme.purpblueBlock,
           flexShrink: 1,
           minWidth: 0,
-          paddingHorizontal: 8,
-          paddingVertical: 4,
+          paddingHorizontal: moderateScale(8),
+          paddingVertical: moderateScale(4),
           justifyContent: "center",
           alignItems: "center",
         },

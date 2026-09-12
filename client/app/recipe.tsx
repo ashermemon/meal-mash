@@ -9,6 +9,7 @@ import { CustomIcon } from "@/icon-loader/icon-loader";
 import { useNavigation } from "@react-navigation/native";
 import PreviewAnimatedWrapper from "@/components/features/generator/PreviewAnimatedWrapper";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { moderateScale } from "@/utils/responsive";
 
 export default function RecipePage() {
   const theme = useTheme();
@@ -23,11 +24,11 @@ export default function RecipePage() {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: theme.nestedBG }}>
-      <View style={{ paddingHorizontal: 25, flex: 1 }}>
+      <View style={{ paddingHorizontal: moderateScale(25), flex: 1 }}>
         <Pressable
           hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
           style={{
-            marginTop: 8,
+            marginTop: moderateScale(8),
             marginLeft: 0,
             alignSelf: "flex-start",
             zIndex: 1000,

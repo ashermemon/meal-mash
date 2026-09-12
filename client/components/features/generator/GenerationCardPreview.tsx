@@ -19,11 +19,12 @@ import { router } from "expo-router";
 import { Skeleton } from "moti/skeleton";
 import * as Haptics from "expo-haptics";
 import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
+import { moderateScale, scale } from "@/utils/responsive";
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
-const CARD_HORIZONTAL_MARGIN = 13;
+const CARD_HORIZONTAL_MARGIN = moderateScale(13);
 const CARD_WIDTH = SCREEN_WIDTH - CARD_HORIZONTAL_MARGIN * 2;
-const IMAGE_SIZE = Math.min(260, Math.max(190, CARD_WIDTH * 0.7));
+const IMAGE_SIZE = Math.min(scale(260), Math.max(scale(190), CARD_WIDTH * 0.7));
 
 type Props = {
   title: string | undefined;
@@ -78,11 +79,11 @@ export const GenerationCardPreview = (props: Props) => {
           width: CARD_WIDTH,
           alignSelf: "center",
           flex: 1,
-          paddingHorizontal: 15,
-          paddingTop: 10,
-          paddingBottom: 8,
+          paddingHorizontal: moderateScale(15),
+          paddingTop: moderateScale(10),
+          paddingBottom: moderateScale(8),
           backgroundColor: theme.nestedBG,
-          borderRadius: 5,
+          borderRadius: moderateScale(5),
           overflow: "hidden",
         }}
       >
@@ -91,38 +92,38 @@ export const GenerationCardPreview = (props: Props) => {
             style={{
               width: "100%",
               alignItems: "center",
-              marginBottom: 6,
-              gap: 10,
+              marginBottom: moderateScale(6),
+              gap: moderateScale(10),
             }}
           >
             {/* Title Skeleton */}
             <Skeleton
-              width={200}
-              height={32}
-              radius={8}
+              width={scale(200)}
+              height={scale(32)}
+              radius={scale(8)}
               {...SkeletonSettings}
             />
 
             {/* Recipe Info Tags Skeleton */}
             <View
-              style={{ flexDirection: "row", gap: 8, justifyContent: "center" }}
+              style={{ flexDirection: "row", gap: moderateScale(8), justifyContent: "center" }}
             >
               <Skeleton
-                width={60}
-                height={24}
-                radius={12}
+                width={scale(60)}
+                height={scale(24)}
+                radius={scale(12)}
                 {...SkeletonSettings}
               />
               <Skeleton
-                width={60}
-                height={24}
-                radius={12}
+                width={scale(60)}
+                height={scale(24)}
+                radius={scale(12)}
                 {...SkeletonSettings}
               />
               <Skeleton
-                width={60}
-                height={24}
-                radius={12}
+                width={scale(60)}
+                height={scale(24)}
+                radius={scale(12)}
                 {...SkeletonSettings}
               />
             </View>
@@ -134,7 +135,7 @@ export const GenerationCardPreview = (props: Props) => {
               width: "100%",
               justifyContent: "space-evenly",
               alignItems: "center",
-              paddingHorizontal: 10,
+              paddingHorizontal: moderateScale(10),
             }}
           >
             {/* Image Skeleton */}
@@ -150,20 +151,20 @@ export const GenerationCardPreview = (props: Props) => {
               style={{
                 width: "100%",
                 alignItems: "center",
-                gap: 6,
-                marginVertical: 10,
+                gap: moderateScale(6),
+                marginVertical: moderateScale(10),
               }}
             >
               <Skeleton
                 width="90%"
-                height={16}
-                radius={4}
+                height={scale(16)}
+                radius={scale(4)}
                 {...SkeletonSettings}
               />
               <Skeleton
                 width="70%"
-                height={16}
-                radius={4}
+                height={scale(16)}
+                radius={scale(4)}
                 {...SkeletonSettings}
               />
             </View>
@@ -179,8 +180,8 @@ export const GenerationCardPreview = (props: Props) => {
             >
               <Skeleton
                 width={"100%"}
-                height={145}
-                radius={15}
+                height={scale(145)}
+                radius={scale(15)}
                 {...SkeletonSettings}
               />
             </View>
@@ -190,7 +191,7 @@ export const GenerationCardPreview = (props: Props) => {
               style={{
                 width: "100%",
                 alignItems: "center",
-                marginTop: 10,
+                marginTop: moderateScale(10),
                 opacity: 0.4,
               }}
             >
@@ -199,8 +200,8 @@ export const GenerationCardPreview = (props: Props) => {
                   makeRecipeShadow,
                   {
                     backgroundColor: theme.primary,
-                    paddingVertical: 14,
-                    borderRadius: 15,
+                    paddingVertical: moderateScale(14),
+                    borderRadius: moderateScale(15),
                     width: "100%",
                   },
                 ]}
@@ -209,7 +210,7 @@ export const GenerationCardPreview = (props: Props) => {
                 <Text
                   style={[
                     styles.textCenterBold,
-                    { color: theme.pureWhite, fontSize: 18 },
+                    { color: theme.pureWhite, fontSize: moderateScale(18) },
                   ]}
                 >
                   Make Recipe
@@ -221,7 +222,7 @@ export const GenerationCardPreview = (props: Props) => {
                   width: "100%",
                   flexDirection: "row",
                   gap: "4%",
-                  marginTop: 10,
+                  marginTop: moderateScale(10),
                   justifyContent: "center",
                 }}
               >
@@ -230,8 +231,8 @@ export const GenerationCardPreview = (props: Props) => {
                     skipShadow,
                     {
                       backgroundColor: theme.redBlock,
-                      paddingVertical: 14,
-                      borderRadius: 15,
+                      paddingVertical: moderateScale(14),
+                      borderRadius: moderateScale(15),
                       width: "48%",
                     },
                   ]}
@@ -240,7 +241,7 @@ export const GenerationCardPreview = (props: Props) => {
                   <Text
                     style={[
                       styles.textCenterBold,
-                      { fontSize: 17, color: theme.pureWhite },
+                      { fontSize: moderateScale(17), color: theme.pureWhite },
                     ]}
                   >
                     ← Skip
@@ -252,8 +253,8 @@ export const GenerationCardPreview = (props: Props) => {
                     saveShadow,
                     {
                       backgroundColor: theme.greenBlock,
-                      paddingVertical: 14,
-                      borderRadius: 15,
+                      paddingVertical: moderateScale(14),
+                      borderRadius: moderateScale(15),
                       width: "48%",
                     },
                   ]}
@@ -262,7 +263,7 @@ export const GenerationCardPreview = (props: Props) => {
                   <Text
                     style={[
                       styles.textCenterBold,
-                      { fontSize: 17, color: theme.pureWhite },
+                      { fontSize: moderateScale(17), color: theme.pureWhite },
                     ]}
                   >
                     Save →
@@ -284,19 +285,23 @@ export const GenerationCardPreview = (props: Props) => {
         width: CARD_WIDTH,
         alignSelf: "center",
         flex: 1,
-        paddingHorizontal: 15,
-        paddingTop: 10,
-        paddingBottom: 8,
+        paddingHorizontal: moderateScale(15),
+        paddingTop: moderateScale(10),
+        paddingBottom: moderateScale(8),
         backgroundColor: theme.nestedBG,
-        borderRadius: 5,
+        borderRadius: moderateScale(5),
         overflow: "hidden",
       }}
     >
-      <View style={{ width: "100%", alignItems: "center", marginBottom: 6 }}>
+      <View style={{ width: "100%", alignItems: "center", marginBottom: moderateScale(6) }}>
         <Text
           style={[
             styles.textCentered,
-            { fontFamily: "Nunito-Bold", fontSize: 28, lineHeight: 32 },
+            {
+              fontFamily: "Nunito-Bold",
+              fontSize: moderateScale(28),
+              lineHeight: moderateScale(32),
+            },
           ]}
           numberOfLines={2}
         >
@@ -317,7 +322,7 @@ export const GenerationCardPreview = (props: Props) => {
           width: "100%",
           justifyContent: "space-evenly",
           alignItems: "center",
-          paddingHorizontal: 10,
+          paddingHorizontal: moderateScale(10),
         }}
       >
         <AppImage
@@ -325,10 +330,10 @@ export const GenerationCardPreview = (props: Props) => {
           style={{
             width: "70%",
             aspectRatio: 1,
-            minHeight: 190,
-            maxHeight: 260,
+            minHeight: scale(190),
+            maxHeight: scale(260),
             alignSelf: "center",
-            borderRadius: 12,
+            borderRadius: moderateScale(12),
           }}
           contentFit="cover"
         />
@@ -338,8 +343,8 @@ export const GenerationCardPreview = (props: Props) => {
             styles.textCentered,
             {
               fontFamily: "Nunito",
-              fontSize: 15,
-              lineHeight: 20,
+              fontSize: moderateScale(15),
+              lineHeight: moderateScale(20),
             },
           ]}
         >
@@ -352,14 +357,14 @@ export const GenerationCardPreview = (props: Props) => {
           <NutrientCircle textInBox={false} />
         </NutrientsContext.Provider>
 
-        <View style={{ width: "100%", alignItems: "center", marginTop: 10 }}>
+        <View style={{ width: "100%", alignItems: "center", marginTop: moderateScale(10) }}>
           <Pressable
             style={[
               makeRecipeShadow,
               {
                 backgroundColor: theme.primary,
-                paddingVertical: 14,
-                borderRadius: 15,
+                paddingVertical: moderateScale(14),
+                borderRadius: moderateScale(15),
                 width: "100%",
               },
             ]}
@@ -373,7 +378,7 @@ export const GenerationCardPreview = (props: Props) => {
             <Text
               style={[
                 styles.textCenterBold,
-                { color: theme.pureWhite, fontSize: 18 },
+                { color: theme.pureWhite, fontSize: moderateScale(18) },
               ]}
             >
               Make Recipe
@@ -385,7 +390,7 @@ export const GenerationCardPreview = (props: Props) => {
               width: "100%",
               flexDirection: "row",
               gap: "4%",
-              marginTop: 10,
+              marginTop: moderateScale(10),
               justifyContent: "center",
             }}
           >
@@ -394,8 +399,8 @@ export const GenerationCardPreview = (props: Props) => {
                 skipShadow,
                 {
                   backgroundColor: theme.redBlock,
-                  paddingVertical: 14,
-                  borderRadius: 15,
+                  paddingVertical: moderateScale(14),
+                  borderRadius: moderateScale(15),
                   width: "48%",
                 },
               ]}
@@ -403,7 +408,7 @@ export const GenerationCardPreview = (props: Props) => {
                 props.skipRecipe();
               }}
             >
-              <Text style={[styles.textCenterBold, { fontSize: 17 }]}>
+              <Text style={[styles.textCenterBold, { fontSize: moderateScale(17) }]}>
                 ← Skip
               </Text>
             </Pressable>
@@ -413,8 +418,8 @@ export const GenerationCardPreview = (props: Props) => {
                 saveShadow,
                 {
                   backgroundColor: theme.greenBlock,
-                  paddingVertical: 14,
-                  borderRadius: 15,
+                  paddingVertical: moderateScale(14),
+                  borderRadius: moderateScale(15),
                   width: "48%",
                 },
               ]}
@@ -422,7 +427,7 @@ export const GenerationCardPreview = (props: Props) => {
                 props.saveRecipe();
               }}
             >
-              <Text style={[styles.textCenterBold, { fontSize: 17 }]}>
+              <Text style={[styles.textCenterBold, { fontSize: moderateScale(17) }]}>
                 Save →
               </Text>
             </Pressable>

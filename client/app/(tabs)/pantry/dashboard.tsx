@@ -105,9 +105,9 @@ export default function Dashboard() {
             Pantry
           </Text>
 
-          <View style={{ gap: moderateScale(25), flex: 1 }}>
+          <View style={{ gap: moderateScale(13), flex: 1 }}>
             <PantryPill pantryPage={true}></PantryPill>
-            <View style={{ gap: moderateScale(20), flex: 1 }}>
+            <View style={{ gap: moderateScale(15), flex: 1 }}>
               <Search
                 addedIds={pantryIngredientIds}
                 onSelectIngredient={(item: Food) =>
@@ -160,7 +160,7 @@ export default function Dashboard() {
                 />
               </View>
 
-              <View style={{ gap: 10 }}>
+              <View style={{ gap: moderateScale(10) }}>
                 <FilterIngredients
                   setCurrentSelected={setSelectedFilter}
                   currentSelected={selectedFilter}
@@ -181,8 +181,8 @@ export default function Dashboard() {
                     flex: 1,
                     alignItems: "center",
                     justifyContent: "center",
-                    gap: 6,
-                    paddingHorizontal: 20,
+                    gap: moderateScale(6),
+                    paddingHorizontal: moderateScale(20),
                   }}
                 >
                   <CustomIcon
@@ -196,7 +196,7 @@ export default function Dashboard() {
                       styles.textCenterBold,
                       {
                         fontFamily: "Nunito-Bold",
-                        fontSize: 20,
+                        fontSize: moderateScale(20),
                         color: theme.basicText,
                       },
                     ]}
@@ -208,7 +208,7 @@ export default function Dashboard() {
                       styles.textCentered,
                       {
                         fontFamily: "Nunito-SemiBold",
-                        fontSize: 15,
+                        fontSize: moderateScale(15),
                         color: theme.placeholderText,
                         textAlign: "center",
                       },
@@ -225,8 +225,8 @@ export default function Dashboard() {
                     flex: 1,
                     alignItems: "center",
                     justifyContent: "center",
-                    gap: 6,
-                    paddingHorizontal: 20,
+                    gap: moderateScale(6),
+                    paddingHorizontal: moderateScale(20),
                   }}
                 >
                   <CustomIcon
@@ -240,7 +240,7 @@ export default function Dashboard() {
                       styles.textCenterBold,
                       {
                         fontFamily: "Nunito-Bold",
-                        fontSize: 20,
+                        fontSize: moderateScale(20),
                         color: theme.basicText,
                       },
                     ]}
@@ -252,7 +252,7 @@ export default function Dashboard() {
                       styles.textCentered,
                       {
                         fontFamily: "Nunito-SemiBold",
-                        fontSize: 15,
+                        fontSize: moderateScale(15),
                         color: theme.placeholderText,
                         textAlign: "center",
                       },
@@ -278,10 +278,10 @@ export default function Dashboard() {
         locations={[0, 0.4, 0.75, 1]}
         style={{
           position: "absolute",
-          bottom: -40,
+          bottom: moderateScale(-40),
           left: 0,
           right: 0,
-          height: 160,
+          height: scale(160),
           zIndex: 10,
         }}
         pointerEvents="none"

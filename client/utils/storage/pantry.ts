@@ -6,15 +6,8 @@ import { StorageKeys } from "./keys";
 import { readRecord, writeRecord } from "./mmkv";
 import { useProfileName } from "./profile";
 
-/** Final fallback, used when neither the pantry nor the profile is named. */
 export const DEFAULT_PANTRY_NAME = "Your Pantry";
 
-/**
- * An empty `name` means "the user never renamed this pantry", so the display
- * name falls back to the profile name. The fallback is derived on read rather
- * than written into the record — otherwise renaming the profile would leave a
- * stale "Bob's Pantry" behind.
- */
 export const defaultPantry: PantryDetails = {
   name: "",
   icon: "",
@@ -27,7 +20,7 @@ export const decodePantry = (value: unknown): PantryDetails => {
   return {
     name: asString(value.name),
     icon: asString(value.icon),
-    // Heals records written before ingredient ids were unique.
+
     ingredients: dedupeFoods(asArray(value.ingredients, decodeFood)),
   };
 };
@@ -41,7 +34,6 @@ export const writePantry = (pantry: PantryDetails): void =>
     ingredients: dedupeFoods(pantry.ingredients),
   });
 
-/** The name to show when the pantry itself hasn't been renamed. */
 export const defaultPantryNameFor = (profileName: string): string => {
   const owner = profileName.trim();
   return owner ? `${owner}'s Pantry` : DEFAULT_PANTRY_NAME;
@@ -52,16 +44,11 @@ export const derivePantryName = (
   profileName: string,
 ): string => customName.trim() || defaultPantryNameFor(profileName);
 
-/**
- * Reactive fallback name — re-renders when the profile name changes, so a
- * pantry the user never renamed follows their profile automatically.
- */
 export const useDefaultPantryName = (): string => {
   const profileName = useProfileName();
   return useMemo(() => defaultPantryNameFor(profileName), [profileName]);
 };
 
-/** Reactive display name for a pantry whose stored (possibly empty) name is known. */
 export const usePantryDisplayName = (customName: string): string => {
   const profileName = useProfileName();
   return useMemo(

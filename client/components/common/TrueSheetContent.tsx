@@ -7,6 +7,7 @@ import * as Haptics from "expo-haptics";
 import CustomCheckbox from "./CustomCheckbox";
 import { useTrueSheet } from "@/contexts/TrueSheetContext";
 import { splitEmojiAndText } from "./DropDownPill";
+import { moderateScale } from "@/utils/responsive";
 
 type Props = {
   currentOptions: string[];
@@ -41,8 +42,8 @@ const TrueSheetContent = (props: Props) => {
     <View>
       <ScrollView
         style={{
-          paddingHorizontal: 20,
-          paddingVertical: 20,
+          paddingHorizontal: moderateScale(20),
+          paddingVertical: moderateScale(20),
         }}
         showsVerticalScrollIndicator={false}
       >
@@ -53,11 +54,11 @@ const TrueSheetContent = (props: Props) => {
               key={index}
               onPress={() => toggleOption(option)}
               style={{
-                paddingVertical: 15,
-                paddingHorizontal: 20,
+                paddingVertical: moderateScale(15),
+                paddingHorizontal: moderateScale(20),
                 borderRadius: 1000,
                 backgroundColor: theme.unselectedGrey,
-                marginBottom: 10,
+                marginBottom: moderateScale(10),
                 flexDirection: "row",
                 justifyContent: "space-between",
                 alignItems: "center",
@@ -69,8 +70,8 @@ const TrueSheetContent = (props: Props) => {
                 {emoji ? (
                   <Text
                     style={{
-                      fontSize: 18,
-                      marginRight: 8,
+                      fontSize: moderateScale(18),
+                      marginRight: moderateScale(8),
                     }}
                   >
                     {emoji}
@@ -78,7 +79,7 @@ const TrueSheetContent = (props: Props) => {
                 ) : null}
                 <Text
                   style={{
-                    fontSize: 16,
+                    fontSize: moderateScale(16),
                     fontFamily: "Nunito-Regular",
                     flex: 1,
                     color: theme.basicText,

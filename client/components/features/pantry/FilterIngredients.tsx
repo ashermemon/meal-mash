@@ -5,6 +5,7 @@ import { useTheme, useIsDarkMode } from "@/contexts/ColorSchemeContext";
 import { getCategoryDisplayLabel } from "@/constants/categoryLabels";
 import { ScrollView } from "react-native-gesture-handler";
 import { getTintedBoxShadow } from "@/utils/shadow";
+import { moderateScale, scale } from "@/utils/responsive";
 
 type Props = {
   categories: string[];
@@ -27,8 +28,8 @@ const FilterIngredients = (props: Props) => {
         justifyContent: "flex-start",
 
         alignItems: "center",
-        gap: 10,
-        marginBottom: 10,
+        gap: moderateScale(10),
+        marginBottom: moderateScale(10),
       }}
     >
       {props.categories.map((string, index: number) => {
@@ -48,8 +49,8 @@ const FilterIngredients = (props: Props) => {
                 justifyContent: "center",
                 alignItems: "center",
 
-                width: label.length >= 12 ? 140 : 90,
-                height: 30,
+                width: scale(label.length >= 12 ? 140 : 90),
+                height: scale(30),
                 backgroundColor: pillBackgroundColor,
               },
             ]}
@@ -58,7 +59,7 @@ const FilterIngredients = (props: Props) => {
               style={[
                 styles.basicTextCenter,
                 {
-                  paddingHorizontal: 7,
+                  paddingHorizontal: moderateScale(7),
                   color:
                     props.currentSelected.toLowerCase() === string.toLowerCase()
                       ? theme.pureWhite

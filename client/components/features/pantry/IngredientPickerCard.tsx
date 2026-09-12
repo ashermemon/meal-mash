@@ -12,6 +12,7 @@ import { dedupeFoods } from "@/utils/storage";
 import icons3d from "@/components/universal/3dIcons";
 import * as Haptics from "expo-haptics";
 import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
+import { moderateScale, scale } from "@/utils/responsive";
 
 type Props = {
   ingredient?: Food;
@@ -154,7 +155,7 @@ const IngredientPickerCard = (props: Props) => {
         }
       }}
     >
-      <View style={[{ width: 40, height: 40, borderRadius: 110 }]}>
+      <View style={[{ width: scale(40), height: scale(40), borderRadius: 110 }]}>
         <AppImage
           source={
             (props.ingredient?.name && icons3d[props.ingredient?.name]) ||
@@ -170,8 +171,8 @@ const IngredientPickerCard = (props: Props) => {
           styles.textLeftSemiBold,
           {
             textAlign: "center",
-            fontSize: 13,
-            marginTop: 5,
+            fontSize: moderateScale(13),
+            marginTop: moderateScale(5),
             fontFamily: selected ? "Nunito-Bold" : "Nunito-SemiBold",
             color: selected ? theme.pureWhite : theme.basicText,
           },

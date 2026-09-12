@@ -10,6 +10,7 @@ import * as Haptics from "expo-haptics";
 import { useCallback, useRef } from "react";
 
 import { runOnJS } from "react-native-reanimated";
+import { moderateScale, scale } from "@/utils/responsive";
 
 const TAB_ROUTES = [
   { name: "index", path: "/(tabs)" },
@@ -23,7 +24,7 @@ export default function TabsLayout() {
   const theme = useTheme();
   const styles = useStyles();
   const tabBarShadow = useTintedBoxShadow(theme.greyBlock, "elevated");
-  const iconSizeMobile = 30;
+  const iconSizeMobile = scale(30);
   const router = useRouter();
   const segments = useSegments();
 
@@ -93,20 +94,22 @@ export default function TabsLayout() {
                     {
                       position: "absolute",
 
-                      height: 65,
-                      marginHorizontal: 20,
+                      height: scale(65),
+                      marginHorizontal: moderateScale(20),
                       borderRadius: 100,
                       backgroundColor: theme.greyBlock,
 
                       paddingBottom: 0,
-                      marginBottom: 10,
+                      marginBottom: moderateScale(10),
                       borderTopWidth: 0,
                     },
                   ],
 
                   tabBarItemStyle: {
-                    paddingVertical: 10,
-                    paddingHorizontal: Platform.OS == "web" ? 20 : 10,
+                    paddingVertical: moderateScale(10),
+                    paddingHorizontal: moderateScale(
+                      Platform.OS == "web" ? 20 : 10,
+                    ),
                   },
 
                   sceneStyle: {
@@ -128,8 +131,8 @@ export default function TabsLayout() {
                     tabBarIcon: ({ color, focused }) => (
                       <View
                         style={{
-                          width: 48,
-                          height: 48,
+                          width: scale(48),
+                          height: scale(48),
                           borderRadius: 100,
                           justifyContent: "center",
                           alignItems: "center",
@@ -156,8 +159,8 @@ export default function TabsLayout() {
                     tabBarIcon: ({ color, focused }) => (
                       <View
                         style={{
-                          width: 48,
-                          height: 48,
+                          width: scale(48),
+                          height: scale(48),
                           borderRadius: 100,
                           justifyContent: "center",
                           alignItems: "center",
@@ -184,8 +187,8 @@ export default function TabsLayout() {
                     tabBarIcon: ({ color, focused }) => (
                       <View
                         style={{
-                          width: 48,
-                          height: 48,
+                          width: scale(48),
+                          height: scale(48),
                           borderRadius: 100,
                           justifyContent: "center",
                           alignItems: "center",
@@ -211,8 +214,8 @@ export default function TabsLayout() {
                     tabBarIcon: ({ color, focused }) => (
                       <View
                         style={{
-                          width: 48,
-                          height: 48,
+                          width: scale(48),
+                          height: scale(48),
                           borderRadius: 100,
                           justifyContent: "center",
                           alignItems: "center",
@@ -239,8 +242,8 @@ export default function TabsLayout() {
                     tabBarIcon: ({ color, focused }) => (
                       <View
                         style={{
-                          width: 48,
-                          height: 48,
+                          width: scale(48),
+                          height: scale(48),
                           borderRadius: 100,
                           justifyContent: "center",
                           alignItems: "center",

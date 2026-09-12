@@ -9,6 +9,7 @@ import * as Haptics from "expo-haptics";
 import { saveRecipe, equal } from "@/components/features/recipe/SaveRecipe";
 import SavedRecipesContext from "@/contexts/SavedRecipesContext";
 import RecipeContext from "@/contexts/RecipeContext";
+import { moderateScale } from "@/utils/responsive";
 
 type HeaderProps = {
   pageTitle: string;
@@ -38,7 +39,11 @@ const FollowRecipeHeader = (props: HeaderProps) => {
   return (
     <>
       <View
-        style={{ marginVertical: 10, width: "100%", paddingHorizontal: 30 }}
+        style={{
+          marginVertical: moderateScale(10),
+          width: "100%",
+          paddingHorizontal: moderateScale(30),
+        }}
       >
         <View
           style={{
@@ -46,7 +51,7 @@ const FollowRecipeHeader = (props: HeaderProps) => {
             alignItems: "center",
             justifyContent: "space-between",
             width: "100%",
-            paddingVertical: 8,
+            paddingVertical: moderateScale(8),
           }}
         >
           <Pressable onPress={handleBack} hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
@@ -63,7 +68,7 @@ const FollowRecipeHeader = (props: HeaderProps) => {
               numberOfLines={1}
               style={[
                 styles.textCenterBold,
-                { fontSize: 18, fontFamily: "Nunito-SemiBold" },
+                { fontSize: moderateScale(18), fontFamily: "Nunito-SemiBold" },
               ]}
             >
               {props.pageTitle}

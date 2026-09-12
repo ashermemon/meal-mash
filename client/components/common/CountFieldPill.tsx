@@ -6,6 +6,7 @@ import { TextInput } from "react-native-gesture-handler";
 import * as Haptics from "expo-haptics";
 import { useTheme } from "@/contexts/ColorSchemeContext";
 import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
+import { moderateScale, scale } from "@/utils/responsive";
 
 type Props = {
   title: string;
@@ -21,13 +22,13 @@ const CountFieldPill = (props: Props) => {
   return (
     <View
       style={{
-        gap: 12,
+        gap: moderateScale(12),
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
       }}
     >
-      <Text style={[styles.textLeftSemiBold, { fontSize: 17 }]}>
+      <Text style={[styles.textLeftSemiBold, { fontSize: moderateScale(17) }]}>
         {props.title}
       </Text>
 
@@ -44,8 +45,8 @@ const CountFieldPill = (props: Props) => {
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "space-between",
-              paddingHorizontal: 8,
-              width: 115,
+              paddingHorizontal: moderateScale(8),
+              width: scale(115),
               flex: 0,
             },
           ]}
@@ -62,9 +63,9 @@ const CountFieldPill = (props: Props) => {
             <Pressable
               hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
               style={{
-                borderRadius: 10,
+                borderRadius: moderateScale(10),
                 backgroundColor: theme.cardWhite,
-                padding: 3,
+                padding: moderateScale(3),
               }}
               onPress={() => {
                 [
@@ -89,7 +90,7 @@ const CountFieldPill = (props: Props) => {
             <Text
               style={[
                 styles.textCentered,
-                { fontSize: 12.5, margin: 0, padding: 0 },
+                { fontSize: moderateScale(12.5), margin: 0, padding: 0 },
               ]}
             >
               {props.num == 0.5
@@ -102,9 +103,9 @@ const CountFieldPill = (props: Props) => {
             <Pressable
               hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
               style={{
-                borderRadius: 10,
+                borderRadius: moderateScale(10),
                 backgroundColor: theme.cardWhite,
-                padding: 3,
+                padding: moderateScale(3),
               }}
               onPress={() => {
                 [

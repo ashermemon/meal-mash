@@ -7,6 +7,7 @@ import * as Haptics from "expo-haptics";
 import { useTrueSheet } from "@/contexts/TrueSheetContext";
 import { useTheme } from "@/contexts/ColorSchemeContext";
 import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
+import { moderateScale, scale } from "@/utils/responsive";
 
 type Props = {
   title: string;
@@ -118,13 +119,13 @@ const DropDownPill = (props: Props) => {
         )
       }
       style={{
-        gap: 12,
+        gap: moderateScale(12),
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
       }}
     >
-      <Text style={[styles.textLeftSemiBold, { fontSize: 17 }]}>
+      <Text style={[styles.textLeftSemiBold, { fontSize: moderateScale(17) }]}>
         {props.title}
       </Text>
 
@@ -141,8 +142,8 @@ const DropDownPill = (props: Props) => {
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "space-between",
-              paddingHorizontal: 9,
-              width: 105,
+              paddingHorizontal: moderateScale(9),
+              width: scale(105),
               flex: 0,
             },
           ]}
@@ -159,7 +160,7 @@ const DropDownPill = (props: Props) => {
             <Text
               style={[
                 styles.textCentered,
-                { fontSize: 16, paddingHorizontal: 3 },
+                { fontSize: moderateScale(16), paddingHorizontal: moderateScale(3) },
               ]}
               adjustsFontSizeToFit
               minimumFontScale={0.75}

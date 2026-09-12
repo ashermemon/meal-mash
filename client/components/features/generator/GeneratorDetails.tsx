@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import { ScrollView } from "react-native-gesture-handler";
 import { useStyles } from "@/styles/GlobalStyles";
-import { moderateScale, verticalScale } from "@/utils/responsive";
+import { moderateScale, scale, verticalScale } from "@/utils/responsive";
 import SliderField from "@/components/common/SliderField";
 import MultiSelectPills from "@/components/common/MultiSelectPills";
 import CountFieldPill from "@/components/common/CountFieldPill";
@@ -283,12 +283,12 @@ const GeneratorDetails = (props: Props) => {
             <View
               style={{
                 alignSelf: "center",
-                width: 44,
-                height: 4,
+                width: scale(44),
+                height: scale(4),
                 borderRadius: 999,
                 backgroundColor: theme.unselectedShape,
-                marginTop: 6,
-                marginBottom: 15,
+                marginTop: moderateScale(6),
+                marginBottom: moderateScale(15),
               }}
             />
             <View
@@ -296,14 +296,14 @@ const GeneratorDetails = (props: Props) => {
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "space-between",
-                paddingHorizontal: 10,
-                marginTop: 4,
-                marginBottom: 15,
+                paddingHorizontal: moderateScale(10),
+                marginTop: moderateScale(4),
+                marginBottom: moderateScale(15),
               }}
             >
               <Text
                 style={{
-                  fontSize: 22,
+                  fontSize: moderateScale(22),
                   fontFamily: "Nunito-SemiBold",
 
                   color: theme.basicText,
@@ -319,7 +319,7 @@ const GeneratorDetails = (props: Props) => {
               >
                 <Text
                   style={{
-                    fontSize: 14,
+                    fontSize: moderateScale(14),
                     fontFamily: "Nunito-SemiBold",
 
                     color: theme.redAccent,
@@ -352,7 +352,7 @@ const GeneratorDetails = (props: Props) => {
             />
             <View
               style={{
-                marginTop: 20,
+                marginTop: moderateScale(20),
                 borderBottomWidth: 1.5,
                 borderColor: theme.dividerGrey,
               }}
@@ -360,18 +360,18 @@ const GeneratorDetails = (props: Props) => {
           </>
         }
         headerStyle={{
-          paddingHorizontal: 20,
-          paddingTop: 16,
+          paddingHorizontal: moderateScale(20),
+          paddingTop: moderateScale(16),
         }}
         backgroundColor={theme.sheetBackgroundColor}
       >
         <View style={{ flex: 1, position: "relative" }}>
           <ScrollView
-            style={{ paddingHorizontal: 20 }}
+            style={{ paddingHorizontal: moderateScale(20) }}
             contentContainerStyle={{
-              paddingTop: 10,
-              paddingBottom: 20,
-              gap: 10,
+              paddingTop: moderateScale(10),
+              paddingBottom: moderateScale(20),
+              gap: moderateScale(10),
             }}
             showsVerticalScrollIndicator={false}
             keyboardShouldPersistTaps="handled"
@@ -397,7 +397,7 @@ const GeneratorDetails = (props: Props) => {
                   styles.textCenterBold,
                   {
                     fontFamily: "Nunito-SemiBold",
-                    fontSize: 18,
+                    fontSize: moderateScale(18),
 
                     color: theme.unselectedShape,
                   },
@@ -415,13 +415,13 @@ const GeneratorDetails = (props: Props) => {
                 {
                   position: "absolute",
                   top: 0,
-                  left: 20,
-                  right: 20,
-                  borderRadius: 30,
+                  left: moderateScale(20),
+                  right: moderateScale(20),
+                  borderRadius: moderateScale(30),
                   overflow: "hidden",
                   backgroundColor: theme.cardWhite,
-                  paddingHorizontal: 12,
-                  paddingVertical: 4,
+                  paddingHorizontal: moderateScale(12),
+                  paddingVertical: moderateScale(4),
                 },
               ]}
             >

@@ -30,6 +30,7 @@ import { useMealImages } from "@/contexts/MealImageContext";
 import { getMealImageSource } from "@/utils/mealImageSource";
 import InfoTag from "../recipe/InfoTag";
 import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
+import { moderateScale, scale } from "@/utils/responsive";
 import {
   consumePendingRestore,
   isEntranceWindowOpen,
@@ -289,7 +290,7 @@ export default function SavedCard(props: SavedProps) {
             style={[
               {
                 flex: 1,
-                padding: 10,
+                padding: moderateScale(10),
               },
             ]}
           >
@@ -302,7 +303,7 @@ export default function SavedCard(props: SavedProps) {
               <View
                 style={[
                   imageGlowShadow,
-                  { width: 70, height: 70, borderRadius: 110 },
+                  { width: scale(70), height: scale(70), borderRadius: 110 },
                 ]}
               >
                 <AppImage
@@ -311,10 +312,19 @@ export default function SavedCard(props: SavedProps) {
                   contentFit="cover"
                 />
               </View>
-              <View style={{ flex: 1, paddingHorizontal: 20, gap: 7 }}>
+              <View
+                style={{
+                  flex: 1,
+                  paddingHorizontal: moderateScale(20),
+                  gap: moderateScale(7),
+                }}
+              >
                 <Text
                   numberOfLines={2}
-                  style={[styles.textLeftBold, { fontSize: 17, lineHeight: 20 }]}
+                  style={[
+                    styles.textLeftBold,
+                    { fontSize: moderateScale(17), lineHeight: moderateScale(20) },
+                  ]}
                 >
                   {props.SavedRecipe.title}
                 </Text>
@@ -323,7 +333,7 @@ export default function SavedCard(props: SavedProps) {
                   style={[
                     styles.basicTextLeft,
                     {
-                      fontSize: 11,
+                      fontSize: moderateScale(11),
 
                       color: theme.fontColor,
                     },
@@ -334,12 +344,12 @@ export default function SavedCard(props: SavedProps) {
               </View>
               <View
                 style={{
-                  marginRight: -20,
+                  marginRight: moderateScale(-20),
                   alignSelf: "flex-start",
-                  marginTop: 30,
+                  marginTop: moderateScale(30),
                 }}
               >
-                <View style={{ gap: 10 }}>
+                <View style={{ gap: moderateScale(10) }}>
                   <View
                     style={[
                       styles.saveTag,
@@ -361,7 +371,7 @@ export default function SavedCard(props: SavedProps) {
                       numberOfLines={1}
                       style={[
                         styles.textCenterBold,
-                        { fontSize: 11, fontFamily: "Nunito-SemiBold" },
+                        { fontSize: moderateScale(11), fontFamily: "Nunito-SemiBold" },
                       ]}
                     >
                       {props.SavedRecipe.difficulty}
@@ -380,7 +390,7 @@ export default function SavedCard(props: SavedProps) {
                       numberOfLines={1}
                       style={[
                         styles.textCenterBold,
-                        { fontSize: 11, fontFamily: "Nunito-SemiBold" },
+                        { fontSize: moderateScale(11), fontFamily: "Nunito-SemiBold" },
                       ]}
                     >
                       {displayTime}
@@ -398,7 +408,7 @@ export default function SavedCard(props: SavedProps) {
                       numberOfLines={1}
                       style={[
                         styles.textCenterBold,
-                        { fontSize: 11, fontFamily: "Nunito-SemiBold" },
+                        { fontSize: moderateScale(11), fontFamily: "Nunito-SemiBold" },
                       ]}
                     >
                       {props.SavedRecipe.tags[0]}

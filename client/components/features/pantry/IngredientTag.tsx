@@ -14,6 +14,7 @@ import { PantryDetailsContext } from "@/contexts/PantryDetails";
 import { Food } from "./Search";
 import * as Haptics from "expo-haptics";
 import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
+import { moderateScale } from "@/utils/responsive";
 
 type Props = {
   ingredient: Food;
@@ -60,7 +61,7 @@ const IngredientTag = (props: Props) => {
           flex: 1,
           justifyContent: "center",
           alignItems: "flex-start",
-          paddingHorizontal: 10,
+          paddingHorizontal: moderateScale(10),
           flexDirection: "column",
         }}
       >
@@ -69,11 +70,11 @@ const IngredientTag = (props: Props) => {
           style={[
             styles.textLeftSemiBold,
             {
-              paddingHorizontal: 3,
-              fontSize: 17,
+              paddingHorizontal: moderateScale(3),
+              fontSize: moderateScale(17),
               width: "100%",
 
-              marginLeft: 5,
+              marginLeft: moderateScale(5),
             },
           ]}
         >
@@ -85,9 +86,9 @@ const IngredientTag = (props: Props) => {
           style={[
             styles.basicTextLeft,
             {
-              paddingHorizontal: 3,
-              fontSize: 13,
-              marginLeft: 5,
+              paddingHorizontal: moderateScale(3),
+              fontSize: moderateScale(13),
+              marginLeft: moderateScale(5),
               fontFamily: "Nunito-Regular",
               color: theme.pillX,
             },
@@ -99,9 +100,9 @@ const IngredientTag = (props: Props) => {
       <Pressable
         onPress={handleRemoveIngredient}
         style={{
-          marginRight: 20,
+          marginRight: moderateScale(20),
           backgroundColor: theme.redAccent,
-          padding: 10,
+          padding: moderateScale(10),
           borderRadius: 1000,
         }}
       >

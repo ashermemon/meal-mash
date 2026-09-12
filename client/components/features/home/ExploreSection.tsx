@@ -93,7 +93,7 @@ export default function ExploreSection() {
             backgroundColor: color,
             height: height ? height : undefined,
 
-            paddingHorizontal: 10,
+            paddingHorizontal: moderateScale(10),
           },
           blockShadow,
         ]}
@@ -107,7 +107,7 @@ export default function ExploreSection() {
 
             {
               fontFamily: "Nunito-SemiBold",
-              fontSize: 20,
+              fontSize: moderateScale(20),
               textAlign: "center",
               color: theme.pureWhite,
             },
@@ -140,7 +140,7 @@ export default function ExploreSection() {
   const [width, setWidth] = useState(Dimensions.get("window").width - 60);
 
   return (
-    <View style={{ flexDirection: "column", gap: 10, width: "100%", flex: 1 }}>
+    <View style={{ flexDirection: "column", gap: moderateScale(10), width: "100%", flex: 1 }}>
       <View
         style={[
           styles.homeBlock,
@@ -252,12 +252,12 @@ export default function ExploreSection() {
             backgroundColor: isDark ? "white" : "black",
             borderRadius: 999,
           }}
-          containerStyle={{ gap: 6, marginTop: 6 }}
+          containerStyle={{ gap: moderateScale(6), marginTop: moderateScale(6) }}
           onPress={onPressPagination}
         />
       </View>
 
-      <View style={{ flexDirection: "row", gap: 10, width: "100%", flex: 1 }}>
+      <View style={{ flexDirection: "row", gap: moderateScale(10), width: "100%", flex: 1 }}>
         <Block
           title="Meal Generator"
           color={isDark ? theme.blueBlock : theme.blueAccent}
@@ -267,7 +267,11 @@ export default function ExploreSection() {
           <Text
             style={[
               styles.basicTextCenter,
-              { fontSize: 10, marginVertical: 5, color: theme.pureWhite },
+              {
+                fontSize: moderateScale(10),
+                marginVertical: moderateScale(5),
+                color: theme.pureWhite,
+              },
             ]}
           >
             Make a new dish from your leftovers and ingredients you already have
@@ -275,7 +279,7 @@ export default function ExploreSection() {
           </Text>
         </Block>
 
-        <View style={{ flex: 1, flexDirection: "column", gap: 10 }}>
+        <View style={{ flex: 1, flexDirection: "column", gap: moderateScale(10) }}>
           <Block
             title="Your Pantry"
             color={isDark ? theme.orangeBlock : theme.orangeAccent}

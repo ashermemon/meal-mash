@@ -44,17 +44,11 @@ import {
 } from "@/contexts/ColorSchemeContext";
 import { MealImageProvider } from "@/contexts/MealImageContext";
 import Toast from "react-native-toast-message";
+import { moderateScale, scale } from "@/utils/responsive";
 import { toastConfig } from "@/components/common/toastConfig";
 
 SplashScreen.preventAutoHideAsync();
 
-// Layouts across the app assume a fairly fixed text size. Left unbounded,
-// a device's system font-size accessibility setting can scale text well
-// beyond what the fixed-size cards/buttons around it were built for,
-// producing the "text too tiny" / "everything's out of proportion" effect
-// on devices with non-default font scale settings. Capping (rather than
-// disabling) scaling keeps some accessibility benefit without breaking
-// layouts at the extremes.
 // @ts-expect-error - defaultProps exists on the RN component but isn't in the public types
 Text.defaultProps = Text.defaultProps || {};
 // @ts-expect-error
@@ -238,20 +232,20 @@ function RootLayoutContent() {
                                 <View
                                   style={{
                                     alignSelf: "center",
-                                    width: 44,
-                                    height: 4,
+                                    width: scale(44),
+                                    height: scale(4),
                                     borderRadius: 999,
                                     backgroundColor: theme.unselectedShape,
-                                    marginTop: 6,
-                                    marginBottom: 15,
+                                    marginTop: moderateScale(6),
+                                    marginBottom: moderateScale(15),
                                   }}
                                 />
                                 <Text
                                   style={{
-                                    fontSize: 22,
+                                    fontSize: moderateScale(22),
                                     fontFamily: "Nunito-SemiBold",
-                                    marginTop: 4,
-                                    marginBottom: 15,
+                                    marginTop: moderateScale(4),
+                                    marginBottom: moderateScale(15),
                                     color: theme.basicText,
                                   }}
                                 >
@@ -267,8 +261,8 @@ function RootLayoutContent() {
                               </>
                             }
                             headerStyle={{
-                              paddingHorizontal: 20,
-                              paddingTop: 16,
+                              paddingHorizontal: moderateScale(20),
+                              paddingTop: moderateScale(16),
                             }}
                             backgroundColor={theme.sheetBackgroundColor}
                           >

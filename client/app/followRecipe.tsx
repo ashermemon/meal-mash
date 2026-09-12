@@ -19,6 +19,7 @@ import FollowRecipeHeader from "@/components/features/recipe/FollowRecipeHeader"
 import { router } from "expo-router";
 import { useMealImages } from "@/contexts/MealImageContext";
 import { getMealImageSource } from "@/utils/mealImageSource";
+import { moderateScale, scale } from "@/utils/responsive";
 
 const followRecipe = () => {
   const styles = useStyles();
@@ -28,7 +29,7 @@ const followRecipe = () => {
   const [contextRecipeData] = useContext(RecipeContext);
   const { mealImages } = useMealImages();
   const navigation = useNavigation();
-  const bulletMargin = 45; //33
+  const bulletMargin = moderateScale(45); //33
 
   // default placeholder
   const defaultRecipeData: RecipeData = {
@@ -108,7 +109,7 @@ const followRecipe = () => {
         progress={scrollProgress}
       />
       <ScrollView
-        contentContainerStyle={{ padding: 24, paddingBottom: 40 }}
+        contentContainerStyle={{ padding: moderateScale(24), paddingBottom: moderateScale(40) }}
         onScroll={(event) => {
           const { layoutMeasurement, contentOffset, contentSize } =
             event.nativeEvent;
@@ -122,7 +123,7 @@ const followRecipe = () => {
         <View
           style={[
             {
-              paddingHorizontal: 20,
+              paddingHorizontal: moderateScale(20),
             },
           ]}
         >
@@ -131,13 +132,13 @@ const followRecipe = () => {
               flexDirection: "row",
               alignItems: "center",
 
-              marginBottom: 20,
+              marginBottom: moderateScale(20),
             }}
           >
             <View
               style={[
                 imageGlowShadow,
-                { width: 70, height: 70, borderRadius: 110 },
+                { width: scale(70), height: scale(70), borderRadius: 110 },
               ]}
             >
               <AppImage
@@ -146,10 +147,10 @@ const followRecipe = () => {
                 contentFit="cover"
               />
             </View>
-            <View style={{ flex: 1, paddingHorizontal: 18 }}>
+            <View style={{ flex: 1, paddingHorizontal: moderateScale(18) }}>
               <Text
                 numberOfLines={2}
-                style={[styles.textLeftBold, { fontSize: 23, lineHeight: 27 }]}
+                style={[styles.textLeftBold, { fontSize: moderateScale(23), lineHeight: moderateScale(27) }]}
               >
                 {recipeData.title}
               </Text>
@@ -165,10 +166,10 @@ const followRecipe = () => {
             style={[
               styles.textCentered,
               {
-                fontSize: 16,
-                lineHeight: 24,
+                fontSize: moderateScale(16),
+                lineHeight: moderateScale(24),
                 color: theme.fontColor,
-                marginBottom: 10,
+                marginBottom: moderateScale(10),
               },
             ]}
           >
@@ -179,10 +180,10 @@ const followRecipe = () => {
         <View
           style={[
             {
-              marginBottom: 10,
-              paddingHorizontal: 10,
-              paddingTop: 10,
-              paddingBottom: 15,
+              marginBottom: moderateScale(10),
+              paddingHorizontal: moderateScale(10),
+              paddingTop: moderateScale(10),
+              paddingBottom: moderateScale(15),
             },
           ]}
         >
@@ -205,10 +206,10 @@ const followRecipe = () => {
                   flexDirection: "row",
                   alignItems: "center",
                   justifyContent: "space-between",
-                  marginBottom: 33,
+                  marginBottom: moderateScale(33),
                 }}
               >
-                <View style={{ marginRight: 12 }}>
+                <View style={{ marginRight: moderateScale(12) }}>
                   <CustomCheckbox
                     checked={checked[index]}
                     onChange={() => {
@@ -243,7 +244,7 @@ const followRecipe = () => {
                         {
                           marginLeft: 0,
                           flex: 1,
-                          fontSize: 15,
+                          fontSize: moderateScale(15),
                           color: theme.fontColor,
                         },
                       ]}
@@ -256,9 +257,9 @@ const followRecipe = () => {
                       style={[
                         styles.textRight,
                         {
-                          fontSize: 15,
+                          fontSize: moderateScale(15),
                           color: theme.searchPlaceholder,
-                          marginLeft: 12,
+                          marginLeft: moderateScale(12),
                         },
                       ]}
                     >
@@ -300,11 +301,11 @@ const followRecipe = () => {
                     styles.textLeft,
                     {
                       flex: 1,
-                      fontSize: 15,
-                      lineHeight: 22,
-                      marginLeft: 16,
-                      marginTop: 5,
-                      marginBottom: instruction.timerMinutes ? 10 : bulletMargin,
+                      fontSize: moderateScale(15),
+                      lineHeight: moderateScale(22),
+                      marginLeft: moderateScale(16),
+                      marginTop: moderateScale(5),
+                      marginBottom: instruction.timerMinutes ? moderateScale(10) : bulletMargin,
                     },
                   ]}
                 >
@@ -312,7 +313,7 @@ const followRecipe = () => {
                 </Text>
               </View>
               {instruction.timerMinutes ? (
-                <View style={{ marginBottom: bulletMargin - 10 }}>
+                <View style={{ marginBottom: bulletMargin - moderateScale(10) }}>
                   <Timer
                     time={instruction.timerMinutes * 60}
                     taskDescription={instruction.timerTask}
@@ -360,11 +361,11 @@ const followRecipe = () => {
                     styles.textLeft,
                     {
                       flex: 1,
-                      fontSize: 15,
-                      lineHeight: 22,
-                      marginLeft: 16,
+                      fontSize: moderateScale(15),
+                      lineHeight: moderateScale(22),
+                      marginLeft: moderateScale(16),
                       marginBottom: bulletMargin,
-                      marginTop: 5,
+                      marginTop: moderateScale(5),
                     },
                   ]}
                 >
@@ -380,8 +381,8 @@ const followRecipe = () => {
               returnButtonShadow,
               {
                 backgroundColor: theme.primary,
-                paddingVertical: 14,
-                borderRadius: 15,
+                paddingVertical: moderateScale(14),
+                borderRadius: moderateScale(15),
                 width: "100%",
               },
             ]}
@@ -394,7 +395,7 @@ const followRecipe = () => {
             <Text
               style={[
                 styles.textCenterBold,
-                { color: theme.pureWhite, fontSize: 18 },
+                { color: theme.pureWhite, fontSize: moderateScale(18) },
               ]}
             >
               ← Return
