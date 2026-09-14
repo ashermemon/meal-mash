@@ -18,6 +18,7 @@ import { Food } from "@/components/features/pantry/Search";
 import GroceryListItem from "./GroceryListItem";
 import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 import { moderateScale } from "@/utils/responsive";
+import { ingredientKey } from "@/utils/storage/food";
 
 if (
   Platform.OS === "android" &&
@@ -147,7 +148,11 @@ const CheckedGroceryList = () => {
           >
             <View style={{ gap: moderateScale(25) }}>
               {checkedList.map((food: Food) => (
-                <GroceryListItem key={food.id} food={food} variant="checked" />
+                <GroceryListItem
+                  key={ingredientKey(food)}
+                  food={food}
+                  variant="checked"
+                />
               ))}
             </View>
           </ScrollView>

@@ -20,6 +20,7 @@ import CheckedGroceryListContext from "@/contexts/CheckedGroceryListContext";
 import GroceryListItem from "@/components/features/grocerylist/GroceryListItem";
 import CheckedGroceryList from "@/components/features/grocerylist/CheckedGroceryList";
 import { moderateScale, scale } from "@/utils/responsive";
+import { ingredientKey } from "@/utils/storage/food";
 
 export default function Dashboard() {
   const styles = useStyles();
@@ -222,7 +223,7 @@ export default function Dashboard() {
               >
                 {groceryList.map((ingredient: Food) => (
                   <GroceryListItem
-                    key={ingredient.id}
+                    key={ingredientKey(ingredient)}
                     food={ingredient}
                   ></GroceryListItem>
                 ))}
