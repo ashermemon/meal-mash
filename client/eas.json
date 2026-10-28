@@ -30,6 +30,9 @@
     "production": {
       "android": {
         "track": "internal"
+      },
+      "ios": {
+        "ascAppId": "6808728362"
       }
     }
   }

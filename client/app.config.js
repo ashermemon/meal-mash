@@ -4,7 +4,7 @@ export default {
   expo: {
     name: "MealMash",
     slug: "never-leftover-new",
-    version: "0.9.1",
+    version: "1.0.1",
     orientation: "portrait",
     icon: "./assets/images/IconLight.png",
     scheme: "myapp",
