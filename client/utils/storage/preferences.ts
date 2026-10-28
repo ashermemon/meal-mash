@@ -7,11 +7,13 @@ export type StoredColorScheme = "light" | "dark" | null;
 export type StoredPreferences = {
   colorScheme: StoredColorScheme;
   hasCompletedPantrySetup: boolean;
+  hasSeenTutorial: boolean;
 };
 
 export const defaultPreferences: StoredPreferences = {
   colorScheme: null,
   hasCompletedPantrySetup: false,
+  hasSeenTutorial: false,
 };
 
 export const decodePreferences = (value: unknown): StoredPreferences => {
@@ -21,6 +23,7 @@ export const decodePreferences = (value: unknown): StoredPreferences => {
   return {
     colorScheme: scheme === "light" || scheme === "dark" ? scheme : null,
     hasCompletedPantrySetup: asBoolean(value.hasCompletedPantrySetup),
+    hasSeenTutorial: asBoolean(value.hasSeenTutorial),
   };
 };
 
@@ -44,3 +47,9 @@ export const hasCompletedPantrySetup = (): boolean =>
 
 export const setPantrySetupComplete = (complete = true): void =>
   updatePreferences({ hasCompletedPantrySetup: complete });
+
+export const hasSeenTutorial = (): boolean =>
+  readPreferences().hasSeenTutorial;
+
+export const setTutorialSeen = (seen = true): void =>
+  updatePreferences({ hasSeenTutorial: seen });

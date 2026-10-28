@@ -29,6 +29,8 @@ export {
   writeColorScheme,
   hasCompletedPantrySetup,
   setPantrySetupComplete,
+  hasSeenTutorial,
+  setTutorialSeen,
   defaultPreferences,
   type StoredPreferences,
   type StoredColorScheme,

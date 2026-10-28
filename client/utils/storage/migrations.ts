@@ -23,7 +23,11 @@ const migrateToV1 = (): void => {
   const hasCompletedPantrySetup =
     storage.getBoolean(LegacyKeys.isPantrySetup) === true;
   if (colorScheme !== null || hasCompletedPantrySetup) {
-    writePreferences({ colorScheme, hasCompletedPantrySetup });
+    writePreferences({
+      colorScheme,
+      hasCompletedPantrySetup,
+      hasSeenTutorial: true,
+    });
   }
 
   const legacyUnlocked = storage.getString(LegacyKeys.unlockedAchievements);
