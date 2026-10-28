@@ -53,6 +53,24 @@ const SetupScreen = (props: Props) => {
   const defaultPantryName = useDefaultPantryName();
   const [pantryName, setPantryName] = useState(pantryDetails.name);
   const [keyboardOpen, setKeyboardOpen] = useState(false);
+  const [gridLayout, setGridLayout] = useState({
+    container: 0,
+    header: 0,
+    content: 0,
+  });
+  const [gridScale, setGridScale] = useState(1);
+
+  useEffect(() => {
+    const available = gridLayout.container - gridLayout.header;
+    if (available <= 0 || gridLayout.content <= 0) return;
+    const overflow = gridLayout.content - available;
+    if (overflow <= 0 && (gridScale >= 1 || -overflow < 8)) return;
+    const next = Math.min(
+      1,
+      Math.max(0.5, gridScale * (available / gridLayout.content)),
+    );
+    if (Math.abs(next - gridScale) > 0.01) setGridScale(next);
+  }, [gridLayout]);
   const [selected, setSelected] = useState(-1);
   const [cameraNext, setCameraNext] = useState(false);
 
@@ -359,39 +377,64 @@ const SetupScreen = (props: Props) => {
 
                     flex: 1,
                   }}
+                  onLayout={(e) => {
+                    const container = e.nativeEvent.layout.height;
+                    setGridLayout((prev) =>
+                      prev.container === container
+                        ? prev
+                        : { ...prev, container },
+                    );
+                  }}
                 >
-                  <Text
-                    style={[
-                      styles.textLeftBold,
-                      {
-                        fontSize: moderateScale(20),
-                        marginBottom: moderateScale(7),
-                      },
-                    ]}
+                  <View
+                    onLayout={(e) => {
+                      const header = e.nativeEvent.layout.height;
+                      setGridLayout((prev) =>
+                        prev.header === header ? prev : { ...prev, header },
+                      );
+                    }}
                   >
-                    Household Essentials:
-                  </Text>
+                    <Text
+                      style={[
+                        styles.textLeftBold,
+                        {
+                          fontSize: moderateScale(20),
+                          marginBottom: moderateScale(7),
+                        },
+                      ]}
+                    >
+                      Household Essentials:
+                    </Text>
 
-                  <Text
-                    style={[
-                      styles.textLeft,
-                      {
-                        fontSize: moderateScale(15),
-                        marginBottom: moderateScale(10),
-                      },
-                    ]}
-                  >
-                    Select ingredients to add to pantry
-                  </Text>
+                    <Text
+                      style={[
+                        styles.textLeft,
+                        {
+                          fontSize: moderateScale(15),
+                          marginBottom: moderateScale(10),
+                        },
+                      ]}
+                    >
+                      Select ingredients to add to pantry
+                    </Text>
+                  </View>
 
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <FlatList
                       data={ingredientGroups}
                       numColumns={3}
+                      scrollEnabled={false}
+                      onContentSizeChange={(_w, content) =>
+                        setGridLayout((prev) =>
+                          prev.content === content
+                            ? prev
+                            : { ...prev, content },
+                        )
+                      }
                       columnWrapperStyle={{
                         justifyContent: "space-between",
-                        marginTop: moderateScale(9),
-                        marginBottom: moderateScale(9),
+                        marginTop: moderateScale(9) * gridScale,
+                        marginBottom: moderateScale(9) * gridScale,
                         gap: moderateScale(18),
                       }}
                       keyExtractor={(item) => item.key}
@@ -402,6 +445,7 @@ const SetupScreen = (props: Props) => {
                             item.ingredient.displayName ?? item.ingredient.name
                           }
                           selectionMenuOptions={item.options}
+                          sizeFactor={gridScale}
                         />
                       )}
                     />

@@ -20,11 +20,13 @@ type Props = {
   ingredientName?: string;
   multiSelect?: boolean;
   selectionMenuOptions: Array<string | Food>;
+  sizeFactor?: number;
 };
 
 const IngredientPickerCard = (props: Props) => {
   const styles = useStyles();
   const theme = useTheme();
+  const sizeFactor = props.sizeFactor ?? 1;
   const { openSheet } = useTrueSheet();
   const [pantryDetails, setPantryDetails] = useContext(PantryDetailsContext);
   const [selected, setSelected] = useState(false);
@@ -113,6 +115,7 @@ const IngredientPickerCard = (props: Props) => {
         cardShadow,
         {
           backgroundColor: cardBackgroundColor,
+          paddingVertical: moderateScale(10) * sizeFactor,
         },
       ]}
       onPress={() => {
@@ -156,7 +159,15 @@ const IngredientPickerCard = (props: Props) => {
         }
       }}
     >
-      <View style={[{ width: scale(40), height: scale(40), borderRadius: 110 }]}>
+      <View
+        style={[
+          {
+            width: scale(40) * sizeFactor,
+            height: scale(40) * sizeFactor,
+            borderRadius: 110,
+          },
+        ]}
+      >
         <AppImage
           source={
             (props.ingredient?.name && icons3d[props.ingredient?.name]) ||
@@ -172,8 +183,8 @@ const IngredientPickerCard = (props: Props) => {
           styles.textLeftSemiBold,
           {
             textAlign: "center",
-            fontSize: moderateScale(13),
-            marginTop: moderateScale(5),
+            fontSize: moderateScale(13) * Math.max(sizeFactor, 0.8),
+            marginTop: moderateScale(5) * sizeFactor,
             fontFamily: selected ? "Nunito-Bold" : "Nunito-SemiBold",
             color: selected ? theme.pureWhite : theme.basicText,
           },
