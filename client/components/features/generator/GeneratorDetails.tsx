@@ -3,6 +3,7 @@ import { Text } from "@/components/universal/AppText";
 import React, {
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -29,8 +30,6 @@ import Search, { Food, SearchHandle, SearchResultItem } from "../pantry/Search";
 import IngredientTag from "../pantry/IngredientTag";
 
 type Props = {};
-
-const MAX_VISIBLE_SEARCH_RESULTS = 5;
 
 const GeneratorDetails = (props: Props) => {
   const styles = useStyles();
@@ -107,6 +106,13 @@ const GeneratorDetails = (props: Props) => {
 
   const [searchResults, setSearchResults] = useState<Food[]>([]);
   const [searchResultsVisible, setSearchResultsVisible] = useState(false);
+  const sheetScrollRef = useRef<ScrollView>(null);
+
+  useEffect(() => {
+    if (searchResultsVisible) {
+      sheetScrollRef.current?.scrollTo({ y: 0, animated: false });
+    }
+  }, [searchResultsVisible]);
   const browseIngredientIds = useMemo(
     () => new Set(browseIngredients.map((item) => item.id)),
     [browseIngredients],
@@ -368,6 +374,7 @@ const GeneratorDetails = (props: Props) => {
       >
         <View style={{ flex: 1, position: "relative" }}>
           <ScrollView
+            ref={sheetScrollRef}
             style={{ paddingHorizontal: moderateScale(20) }}
             contentContainerStyle={{
               paddingTop: moderateScale(10),
@@ -375,60 +382,24 @@ const GeneratorDetails = (props: Props) => {
               gap: moderateScale(10),
             }}
             showsVerticalScrollIndicator={false}
-            keyboardShouldPersistTaps="handled"
+            keyboardShouldPersistTaps="always"
           >
             <View />
 
-            {browseIngredients
-              .toReversed()
-              .map((ingredient: Food, index: number) => (
-                <IngredientTag
-                  key={ingredient.id || index}
-                  ingredient={ingredient}
-                  onRemove={() =>
-                    setBrowseIngredients((prev) =>
-                      prev.filter((i) => i.id !== ingredient.id),
-                    )
-                  }
-                />
-              ))}
-            {browseIngredients.length < 1 && (
-              <Text
+            {searchResultsVisible ? (
+              <View
                 style={[
-                  styles.textCenterBold,
+                  searchResultsShadow,
                   {
-                    fontFamily: "Nunito-SemiBold",
-                    fontSize: moderateScale(18),
-
-                    color: theme.unselectedShape,
+                    borderRadius: moderateScale(30),
+                    overflow: "hidden",
+                    backgroundColor: theme.cardWhite,
+                    paddingHorizontal: moderateScale(12),
+                    paddingVertical: moderateScale(4),
                   },
                 ]}
               >
-                Search and select ingredients to add!
-              </Text>
-            )}
-          </ScrollView>
-
-          {searchResultsVisible && (
-            <View
-              style={[
-                searchResultsShadow,
-                {
-                  position: "absolute",
-                  top: 0,
-                  left: moderateScale(20),
-                  right: moderateScale(20),
-                  borderRadius: moderateScale(30),
-                  overflow: "hidden",
-                  backgroundColor: theme.cardWhite,
-                  paddingHorizontal: moderateScale(12),
-                  paddingVertical: moderateScale(4),
-                },
-              ]}
-            >
-              {searchResults
-                .slice(0, MAX_VISIBLE_SEARCH_RESULTS)
-                .map((item: Food, index: number, arr) => {
+                {searchResults.map((item: Food, index: number, arr) => {
                   const added = browseIngredientIds.has(item.id);
                   return (
                     <SearchResultItem
@@ -445,8 +416,39 @@ const GeneratorDetails = (props: Props) => {
                     />
                   );
                 })}
-            </View>
-          )}
+              </View>
+            ) : null}
+
+            {!searchResultsVisible &&
+              browseIngredients
+              .toReversed()
+              .map((ingredient: Food, index: number) => (
+                <IngredientTag
+                  key={ingredient.id || index}
+                  ingredient={ingredient}
+                  onRemove={() =>
+                    setBrowseIngredients((prev) =>
+                      prev.filter((i) => i.id !== ingredient.id),
+                    )
+                  }
+                />
+              ))}
+            {!searchResultsVisible && browseIngredients.length < 1 && (
+              <Text
+                style={[
+                  styles.textCenterBold,
+                  {
+                    fontFamily: "Nunito-SemiBold",
+                    fontSize: moderateScale(18),
+
+                    color: theme.unselectedShape,
+                  },
+                ]}
+              >
+                Search and select ingredients to add!
+              </Text>
+            )}
+          </ScrollView>
         </View>
       </TrueSheet>
     </>
