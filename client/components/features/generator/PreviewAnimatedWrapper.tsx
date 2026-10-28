@@ -1,5 +1,12 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
-import { View, useWindowDimensions } from "react-native";
+import { View, Pressable, useWindowDimensions } from "react-native";
+import { Text } from "@/components/universal/AppText";
+import AppImage from "@/components/universal/AppImage";
+import icons3d from "@/components/universal/3dIcons";
+import { useStyles } from "@/styles/GlobalStyles";
+import { useTheme } from "@/contexts/ColorSchemeContext";
+import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
+import { moderateScale, scale } from "@/utils/responsive";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -13,7 +20,7 @@ import * as Haptics from "expo-haptics";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import GenerationCardPreview from "./GenerationCardPreview";
 import SavedRecipesContext from "@/contexts/SavedRecipesContext";
-import { saveRecipe as persistRecipe } from "@/components/features/recipe/SaveRecipe";
+import { addRecipeToSaves } from "@/components/features/recipe/SaveRecipe";
 import RecipeContext, { type RecipeData } from "@/contexts/RecipeContext";
 import { GoogleGenAI } from "@google/genai";
 import { APIKEY } from "@/utils/apikey";
@@ -26,6 +33,8 @@ import { PantryDetailsContext } from "@/contexts/PantryDetails";
 import { BrowseIngredientsContext } from "@/contexts/BrowseIngredientsContext";
 import { trackRecipeGenerated, trackMealMade } from "@/utils/achievements";
 import { useMealImages } from "@/contexts/MealImageContext";
+
+const MAX_FETCH_ATTEMPTS = 3;
 
 type Props = {
   title: string | undefined;
@@ -172,11 +181,31 @@ const SwipableCard = ({
 };
 
 const PreviewAnimatedWrapper = (props: Props) => {
+  const styles = useStyles();
+  const theme = useTheme();
+  const retryButtonShadow = useTintedBoxShadow(theme.primary);
   const [savedRecipes, setSavedRecipes] = useContext(SavedRecipesContext);
   const [recipeData, setRecipeData] = useContext(RecipeContext);
 
   const [recipeQueue, setRecipeQueue] = useState<RecipeData[]>([]);
   const [isPreFetching, setIsPreFetching] = useState(false);
+  const [failedAttempts, setFailedAttempts] = useState(0);
+  const [retryReady, setRetryReady] = useState(true);
+  const retryTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const loadFailed = failedAttempts >= MAX_FETCH_ATTEMPTS;
+
+  useEffect(
+    () => () => {
+      if (retryTimeout.current) clearTimeout(retryTimeout.current);
+    },
+    [],
+  );
+
+  const retryLoading = () => {
+    Haptics.selectionAsync();
+    setFailedAttempts(0);
+    setRetryReady(true);
+  };
   const [pantryDetails, setPantryDetails] = useContext(PantryDetailsContext);
   const [generationDetails, setGenerationDetails] = useContext(
     GenerationDetailsContext,
@@ -246,69 +275,78 @@ const PreviewAnimatedWrapper = (props: Props) => {
         },
       });
 
-      if (response.text) {
-        const parsedRecipe = JSON.parse(response.text);
-        console.log(parsedRecipe.imageCategory);
-        const newRecipe: RecipeData = {
-          id: `recipe_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
-          prompt: nextPrompt,
-          responseRecipe: response.text,
-          title: parsedRecipe.title,
-          description: parsedRecipe.description,
-          difficulty: parsedRecipe.difficulty,
-          time: parsedRecipe.time,
-          servings: parsedRecipe.servings,
-          nutrients: [
-            Number(parsedRecipe.nutrients?.protein) || 0,
-            Number(parsedRecipe.nutrients?.fat) || 0,
-            Number(parsedRecipe.nutrients?.carbs) || 0,
-          ],
-          tags: parsedRecipe.tags,
-          categories: {
-            madeWithLeftovers: !!parsedRecipe.categories?.madeWithLeftovers,
-            tastyMeals: !!parsedRecipe.categories?.tastyMeals,
-            sweetTreats: !!parsedRecipe.categories?.sweetTreats,
-            quickSnacks: !!parsedRecipe.categories?.quickSnacks,
-            under15Minutes: !!parsedRecipe.categories?.under15Minutes,
-          },
-          ingredients: parsedRecipe.ingredients,
-          instructions: parsedRecipe.instructions,
-          tips: parsedRecipe.tips,
-          imageCategory: parsedRecipe.imageCategory,
-        };
+      if (!response.text) throw new Error("Empty recipe response");
+      const parsedRecipe = JSON.parse(response.text);
+      console.log(parsedRecipe.imageCategory);
+      const newRecipe: RecipeData = {
+        id: `recipe_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
+        prompt: nextPrompt,
+        responseRecipe: response.text,
+        title: parsedRecipe.title,
+        description: parsedRecipe.description,
+        difficulty: parsedRecipe.difficulty,
+        time: parsedRecipe.time,
+        servings: parsedRecipe.servings,
+        nutrients: [
+          Number(parsedRecipe.nutrients?.protein) || 0,
+          Number(parsedRecipe.nutrients?.fat) || 0,
+          Number(parsedRecipe.nutrients?.carbs) || 0,
+        ],
+        tags: parsedRecipe.tags,
+        categories: {
+          madeWithLeftovers: !!parsedRecipe.categories?.madeWithLeftovers,
+          tastyMeals: !!parsedRecipe.categories?.tastyMeals,
+          sweetTreats: !!parsedRecipe.categories?.sweetTreats,
+          quickSnacks: !!parsedRecipe.categories?.quickSnacks,
+          under15Minutes: !!parsedRecipe.categories?.under15Minutes,
+        },
+        ingredients: parsedRecipe.ingredients,
+        instructions: parsedRecipe.instructions,
+        tips: parsedRecipe.tips,
+        imageCategory: parsedRecipe.imageCategory,
+      };
 
-        trackRecipeGenerated(newRecipe, pickedCuisine);
+      trackRecipeGenerated(newRecipe, pickedCuisine);
 
-        setRecipeQueue((prevQueue) => {
-          if (
-            prevQueue.some(
-              (r) => r.id === newRecipe.id || r.title === newRecipe.title,
-            )
-          ) {
-            return prevQueue;
-          }
-          return [...prevQueue, newRecipe];
-        });
-      }
+      setRecipeQueue((prevQueue) => {
+        if (
+          prevQueue.some(
+            (r) => r.id === newRecipe.id || r.title === newRecipe.title,
+          )
+        ) {
+          return prevQueue;
+        }
+        return [...prevQueue, newRecipe];
+      });
+      setFailedAttempts(0);
     } catch (err) {
       console.error("Failed to prefetch recipe in background:", err);
+      const attempt = failedAttempts + 1;
+      setFailedAttempts(attempt);
+      if (attempt < MAX_FETCH_ATTEMPTS) {
+        setRetryReady(false);
+        retryTimeout.current = setTimeout(
+          () => setRetryReady(true),
+          1000 * 2 ** attempt,
+        );
+      }
     } finally {
       setIsPreFetching(false);
     }
   };
 
   useEffect(() => {
-    if (recipeQueue.length < 2 && !isPreFetching) {
+    if (recipeQueue.length < 2 && !isPreFetching && retryReady && !loadFailed) {
       prefetchNextRecipe();
     }
-  }, [recipeQueue.length, isPreFetching]);
+  }, [recipeQueue.length, isPreFetching, retryReady, loadFailed]);
 
   const handleSwipeFinished = (recipe: RecipeData) => {
     setRecipeQueue((prev) => prev.filter((r) => r.id !== recipe.id));
   };
 
   const handleSaveRecipeJS = (recipe: RecipeData) => {
-    persistRecipe(recipe, setSavedRecipes);
+    addRecipeToSaves(recipe, setSavedRecipes);
   };
 
   const cardsToRender: {
@@ -347,6 +385,68 @@ const PreviewAnimatedWrapper = (props: Props) => {
   }
 
   const stack = [...cardsToRender].reverse();
+
+  if (loadFailed && recipeQueue.length === 0) {
+    return (
+      <View
+        style={{
+          width: "100%",
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+          gap: moderateScale(8),
+          paddingHorizontal: moderateScale(20),
+        }}
+      >
+        <AppImage
+          source={icons3d.Default}
+          style={{ width: scale(70), height: scale(70) }}
+          contentFit="contain"
+        />
+        <Text
+          style={[
+            styles.textCenterBold,
+            { fontSize: moderateScale(20), color: theme.basicText },
+          ]}
+        >
+          {"Couldn't load recipes"}
+        </Text>
+        <Text
+          style={[
+            styles.textCentered,
+            {
+              fontSize: moderateScale(15),
+              color: theme.placeholderText,
+              marginBottom: moderateScale(10),
+            },
+          ]}
+        >
+          Check your internet connection and try again.
+        </Text>
+        <Pressable
+          onPress={retryLoading}
+          style={[
+            retryButtonShadow,
+            {
+              backgroundColor: theme.primary,
+              paddingVertical: moderateScale(14),
+              paddingHorizontal: moderateScale(40),
+              borderRadius: moderateScale(15),
+            },
+          ]}
+        >
+          <Text
+            style={[
+              styles.textCenterBold,
+              { color: theme.pureWhite, fontSize: moderateScale(18) },
+            ]}
+          >
+            Try Again
+          </Text>
+        </Pressable>
+      </View>
+    );
+  }
 
   return (
     <View

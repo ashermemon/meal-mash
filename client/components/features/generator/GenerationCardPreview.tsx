@@ -56,10 +56,11 @@ export const GenerationCardPreview = (props: Props) => {
   } as const;
 
   const [imageArea, setImageArea] = React.useState({ width: 0, height: 0 });
+  const imageBottomGap = moderateScale(16);
   const imageSize = Math.min(
-    imageArea.width * 0.75,
-    imageArea.height,
-    scale(260),
+    imageArea.width * 0.65,
+    imageArea.height - imageBottomGap,
+    scale(230),
   );
   const onImageAreaLayout = (e: LayoutChangeEvent) => {
     const { width, height } = e.nativeEvent.layout;
@@ -72,9 +73,9 @@ export const GenerationCardPreview = (props: Props) => {
     width: "100%",
     alignSelf: "center",
     flex: 1,
-    paddingHorizontal: moderateScale(15),
+    paddingHorizontal: moderateScale(4),
     paddingTop: moderateScale(10),
-    paddingBottom: moderateScale(8),
+    paddingBottom: moderateScale(28),
     backgroundColor: theme.nestedBG,
     borderRadius: moderateScale(5),
     overflow: "hidden",
@@ -86,7 +87,6 @@ export const GenerationCardPreview = (props: Props) => {
     justifyContent: "space-between",
     alignItems: "center",
     gap: moderateScale(10),
-    paddingHorizontal: moderateScale(10),
   } as const;
 
   const imageAreaStyle = {
@@ -94,7 +94,8 @@ export const GenerationCardPreview = (props: Props) => {
     minHeight: 0,
     width: "100%",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-end",
+    paddingBottom: imageBottomGap,
   } as const;
 
   // useEffect(() => {
@@ -169,6 +170,7 @@ export const GenerationCardPreview = (props: Props) => {
                 width: "100%",
                 alignItems: "center",
                 gap: moderateScale(6),
+                marginBottom: moderateScale(14),
               }}
             >
               <Skeleton
@@ -345,6 +347,7 @@ export const GenerationCardPreview = (props: Props) => {
               fontFamily: "Nunito",
               fontSize: moderateScale(15),
               lineHeight: moderateScale(20),
+              marginBottom: moderateScale(14),
             },
           ]}
         >

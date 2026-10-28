@@ -13,6 +13,7 @@ export function saveRecipe(
   recipeData: RecipeData,
   setSavedRecipes: React.Dispatch<React.SetStateAction<RecipeData[]>>,
   restoreIndex?: number,
+  mode: "toggle" | "add" = "toggle",
 ) {
   if (!recipeData || !recipeData.title) {
     console.warn("Cannot save recipe: recipe data or title is missing.");
@@ -24,6 +25,7 @@ export function saveRecipe(
       ? prevSavedRecipes
       : [];
     const isCurrentlyFavorite = currentSaves.some((r) => equal(r, recipeData));
+    if (isCurrentlyFavorite && mode === "add") return currentSaves;
     let updatedSaves: RecipeData[];
 
     if (isCurrentlyFavorite) {
@@ -46,3 +48,8 @@ export function saveRecipe(
     return updatedSaves;
   });
 }
+
+export const addRecipeToSaves = (
+  recipeData: RecipeData,
+  setSavedRecipes: React.Dispatch<React.SetStateAction<RecipeData[]>>,
+) => saveRecipe(recipeData, setSavedRecipes, undefined, "add");

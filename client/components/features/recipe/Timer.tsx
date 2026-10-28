@@ -17,6 +17,7 @@ import {
   getTimerCompleteCopy,
 } from "@/utils/notifications/content";
 
+const hsl = require("hsl-to-hex");
 const TIMER_CHANNEL_ID = "cooking-timers";
 
 type TimerProps = {
@@ -109,7 +110,6 @@ export default function Timer(props: TimerProps) {
     };
   }, []);
 
-  var hsl = require("hsl-to-hex");
 
   const [stableColors] = useState(() => {
     const randomHue = () => Math.floor(Math.random() * 360);

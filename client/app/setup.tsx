@@ -297,6 +297,7 @@ const SetupScreen = (props: Props) => {
           onBack={() => router.back()}
           stepsContent={[
             <OnboardingStep
+              key="name"
               stepTitle="Let's Name Your Pantry"
               onPress={() =>
                 setPantryDetails((prev) => ({
@@ -342,6 +343,7 @@ const SetupScreen = (props: Props) => {
               />
             </OnboardingStep>,
             <OnboardingStep
+              key="method"
               stepTitle="How would you like to add your ingredients?"
               disableNext={selected === -1}
             >
@@ -359,7 +361,7 @@ const SetupScreen = (props: Props) => {
                 disabledOptions={PANTRY_PHOTO_ENABLED ? [] : [0]}
               />
             </OnboardingStep>,
-            <OnboardingStep>
+            <OnboardingStep key="essentials">
               {cameraNext ? (
                 showCamera ? (
                   <>
