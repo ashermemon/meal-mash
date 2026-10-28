@@ -15,22 +15,9 @@ import SaveCategory from "@/components/features/saved/SaveCategory";
 import SavedCard from "@/components/features/saved/SavedCard";
 import { openEntranceWindow } from "@/components/features/saved/savedCardAnimation";
 import { moderateScale, scale } from "@/utils/responsive";
+import { saveCategories } from "@/constants/SaveCategories";
 
 const CategoriesDisplay = () => {
-  const categories = [
-    // filters
-    {
-      title: "Made With Leftovers",
-      image: "Pizza",
-      filter: "madeWithLeftovers",
-    }, //uses any prepared ingredients
-    { title: "Tasty Meals", image: "Burger", filter: "tastyMeals" }, //all marked breakfast/lunch/dinner
-    { title: "Sweet Treats", image: "Cake", filter: "sweetTreats" }, //anything marked dessert
-    { title: "Quick Snacks", image: "Cookies", filter: "quickSnacks" }, //anything marked snack/side
-    { title: "Under 15 Minutes", image: "Clock", filter: "under15Minutes" }, //anything that takes less than 15 minutes
-    { title: "All Recipes", image: "SushiCaviar", filter: "all" }, //everything
-  ] as const;
-
   return (
     <View
       style={{
@@ -42,7 +29,7 @@ const CategoriesDisplay = () => {
         paddingBottom: moderateScale(20),
       }}
     >
-      {categories.map((item, index: number) => (
+      {saveCategories.map((item, index: number) => (
         <SaveCategory
           title={item.title}
           image={item.image}

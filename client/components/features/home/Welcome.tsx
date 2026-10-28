@@ -23,6 +23,7 @@ import { CustomIcon } from "@/icon-loader/icon-loader";
 import icons3d from "@/components/universal/3dIcons";
 import FeaturedRecipes from "@/components/features/home/CategoryScrolls";
 import ExploreSection from "@/components/features/home/ExploreSection";
+import SavesSection from "@/components/features/home/SavesSection";
 import Camera from "@/components/universal/Camera";
 import { useCameraPermissions } from "expo-camera";
 import { BackHandler } from "react-native";
@@ -378,6 +379,8 @@ export default function Welcome() {
         <View style={{ flex: 1, minHeight: verticalScale(140) }}>
           <ExploreSection></ExploreSection>
         </View>
+
+        <SavesSection />
       </View>
     </ScrollView>
 

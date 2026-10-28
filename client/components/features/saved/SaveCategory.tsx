@@ -7,14 +7,17 @@ import AppImage from "@/components/universal/AppImage";
 import icons3d from "@/components/universal/3dIcons";
 import { router } from "expo-router";
 import SavedRecipesContext from "@/contexts/SavedRecipesContext";
-import { type RecipeCategories } from "@/contexts/RecipeContext";
 import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 import { moderateScale } from "@/utils/responsive";
+import {
+  countSavesInCategory,
+  type SaveCategoryFilter,
+} from "@/constants/SaveCategories";
 
 type Props = {
   title: string;
   image: string;
-  filter: "all" | keyof RecipeCategories;
+  filter: SaveCategoryFilter;
 };
 
 const SaveCategory = (props: Props) => {
@@ -23,11 +26,7 @@ const SaveCategory = (props: Props) => {
   const homeBlockShadow = useTintedBoxShadow(theme.greyBlock);
   const [saves] = useContext(SavedRecipesContext);
 
-  const filter = props.filter;
-  const savedCount =
-    filter === "all"
-      ? saves.length
-      : saves.filter((recipe) => recipe.categories?.[filter]).length;
+  const savedCount = countSavesInCategory(saves, props.filter);
 
   return (
     <Pressable
