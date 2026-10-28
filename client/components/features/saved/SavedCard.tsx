@@ -3,9 +3,9 @@ import {
   LayoutChangeEvent,
   Pressable,
   StyleSheet,
-  Text,
   View,
 } from "react-native";
+import { Text } from "@/components/universal/AppText";
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import Animated, {
   Easing,
@@ -307,6 +307,7 @@ export default function SavedCard(props: SavedProps) {
                 ]}
               >
                 <AppImage
+                  recyclingKey={props.SavedRecipe.id}
                   source={imageSource}
                   style={{ width: "100%", height: "100%", borderRadius: 110 }}
                   contentFit="cover"
@@ -369,6 +370,7 @@ export default function SavedCard(props: SavedProps) {
                   >
                     <Text
                       numberOfLines={1}
+                      adjustsFontSizeToFit
                       style={[
                         styles.textCenterBold,
                         { fontSize: moderateScale(11), fontFamily: "Nunito-SemiBold" },
@@ -388,6 +390,7 @@ export default function SavedCard(props: SavedProps) {
                   >
                     <Text
                       numberOfLines={1}
+                      adjustsFontSizeToFit
                       style={[
                         styles.textCenterBold,
                         { fontSize: moderateScale(11), fontFamily: "Nunito-SemiBold" },
@@ -406,6 +409,7 @@ export default function SavedCard(props: SavedProps) {
                   >
                     <Text
                       numberOfLines={1}
+                      adjustsFontSizeToFit
                       style={[
                         styles.textCenterBold,
                         { fontSize: moderateScale(11), fontFamily: "Nunito-SemiBold" },

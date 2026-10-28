@@ -1,7 +1,8 @@
-import { View, Pressable, ScrollView, TextInput } from "react-native";
+import { View, Pressable, ScrollView } from "react-native";
 import { Stack } from "expo-router";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { Button, Platform, StatusBar, Text } from "react-native";
+import { Button, Platform, StatusBar } from "react-native";
+import { Text } from "@/components/universal/AppText";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -48,15 +49,6 @@ import { moderateScale, scale } from "@/utils/responsive";
 import { toastConfig } from "@/components/common/toastConfig";
 
 SplashScreen.preventAutoHideAsync();
-
-// @ts-expect-error - defaultProps exists on the RN component but isn't in the public types
-Text.defaultProps = Text.defaultProps || {};
-// @ts-expect-error
-Text.defaultProps.maxFontSizeMultiplier = 1.3;
-// @ts-expect-error
-TextInput.defaultProps = TextInput.defaultProps || {};
-// @ts-expect-error
-TextInput.defaultProps.maxFontSizeMultiplier = 1.3;
 
 export default function RootLayout() {
   return (

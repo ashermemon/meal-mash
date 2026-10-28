@@ -1,6 +1,5 @@
 import {
   View,
-  Text,
   Pressable,
   Animated,
   Easing,
@@ -8,6 +7,7 @@ import {
   Platform,
   UIManager,
 } from "react-native";
+import { MAX_FONT_SCALE, Text } from "@/components/universal/AppText";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import CustomCheckbox from "@/components/common/CustomCheckbox";
 import { Food } from "../pantry/Search";
@@ -150,6 +150,7 @@ const GroceryListItem = ({ food, variant = "active" }: Props) => {
           }}
         >
           <Animated.Text
+            maxFontSizeMultiplier={MAX_FONT_SCALE}
             numberOfLines={1}
             style={[
               styles.textLeftSemiBold,

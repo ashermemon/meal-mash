@@ -1,6 +1,6 @@
 import { NEWCOLORS, DARK_NEWCOLORS } from "@/constants/NewTheme";
 import { COLORS, DARK_COLORS } from "@/constants/Theme";
-import { StyleSheet } from "react-native";
+import { StyleSheet, useWindowDimensions } from "react-native";
 import { useColorScheme } from "@/contexts/ColorSchemeContext";
 import { scale, moderateScale } from "@/utils/responsive";
 
@@ -65,7 +65,7 @@ const createStyles = (NEWCOLORS, COLORS) =>
     },
     timer: {
       paddingVertical: moderateScale(15),
-      paddingHorizontal: moderateScale(20),
+      paddingHorizontal: moderateScale(16),
       marginBottom: moderateScale(30),
       marginHorizontal: moderateScale(25),
       backgroundColor: NEWCOLORS.secondaryBoxGrey,
@@ -86,7 +86,6 @@ const createStyles = (NEWCOLORS, COLORS) =>
     timerButton: {
       alignItems: "flex-end",
       justifyContent: "center",
-      marginHorizontal: moderateScale(10),
     },
 
     favFlex: {
@@ -156,7 +155,7 @@ const createStyles = (NEWCOLORS, COLORS) =>
       borderRadius: 100,
     },
     recipeBar: {
-      height: scale(66),
+      minHeight: scale(66),
       borderRadius: moderateScale(15),
       padding: moderateScale(5),
       width: "100%",
@@ -244,7 +243,7 @@ const createStyles = (NEWCOLORS, COLORS) =>
       width: "100%",
       borderRadius: 1000,
       backgroundColor: NEWCOLORS.greyBlock,
-      height: scale(55),
+      minHeight: scale(55),
       paddingHorizontal: moderateScale(15),
 
       paddingVertical: moderateScale(5),
@@ -253,7 +252,7 @@ const createStyles = (NEWCOLORS, COLORS) =>
       flex: 1,
       borderRadius: 1000,
       backgroundColor: NEWCOLORS.unselectedGrey,
-      height: scale(35),
+      minHeight: scale(35),
     },
     verticalLine: {
       width: 2,
@@ -265,7 +264,7 @@ const createStyles = (NEWCOLORS, COLORS) =>
       flex: 1,
       borderRadius: moderateScale(15),
       backgroundColor: NEWCOLORS.greyBlock,
-      height: scale(70),
+      minHeight: scale(70),
     },
 
     setupContainer: {
@@ -294,7 +293,7 @@ const createStyles = (NEWCOLORS, COLORS) =>
     },
     setupButton: {
       backgroundColor: NEWCOLORS.greenAccent,
-      height: scale(56),
+      minHeight: scale(56),
       borderRadius: scale(28),
       justifyContent: "center",
       alignItems: "center",
@@ -314,7 +313,7 @@ const createStyles = (NEWCOLORS, COLORS) =>
     },
     selectButton: {
       backgroundColor: NEWCOLORS.unselectedGrey,
-      height: scale(84),
+      minHeight: scale(84),
       borderRadius: moderateScale(15),
       justifyContent: "center",
       alignItems: "center",
@@ -364,18 +363,34 @@ const createStyles = (NEWCOLORS, COLORS) =>
       borderBottomLeftRadius: moderateScale(10),
       padding: moderateScale(2),
       justifyContent: "center",
-      height: scale(19),
+      minHeight: scale(19),
       width: scale(60),
       paddingLeft: moderateScale(4),
     },
   });
 
-const lightStyles = createStyles(NEWCOLORS, COLORS);
-const darkStyles = createStyles(DARK_NEWCOLORS, DARK_COLORS);
+let cache = {
+  key: "",
+  light: createStyles(NEWCOLORS, COLORS),
+  dark: createStyles(DARK_NEWCOLORS, DARK_COLORS),
+};
 
-export const styles = lightStyles;
+const getStyles = (isDark, width, height) => {
+  const key = `${width}x${height}`;
+  if (cache.key !== key) {
+    cache = {
+      key,
+      light: createStyles(NEWCOLORS, COLORS),
+      dark: createStyles(DARK_NEWCOLORS, DARK_COLORS),
+    };
+  }
+  return isDark ? cache.dark : cache.light;
+};
+
+export const styles = cache.light;
 
 export const useStyles = () => {
   const colorScheme = useColorScheme();
-  return colorScheme === "dark" ? darkStyles : lightStyles;
+  const { width, height } = useWindowDimensions();
+  return getStyles(colorScheme === "dark", width, height);
 };

@@ -1,4 +1,5 @@
-import { Text, View } from "react-native";
+import { View } from "react-native";
+import { Text } from "@/components/universal/AppText";
 import React, { useCallback, useContext, useRef } from "react";
 import { useStyles } from "@/styles/GlobalStyles";
 import { FlashList, type FlashListRef } from "@shopify/flash-list";

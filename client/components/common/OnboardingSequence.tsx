@@ -1,4 +1,5 @@
-import { View, Text, Pressable } from "react-native";
+import { View, Pressable } from "react-native";
+import { Text } from "@/components/universal/AppText";
 import React, { createContext, useState } from "react";
 import { useStyles } from "@/styles/GlobalStyles";
 import ProgressBar from "../features/recipe/ProgressBar";

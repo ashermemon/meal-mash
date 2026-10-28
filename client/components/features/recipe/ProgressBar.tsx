@@ -1,4 +1,5 @@
-import { LayoutChangeEvent, StyleSheet, Text, View } from "react-native";
+import { LayoutChangeEvent, StyleSheet, View } from "react-native";
+import { Text } from "@/components/universal/AppText";
 import React, { useState } from "react";
 import * as Progress from "react-native-progress";
 

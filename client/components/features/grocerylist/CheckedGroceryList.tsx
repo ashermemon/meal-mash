@@ -1,12 +1,12 @@
 import {
   View,
-  Text,
   Pressable,
   ScrollView,
   LayoutAnimation,
   Platform,
   UIManager,
 } from "react-native";
+import { Text } from "@/components/universal/AppText";
 import React, { useContext, useState } from "react";
 import { useTheme } from "@/contexts/ColorSchemeContext";
 import { useStyles } from "@/styles/GlobalStyles";

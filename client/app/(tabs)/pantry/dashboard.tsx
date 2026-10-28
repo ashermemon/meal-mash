@@ -1,4 +1,5 @@
-import { Animated as RNAnimated, Text, View } from "react-native";
+import { Animated as RNAnimated, View } from "react-native";
+import { Text } from "@/components/universal/AppText";
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import Reanimated, { FadeIn, FadeOut } from "react-native-reanimated";
 import { useStyles } from "@/styles/GlobalStyles";
@@ -178,11 +179,12 @@ export default function Dashboard() {
                   entering={FadeIn.duration(250)}
                   exiting={FadeOut.duration(150)}
                   style={{
-                    flex: 1,
+                    flexGrow: 1,
                     alignItems: "center",
                     justifyContent: "center",
                     gap: moderateScale(6),
                     paddingHorizontal: moderateScale(20),
+                    paddingVertical: moderateScale(30),
                   }}
                 >
                   <CustomIcon
@@ -222,11 +224,12 @@ export default function Dashboard() {
                   entering={FadeIn.duration(250)}
                   exiting={FadeOut.duration(150)}
                   style={{
-                    flex: 1,
+                    flexGrow: 1,
                     alignItems: "center",
                     justifyContent: "center",
                     gap: moderateScale(6),
                     paddingHorizontal: moderateScale(20),
+                    paddingVertical: moderateScale(30),
                   }}
                 >
                   <CustomIcon

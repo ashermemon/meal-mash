@@ -1,4 +1,5 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
+import { Text } from "@/components/universal/AppText";
 import React from "react";
 import { useStyles } from "@/styles/GlobalStyles";
 import { ColorProperties } from "react-native-reanimated/lib/typescript/Colors";
@@ -33,6 +34,7 @@ export default function Counter(props: counterProps) {
     >
       <Text
         numberOfLines={1}
+        adjustsFontSizeToFit
         style={[
           styles.textCentered,
           { fontSize: moderateScale(42), fontFamily: "Nunito-Bold" },
@@ -42,6 +44,7 @@ export default function Counter(props: counterProps) {
       </Text>
       <Text
         numberOfLines={2}
+        adjustsFontSizeToFit
         style={[
           styles.textCentered,
           {

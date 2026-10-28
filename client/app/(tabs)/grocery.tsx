@@ -1,4 +1,5 @@
-import { Alert, Animated, Pressable, Text, View } from "react-native";
+import { Alert, Animated, Pressable, View } from "react-native";
+import { Text } from "@/components/universal/AppText";
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { useStyles } from "@/styles/GlobalStyles";
 import { useTheme } from "@/contexts/ColorSchemeContext";
@@ -232,12 +233,12 @@ export default function Dashboard() {
                 checkedList.length > 0 ? (
                   <View
                     style={{
-                      flex: 1,
+                      flexGrow: 1,
                       alignItems: "center",
                       justifyContent: "center",
                       gap: moderateScale(6),
                       paddingHorizontal: moderateScale(20),
-                      transform: [{ translateY: moderateScale(-50) }],
+                      paddingVertical: moderateScale(30),
                     }}
                   >
                     <CustomIcon
@@ -275,12 +276,12 @@ export default function Dashboard() {
                 ) : (
                   <View
                     style={{
-                      flex: 1,
+                      flexGrow: 1,
                       alignItems: "center",
                       justifyContent: "center",
                       gap: moderateScale(6),
                       paddingHorizontal: moderateScale(20),
-                      transform: [{ translateY: moderateScale(-50) }],
+                      paddingVertical: moderateScale(30),
                     }}
                   >
                     <CustomIcon

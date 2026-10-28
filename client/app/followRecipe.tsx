@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
-import { View, Text, ScrollView, Pressable } from "react-native";
+import { View, ScrollView, Pressable } from "react-native";
+import { Text } from "@/components/universal/AppText";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AppImage from "@/components/universal/AppImage";
 import RecipeContext, { type RecipeData } from "@/contexts/RecipeContext";
@@ -325,9 +326,15 @@ const followRecipe = () => {
                   ]}
                 >
                   <Text
+                    maxFontSizeMultiplier={1}
                     style={[
                       styles.textLeftSemiBold,
-                      { color: theme.fontColor },
+                      {
+                        color: theme.fontColor,
+                        fontSize: scale(14),
+                        textAlign: "center",
+                        includeFontPadding: false,
+                      },
                     ]}
                   >
                     {index + 1}
@@ -374,8 +381,8 @@ const followRecipe = () => {
               >
                 <View style={[styles.tipBadgeContainer]}>
                   <Svg
-                    width="33"
-                    height="37"
+                    width="100%"
+                    height="100%"
                     viewBox="0 0 33 37"
                     style={styles.svgBackground}
                   >
@@ -386,9 +393,15 @@ const followRecipe = () => {
                   </Svg>
 
                   <Text
+                    maxFontSizeMultiplier={1}
                     style={[
                       styles.textLeftSemiBold,
-                      { color: theme.fontColor },
+                      {
+                        color: theme.fontColor,
+                        fontSize: scale(14),
+                        textAlign: "center",
+                        includeFontPadding: false,
+                      },
                     ]}
                   >
                     {index + 1}

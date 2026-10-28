@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
-import { View, Dimensions } from "react-native";
+import { View, useWindowDimensions } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -26,8 +26,6 @@ import { PantryDetailsContext } from "@/contexts/PantryDetails";
 import { BrowseIngredientsContext } from "@/contexts/BrowseIngredientsContext";
 import { trackRecipeGenerated, trackMealMade } from "@/utils/achievements";
 import { useMealImages } from "@/contexts/MealImageContext";
-
-const SCREEN_WIDTH = Dimensions.get("window").width;
 
 type Props = {
   title: string | undefined;
@@ -59,6 +57,8 @@ const SwipableCard = ({
   const isSwipingRef = useRef(false);
   const translateX = useSharedValue(0);
   const ROTATION = 10;
+  const { width: screenWidth } = useWindowDimensions();
+  const swipeThreshold = screenWidth * 0.3;
 
   const markSwiping = () => {
     isSwipingRef.current = true;
@@ -76,7 +76,7 @@ const SwipableCard = ({
     onSwipeRightStart?.();
     Haptics.selectionAsync();
     translateX.value = withTiming(
-      SCREEN_WIDTH + 100,
+      screenWidth + 100,
       { duration, easing: Easing.inOut(Easing.cubic) },
       (finished) => {
         if (finished) {
@@ -90,7 +90,7 @@ const SwipableCard = ({
     markSwiping();
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     translateX.value = withTiming(
-      -SCREEN_WIDTH - 100,
+      -screenWidth - 100,
       { duration, easing: Easing.inOut(Easing.cubic) },
       (finished) => {
         if (finished) {
@@ -109,9 +109,9 @@ const SwipableCard = ({
       translateX.value = event.translationX;
     })
     .onEnd(() => {
-      if (translateX.value > 120) {
+      if (translateX.value > swipeThreshold) {
         runOnJS(saveRecipeFromSwipe)();
-      } else if (translateX.value < -120) {
+      } else if (translateX.value < -swipeThreshold) {
         runOnJS(skipRecipeFromSwipe)();
       } else {
         translateX.value = withSpring(0, {
@@ -124,7 +124,7 @@ const SwipableCard = ({
   const animatedStyle = useAnimatedStyle(() => {
     const rotate = interpolate(
       translateX.value,
-      [-SCREEN_WIDTH, 0, SCREEN_WIDTH],
+      [-screenWidth, 0, screenWidth],
       [-ROTATION, 0, ROTATION],
     );
 

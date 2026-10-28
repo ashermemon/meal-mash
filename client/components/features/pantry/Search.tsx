@@ -1,11 +1,10 @@
 import {
   View,
-  Text,
-  TextInput,
   Pressable,
   StyleSheet,
   Keyboard,
 } from "react-native";
+import { Text, TextInput } from "@/components/universal/AppText";
 import React, {
   forwardRef,
   useContext,

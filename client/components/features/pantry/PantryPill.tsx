@@ -1,4 +1,5 @@
-import { View, Text, Pressable, TextInput } from "react-native";
+import { View, Pressable } from "react-native";
+import { Text, TextInput } from "@/components/universal/AppText";
 import React, { useContext, useRef, useState } from "react";
 import { useStyles } from "@/styles/GlobalStyles";
 import { useIsDarkMode, useTheme } from "@/contexts/ColorSchemeContext";

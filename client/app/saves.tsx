@@ -1,4 +1,5 @@
-import { View, Text, Pressable } from "react-native";
+import { View, Pressable } from "react-native";
+import { Text } from "@/components/universal/AppText";
 import React from "react";
 import DisplaySaved from "@/components/features/saved/DisplaySaved";
 import { useStyles } from "@/styles/GlobalStyles";

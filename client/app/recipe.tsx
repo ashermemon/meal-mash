@@ -1,4 +1,5 @@
-import { View, Text, Platform, Pressable } from "react-native";
+import { View, Platform, Pressable } from "react-native";
+import { Text } from "@/components/universal/AppText";
 import React, { useContext, useEffect, useState } from "react";
 import { useTheme } from "@/contexts/ColorSchemeContext";
 import RecipeContext from "@/contexts/RecipeContext";

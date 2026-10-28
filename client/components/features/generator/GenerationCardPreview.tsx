@@ -1,10 +1,5 @@
-import {
-  View,
-  Text,
-  Pressable,
-  Dimensions,
-  InteractionManager,
-} from "react-native";
+import { View, Pressable, LayoutChangeEvent } from "react-native";
+import { Text } from "@/components/universal/AppText";
 import AppImage from "@/components/universal/AppImage";
 import React, { useEffect } from "react";
 import NutrientCircle from "@/components/features/recipe/NutrientCircle";
@@ -20,11 +15,6 @@ import { Skeleton } from "moti/skeleton";
 import * as Haptics from "expo-haptics";
 import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
 import { moderateScale, scale } from "@/utils/responsive";
-
-const SCREEN_WIDTH = Dimensions.get("window").width;
-const CARD_HORIZONTAL_MARGIN = moderateScale(13);
-const CARD_WIDTH = SCREEN_WIDTH - CARD_HORIZONTAL_MARGIN * 2;
-const IMAGE_SIZE = Math.min(scale(260), Math.max(scale(190), CARD_WIDTH * 0.7));
 
 type Props = {
   title: string | undefined;
@@ -65,6 +55,48 @@ export const GenerationCardPreview = (props: Props) => {
     transition: SKELETON_TRANSITION,
   } as const;
 
+  const [imageArea, setImageArea] = React.useState({ width: 0, height: 0 });
+  const imageSize = Math.min(
+    imageArea.width * 0.75,
+    imageArea.height,
+    scale(260),
+  );
+  const onImageAreaLayout = (e: LayoutChangeEvent) => {
+    const { width, height } = e.nativeEvent.layout;
+    setImageArea((prev) =>
+      prev.width === width && prev.height === height ? prev : { width, height },
+    );
+  };
+
+  const cardStyle = {
+    width: "100%",
+    alignSelf: "center",
+    flex: 1,
+    paddingHorizontal: moderateScale(15),
+    paddingTop: moderateScale(10),
+    paddingBottom: moderateScale(8),
+    backgroundColor: theme.nestedBG,
+    borderRadius: moderateScale(5),
+    overflow: "hidden",
+  } as const;
+
+  const middleStyle = {
+    flex: 1,
+    width: "100%",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: moderateScale(10),
+    paddingHorizontal: moderateScale(10),
+  } as const;
+
+  const imageAreaStyle = {
+    flex: 1,
+    minHeight: 0,
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+  } as const;
+
   // useEffect(() => {
 
   //   router.prefetch("/followRecipe");
@@ -75,17 +107,7 @@ export const GenerationCardPreview = (props: Props) => {
       <Animated.View
         entering={FadeIn.duration(400)}
         exiting={FadeOut.duration(300)}
-        style={{
-          width: CARD_WIDTH,
-          alignSelf: "center",
-          flex: 1,
-          paddingHorizontal: moderateScale(15),
-          paddingTop: moderateScale(10),
-          paddingBottom: moderateScale(8),
-          backgroundColor: theme.nestedBG,
-          borderRadius: moderateScale(5),
-          overflow: "hidden",
-        }}
+        style={cardStyle}
       >
         <Skeleton.Group show={true}>
           <View
@@ -129,22 +151,17 @@ export const GenerationCardPreview = (props: Props) => {
             </View>
           </View>
 
-          <View
-            style={{
-              flex: 1,
-              width: "100%",
-              justifyContent: "space-evenly",
-              alignItems: "center",
-              paddingHorizontal: moderateScale(10),
-            }}
-          >
-            {/* Image Skeleton */}
-            <Skeleton
-              width={IMAGE_SIZE * 0.95}
-              height={IMAGE_SIZE * 0.95}
-              radius="round"
-              {...SkeletonSettings}
-            />
+          <View style={middleStyle}>
+            <View style={imageAreaStyle} onLayout={onImageAreaLayout}>
+              {imageSize > 0 ? (
+                <Skeleton
+                  width={imageSize * 0.95}
+                  height={imageSize * 0.95}
+                  radius="round"
+                  {...SkeletonSettings}
+                />
+              ) : null}
+            </View>
 
             {/* Description Skeleton */}
             <View
@@ -152,7 +169,6 @@ export const GenerationCardPreview = (props: Props) => {
                 width: "100%",
                 alignItems: "center",
                 gap: moderateScale(6),
-                marginVertical: moderateScale(10),
               }}
             >
               <Skeleton
@@ -281,17 +297,7 @@ export const GenerationCardPreview = (props: Props) => {
     <Animated.View
       entering={FadeIn.duration(400)}
       exiting={FadeOut.duration(300)}
-      style={{
-        width: CARD_WIDTH,
-        alignSelf: "center",
-        flex: 1,
-        paddingHorizontal: moderateScale(15),
-        paddingTop: moderateScale(10),
-        paddingBottom: moderateScale(8),
-        backgroundColor: theme.nestedBG,
-        borderRadius: moderateScale(5),
-        overflow: "hidden",
-      }}
+      style={cardStyle}
     >
       <View style={{ width: "100%", alignItems: "center", marginBottom: moderateScale(6) }}>
         <Text
@@ -316,29 +322,23 @@ export const GenerationCardPreview = (props: Props) => {
         />
       </View>
 
-      <View
-        style={{
-          flex: 1,
-          width: "100%",
-          justifyContent: "space-evenly",
-          alignItems: "center",
-          paddingHorizontal: moderateScale(10),
-        }}
-      >
-        <AppImage
-          source={imageSource}
-          style={{
-            width: "70%",
-            aspectRatio: 1,
-            minHeight: scale(190),
-            maxHeight: scale(260),
-            alignSelf: "center",
-            borderRadius: moderateScale(12),
-          }}
-          contentFit="cover"
-        />
+      <View style={middleStyle}>
+        <View style={imageAreaStyle} onLayout={onImageAreaLayout}>
+          {imageSize > 0 ? (
+            <AppImage
+              source={imageSource}
+              style={{
+                width: imageSize,
+                height: imageSize,
+                borderRadius: moderateScale(12),
+              }}
+              contentFit="cover"
+            />
+          ) : null}
+        </View>
 
         <Text
+          numberOfLines={3}
           style={[
             styles.textCentered,
             {

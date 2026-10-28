@@ -2,10 +2,14 @@ import { Dimensions, PixelRatio } from "react-native";
 
 const BASE_WIDTH = 390;
 const BASE_HEIGHT = 844;
+const MAX_SCALE_FACTOR = 1.3;
 
 function getWindowSize() {
   const { width, height } = Dimensions.get("window");
-  return { width, height };
+  return {
+    width: Math.min(width, BASE_WIDTH * MAX_SCALE_FACTOR),
+    height: Math.min(height, BASE_HEIGHT * MAX_SCALE_FACTOR),
+  };
 }
 
 export function scale(size: number): number {

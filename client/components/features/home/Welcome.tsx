@@ -2,10 +2,11 @@ import {
   Button,
   Linking,
   Pressable,
+  ScrollView,
   StyleSheet,
-  Text,
   View,
 } from "react-native";
+import { Text } from "@/components/universal/AppText";
 import React, {
   Dispatch,
   SetStateAction,
@@ -41,6 +42,7 @@ import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 import { GenerationDetailsContext } from "@/contexts/GenerationDetailsContext";
 import RecipeContext, { initialRecipeData } from "@/contexts/RecipeContext";
 import { moderateScale, scale, verticalScale } from "@/utils/responsive";
+import { hexToRgba } from "@/utils/color";
 
 const IRIDESCENT_COLORS_LIGHT = [
   "#FDF3F8",
@@ -238,14 +240,16 @@ export default function Welcome() {
       <Camera></Camera>
     </View>
   ) : (
-    <View
-      style={{
-        flex: 1,
-        width: "100%",
+    <View style={{ flex: 1, width: "100%" }}>
+    <ScrollView
+      style={{ flex: 1, width: "100%" }}
+      contentContainerStyle={{
+        flexGrow: 1,
         paddingHorizontal: moderateScale(25),
         paddingTop: verticalScale(20),
         paddingBottom: verticalScale(100),
       }}
+      showsVerticalScrollIndicator={false}
     >
       <View style={{ width: "100%", flex: 1 }}>
         <FeedbackBanner />
@@ -289,7 +293,7 @@ export default function Welcome() {
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "space-between",
-              height: "100%",
+              alignSelf: "stretch",
               paddingHorizontal: moderateScale(13),
             }}
             onPress={() => [
@@ -375,6 +379,26 @@ export default function Welcome() {
           <ExploreSection></ExploreSection>
         </View>
       </View>
+    </ScrollView>
+
+      <LinearGradient
+        colors={[
+          hexToRgba(theme.backgroundColor, 0),
+          hexToRgba(theme.backgroundColor, 0.75),
+          hexToRgba(theme.backgroundColor, 0.98),
+          theme.backgroundColor,
+        ]}
+        locations={[0, 0.4, 0.75, 1]}
+        style={{
+          position: "absolute",
+          bottom: moderateScale(-40),
+          left: 0,
+          right: 0,
+          height: scale(160),
+          zIndex: 10,
+        }}
+        pointerEvents="none"
+      />
     </View>
   );
 }

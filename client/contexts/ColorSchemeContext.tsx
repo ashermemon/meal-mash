@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
-import { Appearance, ColorSchemeName } from "react-native";
+import { Appearance, ColorSchemeName, useWindowDimensions } from "react-native";
 import { readColorScheme, writeColorScheme } from "@/utils/storage";
 import { NEWCOLORS, DARK_NEWCOLORS } from "@/constants/NewTheme";
 import { COLORS, DARK_COLORS } from "@/constants/Theme";
@@ -88,6 +88,7 @@ export const useToggleColorScheme = () => {
 
 export const useTheme = (): Theme => {
   const { isDark } = useColorSchemeContext();
+  useWindowDimensions();
   return isDark ? DARK_THEME : LIGHT_THEME;
 };
 

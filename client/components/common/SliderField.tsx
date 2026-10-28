@@ -1,4 +1,5 @@
-import { View, Text, Pressable } from "react-native";
+import { View, Pressable } from "react-native";
+import { MAX_FONT_SCALE, Text } from "@/components/universal/AppText";
 import React, { useEffect } from "react";
 import { useStyles } from "@/styles/GlobalStyles";
 import { CustomIcon } from "@/icon-loader/icon-loader";
@@ -124,6 +125,7 @@ const SliderField = (props: Props) => {
           </Pressable>
 
           <Animated.Text
+            maxFontSizeMultiplier={MAX_FONT_SCALE}
             style={[
               styles.textCentered,
               animatedStyle,

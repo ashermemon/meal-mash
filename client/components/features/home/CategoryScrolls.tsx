@@ -1,4 +1,5 @@
-import { View, Text, Pressable } from "react-native";
+import { View, Pressable } from "react-native";
+import { Text } from "@/components/universal/AppText";
 import React, { useContext } from "react";
 import { useStyles } from "@/styles/GlobalStyles";
 import { useTheme, useIsDarkMode } from "@/contexts/ColorSchemeContext";
@@ -58,7 +59,7 @@ const FeaturedRecipeButton = () => {
                 {
                   backgroundColor: itemBackgroundColor,
                   width: scale(80),
-                  height: scale(100),
+                  minHeight: scale(100),
                   marginRight: Number(item.id) === data.length
                     ? 0
                     : moderateScale(10),
@@ -84,10 +85,12 @@ const FeaturedRecipeButton = () => {
                   { fontFamily: "Nunito-SemiBold", fontSize: moderateScale(13) },
                 ]}
                 numberOfLines={1}
+                adjustsFontSizeToFit
               >
                 {item.name}
               </Text>
               <AppImage
+                recyclingKey={item.id}
                 source={
                   item.icon
                     ? icons3d[item.icon] || icons3d.Default

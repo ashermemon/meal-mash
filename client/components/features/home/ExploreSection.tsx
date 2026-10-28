@@ -1,4 +1,10 @@
-import { Dimensions, Pressable, Text, View } from "react-native";
+import {
+  Dimensions,
+  Pressable,
+  View,
+  useWindowDimensions,
+} from "react-native";
+import { MAX_FONT_SCALE, Text } from "@/components/universal/AppText";
 import React, { useState } from "react";
 import { useStyles } from "@/styles/GlobalStyles";
 import { useTheme, useIsDarkMode } from "@/contexts/ColorSchemeContext";
@@ -110,6 +116,21 @@ export default function ExploreSection() {
     );
   };
   const [width, setWidth] = useState(Dimensions.get("window").width - 60);
+  const { fontScale } = useWindowDimensions();
+  const layoutKey = `${width}@${fontScale}`;
+  const [contentHeight, setContentHeight] = useState({ key: "", height: 0 });
+  const carouselHeight = Math.max(
+    scale(105),
+    contentHeight.key === layoutKey
+      ? contentHeight.height + moderateScale(24)
+      : 0,
+  );
+  const onSlideContentLayout = (h: number) =>
+    setContentHeight((prev) =>
+      prev.key === layoutKey && prev.height >= h
+        ? prev
+        : { key: layoutKey, height: h },
+    );
 
   return (
     <View style={{ flexDirection: "column", gap: moderateScale(10), width: "100%", flex: 1 }}>
@@ -158,7 +179,7 @@ export default function ExploreSection() {
             ref={ref}
             width={width}
             data={featuredRecipesWithIcons}
-            height={scale(105)}
+            height={carouselHeight}
             onProgressChange={progress}
             renderItem={({ item }) => (
               <View
@@ -180,7 +201,12 @@ export default function ExploreSection() {
                     contentFit="contain"
                   />
                 </View>
-                <View style={{ flex: 1, gap: moderateScale(7) }}>
+                <View
+                  style={{ flex: 1, gap: moderateScale(7) }}
+                  onLayout={(e) =>
+                    onSlideContentLayout(e.nativeEvent.layout.height)
+                  }
+                >
                   <Text
                     style={[
                       styles.basicTextLeft,
@@ -194,7 +220,13 @@ export default function ExploreSection() {
                   >
                     {item.title}
                   </Text>
-                  <View style={{ flexDirection: "row", gap: moderateScale(7) }}>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      flexWrap: "wrap",
+                      gap: moderateScale(7),
+                    }}
+                  >
                     <InfoTag
                       type="difficulty"
                       data={item.difficulty}
@@ -229,7 +261,15 @@ export default function ExploreSection() {
         />
       </View>
 
-      <View style={{ flexDirection: "row", gap: moderateScale(10), width: "100%", flex: 1 }}>
+      <View
+        style={{
+          flexDirection: "row",
+          gap: moderateScale(10),
+          width: "100%",
+          flex: 1,
+          minHeight: moderateScale(180) * Math.max(1, Math.min(fontScale, MAX_FONT_SCALE)),
+        }}
+      >
         <Block
           title="Meal Generator"
           color={isDark ? theme.blueBlock : theme.blueAccent}

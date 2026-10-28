@@ -1,4 +1,5 @@
-import { Text, View } from "react-native";
+import { View } from "react-native";
+import { Text } from "@/components/universal/AppText";
 import InfoTag from "@/components/features/recipe/InfoTag";
 import { moderateScale } from "@/utils/responsive";
 
@@ -19,7 +20,7 @@ export default function RecipeInfoTags(props: Props) {
         alignItems: "center",
         justifyContent: props.justifyContent || "center",
         flexDirection: "row",
-        flexWrap: "nowrap",
+        flexWrap: "wrap",
         flexShrink: 1,
         minWidth: 0,
         gap: moderateScale(8),

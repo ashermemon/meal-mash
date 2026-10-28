@@ -1,4 +1,5 @@
-import { AppState, Pressable, StyleSheet, Text, View } from "react-native";
+import { AppState, Pressable, StyleSheet, View } from "react-native";
+import { Text } from "@/components/universal/AppText";
 import React, { useEffect, useRef, useState } from "react";
 import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
 import * as Notifications from "expo-notifications";
@@ -126,12 +127,14 @@ export default function Timer(props: TimerProps) {
           flexDirection: "row",
           alignItems: "center",
           flex: 1,
-          marginRight: moderateScale(16),
+          minWidth: 0,
+          marginRight: moderateScale(10),
         }}
       >
         <CountdownCircleTimer
           key={timerKey}
-          size={scale(60)}
+          size={scale(50)}
+          strokeWidth={scale(9)}
           isPlaying={isPlaying}
           duration={props.time}
           colors={[
@@ -158,18 +161,25 @@ export default function Timer(props: TimerProps) {
         </CountdownCircleTimer>
         <View
           style={{
-            marginLeft: moderateScale(22),
+            marginLeft: scale(12),
             flex: 1,
+            minWidth: 0,
             justifyContent: "center",
           }}
         >
           <Text
             style={[styles.textLeftBold, { fontSize: moderateScale(16) }]}
             numberOfLines={1}
+            adjustsFontSizeToFit
+            minimumFontScale={0.75}
           >
             {props.taskDescription || "Timer"}
           </Text>
-          <Text style={[styles.textLeftBold, { fontSize: moderateScale(27) }]}>
+          <Text
+            style={[styles.textLeftBold, { fontSize: moderateScale(27) }]}
+            numberOfLines={1}
+            adjustsFontSizeToFit
+          >
             {`${Math.floor(remainingTime / 60)}:${String(
               remainingTime % 60,
             ).padStart(2, "0")}`}
@@ -181,10 +191,12 @@ export default function Timer(props: TimerProps) {
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "flex-end",
+          gap: scale(10),
         }}
       >
         <Pressable
           style={styles.timerButton}
+          hitSlop={moderateScale(8)}
           onPress={() => {
             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
             setTimerKey((k) => k + 1);
@@ -196,13 +208,14 @@ export default function Timer(props: TimerProps) {
           <CustomIcon
             color={theme.greyBtns}
             name={"refresh-1"}
-            size={30}
+            size={scale(24)}
             filled={true}
           ></CustomIcon>
         </Pressable>
 
         <Pressable
           style={styles.timerButton}
+          hitSlop={moderateScale(8)}
           onPress={() => {
             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
             if (timerFinished) {
@@ -219,14 +232,14 @@ export default function Timer(props: TimerProps) {
             <CustomIcon
               color={theme.greyBtns}
               name={"pause"}
-              size={30}
+              size={scale(24)}
               filled={true}
             ></CustomIcon>
           ) : (
             <CustomIcon
               color={theme.greyBtns}
               name={"play"}
-              size={30}
+              size={scale(24)}
               filled={true}
             ></CustomIcon>
           )}

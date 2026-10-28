@@ -1,4 +1,5 @@
-import { View, Text, ColorValue } from "react-native";
+import { View, ColorValue } from "react-native";
+import { Text } from "@/components/universal/AppText";
 import React, { ReactNode } from "react";
 import { useStyles } from "@/styles/auth.styles";
 import { CustomIcon } from "@/icon-loader/icon-loader";

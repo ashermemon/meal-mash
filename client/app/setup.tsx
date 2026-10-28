@@ -1,14 +1,13 @@
 import {
   View,
-  TextInput,
   KeyboardAvoidingView,
   Platform,
   Keyboard,
   BackHandler,
-  Text,
   Dimensions,
   Pressable,
 } from "react-native";
+import { Text, TextInput } from "@/components/universal/AppText";
 import React, { useState, useEffect, useCallback, useContext } from "react";
 import { useFocusEffect, useRouter } from "expo-router";
 import {

@@ -1,4 +1,5 @@
-import { View, Text, ViewStyle, Pressable } from "react-native";
+import { View, ViewStyle, Pressable } from "react-native";
+import { Text } from "@/components/universal/AppText";
 import React, { useContext, useEffect, useState } from "react";
 import { useStyles } from "@/styles/GlobalStyles";
 import AppImage from "@/components/universal/AppImage";

@@ -51,4 +51,4 @@ EXPO_PUBLIC_API_KEY=your_gemini_api_key
 
 ## Feedback
 
-If you find a bug or have an idea for the app, leave it [here] (https://forms.gle/Uxzrkfzvk7tFAFRW9)
+If you find a bug or have an idea for the app, leave it [here](https://forms.gle/Uxzrkfzvk7tFAFRW9)

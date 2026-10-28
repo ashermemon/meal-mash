@@ -1,4 +1,5 @@
-import { Button, Pressable, StyleSheet, Text, View } from "react-native";
+import { Button, Pressable, StyleSheet, View } from "react-native";
+import { Text } from "@/components/universal/AppText";
 import React, { useRef, useState } from "react";
 import { CameraView, CameraType, useCameraPermissions } from "expo-camera";
 import { useStyles } from "@/styles/GlobalStyles";

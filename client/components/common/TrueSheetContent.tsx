@@ -1,4 +1,5 @@
-import { View, Text, Pressable } from "react-native";
+import { View, Pressable } from "react-native";
+import { Text } from "@/components/universal/AppText";
 import React, { useState, useEffect } from "react";
 import { ScrollView } from "react-native-gesture-handler";
 import { TrueSheet } from "@lodev09/react-native-true-sheet";

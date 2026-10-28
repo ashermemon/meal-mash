@@ -1,4 +1,5 @@
-import { View, Text, TextInput, Pressable, FlatList } from "react-native";
+import { View, Pressable, FlatList } from "react-native";
+import { Text, TextInput } from "@/components/universal/AppText";
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import Search from "@/components/features/pantry/Search";
 import { styles, useStyles } from "@/styles/auth.styles";

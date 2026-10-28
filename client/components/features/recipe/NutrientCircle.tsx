@@ -1,4 +1,5 @@
-import { Text, View } from "react-native";
+import { View } from "react-native";
+import { Text } from "@/components/universal/AppText";
 import React, { useContext, useState } from "react";
 import { useStyles } from "@/styles/GlobalStyles";
 import Svg, { Path, Circle, G } from "react-native-svg";
@@ -70,18 +71,27 @@ export default function NutrientCircle({ textInBox }: Props) {
         }}
       >
         <View style={[styles.legendBox, { backgroundColor: color }]} />
-        <Text style={styles.textLegend}>{text}</Text>
+        <Text
+          numberOfLines={1}
+          adjustsFontSizeToFit
+          style={[styles.textLegend, { flexShrink: 1 }]}
+        >
+          {text}
+        </Text>
       </View>
     );
   };
 
-  const cx = scale(68);
-  const cy = scale(68);
-  const rOuter = scale(60);
-  const rOuterInvis = scale(75);
-  const rInner = scale(43);
-  const rInnerInvis = scale(20);
-  const svgSize = scale(136);
+  const [rowWidth, setRowWidth] = useState(0);
+  const svgSize =
+    rowWidth > 0 ? Math.min(scale(136), rowWidth * 0.45) : scale(136);
+  const unit = svgSize / 136;
+  const cx = 68 * unit;
+  const cy = 68 * unit;
+  const rOuter = 60 * unit;
+  const rOuterInvis = 75 * unit;
+  const rInner = 43 * unit;
+  const rInnerInvis = 20 * unit;
 
   const renderChart = () => {
     if (total === 0) {
@@ -137,10 +147,10 @@ export default function NutrientCircle({ textInBox }: Props) {
           const isFocused = focusedIndex === slice.index;
 
           const currentOuterRadius = isFocused
-            ? rOuter + scale(6)
+            ? rOuter + 6 * unit
             : rOuter;
           const invisOuterRadius = isFocused
-            ? rOuterInvis + scale(6)
+            ? rOuterInvis + 6 * unit
             : rOuterInvis;
           const pathD = getSlicePath(
             slice.startAngle,
@@ -210,11 +220,18 @@ export default function NutrientCircle({ textInBox }: Props) {
           Nutrition Facts
         </Text>
       ) : null}
-      <View style={styles.nutrientCircle}>
+      <View
+        style={styles.nutrientCircle}
+        onLayout={(e) => {
+          const w = e.nativeEvent.layout.width;
+          if (w !== rowWidth) setRowWidth(w);
+        }}
+      >
         <View
           style={{
             alignItems: "flex-start",
             flex: 1,
+            minWidth: svgSize,
             marginLeft: moderateScale(10),
           }}
         >
@@ -236,19 +253,27 @@ export default function NutrientCircle({ textInBox }: Props) {
               }}
             >
               <Text
+                numberOfLines={1}
+                adjustsFontSizeToFit
+                maxFontSizeMultiplier={1}
                 style={{
+                  maxWidth: rInner * 1.7,
                   color: textColor,
-                  fontSize: moderateScale(29),
-                  lineHeight: moderateScale(33),
+                  fontSize: 29 * unit,
+                  lineHeight: 33 * unit,
                   fontFamily: "Nunito-SemiBold",
                 }}
               >
                 {Math.round(caloriesToShow)}
               </Text>
               <Text
+                numberOfLines={1}
+                adjustsFontSizeToFit
+                maxFontSizeMultiplier={1}
                 style={{
+                  maxWidth: rInner * 1.7,
                   color: theme.basicText,
-                  fontSize: moderateScale(11),
+                  fontSize: 11 * unit,
                   fontFamily: "Nunito-Medium",
                 }}
               >
@@ -258,7 +283,13 @@ export default function NutrientCircle({ textInBox }: Props) {
           </View>
         </View>
         <View
-          style={{ marginRight: moderateScale(26), justifyContent: "flex-end" }}
+          style={{
+            marginLeft: moderateScale(12),
+            marginRight: moderateScale(26),
+            justifyContent: "flex-end",
+            flexShrink: 1,
+            minWidth: 0,
+          }}
         >
           {renderLegend(`Protein (${nutrients[0]}g)`, NUTRIENT_COLORS[0])}
           {renderLegend(`Fat (${nutrients[1]}g)`, NUTRIENT_COLORS[1])}

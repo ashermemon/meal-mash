@@ -1,7 +1,8 @@
 import { NEWCOLORS } from "@/constants/NewTheme";
 import { useStyles } from "@/styles/GlobalStyles";
 import { useTheme, type Theme } from "@/contexts/ColorSchemeContext";
-import { Text, View } from "react-native";
+import { View } from "react-native";
+import { Text } from "@/components/universal/AppText";
 import { moderateScale } from "@/utils/responsive";
 
 interface Props {
@@ -28,8 +29,8 @@ export const difficultyShape = (
           backgroundColor: colorState
             ? theme.unselectedShape
             : theme.greenAccent,
-          width: select ? 12 : 15,
-          height: select ? 12 : 15,
+          width: moderateScale(select ? 12 : 15),
+          height: moderateScale(select ? 12 : 15),
         }}
       />
     );
@@ -39,8 +40,8 @@ export const difficultyShape = (
     return (
       <View
         style={{
-          width: select ? 10 : 13,
-          height: select ? 10 : 13,
+          width: moderateScale(select ? 10 : 13),
+          height: moderateScale(select ? 10 : 13),
           backgroundColor: colorState
             ? theme.unselectedShape
             : theme.blueAccent,
@@ -53,8 +54,8 @@ export const difficultyShape = (
     return (
       <View
         style={{
-          width: select ? 9 : 12,
-          height: select ? 9 : 12,
+          width: moderateScale(select ? 9 : 12),
+          height: moderateScale(select ? 9 : 12),
           transform: [{ rotate: "45deg" }],
           backgroundColor: colorState ? theme.unselectedShape : theme.redAccent,
         }}
@@ -110,7 +111,7 @@ export default function InfoTag(props: Props) {
       <Text
         style={[
           styles.textCentered,
-          { flexShrink: 1, fontSize: props.fontSize || 15 },
+          { flexShrink: 1, fontSize: moderateScale(props.fontSize || 15) },
         ]}
         numberOfLines={1}
       >

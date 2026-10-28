@@ -1,4 +1,5 @@
-import { View, Text, Pressable, Linking } from "react-native";
+import { View, Pressable, Linking } from "react-native";
+import { Text } from "@/components/universal/AppText";
 import React from "react";
 import { useStyles } from "@/styles/GlobalStyles";
 import { useTheme } from "@/contexts/ColorSchemeContext";
@@ -22,7 +23,7 @@ const SECTIONS = [
   },
   {
     title: "Terms of Use",
-    body: `${APP_NAME} is provided "as is" for personal use, with no warranty. Recipes and generated content are for informational purposes only — use your own judgment, especially with allergies or dietary needs. Continued use of the app means you accept these terms.`,
+    body: `${APP_NAME} is provided "as is" for personal use, with no warranty. Recipes and generated content are for informational purposes only, use your own judgment, especially with allergies or dietary needs. Continued use of the app means you accept these terms.`,
   },
 ];
 

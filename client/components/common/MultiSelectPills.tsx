@@ -1,5 +1,6 @@
-import { View, Text, Pressable } from "react-native";
-import React from "react";
+import { View, Pressable } from "react-native";
+import { Text } from "@/components/universal/AppText";
+import React, { useState } from "react";
 import { useStyles } from "@/styles/GlobalStyles";
 import { useTheme, useIsDarkMode } from "@/contexts/ColorSchemeContext";
 import { difficultyShape } from "../features/recipe/InfoTag";
@@ -19,6 +20,29 @@ const MultiSelectPills = (props: Props) => {
   const styles = useStyles();
   const theme = useTheme();
   const isDark = useIsDarkMode();
+
+  const pillGap = moderateScale(8);
+  const pillPadding = moderateScale(9);
+  const iconGap = moderateScale(5);
+  const labelStyle = [
+    styles.textCentered,
+    { fontSize: moderateScale(12.5), textAlign: "center" as const },
+  ];
+  const longestLabel = props.labels.reduce(
+    (a, b) => (b.length > a.length ? b : a),
+    "",
+  );
+  const [rowWidth, setRowWidth] = useState(0);
+  const [labelWidth, setLabelWidth] = useState(0);
+  const pillWidth =
+    (rowWidth - pillGap * (props.labels.length - 1)) / props.labels.length;
+  const showIcons =
+    !!props.diff &&
+    (rowWidth === 0 ||
+      labelWidth === 0 ||
+      pillWidth >=
+        pillPadding * 2 + moderateScale(12) + iconGap + labelWidth);
+
   return (
     <View
       style={{
@@ -31,7 +55,23 @@ const MultiSelectPills = (props: Props) => {
         {props.title}
       </Text>
 
-      <View style={{ flex: 1, flexDirection: "row", gap: moderateScale(8) }}>
+      <View
+        style={{ flex: 1, flexDirection: "row", gap: pillGap }}
+        onLayout={(e) => setRowWidth(e.nativeEvent.layout.width)}
+      >
+        {props.diff ? (
+          <Text
+            aria-hidden
+            numberOfLines={1}
+            pointerEvents="none"
+            style={[labelStyle, { position: "absolute", opacity: 0 }]}
+            onTextLayout={(e) =>
+              setLabelWidth(e.nativeEvent.lines[0]?.width ?? 0)
+            }
+          >
+            {longestLabel}
+          </Text>
+        ) : null}
         {props.labels.map((label, index) => {
           const pillBackgroundColor = props.selected.includes(index)
             ? props.diff
@@ -57,18 +97,19 @@ const MultiSelectPills = (props: Props) => {
                 styles.selectPill,
                 getTintedBoxShadow(pillBackgroundColor, isDark),
                 {
+                  flex: 1,
+                  minWidth: 0,
                   flexDirection: "row",
                   alignItems: "center",
-                  paddingHorizontal: moderateScale(9),
-                  ...(props.diff
-                    ? { flex: undefined, flexGrow: 1, flexBasis: "auto" }
-                    : { flex: 1 }),
+                  justifyContent: "center",
+                  gap: iconGap,
+                  paddingHorizontal: pillPadding,
                 },
                 { backgroundColor: pillBackgroundColor },
               ]}
               key={index}
             >
-              {props.diff ? (
+              {showIcons ? (
                 difficultyShape(
                   label,
                   !props.selected.includes(index),
@@ -79,13 +120,11 @@ const MultiSelectPills = (props: Props) => {
                 <></>
               )}
               <Text
+                numberOfLines={1}
+                adjustsFontSizeToFit
                 style={[
-                  styles.textCentered,
-                  {
-                    flexGrow: 1,
-                    fontSize: moderateScale(12.5),
-                    textAlign: "center",
-                  },
+                  ...labelStyle,
+                  { flexShrink: 1 },
                   props.selected.includes(index)
                     ? props.diff
                       ? { color: theme.basicText }

@@ -1,4 +1,5 @@
-import { View, Text, Pressable } from "react-native";
+import { View, Pressable } from "react-native";
+import { Text } from "@/components/universal/AppText";
 import React, { Dispatch, SetStateAction } from "react";
 import { useStyles } from "@/styles/GlobalStyles";
 import { useTheme, useIsDarkMode } from "@/contexts/ColorSchemeContext";
@@ -49,8 +50,10 @@ const FilterIngredients = (props: Props) => {
                 justifyContent: "center",
                 alignItems: "center",
 
-                width: scale(label.length >= 12 ? 140 : 90),
-                height: scale(30),
+                flex: 0,
+                minWidth: scale(label.length >= 12 ? 140 : 90),
+                minHeight: scale(30),
+                paddingVertical: moderateScale(4),
                 backgroundColor: pillBackgroundColor,
               },
             ]}

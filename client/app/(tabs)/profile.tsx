@@ -1,14 +1,13 @@
 import {
   View,
-  Text,
   ImageBackground,
   ScrollView,
   Pressable,
-  TextInput,
   Switch,
   Alert,
   StyleSheet,
 } from "react-native";
+import { Text, TextInput } from "@/components/universal/AppText";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useStyles } from "@/styles/GlobalStyles";
 import Counter from "@/components/features/profile/Counter";
@@ -61,6 +60,8 @@ export default function Profile() {
   const styles = useStyles();
   const theme = useTheme();
   const [editMode, setEditMode] = useState(false);
+  const [savesTitleFits, setSavesTitleFits] = useState(true);
+  const savesTitleStyle = [styles.textLeftBold, { fontFamily: "Nunito-Bold" }];
 
   const [lastSavedName, setLastSavedName] = useState("");
 
@@ -353,6 +354,7 @@ export default function Profile() {
                     <TextInput
                       ref={nameInputRef}
                       style={styles.nameInput}
+                      maxFontSizeMultiplier={1}
                       autoCorrect={false}
                       maxLength={15}
                       autoCapitalize="none"
@@ -374,7 +376,7 @@ export default function Profile() {
                         circleButtonShadow,
                         {
                           alignSelf: "flex-start",
-                          height: moderateScale(28),
+                          minHeight: moderateScale(28),
                           gap: moderateScale(6),
                           paddingHorizontal: moderateScale(10),
                           flexDirection: "row",
@@ -412,7 +414,7 @@ export default function Profile() {
                           styles.circleButton,
                           cancelButtonShadow,
                           {
-                            height: moderateScale(28),
+                            minHeight: moderateScale(28),
                             gap: moderateScale(6),
                             paddingHorizontal: moderateScale(12),
                             flexDirection: "row",
@@ -442,7 +444,7 @@ export default function Profile() {
                           styles.circleButton,
                           circleButtonShadow,
                           {
-                            height: moderateScale(28),
+                            minHeight: moderateScale(28),
                             gap: moderateScale(6),
                             paddingHorizontal: moderateScale(12),
                             flexDirection: "row",
@@ -536,19 +538,33 @@ export default function Profile() {
                         size={30}
                       />
                     </View>
-                    <Text
-                      numberOfLines={1}
-                      style={[
-                        styles.textLeftBold,
-                        {
-                          fontFamily: "Nunito-Bold",
-
-                          color: theme.basicText,
-                        },
-                      ]}
-                    >
-                      Click to view your saved recipes
-                    </Text>
+                    <View style={{ flex: 1 }}>
+                      <Text
+                        numberOfLines={1}
+                        style={[savesTitleStyle, { color: theme.basicText }]}
+                      >
+                        {savesTitleFits
+                          ? "Click to view your saved recipes"
+                          : "Click to view saves"}
+                      </Text>
+                      <Text
+                        aria-hidden
+                        style={[
+                          savesTitleStyle,
+                          {
+                            position: "absolute",
+                            left: 0,
+                            right: 0,
+                            opacity: 0,
+                          },
+                        ]}
+                        onTextLayout={(e) =>
+                          setSavesTitleFits(e.nativeEvent.lines.length <= 1)
+                        }
+                      >
+                        Click to view your saved recipes
+                      </Text>
+                    </View>
                   </View>
                   <Text
                     style={[
