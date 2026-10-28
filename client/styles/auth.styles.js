@@ -66,7 +66,6 @@ const createStyles = (NEWCOLORS, COLORS) =>
     timer: {
       paddingVertical: moderateScale(15),
       paddingHorizontal: moderateScale(16),
-      marginBottom: moderateScale(30),
       marginHorizontal: moderateScale(25),
       backgroundColor: NEWCOLORS.secondaryBoxGrey,
       flex: 1,

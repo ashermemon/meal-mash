@@ -20,7 +20,7 @@ export default function RecipeInfoTags(props: Props) {
         alignItems: "center",
         justifyContent: props.justifyContent || "center",
         flexDirection: "row",
-        flexWrap: "wrap",
+        flexWrap: "nowrap",
         flexShrink: 1,
         minWidth: 0,
         gap: moderateScale(8),

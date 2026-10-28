@@ -3,9 +3,12 @@ export type NotificationCopy = {
   body: string;
 };
 
-export const getFeaturedRecipeCopy = (recipeTitle: string, time: string): NotificationCopy => ({
+export const getFeaturedRecipeCopy = (
+  recipeTitle: string,
+  time: string,
+): NotificationCopy => ({
   title: "Hungry? 🍽️",
-  body: `Try our ${recipeTitle}—ready in just ${time}!`,
+  body: `Try our ${recipeTitle}, ready in just ${time}!`,
 });
 
 const MEAL_TIME_COPY: Record<"breakfast" | "lunch", NotificationCopy> = {
@@ -19,8 +22,9 @@ const MEAL_TIME_COPY: Record<"breakfast" | "lunch", NotificationCopy> = {
   },
 };
 
-export const getMealTimeCopy = (meal: keyof typeof MEAL_TIME_COPY): NotificationCopy =>
-  MEAL_TIME_COPY[meal];
+export const getMealTimeCopy = (
+  meal: keyof typeof MEAL_TIME_COPY,
+): NotificationCopy => MEAL_TIME_COPY[meal];
 
 export const getFridgePromptCopy = (): NotificationCopy => ({
   title: "Got leftovers? 🥡",

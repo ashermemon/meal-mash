@@ -62,6 +62,10 @@ export const GenerationCardPreview = (props: Props) => {
     imageArea.height - imageBottomGap,
     scale(230),
   );
+  const nutrientBoxHeight =
+    Math.min(scale(136), (imageArea.width - moderateScale(16)) * 0.45) +
+    moderateScale(20);
+
   const onImageAreaLayout = (e: LayoutChangeEvent) => {
     const { width, height } = e.nativeEvent.layout;
     setImageArea((prev) =>
@@ -116,39 +120,41 @@ export const GenerationCardPreview = (props: Props) => {
               width: "100%",
               alignItems: "center",
               marginBottom: moderateScale(6),
-              gap: moderateScale(10),
             }}
           >
-            {/* Title Skeleton */}
-            <Skeleton
-              width={scale(200)}
-              height={scale(32)}
-              radius={scale(8)}
-              {...SkeletonSettings}
-            />
-
-            {/* Recipe Info Tags Skeleton */}
             <View
-              style={{ flexDirection: "row", gap: moderateScale(8), justifyContent: "center" }}
+              style={{
+                width: "100%",
+                height: moderateScale(32),
+                alignItems: "center",
+                justifyContent: "center",
+              }}
             >
               <Skeleton
-                width={scale(60)}
-                height={scale(24)}
-                radius={scale(12)}
+                width="62%"
+                height={moderateScale(24)}
+                radius={moderateScale(8)}
                 {...SkeletonSettings}
               />
-              <Skeleton
-                width={scale(60)}
-                height={scale(24)}
-                radius={scale(12)}
-                {...SkeletonSettings}
-              />
-              <Skeleton
-                width={scale(60)}
-                height={scale(24)}
-                radius={scale(12)}
-                {...SkeletonSettings}
-              />
+            </View>
+
+            <View
+              style={{
+                flexDirection: "row",
+                gap: moderateScale(8),
+                justifyContent: "center",
+                marginTop: moderateScale(13),
+              }}
+            >
+              {[72, 78, 70].map((w) => (
+                <Skeleton
+                  key={w}
+                  width={moderateScale(w)}
+                  height={moderateScale(28)}
+                  radius={moderateScale(10)}
+                  {...SkeletonSettings}
+                />
+              ))}
             </View>
           </View>
 
@@ -156,8 +162,8 @@ export const GenerationCardPreview = (props: Props) => {
             <View style={imageAreaStyle} onLayout={onImageAreaLayout}>
               {imageSize > 0 ? (
                 <Skeleton
-                  width={imageSize * 0.95}
-                  height={imageSize * 0.95}
+                  width={imageSize}
+                  height={imageSize}
                   radius="round"
                   {...SkeletonSettings}
                 />
@@ -169,37 +175,34 @@ export const GenerationCardPreview = (props: Props) => {
               style={{
                 width: "100%",
                 alignItems: "center",
-                gap: moderateScale(6),
                 marginBottom: moderateScale(14),
               }}
             >
-              <Skeleton
-                width="90%"
-                height={scale(16)}
-                radius={scale(4)}
-                {...SkeletonSettings}
-              />
-              <Skeleton
-                width="70%"
-                height={scale(16)}
-                radius={scale(4)}
-                {...SkeletonSettings}
-              />
+              {["92%", "86%", "58%"].map((w) => (
+                <View
+                  key={w}
+                  style={{
+                    width: "100%",
+                    height: moderateScale(20),
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Skeleton
+                    width={w as `${number}%`}
+                    height={moderateScale(13)}
+                    radius={moderateScale(4)}
+                    {...SkeletonSettings}
+                  />
+                </View>
+              ))}
             </View>
 
-            {/* NutrientCircle Skeleton */}
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-                width: "100%",
-              }}
-            >
+            <View style={{ width: "100%" }}>
               <Skeleton
                 width={"100%"}
-                height={scale(145)}
-                radius={scale(15)}
+                height={nutrientBoxHeight}
+                radius={moderateScale(15)}
                 {...SkeletonSettings}
               />
             </View>

@@ -181,7 +181,8 @@ const followRecipe = () => {
             </View>
             <View style={{ flex: 1, paddingHorizontal: moderateScale(18) }}>
               <Text
-                numberOfLines={2}
+                numberOfLines={1}
+                adjustsFontSizeToFit
                 style={[styles.textLeftBold, { fontSize: moderateScale(23), lineHeight: moderateScale(27) }]}
               >
                 {recipeData.title}
@@ -191,6 +192,7 @@ const followRecipe = () => {
                 time={recipeData.time}
                 tags={recipeData.tags}
                 marginTop={8}
+                justifyContent="flex-start"
               />
             </View>
           </View>
@@ -349,7 +351,7 @@ const followRecipe = () => {
                       lineHeight: moderateScale(22),
                       marginLeft: moderateScale(16),
                       marginTop: moderateScale(5),
-                      marginBottom: instruction.timerMinutes ? moderateScale(10) : bulletMargin,
+                      marginBottom: instruction.timerMinutes ? moderateScale(18) : bulletMargin,
                     },
                   ]}
                 >
@@ -357,7 +359,7 @@ const followRecipe = () => {
                 </Text>
               </View>
               {instruction.timerMinutes ? (
-                <View style={{ marginBottom: bulletMargin - moderateScale(10) }}>
+                <View style={{ marginBottom: bulletMargin }}>
                   <Timer
                     time={instruction.timerMinutes * 60}
                     taskDescription={instruction.timerTask}
