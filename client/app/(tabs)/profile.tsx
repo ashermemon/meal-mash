@@ -494,7 +494,7 @@ export default function Profile() {
                 >
                   <Counter
                     value={stats.mealsGenerated}
-                    text="Meals Generated"
+                    text={"Meals\nGenerated"}
                   ></Counter>
                   <Counter
                     value={savedRecipes.length}

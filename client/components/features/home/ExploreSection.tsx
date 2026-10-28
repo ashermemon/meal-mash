@@ -5,7 +5,9 @@ import {
   useWindowDimensions,
 } from "react-native";
 import { MAX_FONT_SCALE, Text } from "@/components/universal/AppText";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import * as Haptics from "expo-haptics";
+import RecipeContext from "@/contexts/RecipeContext";
 import { useStyles } from "@/styles/GlobalStyles";
 import { useTheme, useIsDarkMode } from "@/contexts/ColorSchemeContext";
 import { router } from "expo-router";
@@ -37,6 +39,15 @@ export default function ExploreSection() {
       })),
     [mealImages],
   );
+  const [, setRecipeData] = useContext(RecipeContext);
+  const openFeaturedRecipe = ({
+    icon,
+    ...recipe
+  }: (typeof featuredRecipesWithIcons)[number]) => {
+    Haptics.selectionAsync();
+    setRecipeData(recipe);
+    router.navigate("/followRecipe");
+  };
   const ref = React.useRef<ICarouselInstance>(null);
   const progress = useSharedValue<number>(0);
   const onPressPagination = (index: number) => {
@@ -182,7 +193,8 @@ export default function ExploreSection() {
             height={carouselHeight}
             onProgressChange={progress}
             renderItem={({ item }) => (
-              <View
+              <Pressable
+                onPress={() => openFeaturedRecipe(item)}
                 style={{
                   flex: 1,
                   flexDirection: "row",
@@ -223,7 +235,6 @@ export default function ExploreSection() {
                   <View
                     style={{
                       flexDirection: "row",
-                      flexWrap: "wrap",
                       gap: moderateScale(7),
                     }}
                   >
@@ -234,10 +245,10 @@ export default function ExploreSection() {
                       c
                     />
                     <InfoTag type="time" data={item.time} fontSize={12} c />
-                    <InfoTag type="tags" data={item.tag} fontSize={12} c />
+                    <InfoTag type="tags" data={item.tags[0]} fontSize={12} c />
                   </View>
                 </View>
-              </View>
+              </Pressable>
             )}
           />
         </View>

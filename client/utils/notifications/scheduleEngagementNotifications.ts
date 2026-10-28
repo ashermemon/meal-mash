@@ -32,7 +32,7 @@ const buildCandidates = (): Candidate[] => [
     time: { hour: 11, minute: 0 },
     getCopy: () => {
       const recipe = featuredRecipes[takeNextFeaturedRecipeIndex(featuredRecipes.length)];
-      return getFeaturedRecipeCopy(recipe.title, recipe.time);
+      return getFeaturedRecipeCopy(recipe.title ?? "chef's pick", recipe.time);
     },
   },
   {
