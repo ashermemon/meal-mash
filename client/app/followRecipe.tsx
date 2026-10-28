@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { View, Text, ScrollView, Pressable } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AppImage from "@/components/universal/AppImage";
@@ -13,6 +13,7 @@ import { useTheme } from "@/contexts/ColorSchemeContext";
 import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 import { useNavigation } from "@react-navigation/native";
 import * as Haptics from "expo-haptics";
+import * as Notifications from "expo-notifications";
 import RecipeSection from "@/components/features/recipe/RecipeSection";
 import Svg, { Path } from "react-native-svg";
 import FollowRecipeHeader from "@/components/features/recipe/FollowRecipeHeader";
@@ -20,6 +21,7 @@ import { router } from "expo-router";
 import { useMealImages } from "@/contexts/MealImageContext";
 import { getMealImageSource } from "@/utils/mealImageSource";
 import { moderateScale, scale } from "@/utils/responsive";
+import { TIMER_NOTIFICATION_TYPE } from "@/utils/notifications/content";
 
 const followRecipe = () => {
   const styles = useStyles();
@@ -102,6 +104,33 @@ const followRecipe = () => {
 
   const [scrollProgress, setScrollProgress] = useState(0);
 
+  const scrollRef = useRef<ScrollView>(null);
+  const contentRef = useRef<View>(null);
+  const stepRefs = useRef<(View | null)[]>([]);
+
+  useEffect(() => {
+    const subscription = Notifications.addNotificationResponseReceivedListener(
+      (response) => {
+        const data = response.notification.request.content.data;
+        if (
+          data?.type !== TIMER_NOTIFICATION_TYPE ||
+          typeof data.stepIndex !== "number"
+        )
+          return;
+
+        const stepView = stepRefs.current[data.stepIndex];
+        const content = contentRef.current;
+        if (!stepView || !content) return;
+
+        stepView.measureLayout(content, (_x, y) => {
+          scrollRef.current?.scrollTo({ y, animated: true });
+        });
+      },
+    );
+
+    return () => subscription.remove();
+  }, []);
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: theme.nestedBG }}>
       <FollowRecipeHeader
@@ -109,6 +138,7 @@ const followRecipe = () => {
         progress={scrollProgress}
       />
       <ScrollView
+        ref={scrollRef}
         contentContainerStyle={{ padding: moderateScale(24), paddingBottom: moderateScale(40) }}
         onScroll={(event) => {
           const { layoutMeasurement, contentOffset, contentSize } =
@@ -120,6 +150,7 @@ const followRecipe = () => {
         }}
         scrollEventThrottle={16}
       >
+        <View ref={contentRef} collapsable={false}>
         <View
           style={[
             {
@@ -274,7 +305,13 @@ const followRecipe = () => {
 
         <RecipeSection sectionTitle="Instructions">
           {(recipeData?.instructions || []).map((instruction, index) => (
-            <View key={index}>
+            <View
+              key={index}
+              ref={(node) => {
+                stepRefs.current[index] = node;
+              }}
+              collapsable={false}
+            >
               <View
                 style={{
                   flexDirection: "row",
@@ -317,6 +354,7 @@ const followRecipe = () => {
                   <Timer
                     time={instruction.timerMinutes * 60}
                     taskDescription={instruction.timerTask}
+                    stepIndex={index}
                   />
                 </View>
               ) : null}
@@ -402,6 +440,7 @@ const followRecipe = () => {
             </Text>
           </Pressable>
         </RecipeSection>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );

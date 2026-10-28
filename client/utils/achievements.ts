@@ -5,6 +5,7 @@ import {
   updateStats,
 } from "@/utils/storage";
 import { showAchievementToast } from "@/utils/achievementToast";
+import { maybeNotifyStreakMilestone } from "@/utils/notifications/streakNotifications";
 
 export const getUnlockedAchievementIds = (): string[] =>
   readUnlockedAchievementIds();
@@ -80,18 +81,38 @@ export const trackRecipeGenerated = (
 };
 
 export const trackMealMade = (recipe: Pick<RecipeData, "categories">) => {
-  const stats = updateStats((current) => ({
-    mealsMade: current.mealsMade + 1,
-    ...(recipe.categories?.madeWithLeftovers
-      ? { leftoverMealsMade: current.leftoverMealsMade + 1 }
-      : {}),
-  }));
+  const today = new Date();
+  const todayKey = toLocalDateKey(today);
+  const yesterday = new Date(today);
+  yesterday.setDate(today.getDate() - 1);
+  const yesterdayKey = toLocalDateKey(yesterday);
+
+  const stats = updateStats((current) => {
+    const next: Partial<typeof current> = {
+      mealsMade: current.mealsMade + 1,
+      ...(recipe.categories?.madeWithLeftovers
+        ? { leftoverMealsMade: current.leftoverMealsMade + 1 }
+        : {}),
+    };
+
+    if (current.cookingStreakLastDate !== todayKey) {
+      next.cookingStreak =
+        current.cookingStreakLastDate === yesterdayKey
+          ? current.cookingStreak + 1
+          : 1;
+      next.cookingStreakLastDate = todayKey;
+    }
+
+    return next;
+  });
 
   if (stats.mealsMade >= 1) unlockAchievement("first-mash");
   if (stats.mealsMade >= 100) unlockAchievement("century");
   if (recipe.categories?.madeWithLeftovers && stats.leftoverMealsMade >= 25) {
     unlockAchievement("leftover-legend");
   }
+
+  void maybeNotifyStreakMilestone(stats.cookingStreak);
 };
 
 export const trackRecipeSaved = (savedCount: number) => {

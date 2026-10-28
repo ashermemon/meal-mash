@@ -75,6 +75,16 @@ export {
   type StoredAchievements,
 } from "./achievements";
 
+export {
+  canSendNotification,
+  recordNotificationSent,
+  hasScheduledEngagementNotificationsToday,
+  markEngagementNotificationsScheduled,
+  takeNextFeaturedRecipeIndex,
+  MAX_DAILY_NOTIFICATIONS,
+  type StoredNotificationState,
+} from "./notifications";
+
 export const resetAllData = (): void => {
   storage.clearAll();
   storage.set(StorageKeys.schemaVersion, SCHEMA_VERSION);

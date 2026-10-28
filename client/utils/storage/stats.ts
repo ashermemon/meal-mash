@@ -14,6 +14,8 @@ export type StoredStats = {
   generationStreak: number;
 
   generationStreakLastDate: string | null;
+  cookingStreak: number;
+  cookingStreakLastDate: string | null;
 };
 
 export const defaultStats: StoredStats = {
@@ -24,6 +26,8 @@ export const defaultStats: StoredStats = {
   cuisinesGenerated: [],
   generationStreak: 0,
   generationStreakLastDate: null,
+  cookingStreak: 0,
+  cookingStreakLastDate: null,
 };
 
 export const decodeStats = (value: unknown): StoredStats => {
@@ -39,6 +43,11 @@ export const decodeStats = (value: unknown): StoredStats => {
     generationStreakLastDate:
       typeof value.generationStreakLastDate === "string"
         ? value.generationStreakLastDate
+        : null,
+    cookingStreak: asNumber(value.cookingStreak),
+    cookingStreakLastDate:
+      typeof value.cookingStreakLastDate === "string"
+        ? value.cookingStreakLastDate
         : null,
   };
 };

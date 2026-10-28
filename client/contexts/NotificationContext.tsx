@@ -6,9 +6,11 @@ import React, {
   useRef,
   ReactNode,
 } from "react";
+import { AppState } from "react-native";
 import * as Notifications from "expo-notifications";
 import { EventSubscription } from "expo-notifications";
 import { registerForPushNotificationsAsync } from "@/utils/registerForPushNotificationsAsync";
+import { scheduleEngagementNotifications } from "@/utils/notifications/scheduleEngagementNotifications";
 
 interface NotificationContextType {
   expoPushToken: string | null;
@@ -56,12 +58,19 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
             "@/utils/scheduleDailyNotification"
           );
           await scheduleDailyNotification();
+          await scheduleEngagementNotifications();
         }
       },
       (error) => {
         if (isMounted) setError(error);
       }
     );
+
+    const appStateListener = AppState.addEventListener("change", (nextState) => {
+      if (nextState === "active") {
+        scheduleEngagementNotifications().catch(() => {});
+      }
+    });
 
     notificationListener.current =
       Notifications.addNotificationReceivedListener((notification) => {
@@ -79,6 +88,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
 
     return () => {
       isMounted = false;
+      appStateListener.remove();
       notificationListener.current?.remove();
       responseListener.current?.remove();
     };

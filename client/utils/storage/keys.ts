@@ -10,6 +10,7 @@ export const StorageKeys = {
   groceryChecked: "mm.groceryChecked",
   stats: "mm.stats",
   achievements: "mm.achievements",
+  notifications: "mm.notifications",
 } as const;
 
 export type StorageKey = (typeof StorageKeys)[keyof typeof StorageKeys];

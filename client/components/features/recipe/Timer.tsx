@@ -1,6 +1,7 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
+import { AppState, Pressable, StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
 import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
+import * as Notifications from "expo-notifications";
 import { useStyles } from "@/styles/GlobalStyles";
 import { timedBuzz } from "@/components/universal/CustomBuzz";
 
@@ -10,6 +11,12 @@ import * as Haptics from "expo-haptics";
 import { CustomIcon } from "@/icon-loader/icon-loader";
 import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
 import { moderateScale, scale } from "@/utils/responsive";
+import {
+  TIMER_NOTIFICATION_TYPE,
+  getTimerCompleteCopy,
+} from "@/utils/notifications/content";
+
+const TIMER_CHANNEL_ID = "cooking-timers";
 
 type TimerProps = {
   time: number;
@@ -17,6 +24,7 @@ type TimerProps = {
   color1?: any;
   color2?: any;
   color3?: any;
+  stepIndex?: number;
 };
 
 
@@ -30,6 +38,75 @@ export default function Timer(props: TimerProps) {
   const [timerKey, setTimerKey] = useState(0);
   const [timerFinished, setTimerFinished] = useState(false);
   const [remainingTime, setRemainingTime] = useState(props.time);
+
+  const isPlayingRef = useRef(isPlaying);
+  const remainingTimeRef = useRef(remainingTime);
+  const timerFinishedRef = useRef(timerFinished);
+  const pendingNotification = useRef<Promise<string | null> | null>(null);
+
+  useEffect(() => {
+    isPlayingRef.current = isPlaying;
+  }, [isPlaying]);
+  useEffect(() => {
+    remainingTimeRef.current = remainingTime;
+  }, [remainingTime]);
+  useEffect(() => {
+    timerFinishedRef.current = timerFinished;
+  }, [timerFinished]);
+
+  const cancelPendingBackgroundNotification = async () => {
+    const pending = pendingNotification.current;
+    pendingNotification.current = null;
+    const id = await pending;
+    if (id) await Notifications.cancelScheduledNotificationAsync(id);
+  };
+
+  const scheduleBackgroundNotification = (secondsRemaining: number) => {
+    if (pendingNotification.current) return;
+
+    pendingNotification.current = (async () => {
+      await Notifications.setNotificationChannelAsync(TIMER_CHANNEL_ID, {
+        name: "Cooking Timers",
+        importance: Notifications.AndroidImportance.MAX,
+      });
+
+      const copy = getTimerCompleteCopy(props.taskDescription, props.stepIndex);
+
+      return Notifications.scheduleNotificationAsync({
+        content: {
+          title: copy.title,
+          body: copy.body,
+          sound: "default",
+          data:
+            props.stepIndex !== undefined
+              ? { type: TIMER_NOTIFICATION_TYPE, stepIndex: props.stepIndex }
+              : {},
+        },
+        trigger: {
+          type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
+          seconds: Math.max(Math.round(secondsRemaining), 1),
+          channelId: TIMER_CHANNEL_ID,
+        },
+      });
+    })().catch(() => null);
+  };
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener("change", (nextState) => {
+      if (nextState === "background") {
+        if (isPlayingRef.current && !timerFinishedRef.current && remainingTimeRef.current > 0) {
+          scheduleBackgroundNotification(remainingTimeRef.current);
+        }
+      } else if (nextState === "active") {
+        cancelPendingBackgroundNotification();
+      }
+    });
+
+    return () => {
+      subscription.remove();
+      cancelPendingBackgroundNotification();
+    };
+  }, []);
 
   var hsl = require("hsl-to-hex");
 
