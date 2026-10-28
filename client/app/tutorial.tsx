@@ -14,35 +14,38 @@ import * as Haptics from "expo-haptics";
 import { useStyles } from "@/styles/GlobalStyles";
 import { useTheme } from "@/contexts/ColorSchemeContext";
 import { useTintedBoxShadow } from "@/hooks/useBoxShadow";
-import AppImage from "@/components/universal/AppImage";
-import icons3d from "@/components/universal/3dIcons";
 import { setTutorialSeen } from "@/utils/storage";
 import { moderateScale, scale } from "@/utils/responsive";
+import WelcomeDemo from "@/components/features/tutorial/WelcomeDemo";
+import PantryDemo from "@/components/features/tutorial/PantryDemo";
+import GenerateDemo from "@/components/features/tutorial/GenerateDemo";
+import SwipeDemo from "@/components/features/tutorial/SwipeDemo";
+import GroceryDemo from "@/components/features/tutorial/GroceryDemo";
 
 const slides = [
   {
-    icon: "Burrito",
+    Demo: WelcomeDemo,
     title: "Welcome to MealMash!",
     body: "Turn whatever's in your kitchen into your next meal, so less food goes to waste.",
   },
   {
-    icon: "Peach",
+    Demo: PantryDemo,
     title: "Stock your pantry",
     body: "Add the ingredients you have at home. Feel free to plug in your leftovers and we'll make something tasty!",
   },
   {
-    icon: "Fire",
+    Demo: GenerateDemo,
     title: "Generate recipes",
     body: "Cook with your whole pantry, pick specific ingredients, or use anything. Set the difficulty, time, cuisine and more.",
   },
   {
-    icon: "Pasta",
+    Demo: SwipeDemo,
     title: "Swipe to choose",
     body: "Swipe right to save a recipe and left to skip it. Tap Make Recipe to cook it step by step with built-in timers.",
   },
   {
-    icon: "RecipeBook",
-    title: "Save and shop",
+    Demo: GroceryDemo,
+    title: "Saves and Grocery",
     body: "Find your saved recipes anytime. Items you check off your grocery list go straight into your pantry.",
   },
 ];
@@ -51,13 +54,13 @@ export default function Tutorial() {
   const styles = useStyles();
   const theme = useTheme();
   const buttonShadow = useTintedBoxShadow(theme.primary);
-  const iconShadow = useTintedBoxShadow(theme.greyBlock);
   const { width, height } = useWindowDimensions();
   const scrollRef = useRef<ScrollView>(null);
   const [index, setIndex] = useState(0);
 
   const isLast = index === slides.length - 1;
-  const iconCircleSize = Math.min(scale(200), height * 0.28);
+  const stageWidth = Math.min(width - moderateScale(35) * 2, scale(320));
+  const stageHeight = Math.min(stageWidth * 0.72, height * 0.32);
 
   const goTo = (next: number) => {
     scrollRef.current?.scrollTo({ x: next * width, animated: true });
@@ -111,7 +114,7 @@ export default function Tutorial() {
         onMomentumScrollEnd={onScrollEnd}
         style={{ flex: 1 }}
       >
-        {slides.map((slide) => (
+        {slides.map(({ Demo, ...slide }, i) => (
           <View
             key={slide.title}
             style={{
@@ -122,27 +125,11 @@ export default function Tutorial() {
               gap: moderateScale(14),
             }}
           >
-            <View
-              style={[
-                iconShadow,
-                {
-                  width: iconCircleSize,
-                  height: iconCircleSize,
-                  borderRadius: iconCircleSize / 2,
-                  backgroundColor: theme.greyBlock,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  marginBottom: moderateScale(16),
-                },
-              ]}
-            >
-              <AppImage
-                source={icons3d[slide.icon] || icons3d.Default}
-                style={{
-                  width: iconCircleSize * 0.6,
-                  height: iconCircleSize * 0.6,
-                }}
-                contentFit="contain"
+            <View style={{ marginBottom: moderateScale(16) }}>
+              <Demo
+                width={stageWidth}
+                height={stageHeight}
+                active={i === index}
               />
             </View>
             <Text
