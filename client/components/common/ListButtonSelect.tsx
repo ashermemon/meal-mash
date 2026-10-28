@@ -13,6 +13,7 @@ type Props = {
   icons: string[];
   selected: number;
   setSelected: React.Dispatch<React.SetStateAction<number>>;
+  disabledOptions?: number[];
 };
 
 const ListButtonSelect = (props: Props) => {
@@ -24,8 +25,10 @@ const ListButtonSelect = (props: Props) => {
       {props.options.map((option: string, index: number) => {
         const buttonBackgroundColor =
           index === props.selected ? theme.greenAccent : theme.unselectedGrey;
+        const disabled = props.disabledOptions?.includes(index) ?? false;
         return (
         <Pressable
+          disabled={disabled}
           style={[
             styles.selectButton,
             getTintedBoxShadow(buttonBackgroundColor, isDark),
@@ -36,6 +39,7 @@ const ListButtonSelect = (props: Props) => {
               position: "relative",
               justifyContent: "space-around",
               alignItems: "center",
+              opacity: disabled ? 0.4 : 1,
             },
           ]}
           onPress={() => {

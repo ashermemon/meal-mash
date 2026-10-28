@@ -13,6 +13,7 @@ import React, {
   useState,
 } from "react";
 import { CustomIcon } from "@/icon-loader/icon-loader";
+import { PANTRY_PHOTO_ENABLED } from "@/constants/features";
 import { useIsDarkMode, useTheme } from "@/contexts/ColorSchemeContext";
 import { searchIngredients } from "./SearchFunctionality";
 import { getCategoryDisplayLabel } from "@/constants/categoryLabels";
@@ -305,7 +306,7 @@ const Search = forwardRef<SearchHandle, Props>((props, ref) => {
             ]}
           />
         </View>
-        {props.isGroceryList ? (
+        {props.isGroceryList || !PANTRY_PHOTO_ENABLED ? (
           <></>
         ) : (
           <View style={localStyles.searchInputAction}>

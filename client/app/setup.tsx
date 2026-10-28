@@ -22,6 +22,7 @@ import OnboardingStep from "@/components/common/OnboardingStep";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ListButtonSelect from "@/components/common/ListButtonSelect";
 import Camera from "@/components/universal/Camera";
+import { PANTRY_PHOTO_ENABLED } from "@/constants/features";
 import { useCameraPermissions } from "expo-camera";
 import IngredientPickerCard from "@/components/features/pantry/IngredientPickerCard";
 import * as Haptics from "expo-haptics";
@@ -328,10 +329,16 @@ const SetupScreen = (props: Props) => {
             >
               <View style={{ marginVertical: moderateScale(10) }}></View>
               <ListButtonSelect
-                options={["Snap a photo", "Add manually"]}
+                options={[
+                  PANTRY_PHOTO_ENABLED
+                    ? "Snap a photo"
+                    : "Snap a photo (coming soon)",
+                  "Add manually",
+                ]}
                 icons={["camera-2", "add"]}
                 selected={selected}
                 setSelected={setSelected}
+                disabledOptions={PANTRY_PHOTO_ENABLED ? [] : [0]}
               />
             </OnboardingStep>,
             <OnboardingStep>
