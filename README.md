@@ -5,7 +5,11 @@ MealMash turns whatever's left in your fridge into your next meal. You keep trac
 
 ## Download
 
-**[Get MealMash here!](https://linktr.ee/mealmash)**
+**Get MealMash here!**
+
+[Android](https://expo.dev/accounts/ashermemon/projects/never-leftover-new/builds/644cf8de-9e78-429e-8b86-07968675604d)
+[iOS](https://testflight.apple.com/join/gyUzY9ur)
+
 
 ## Features
 
