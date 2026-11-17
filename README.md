@@ -1,6 +1,6 @@
 # MealMash
 
-An app that turns whatever that is left in your fridge into a tasty meal. Keep track of your pantry, make grocery lists, swipe through recipes, saving the ones you like, and more
+An app that turns whatever is left in your fridge into a tasty meal. Keep track of your pantry, make grocery lists, swipe through recipes, save the ones you like, and more. Made for beginners, people who need to know what to make in a hurry, and people trying to figure out what to do with leftovers!
 
 <p align="center">
   <img src="docs/screenshots/home.jpg" width="200" alt="MealMash home page">
