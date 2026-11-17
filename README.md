@@ -74,6 +74,10 @@ npx expo run:android   # or: npx expo run:ios
 
 - [MingCute](https://www.mingcute.com/) (App Icons)
 - [Gemini](https://ai.google.dev/) and [Supabase](https://supabase.com/)
+- [3D Food Icons](https://www.figma.com/design/Xzve0EQketJjhNqtbVL57I/3D-Food-Icons-Free--Community-?node-id=11-11&t=S25RkqStLkoZOEZa-0)
+- [More 3D Icons](https://www.figma.com/design/9IZB0gn8Uw6POls2JDM4Zv/Free-3D-Icons--Community-?node-id=0-1&t=Ft7C5jIBzgnlIoXk-0)
+- [Even More 3D Icons](https://www.figma.com/design/ZEwJdrT91uyZbhMHq5rdlo/ICON-3D-SET--Community-?node-id=6-4973&t=YcyPjhSK1V4NTb5M-0)
+- NO IMAGES OR ASSETS WERE AI GENERATED (ai generated images were removed. none of the assets/icons were ever AI generated)
 
 ## Feedback
 
